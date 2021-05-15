@@ -1,0 +1,10 @@
+# Data standardisation
+
+The benefits of 'standardizing' our use of camera traps, or other sensors of biodiversity, are clear: It allows us to rapidly explore and analyse camera trap data, apply tools created elsewhere, and synthesise data from different projects. Ultimately resulting in more robust, repeatable, and timely science and managament decisions.
+
+This is just as true for the process by which we design and implement our camera trap studies, as it is for how we curate and analyse the resultant data. That said, it is becoming increasingly clear that we will **never** fully standardise camera trap data. Although this is sounds somewhat defeatist, the number of different data standards which exist is increasing, and is a reflection of the different requirements of researchers, practitioners and research aims/objectives of the camera trapping community.  
+
+That doesnt mean we should not standardise our data however! Simply that we should be clear about the standards we adopt, and stick to them like glue. 
+
+## The Wildlife Coexistence Lab data standard
+

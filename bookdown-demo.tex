@@ -1,0 +1,202 @@
+\documentclass[]{book}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\usepackage{fixltx2e} % provides \textsubscript
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+\else % if luatex or xelatex
+  \ifxetex
+    \usepackage{mathspec}
+  \else
+    \usepackage{fontspec}
+  \fi
+  \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\fi
+% use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+% use microtype if available
+\IfFileExists{microtype.sty}{%
+\usepackage[]{microtype}
+\UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\PassOptionsToPackage{hyphens}{url} % url is loaded by hyperref
+\usepackage[unicode=true]{hyperref}
+\hypersetup{
+            pdftitle={WildCAM: Examples of camera trap data exploration and analysis in R},
+            pdfauthor={WildCAM Network},
+            pdfborder={0 0 0},
+            breaklinks=true}
+\urlstyle{same}  % don't use monospace font for urls
+\usepackage{natbib}
+\bibliographystyle{apalike}
+\usepackage{longtable,booktabs}
+% Fix footnotes in tables (requires footnote package)
+\IfFileExists{footnote.sty}{\usepackage{footnote}\makesavenoteenv{long table}}{}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+\IfFileExists{parskip.sty}{%
+\usepackage{parskip}
+}{% else
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt plus 2pt minus 1pt}
+}
+\setlength{\emergencystretch}{3em}  % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{5}
+% Redefines (sub)paragraphs to behave more like sections
+\ifx\paragraph\undefined\else
+\let\oldparagraph\paragraph
+\renewcommand{\paragraph}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+\let\oldsubparagraph\subparagraph
+\renewcommand{\subparagraph}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+
+% set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+
+\usepackage{booktabs}
+\usepackage{amsthm}
+\makeatletter
+\def\thm@space@setup{%
+  \thm@preskip=8pt plus 2pt minus 4pt
+  \thm@postskip=\thm@preskip
+}
+\makeatother
+
+\title{WildCAM: Examples of camera trap data exploration and analysis in R}
+\author{WildCAM Network}
+\date{2021-05-11}
+
+\begin{document}
+\maketitle
+
+{
+\setcounter{tocdepth}{1}
+\tableofcontents
+}
+\chapter{Introduction}\label{introduction}
+
+\section{What this guide is}\label{what-this-guide-is}
+
+\begin{itemize}
+\tightlist
+\item
+  An R code reference manual for basic concepts in the exploration and
+  analysis of camera data
+\item
+  A tool to provide hands on experience of standardised camera trap data
+  in R
+\item
+  A link to resources and papers which showcase the types of analyses
+  you can perform (and would maybe want to replicate in the future)
+\item
+  It will constantly updated and curated by different lab memebers
+  through time
+\end{itemize}
+
+\section{What this guide isn't}\label{what-this-guide-isnt}
+
+\begin{itemize}
+\tightlist
+\item
+  The ``best'' way to explore / analyse your data (although we hopefully
+  provide a good foundation)
+\item
+  The ``best'' R code for camera traps
+\item
+  A static document
+\end{itemize}
+
+\section{How to use this handbook}\label{how-to-use-this-handbook}
+
+\begin{itemize}
+\tightlist
+\item
+  Browse the pages in the Table of Contents, or use the search box
+\item
+  You can follow-along with the example data
+\item
+  Explore addition ``Resources'' at the end of each section for great
+  examples
+\end{itemize}
+
+\section{Get in touch}\label{get-in-touch}
+
+If you have any questions about this document and the information it
+contains, please email use at XXX YYY or submit an issue on our
+\href{https://github.com/WildCoLab/WildCAM_Data_Analysis}{data analysis
+GitHub page}.
+
+\section{Acknowledgements}\label{acknowledgements}
+
+This guide is produced by the members of the Wildlife Coexistence Lab at
+UBC. Check out our \href{}{website}
+
+\chapter{Data standardisation}\label{data-standardisation}
+
+The benefits of `standardizing' our use of camera traps, or other
+sensors of biodiversity, are clear: It allows us to rapidly explore and
+analyse camera trap data, apply tools created elsewhere, and synthesise
+data from different projects. Ultimately resulting in more robust,
+repeatable, and timely science and managament decisions.
+
+This is just as true for the process by which we design and implement
+our camera trap studies, as it is for how we curate and analyse the
+resultant data. That said, it is becoming increasingly clear that we
+will \textbf{never} fully standardise camera trap data. Although this is
+sounds somewhat defeatist, the number of different data standards which
+exist is increasing, and is a reflection of the different requirements
+of researchers, practitioners and research aims/objectives of the camera
+trapping community.
+
+That doesnt mean we should not standardise our data however! Simply that
+we should be clear about the standards we adopt, and stick to them like
+glue.
+
+\chapter{Data Exploration}\label{data-exploration}
+
+The most important part of analysing camera trap data is exploring and
+checking your data. All to frequently, we find that researchers do not
+have a thorough grasp for the quality of their datasets!
+
+\section{Standardised exploration
+script}\label{standardised-exploration-script}
+
+In the Wildlife coexistance lab we use a standardised R script to
+generate summary information for camera trap projects. The script for
+exploring a single site can be found on our
+\href{https://github.com/WildCoLab/SingleSiteExploration}{GitHub page}.
+
+\chapter{Methods}\label{methods}
+
+We describe our methods in this chapter.
+
+\chapter{Applications}\label{applications}
+
+Some \emph{significant} applications are demonstrated in this chapter.
+
+\section{Example one}\label{example-one}
+
+\section{Example two}\label{example-two}
+
+\chapter{Final Words}\label{final-words}
+
+We have finished a nice book.
+
+\bibliography{book.bib,packages.bib}
+
+\end{document}

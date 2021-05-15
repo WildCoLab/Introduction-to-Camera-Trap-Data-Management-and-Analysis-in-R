@@ -1,0 +1,9 @@
+# Data Exploration
+
+The most important part of analysing camera trap data is exploring and checking your data. All to frequently, we find that researchers do not have a thorough grasp for the quality of their datasets! 
+
+## Standardised exploration script
+
+In the Wildlife coexistance lab we use a standardised R script to generate summary information for camera trap projects. The script for exploring a single site can be found on our [GitHub page](https://github.com/WildCoLab/SingleSiteExploration).
+
+
