@@ -7,7 +7,7 @@ editor_options:
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
-list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "lme4", "dplyr", "unmarked", "lubridate")
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "dplyr", "unmarked", "lubridate")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
@@ -16,13 +16,7 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 Name a better duo than that camera trapping and occupancy modelling. I'll wait.
 
-Occupancy modelling has been the mainstay of analysing data from camera traps since 
-
-**Assumptions**
-
-Ideally camera stations would be indpendent of one another, you would should only capture a given individual on a single camera. Thus for single species studies research space cameras by a single "home range" - although this in itself is tricky to quantify.  
-
-ETC
+Occupancy modelling has been the mainstay of analysing data from camera traps for many years, so learning how to wangle our data into occupancy style format is essential. 
 
 ## Single species occupancy model
 
@@ -40,7 +34,7 @@ kbl(weekObs)%>%
   scroll_box( height = "200px")
 ```
 
-We first need to create a site x occasion matrix for our focal species, *Odocoileus virginianus*, using a 7 day occasion length. This break our camera data into seven day periods. We can visualise what this entailes using the camera activity plots in the SingleSiteExploration script:
+We first need to create a site x occasion matrix for our focal species, *Odocoileus virginianus*, using a 7 day occasion length. This means we need to break our camera data into seven day bins. We can visualise what this entailes using the camera activity plots in the SingleSiteExploration script:
 
 ```{r, echo=F}
 # Import the original effort data
@@ -96,7 +90,7 @@ for(i in 1:length(plot.order))
 
 
 ```
-Where each think black line is an active camera, and each thin grey box represents each slice of the detection history. 
+Where each think black line is an active camera, and each thin grey box represents a potential one-week slice of the detection history. 
 
 We can create the detection histories using the following code:
 ```{r, message=F, warning=F}
@@ -130,9 +124,9 @@ kbl(detHist)%>%
   scroll_box( height = "200px")
 ```
 
-It is a matrix of all the dates the cameras were active, and whether the species was present or absent on that day. It should mirror the camera activity plot above. The `fill = NA` command puts a zero where there is data for a given day. However, we have lost our effort information - the number of days each camera was active in a given time period.
+It is a matrix of all the weeks the cameras were active, and whether the species was present or absent in that interval. It should mirror the camera activity plot above. The `fill = NA` command puts a zero where there is data for a given day. However, we have lost our effort information - the number of days each camera was active in a given time period. So we need another data frame!
 
-To keep that information we also create an effort history `effHist`:
+To get that information we need to create an effort history `effHist`:
 
 ```{r}
 # To create the effort matrix - inst of the Focal Species bring in the effort
@@ -156,14 +150,17 @@ kbl(effHist)%>%
   scroll_box( height = "200px")
 ```
 
+We might want to remove all of the weeks where we did not get a complete sample:
 
-Remove weeks w/0 full sample?
 ```{r}
 detHist[effHist!=7] <- NA
-
 ```
 
+Now we are ready to feed this into the `unmarked` package. 
+
 ### unmarked package
+
+First we must make an unmarked dataframe - a data structure which speaks to the unmakred package architecture:
 
 ```{r}
 library(unmarked)
@@ -176,7 +173,7 @@ unDat <- unmarkedFrameOccu(y = detHist,
                            siteCovs = sta) 
 ```
 
-
+We then fit the model, as before with the proportion of lowland habitat as a predictor:
 
 ```{r}
 # Fit general model all variables
@@ -185,10 +182,14 @@ m1 <- occu(formula = ~1 # detection formula first
                 data = unDat)
 ```
 
+Then view the results.
+
 ```{r}
 summary(m1)
 
 ```
+
+As with the linear models of habitat use, we can generate predictions through the use of a dummy dataframe (`newDat`), then plot the results:
 
 ```{r}
 # Generate new data to predict from 
@@ -206,7 +207,17 @@ p1 <- ggplot(newDat, aes(x = LOW500, y = Predicted)) +
 p1
 ```
 
+As with our habitat use model, *Odocoileus virginianus* occupancy appears to decrease with increasing lowland habitat.  
 
 ## Multispecies occupancy model
 
+[Tobler, M. et al. Spatiotemporal hierarchical modelling of species richness and occupancy using camera trap data. J. Appl. Ecol. (2015).](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12399)
+
+A worked example will be coming soon.
+
+## Further reading
+
 Coming soon!
+
+
+

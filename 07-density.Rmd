@@ -5,7 +5,9 @@ editor_options:
 ---
 # Density
 
-There is an explosion in the number of frameowrk looking to hit what is considered the gold stardard in many ecological surveys - population density information. 
+There is an explosion in the number of frameworks looking to hit what is considered the gold stardard in many ecological surveys - population density information. 
+
+We have plans for some worked examples of these in the pipeline, as a placeholder we point you towards some key material: 
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
@@ -18,6 +20,14 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 **Key resources**
 
-[Gilbert, Neil A., et al. "Abundance estimation of unmarked animals based on camera‐trap data." Conservation Biology 35.1 (2021): 88-100](173-181.](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517)
+A recent review of unmarked density approaches: [Gilbert, Neil A., et al. "Abundance estimation of unmarked animals based on camera‐trap data." Conservation Biology 35.1 (2021): 88-100](173-181.](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517)
 
+*Analysis frameworks*
+
+- Traditional capture-recapture (repeated observations of known/identifiable individuals)
+- SCR: `oSCR` package with [teaching materials](https://sites.google.com/site/spatialcapturerecapture/oscr-package/quick-start) and [recorded workshop videos](https://www.youtube.com/channel/UCc87aAzhX7EUOalyCohzqsQ/featured) 
+- N-Mixture models [Keever, A. C., et al. "Efficacy of N-mixture models for surveying and monitoring white-tailed deer populations." Mammal Research 62.4 (2017)](https://link.springer.com/article/10.1007/s13364-017-0319-z)
+- Spatial counts Chandler, R. B. and Royle, J. A. Spatially explicit models for inference about density in unmarked or partially marked populations. (2013) 
+Random encounter model
+REST
 

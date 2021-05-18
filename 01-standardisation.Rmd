@@ -1,10 +1,89 @@
-# Data standardisation
+#Metadata standardisation
 
-The benefits of 'standardizing' our use of camera traps, or other sensors of biodiversity, are clear: It allows us to rapidly explore and analyse camera trap data, apply tools created elsewhere, and synthesise data from different projects. Ultimately resulting in more robust, repeatable, and timely science and managament decisions.
+The images produced by camera traps alone are useless. We need to keep accurate records of how the data were collected, labelled, and manipulated if we are to achieve the goal of synthesizing data from multiple projects. Thus, metadata is simply “data that provides information about other data”. 
 
-This is just as true for the process by which we design and implement our camera trap studies, as it is for how we curate and analyse the resultant data. That said, it is becoming increasingly clear that we will **never** fully standardise camera trap data. Although this is sounds somewhat defeatist, the number of different data standards which exist is increasing, and is a reflection of the different requirements of researchers, practitioners and research aims/objectives of the camera trapping community.  
+The benefits of 'standardizing' the metadata associated with camera traps, or other sensors of biodiversity, are hopefully clear - it should facilitates the rapid and robust exploration, analysis and sharing of information on wildlife populations. Ultimately resulting in more robust, repeatable, and timely research and management decisions.
 
-That doesnt mean we should not standardise our data however! Simply that we should be clear about the standards we adopt, and stick to them like glue. 
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
 
+```
 ## The WildCo Lab data standard
+
+We base our metadata on the [Wildlife Insights Minimum Metadata standards](https://www.wildlifeinsights.org/standards).
+
+For a dataset to be analysable it must, at an absolute minimum contain the following four elements:
+
+- `Project_data.csv` a dataframe containing key information about the project itself, e.g. how the cameras were deployed and what the target features were.
+- `Detection_data.csv` a dataframe containing all of the information contained within each image. This information is typically added by humans, but increasing we are using artificial intelligence to speed up this process. 
+- `Deployment_data.csv` a dataframe listing the activity of the camera traps involved in your study, and any issues encountered during deployments which may influence their analysis
+- `Station_covariates.csv` a dataframe of time-invariant descriptions of each camera location (e.g. GPS coordinates, GIS information, treatment strata)
+
+We provide examples of each of these dataframe below from a subset of 20 cameras the Algar Wildlife Monitoring Project.
+
+First we read in the data files:
+
+```{r}
+pro <- read.csv("data/raw_data/Example_project_data.csv", header=T)
+dat <- read.csv("data/raw_data/Example_detection_data.csv", header=T)
+eff <- read.csv("data/raw_data/Example_deployment_data.csv", header=T)
+sta <- read.csv("data/raw_data/Example_station_data.csv", header=T)
+```
+
+### Project data
+A general description of the project.
+
+```{r project data, echo=F, message=F}
+t(pro) %>%
+  kbl() %>%
+  kable_styling(full_width = T) %>%
+  column_spec(1, bold = T, border_right = T)
+```
+
+### Detection data
+The image labels (what is in each picture and its properties. Each image is linked to 
+(at least) one row in the detection data. 
+
+```{r, echo=F}
+kbl(dat)%>%
+  kable_paper() %>%
+  scroll_box(width = "750px", height = "200px")
+```
+
+
+### Deployment data
+Time varying information. This is the camera effort, how long each stations was active for. There can be one to multiple rows for each Deployment.Location.ID.
+
+```{r, echo=F}
+kbl(eff)%>%
+  kable_paper() %>%
+  scroll_box(width = "750px", height = "200px")
+
+```
+
+### Station covariates
+Time invariant information. Each Deployment.Location.ID is linked to one row in this dataframe.
+
+```{r, echo=F}
+kbl(sta)%>%
+  kable_paper() %>%
+  scroll_box(width = "750px", height = "200px")
+
+```
+
+**Further Reading**
+
+Forrester, T. et al. An open standard for camera trap data. Biodivers. Data J. 4, (2016).
+
+Meek, P. D., et al. "Recommended guiding principles for reporting on camera trapping research." Biodiversity and conservation 23.9 (2014)
+
+[RISC Wildlife Camera Metadata Protocol](https://www2.gov.bc.ca/assets/gov/environment/natural-resource-stewardship/nr-laws-policy/risc/wcmp_v1.pdf)  
+
+
+
+
 

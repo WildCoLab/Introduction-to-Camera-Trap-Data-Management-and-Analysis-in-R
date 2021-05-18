@@ -14,9 +14,9 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Camera traps are well suited for the quantification of habitat use accross multiple species. To assess habitat use, we typically quantify the detection rate, or a relative abundance index (RAI). RAI estimates are fairly simple to estimate, and understand, than other metrics (such as occupancy)and thus their use is widespread. 
+Camera traps are well suited for the quantification of habitat use across multiple species. To assess habitat use, we typically quantify the detection rate, or a relative abundance index (RAI). RAI estimates are fairly simple to estimate, and understand, than other metrics (such as occupancy)and thus their use is widespread. 
 
-In its simpliest form this represents the number of indpendent events (or individuals within indepnendent events) of a given species at a given camera, divided by the number of days that camera was active during that period of interest. 
+In its simplest form this represents the number of independent events (or individuals within independent events) of a given species at a given camera, divided by the number of days that camera was active during that period of interest. 
 
 Such abundance indices are typically analysed in a linear modelling framework, for single species, increasingly, for multispecies assemblages. Addressed in turn below. 
 
@@ -36,7 +36,7 @@ kbl(head(monCount))%>%
 
 So our rows represent a month at each given site, and we have the number of camera days each location was trapped. This is also the format which most liner model analysis packages require you to have your data in. Easy!
 
-Our next step to create the relative abundance index. We will divide each count by the number of days the station was active in each month then multiply by the a standardised number of days - often people use 100.
+Our next step to create the relative abundance index. We will divide each count by the number of days the station was active in each month then multiply by the a standardized number of days - often people use 100.
 
 In R this would look like:
 
@@ -59,18 +59,16 @@ abline(a=0, b=3.22, lty=2, col="grey")
 So in months where we have an incomplete sample (say 20 days in January instead of 31), the RAI will be higher than the dashed grey line.
 
 ## Single species habitat use model
-The most common way to analyse habitat use data is through linear models. There are a variety if differnt frameworks to fit and compare different linear models to address a host of different hypotheses, but if you are just starting out you should be aware of two key packages:
+The most common way to analyse habitat use data is through linear models. There are a variety if different frameworks to fit and compare different linear models to address a host of different hypotheses, but if you are just starting out you should be aware of two widely used packages:
 
-- `lme4` -> frequentist and information theoretic approaches
-- `brms` -> bayseian approaches
+- `lme4` -> frequentest and information theoretic approaches 
+- `brms` -> Bayesian approaches
 
 There is no right or wrong about which package and which approach you use to test your hypotheses, just make sure you understand the implications of your choices!
 
-**RESOURCES To Go HERE**
-
 **Example in lme4**
 
-In this worked example we will analyse how mammal capture vary using a mixed effects model. We will not test the model assumptions or interograte the findings, there are better resources to allow you to do that! Here we simply demonstrate how to use our camera datat to fit the model.
+In this worked example we will analyse how habitat use varies using a mixed effects model. We will not test the model assumptions or interrogate the findings, there are better resources to allow you to do that! Here we simply demonstrate how to use our camera data to fit the model.
 
 First we must install the packages we require: 'lme4' and `tidyr':
 
@@ -82,7 +80,7 @@ The lme4 package requires a dataframe format (as above), with the response term 
 
 **Preparing our data**
 
-Recall that the information about each camera is recorded in the Station_covariares file:
+Recall that the information about each camera is recorded in the Station_covariates file:
 ```{r}
 sta <- read.csv("data/raw_data/Example_station_data.csv", header=T)
 
@@ -94,11 +92,11 @@ kbl(head(sta))%>%
 
 So we have three variables to pick from:
 
-- `Treatment` is the feature where the camera trap was deployed: HumanUse = a camera on a seismic line used and maintained in an "open" state by humans; Offline = a camera in contiguous forest >200m from a seismic line 	
-- `LOW500` is the proportion of surrounding habitat 500m around the camera which is classified as "Lowland" 
-- `LOS` is the average straight line distance in m which you can view from the camera trap location.  
+- `Treatment` a catagorical variable which reflects strata where the camera trap was deployed: HumanUse = a camera on a seismic line used and maintained in an "open" state by humans; Offline = a camera in contiguous forest >200m from a seismic line 	
+- `LOW500` is a continuous variable reflecting the proportion of surrounding habitat 500m around the camera which is classified as "Lowland" 
+- `LOS` is a continuous variable reflecting the average straight line distance (in metres) which you can view from the camera trap location.  
 
-In this example we will start by keeping things simple and just exploring if `LOW500` influences the habitat use of *Odocoileus virginianus*.
+In this example we will start by keeping things simple and just exploring if `LOW500` (the proportion of lowland habitat) influences the habitat use of *Odocoileus virginianus*. We expect that it would, as White-tailed deer prefer upland habitat types in this landscape.
 
 Our first task is to link the information in the `sta` dataframe, with that in the monCount dataframe. To do this we will use `left_join()` in the dplyr package - using the camera stations (`Deployment.Location.ID` column) to link the data. 
 
@@ -112,15 +110,15 @@ Lets check it has worked, the `LOW500` column should be added on the right hand 
 ```{r}
 kbl(head(modDat))%>%
   kable_paper() %>%
-  scroll_box(width = "750px", height = "200px")
+  scroll_box( height = "200px")
 ```
 
 
-Next we will fit a mixed effects model to this dataset using `lme4`. You may have noticed that we havent used the monRAI dataframe we fit earlier! That is because we can create a relative abundance index within the model itself by providing an `offset()` - which functions in an equivalent way to what we did beforehand, and preseveres the original units of the obsevations (counts). 
+Next we will fit a mixed effects model to this data set using `lme4`. You may have noticed that we haven't used the monRAI dataframe we made earlier! That is because we can create a relative abundance index within the model itself by providing an `offset()` term . An offset functions to scale the response term based on the amount of survey effort, and perseveres the original units of the observations (counts). 
 
 The model takes the form:
   
-  Response term ~ fixed effect + offset + (1|random intercept), data frame, distribution
+  Response term ~ fixed effect + offset() + (1|random intercept), data frame, distribution
 
 We include `Deployment.Locaion.ID` as the random intercept, as camera stations are repeatedly sampled at monthly intervals and thus our data (rows in the dataframe) are not independent. We use the `poisson`  family, as our response term is a count.  
 
@@ -134,10 +132,11 @@ We can view a summary of the model fit using:
 summary(m1)
 ```
 
-As stated at the start of this guide, we are not focusing on whether the models we apply are appropriate or finding "the best" models for this datatset, so do not spend too much time trying to interpret this infomation! 
+As stated at the start of this guide, we are not focusing on whether the models we apply are appropriate or finding "the best" models for this datasheet, so do not spend too much time trying to interpret this information! 
 
 We can plot the relationship between by keeping things simple and just exploring if `LOW500` influences the habitat use of *Odocoileus virginianus* habitat using the predict function and `ggplot2`.
 
+To do this we create a dummy dataframe of "new" data (`newDat`):
 
 ```{r}
 newDat <- cbind(expand.grid(LOW500=seq(min(sta$LOW500),max(sta$LOW500), length.out=50)),Effort=100)
@@ -153,7 +152,7 @@ plot(newDat$Pred~newDat$LOW500, type="l",
 
 ```
 
-So our model suggests that the habitat use of *Odocoileus virginianus* decreases as the proportion of loaland habitat increases. This is consistent with our understanding of White-tailed deer, which prefer upland habitats!
+So our model suggests that the habitat use of *Odocoileus virginianus* decreases as the proportion of lowland habitat increases. This is consistent with our understanding of White-tailed deer, which prefer upland habitats!
 
 If you want more applied examples of generating predictions from mixed effects models, check out [Ben Bolkers workbook](https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html) 
 
@@ -176,22 +175,22 @@ If you want more applied examples of generating predictions from mixed effects m
 #newDat <- cbind(newDat, m_CI)
 ```
 
-## Further things to consider
+## Further reading
 
-- bayesian models - brms materials
+- Bayesian models - brms materials
 - model fit
-- overdispersion
-- standardising input variables
+- over dispersion
+- standardizing input variables
 
 
 ## Example multispecies model
 
-Given advances in computer power and analytic approaches, it is becoming increasingly popular to model multiple species within the same frameowrk. This opens up a variety of things not previously possible. 
+Given advances in computer power and analytic approaches, it is becoming increasingly popular to model multiple species within the same framework. This opens up a variety of things not previously possible. 
 
-As with single species linear models, there are many choices available for modeeling multiple species in the same frameowrk. Two notable options are:
+As with single species linear models, there are many choices available for modeling multiple species in the same framework. Two notable options are:
 
-- GJAM
-- HMSc
+- [GJAM](https://cran.r-project.org/web/packages/gjam/vignettes/gjamVignette.html) 
+- [HMSc](https://www2.helsinki.fi/en/researchgroups/statistical-ecology/hmsc)
 
 In this example we will use the `Hmsc` package.
 
@@ -218,14 +217,13 @@ Which looks like this:
 ```{r}
 kbl(head(Y))%>%
   kable_paper() %>%
-  scroll_box(width = "750px", height = "200px")
+  scroll_box(height = "200px")
 ```
 
 We then create the XData in a similar way to before, but this time dropping the species information:
 
 ```{r}
 Xdat <- left_join(monCount[c("Deployment.Location.ID", "Date", "Effort")], sta[c("Deployment.Location.ID", "LOW500")])
-
 ```
 
 Which looks like:
@@ -233,7 +231,7 @@ Which looks like:
 ```{r}
 kbl(head(Xdat))%>%
   kable_paper() %>%
-  scroll_box(width = "750px", height = "200px")
+  scroll_box(height = "200px")
 ```
 
 
@@ -257,10 +255,8 @@ rL = HmscRandomLevel(units = studyDesign$station)
 
 Specify our model""
 
-```{r}
+```{r, message =F, warning=F, eval=F}
 # Model specification
-str(Xdat)
-
 m = Hmsc(Y = Y, XData = Xdat[,c("LOW500", "Effort")], 
          XFormula = ~LOW500 + log(Effort),
          studyDesign = studyDesign, ranLevels = list(station = rL), 
@@ -273,19 +269,29 @@ m = sampleMcmc(m, thin = thin, samples = samples, transient = transient,
 ```
 
 
+```{r, echo=F, message=F, warning=F}
+# Model specification
+m = Hmsc(Y = Y, XData = Xdat[,c("LOW500", "Effort")], 
+         XFormula = ~LOW500 + log(Effort),
+         studyDesign = studyDesign, ranLevels = list(station = rL), 
+         distr="poisson")
+
+m = sampleMcmc(m, thin = thin, samples = samples, transient = transient,
+               nChains = nChains, verbose = F)
+
+```
+
+
+We can plot a basic summary of the modelled effects using the following code.
+
 ```{r}
 postBeta = getPostEstimate(m, parName = "Beta")
 par(mar=c(8,12,1,1))
 plotBeta(m, post = postBeta, param = "Support", supportLevel = 0)
 ```
 
+We the colours denote the size and magnitude of the effect of proportion of lowland habitat. *NOTE* treat these results with cauthion as the number of model runs is very low (to increase speed) and the model assumptions have not been interrograted. 
 
-
-
-
-
-
-
-## Other resources
+## Further reading
 
 Palmer, Meredith S., et al. "Evaluating relative abundance indices for terrestrial herbivores from large‐scale camera trap surveys." African journal of ecology 56.4 (2018): 791-803. 

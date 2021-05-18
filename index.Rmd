@@ -1,11 +1,12 @@
 --- 
-title: "WildCo: Examples of camera trap data exploration and analysis in R"
+title: "WildCo: Reproducible camera trap data exploration and analysis examples in R"
 author: "WildCo Lab, UBC"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
 documentclass: book
 bibliography: [book.bib, packages.bib]
+toc-title: "Contents"
 biblio-style: apalike
 link-citations: yes
 github-repo: WildCoLab/WildCo_Data_Analysis
@@ -14,30 +15,30 @@ description: "This resource is a 'living document' representing useful data expl
 
 # Introduction
 
+This guide was made as a way of sharing our research labs collective knowledge on the management, manipulation and analysis of camera trap data.   
+
 ## What this guide is 
 
 - An R code reference manual for basic concepts in the exploration and analysis of camera data
-- A tool to provide hands on experience of standardised camera trap data in R 
-- A link to resources and papers which showcase the types of analyses you can perform (and would maybe want to replicate in the future)
-- A 'living' document - it will updated and curated by different lab members through time
-
+- A tool to provide hands on experience of standardized camera trap data in R 
+- A link to resources and papers which showcase the types of analyses you can perform
+- A growing document which will be updated and curated by the Wildlife Coexistence Lab at UBC
 
 ## What this guide is not
 
-- The "best" way to explore / analyse your data (although we hopefully provide a good foundation)
-- The "best" R code for camera traps
-- A static document
+- A step-by-step guide to the "best" way to explore or analyse your data (although we hopefully provide a good foundation)
+- A statistics guide. The analyses presented within this guide are purposefully overly simplified in order to act as an introduction to each topic without being overwhelming. We link to more comprehensive resources where ever possible. 
 
 ## How to use this guide
 
-- Browse the pages from the Table of Contents, or use the search box
-- You can 'follow-along' using the example data and code
-- Explore addition “Resources” at the end of each section for great applications of camera trap data
+- Browse the pages from the Table of Contents, or use the search box if you are after something specific
+- If you dont want to use GitHub, you can [download the data](https://www.dropbox.com/sh/fpnsinyn1ml9x28/AAB-Y-glHHRDsiCdmQnVLx7Wa?dl=0) and 'follow-along' cutting and pasting the code
+- Explore addition “Further reading” sections at the end of each section for more information or applied examples of the methods discussed
 
 ## Get in touch
 
-If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/WildCo_Data_Analysis). 
+If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/WildCo_Data_Analysis). 
 
 ## Acknowledgements
 
-This guide is produced by the members of the Wildlife Coexistence Lab at UBC. Check out our [website]() 
+This guide is produced by the members of the Wildlife Coexistence Lab at UBC. Check out our [lab website](https://wildlife.forestry.ubc.ca/) 

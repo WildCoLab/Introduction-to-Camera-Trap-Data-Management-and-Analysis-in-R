@@ -58,11 +58,11 @@ library(iNEXT); library(ggplot2); library(gridExtra)
 
 **Single strata**
 
-You may want to see if your camera project has sufficient survey effort to capture the species within the focal area. To do this we can produce species accumulation curves across the site as a whole. 
+You may want to see if your camera project has sufficient survey effort to capture the species within the focal area. To do this we can produce species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add individuals or survey units. If the curve plataues, flattens, then that suggests you have sampled the majority of the species in your survey area.
 
 *Data formatting*
 
-Applying the iNEXT functions to camera trap data is simplest using 'abundance' function - a string of abundance frequencies contained within a list. We can create this format from the "Independent_total_observations" output of the "SingleSiteExploration" script.
+Applying the iNEXT functions to camera trap data is perhaps simplest using 'abundance' function - this requires a string of abundance frequencies contained within a list. We can create this format from the `Independent_total_observations.csv` output of the "SingleSiteExploration" script (see the [Standardisation chapter](#Metadata standardisation).
 
 ```{r}
 totObs <- read.csv("data/processed_data/Algar_30min_Independent_total_observations.csv", header=T)
@@ -97,7 +97,7 @@ grid.arrange(p1, p2, nrow = 1)
 
 **Multiple strata**
 
-The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevent categories. To make this split, we refer to the `sta` dataframe, which contains the treatment types for each camera station. We match the Deployment.Location.ID's in our dataframe with those in each treatment category using the `%in%` command. 
+The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories. To make this split, we refer to the `sta` dataframe, which contains the treatment types for each camera station. We match the Deployment.Location.ID's in our dataframe with those in each treatment category using the `%in%` command. 
 
 ```{r}
 # The treatment types for each Deployment.Location.ID are in the sta file
@@ -141,15 +141,21 @@ Some examples of using iNEXT with camera trap data:
 
 ### Multispecies occupancy model
 
-It is also possible to estimate species richness in a given area/strata using multispecies occupancy models. Move through to **THE OCCUPANCY MODEL SECTION** if this is the path you want to go down!
+It is also possible to estimate species richness in a given area/strata using multispecies occupancy models. 
+
+For an example with code in the appendices see:
+
+[Tobler, M. et al. Spatiotemporal hierarchical modelling of species richness and occupancy using camera trap data. J. Appl. Ecol. (2015).](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12399)
+
+A worked example will be coming soon.
 
 ## Diversity
 
 One issue with species richness assessments is that they weight all species equally, thus a community with 12 species all present in equal abundances will give you the same richness value as a high skewed community with one highly abundant species, and 11 very rare ones. Consequently, you might want to estimate species diversity.
 
-Luckily, the iNEXT package is well suited for comparisons of diversity indices through the use of hill numbers - of which the 'q' value represents the traditional shannon (q=1) and simpson (q=2) diversity indices (species richness: q = 0). *Note* Increasing values of q reduces the influence of rare species on your estimate of community diversity. 
+Luckily, the iNEXT package is well suited for comparisons of diversity indices through the use of hill numbers - of which the 'q' value represents the traditional Shannon (q=1) and Simpson (q=2) diversity indices (species richness: q = 0). *Note* Increasing values of q reduces the influence of rare species on your estimate of community diversity. 
 
-For example, we might want to compare the species diversity accross our two focal strata:  
+For example, we might want to compare the species diversity across our two focal strata:  
 
 ```{r}
 # We also introduce the object t -> which reflects the range of values over which you want to predict species richness
@@ -182,12 +188,9 @@ ggplot(point.df, aes(x=order, y=qD, colour=Strata)) +
     geom_point() 
 ```
 
-## Trait diversity
+## Discussion
 
-## Limitations to consider
-TBC
-
-
+dicussion of further work and limitations coming soon!
 
 
 
