@@ -1,3 +1,6 @@
-# Common data formats
+# Common analysis data formats
 
-We describe our methods in this chapter.
+When working with standardized datasets, there are three key dataframes we want to end up with. 
+
+
+

@@ -1,0 +1,212 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Occupancy
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "lme4", "dplyr", "unmarked", "lubridate")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Name a better duo than that camera trapping and occupancy modelling. I'll wait.
+
+Occupancy modelling has been the mainstay of analysing data from camera traps since 
+
+**Assumptions**
+
+Ideally camera stations would be indpendent of one another, you would should only capture a given individual on a single camera. Thus for single species studies research space cameras by a single "home range" - although this in itself is tricky to quantify.  
+
+ETC
+
+## Single species occupancy model
+
+In this example we will use the weekly observations dataframe fro the SingleSiteExploration script.
+
+```{r}
+weekObs <- read.csv("data/processed_data/Algar_30min_Independent_Weekly_observations.csv", header=T)
+```
+
+Which, as a quick reminder, looks like this:
+
+```{r}
+kbl(weekObs)%>%
+  kable_paper() %>%
+  scroll_box( height = "200px")
+```
+
+We first need to create a site x occasion matrix for our focal species, *Odocoileus virginianus*, using a 7 day occasion length. This break our camera data into seven day periods. We can visualise what this entailes using the camera activity plots in the SingleSiteExploration script:
+
+```{r, echo=F}
+# Import the original effort data
+eff <- read.csv("data/raw_data/Example_deployment_data.csv", header=T)
+tz<- "UTC"
+# Put the time is POSIX format
+eff$Camera.Deployment.Begin.Date <- as.Date(ymd_hms(eff$Camera.Deployment.Begin.Date, truncated=3, tz=tz))
+eff$Camera.Deployment.End.Date   <- as.Date(ymd_hms(eff$Camera.Deployment.End.Date, truncated=3, tz=tz))
+
+# Count the number of camera ststions
+n.stat <- length(unique(eff$Deployment.Location.ID))
+
+# Plot them
+
+# Adjust layout
+par(mar=c(6,6,1,1))
+plot(c(min(eff$Camera.Deployment.Begin.Date, na.rm=T), 
+       max(eff$Camera.Deployment.End.Date, na.rm=T)), 
+       c(1,n.stat), las=1, ylab="", xlab="", type="n", yaxt="n", xaxt="n")
+
+# Put them in alphabetical order
+plot.order <- unique(eff$Deployment.Location.ID)
+plot.order <- rev(plot.order[order(plot.order)])
+
+axis(2, at= 1:n.stat, labels= plot.order, las=1, cex.axis=0.8)
+
+# Make nice x-axis labels
+tmp <- as.Date(paste0(substr(c(min(eff$Camera.Deployment.Begin.Date, na.rm=T), 
+       max(eff$Camera.Deployment.End.Date, na.rm=T)),1,7),"-01"))
+
+axis(1, at= seq(tmp[1], tmp[2], by="month"), 
+     labels= substr(seq(tmp[1], tmp[2], by="month"),1,7), las=2, cex.axis=0.8)
+
+
+#Horizontal lines for months
+abline(v=as.numeric(seq(min(eff$Camera.Deployment.Begin.Date, na.rm=T),max(eff$Camera.Deployment.End.Date, na.rm=T), by=7)), col=rgb(0,0,0,0.1))
+
+
+#mtext("Camera Deployment ID", 2, 4)
+# Make lines for each of the cameras
+for(i in 1:length(plot.order))
+{
+  abline(h=i, col=rgb(0,0,0,0.1))
+  tmp <- eff[eff$Deployment.Location.ID==plot.order[i],]
+  for(j in 1:nrow(tmp))
+    {
+      lines(c(tmp$Camera.Deployment.Begin.Date[j],
+                       tmp$Camera.Deployment.End.Date[j]),
+            c(i,i), lwd=2)
+    }
+  
+}
+
+
+```
+Where each think black line is an active camera, and each thin grey box represents each slice of the detection history. 
+
+We can create the detection histories using the following code:
+```{r, message=F, warning=F}
+library(dplyr)
+library(tidyr)
+library(magrittr)
+library(tibble)
+
+##Subset to your focal data
+tmp <- weekObs[,c("Deployment.Location.ID", "Date", "Odocoileus.virginianus")]
+
+# Turn the counts into presence/absence
+tmp$Odocoileus.virginianus[tmp$Odocoileus.virginianus>0] <- 1
+
+# Create a history
+detHist <-  tmp %>%
+  #Convert from long into wide format (a detection history) using spread
+  spread(Date,Odocoileus.virginianus, fill = NA) %>% 
+  # group by deployment location
+  group_by(Deployment.Location.ID,) %>%
+  column_to_rownames( var = "Deployment.Location.ID")
+
+detHist <- as.matrix(detHist)
+```
+
+The resulting data frame looks like this:
+
+```{r, echo=F}
+kbl(detHist)%>%
+  kable_paper() %>%
+  scroll_box( height = "200px")
+```
+
+It is a matrix of all the dates the cameras were active, and whether the species was present or absent on that day. It should mirror the camera activity plot above. The `fill = NA` command puts a zero where there is data for a given day. However, we have lost our effort information - the number of days each camera was active in a given time period.
+
+To keep that information we also create an effort history `effHist`:
+
+```{r}
+# To create the effort matrix - inst of the Focal Species bring in the effort
+effDat <- weekObs[,c("Deployment.Location.ID", "Date", "Effort")]
+
+effHist <-  effDat %>%
+  # Create a matrix based on dates and effort
+  spread(Date,Effort, fill = NA) %>% 
+  # group by deloyment Location ID, then make that the row.namesd
+  group_by(Deployment.Location.ID,) %>%
+  column_to_rownames( var = "Deployment.Location.ID") 
+
+effHist <- as.matrix(effHist)
+```
+
+Check that it looks sensible:
+
+```{r, echo=F}
+kbl(effHist)%>%
+  kable_paper() %>%
+  scroll_box( height = "200px")
+```
+
+
+Remove weeks w/0 full sample?
+```{r}
+detHist[effHist!=7] <- NA
+
+```
+
+### unmarked package
+
+```{r}
+library(unmarked)
+sta <- read.csv("data/raw_data/Example_station_data.csv", header=T)
+# Unmarked wants your detection history, effort data and site covariates as matrices.
+
+# Build an unmarkedFramOccu
+unDat <- unmarkedFrameOccu(y = detHist,
+                          # siteCovs = dataframe with site rows x column variables (in same order as detHist)
+                           siteCovs = sta) 
+```
+
+
+
+```{r}
+# Fit general model all variables
+m1 <- occu(formula = ~1 # detection formula first
+                     ~LOW500, # occupancy formula second,
+                data = unDat)
+```
+
+```{r}
+summary(m1)
+
+```
+
+```{r}
+# Generate new data to predict from 
+newDat <- cbind(expand.grid(LOW500=seq(min(sta$LOW500),max(sta$LOW500), length.out=100)))
+
+newDat <- predict(m1, type="state", newdata = newDat, appendData=TRUE)
+
+p1 <- ggplot(newDat, aes(x = LOW500, y = Predicted)) +
+  geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.5, linetype = "dashed") +
+  geom_path(size = 1) +
+  labs(x = "Proportion lowland habitat", y = "Occupancy probability") +
+  theme_classic() +
+  coord_cartesian(ylim = c(0,1))
+
+p1
+```
+
+
+## Multispecies occupancy model
+
+Coming soon!

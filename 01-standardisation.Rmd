@@ -6,5 +6,5 @@ This is just as true for the process by which we design and implement our camera
 
 That doesnt mean we should not standardise our data however! Simply that we should be clear about the standards we adopt, and stick to them like glue. 
 
-## The Wildlife Coexistence Lab data standard
+## The WildCo Lab data standard
 

@@ -1,0 +1,108 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Activity
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "activity", "overlap")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Given that camera traps record the time of the photo, they represent a powerful tool to explore and contrast the acivity pattterns of the species they detect. Such analyses can give insight into ompetition, predation and coexistance. 
+
+*Must read* [Frey, Sandra, et al. "Investigating animal activity patterns and temporal niche partitioning using camera‐trap data: Challenges and opportunities." Remote Sensing in Ecology and Conservation 3.3 (2017): 123-132.](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.60) 
+
+Two key packages
+
+- `overlap` https://cran.r-project.org/web/packages/overlap/index.html
+- `activity` https://cran.r-project.org/web/packages/activity/index.html
+
+## Example
+
+To demonstrate how we might investigate temporal niche partitioning, we will be working from the independent observations data frame.
+
+```{r}
+# Import the data
+dat <- read.csv("data/processed_data/Algar_30min_Independent.csv", header=T)
+```
+
+Which looks like this:
+
+```{r, echo=F}
+kbl(head(dat))%>%
+  kable_paper() %>%
+  scroll_box(height = "200px")
+```
+
+Then load the activity package.
+
+```{r}
+# Import the data
+library(activity) # estimate radial time
+```
+
+We first need to convert the "time" in our datasets into radian time (on the range [0,
+2*pi]) and proportion time (on the range 0-1):
+
+```{r}
+#Radian time
+dat$rtime <- gettime(dat$Date_Time.Captured, "%Y-%m-%d %H:%M:%S")
+```
+
+Then fit the basic activity models available in the package. Note, more complex models are available, including accountting for the fact that the detection distance of camera traps varies from night to day. Here we will keep this simple!
+
+**White-tailed deer**
+```{r}
+m1 <- fitact(dat$rtime[dat$Species=="Odocoileus virginianus"])
+plot(m1)
+```
+
+**Caribou**
+```{r}
+m2 <- fitact(dat$rtime[dat$Species=="Rangifer tarandus"])
+plot(m2)
+```
+
+We can compare the activity plots of both species on the same axis visually:
+
+```{r}
+# Plot both on the same axis
+
+plot(m1, yunit="density", data="none", ylim=c(0,0.1), las=1, lwd=2)
+plot(m2, yunit="density", data="none", add=TRUE, tline=list(col="red"))
+legend("topleft", c("White tailed deer", "Caribou"), col=1:2, lty=1)
+```
+
+We can compare different activity patterns using coefficient of overlap (∆) - devleoped by Ridout and Linkie. The coefficient ranges from 0 (no overlap) to 1 (complete overlap). We can implement for a two species comparison as follows:
+
+```{r}
+# Note reps reduced to speed up running time
+compareCkern(m1, m2, reps = 250)
+```
+
+The output above represents: obs = observed overlap index; null = mean null overlap index; seNull = standard error of the null distribution; pNull = probability observed index arose by chance.
+
+Which suggets that there is no significant different between our two species, perhaps not surprising given that they spatially degregate not temporally. 
+
+### Other examples
+
+Houngbégnon, Fructueux GA, et al. "Daily Activity Patterns and Co-Occurrence of Duikers Revealed by an Intensive Camera Trap Survey across Central African Rainforests." Animals 10.12 (2020): 2200. https://pubmed.ncbi.nlm.nih.gov/33255400/
+
+Ross J, Hearn AJ, Johnson PJ, Macdonald DW (2013). \Activity patterns and temporal avoidance
+by prey in response to Sunda clouded leopard predation risk." Journal of Zoology, 290(2),
+96{106.
+
+Ramesh T, Kalle R, Sankar K, Qureshi Q (2012). \Spatio-temporal partitioning among large
+carnivores in relation to major prey species in Western Ghats." Journal of Zoology, 287(4),
+269{275.
+
+Azevedo FC, Lemos FG, Freitas-Junior MC, Rocha DG, Azevedo FCC (2018). \Puma activity
+patterns and temporal overlap with prey in a human-modied landscape at Southeastern
+Brazil." Journal of Zoology,
+

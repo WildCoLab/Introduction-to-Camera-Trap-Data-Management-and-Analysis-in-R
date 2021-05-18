@@ -1,6 +1,6 @@
 --- 
-title: "WildCAM: Examples of camera trap data exploration and analysis in R"
-author: "WildCAM Network"
+title: "WildCo: Examples of camera trap data exploration and analysis in R"
+author: "WildCo Lab, UBC"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -8,8 +8,8 @@ documentclass: book
 bibliography: [book.bib, packages.bib]
 biblio-style: apalike
 link-citations: yes
-github-repo: rstudio/bookdown-demo
-description: "This resource is a 'living document' representing useful data exploration and data analysis workflows we use within the WildCAM network and beyond."
+github-repo: WildCoLab/WildCo_Data_Analysis
+description: "This resource is a 'living document' representing useful data exploration and data analysis workflows we use within the WildCo lab, WildCAM network and (hopefully) beyond."
 ---
 
 # Introduction
@@ -21,21 +21,22 @@ description: "This resource is a 'living document' representing useful data expl
 - A link to resources and papers which showcase the types of analyses you can perform (and would maybe want to replicate in the future)
 - A 'living' document - it will updated and curated by different lab members through time
 
-## What this guide isn't
+
+## What this guide is not
 
 - The "best" way to explore / analyse your data (although we hopefully provide a good foundation)
 - The "best" R code for camera traps
 - A static document
 
-## How to use this handbook
+## How to use this guide
 
-- Browse the pages in the Table of Contents, or use the search box
-- You can follow-along with the example data
+- Browse the pages from the Table of Contents, or use the search box
+- You can 'follow-along' using the example data and code
 - Explore addition “Resources” at the end of each section for great applications of camera trap data
 
 ## Get in touch
 
-If you have any questions about this document and the information it contains, please email use at XXX YYY or submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/WildCAM_Data_Analysis). 
+If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/WildCo_Data_Analysis). 
 
 ## Acknowledgements
 

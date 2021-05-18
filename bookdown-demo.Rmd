@@ -1,0 +1,475 @@
+--- 
+title: "WildCo: Examples of camera trap data exploration and analysis in R"
+author: "WildCo Lab, UBC"
+date: "`r Sys.Date()`"
+site: bookdown::bookdown_site
+output: bookdown::gitbook
+documentclass: book
+bibliography: [book.bib, packages.bib]
+biblio-style: apalike
+link-citations: yes
+github-repo: WildCoLab/WildCo_Data_Analysis
+description: "This resource is a 'living document' representing useful data exploration and data analysis workflows we use within the WildCo lab, WildCAM network and (hopefully) beyond."
+---
+
+# Introduction
+
+Placeholder
+
+
+## What this guide is 
+## What this guide is not
+## How to use this guide
+## Get in touch
+## Acknowledgements
+
+<!--chapter:end:index.Rmd-->
+
+# Data standardisation
+
+The benefits of 'standardizing' our use of camera traps, or other sensors of biodiversity, are clear: It allows us to rapidly explore and analyse camera trap data, apply tools created elsewhere, and synthesise data from different projects. Ultimately resulting in more robust, repeatable, and timely science and managament decisions.
+
+This is just as true for the process by which we design and implement our camera trap studies, as it is for how we curate and analyse the resultant data. That said, it is becoming increasingly clear that we will **never** fully standardise camera trap data. Although this is sounds somewhat defeatist, the number of different data standards which exist is increasing, and is a reflection of the different requirements of researchers, practitioners and research aims/objectives of the camera trapping community.  
+
+That doesnt mean we should not standardise our data however! Simply that we should be clear about the standards we adopt, and stick to them like glue. 
+
+## The WildCo Lab data standard
+
+
+<!--chapter:end:01-standardisation.Rmd-->
+
+
+# Data Exploration
+
+Placeholder
+
+
+## Standardised exploration script
+### The output
+#### `r dat$Project.ID[1]` Project
+#### Camera locations
+#### Camera activity through time
+#### Raw camera detections
+#### Detection check
+#### Species metadata
+#### Sex
+#### Age
+#### Behaviour
+#### Independent camera detections
+#### Group size distribution
+#### Site-level species covariance
+#### Calculate relative abundance
+#### Site-level temporal plots
+#### Summary
+#### Species-specific temporal trends
+#### Data exporting
+#### Final check 
+#### Observations
+#### Counts
+
+<!--chapter:end:02-exploration.Rmd-->
+
+# Common analysis data formats
+
+When working with standardized datasets, there are three key dataframes we want to end up with. 
+
+
+
+
+<!--chapter:end:03-dataformat.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Community composition
+
+One of the most fundamental questions researchers and practitioners want to answer with camera traps is *how many species are there?* 
+
+To illustrate this, we will continue to use our case study from Northern Alberta:
+
+```{r, echo=T}
+# Read in the example dataset
+dat <- read.csv("data/raw_data/Example_detection_data.csv", header=T)
+eff <- read.csv("data/raw_data/Example_deployment_data.csv", header=T)
+sta <- read.csv("data/raw_data/Example_station_data.csv", header=T)
+```
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("iNEXT", "kableExtra", "tidyr", "ggplot2", "gridExtra")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+## Observed richness
+The simplest way to quantify species richness is counting the number of species you detect on your camera traps - 'observed richness'. In the case of the example data set, this represents `r length(unique(dat$Species))` species. 
+```{r, echo=F}
+tmp<-data.frame("Species_observed"= unique(dat$Species), "Species_count"=1:length(unique(dat$Species)))
+tmp %>%
+  kbl() %>%
+  kable_styling(full_width = F) 
+```
+
+
+Although you it is possible to compare observed richness across different strata, survey effort must be identical between your comparison strata. This often is not the case in camera trap studies where cameras break, run out of battery or are deployed for different lengths of time. The number of species you detect is a function of the amount of effort you spent surveying or the number of individuals detected - the longer a camera is active/the more individuals detected the more species it will detect. Observed richness typically underestimates true richness. Consequently, We need a way of comparing species richness which accounts in some way for survey effort.
+
+## Estimated richness
+
+There are two widely accepted ways to account for survey effect and imperfect detection where estimating species richness using camera traps:
+
+  i)  using the incidence of rare species to correct observed richness (non-parametric estimators) 
+  ii) using multispecies occupancy models to account for the species present but not observed 
+
+### iNext package
+
+The [iNext package](https://cran.r-project.org/web/packages/iNEXT/) (INterpolation and EXTrapolation of species richness) - is an easy to use and comes with a wealth of plotting functions - see the [iNext Quick Introduction](https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.html) for a great walk through tutorial. Its core functionality is based on:
+
+*Chao et. al. (2014) Rarefaction and extrapolation with Hill numbers: a framework for sampling and estimation in species diversity studies. Ecological Monographs*
+
+To run this example code you will need `iNEXT` , `ggplot2`, and `gridExtra` packages.
+
+```{r}
+library(iNEXT); library(ggplot2); library(gridExtra)
+```
+
+**Single strata**
+
+You may want to see if your camera project has sufficient survey effort to capture the species within the focal area. To do this we can produce species accumulation curves across the site as a whole. 
+
+*Data formatting*
+
+Applying the iNEXT functions to camera trap data is simplest using 'abundance' function - a string of abundance frequencies contained within a list. We can create this format from the "Independent_total_observations" output of the "SingleSiteExploration" script.
+
+```{r}
+totObs <- read.csv("data/processed_data/Algar_30min_Independent_total_observations.csv", header=T)
+# Make an empty list to store our data
+site <- list()
+# Sum all of the observations of each species (colSums), and then make it an element in the list
+site[[1]]<- colSums(totObs[3:ncol(totObs)])
+# Give it the project ID name
+names(site) <- dat$Project.ID[1]
+```
+
+This will produce a list object which looks like this: 
+
+```{r, echo=F}
+site
+```
+
+**Analysis**
+
+Once you have created your list, it is simple to run a basic iNEXT analysis, and create a graphs of the result:
+
+```{r}
+out <- iNEXT(site, datatype="abundance")
+```
+
+```{r}
+p1 <- ggiNEXT(out, type=1)+ theme_classic() 
+p2 <- ggiNEXT(out, type=2)+ theme_classic() 
+grid.arrange(p1, p2, nrow = 1)
+```
+
+
+**Multiple strata**
+
+The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevent categories. To make this split, we refer to the `sta` dataframe, which contains the treatment types for each camera station. We match the Deployment.Location.ID's in our dataframe with those in each treatment category using the `%in%` command. 
+
+```{r}
+# The treatment types for each Deployment.Location.ID are in the sta file
+# Make an object containing all of the site ID's for the "Offline" cameras
+off <- sta$Deployment.Location.ID[sta$Treatment=="Offline"]
+# And "HumanUse" cameras
+hum <- sta$Deployment.Location.ID[sta$Treatment=="HumanUse"]
+
+# Create a new empty list
+strata <- list()
+
+# Only sum the data for each relvent strata
+strata[[1]] <- colSums(totObs[totObs$Deployment.Location.ID %in% off, 3:ncol(totObs)])
+strata[[2]] <- colSums(totObs[totObs$Deployment.Location.ID %in% hum, 3:ncol(totObs)])
+
+# Give them names
+names(strata) <- c("Offline", "HumanUse")
+```
+
+Then, as before, run your iNEXT model and examine the output:
+
+```{r}
+out <- iNEXT(strata, datatype="abundance")
+p1 <- ggiNEXT(out, type=1)+ theme_classic() 
+p2 <- ggiNEXT(out, type=2)+ theme_classic() 
+grid.arrange(p1, p2, nrow = 1)
+```
+
+From the plot on the left you can see that the 'HumanUse' strata detected more species than the 'Offline' strata. The plot on the right suggests that we have likely sampled all of the species that will be detected within these habitats (samples are 'complete').
+
+**Notes**
+These two examples just scratch the surface of the functionality of the iNEXT package, and the ways of using it with camera data. 
+
+
+**Examples**
+
+Some examples of using iNEXT with camera trap data:
+
+[Cusack et.al 2015](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126373) Random versus Game Trail-Based Camera Trap Placement Strategy for Monitoring Terrestrial Mammal Communities
+
+
+### Multispecies occupancy model
+
+It is also possible to estimate species richness in a given area/strata using multispecies occupancy models. Move through to **THE OCCUPANCY MODEL SECTION** if this is the path you want to go down!
+
+## Diversity
+
+One issue with species richness assessments is that they weight all species equally, thus a community with 12 species all present in equal abundances will give you the same richness value as a high skewed community with one highly abundant species, and 11 very rare ones. Consequently, you might want to estimate species diversity.
+
+Luckily, the iNEXT package is well suited for comparisons of diversity indices through the use of hill numbers - of which the 'q' value represents the traditional shannon (q=1) and simpson (q=2) diversity indices (species richness: q = 0). *Note* Increasing values of q reduces the influence of rare species on your estimate of community diversity. 
+
+For example, we might want to compare the species diversity accross our two focal strata:  
+
+```{r}
+# We also introduce the object t -> which reflects the range of values over which you want to predict species richness
+t <- c(1, seq(2, 300, by=2))
+# For q =2 (shannon)
+out <- iNEXT(strata, q=c(1,2) ,datatype="abundance", size=t)
+ggiNEXT(out, type=1, facet.var="order", color.var="site") + theme_classic() 
+```
+
+The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the different inst just driven by several rarely encountered species). 
+
+Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 250 individuals:
+
+```{r}
+# The lapply function applies the same logic across elements in a list
+point.250 <- lapply(out$iNextEst, function(x) { x[ x$m == 250, ] })
+# Turn the output into a dataframe
+point.df <- do.call(rbind, point.250)
+# Extract the strata
+point.df$Strata <- gsub("\\..*","",rownames(point.df))
+
+q.vals <- c("test", "why")
+point.df$order <- as.factor(point.df$order)
+# Make a nice ggplot!
+ggplot(point.df, aes(x=order, y=qD, colour=Strata)) + 
+    theme_classic() +
+    #scale_x_discrete(breaks=c("1","2"),labels= c("1","2")) +
+    geom_errorbar(aes(ymin=qD.LCL, ymax=qD.UCL), width=.01) +
+    labs(y="Diversity", x = "q Value") +
+    geom_point() 
+```
+
+## Trait diversity
+
+## Limitations to consider
+TBC
+
+
+
+
+
+
+
+
+
+<!--chapter:end:04-community_metrics.Rmd-->
+
+
+# Habitat use
+
+Placeholder
+
+
+## Single species habitat use model
+## Further things to consider
+## Example multispecies model
+## Other resources
+
+<!--chapter:end:05-habitat_use.Rmd-->
+
+
+# Occupancy
+
+Placeholder
+
+
+## Single species occupancy model
+### unmarked package
+## Multispecies occupancy model
+
+<!--chapter:end:06-occupancy.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Density
+
+There is an explosion in the number of frameowrk looking to hit what is considered the gold stardard in many ecological surveys - population density information. 
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "lme4", "dplyr", "unmarked", "lubridate")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+**Key resources**
+
+[Gilbert, Neil A., et al. "Abundance estimation of unmarked animals based on camera‐trap data." Conservation Biology 35.1 (2021): 88-100](173-181.](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517)
+
+
+
+<!--chapter:end:07-density.Rmd-->
+
+
+# Activity
+
+Placeholder
+
+
+## Example
+### Other examples
+
+<!--chapter:end:08-activity.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Phenology
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "phenopix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Phenopix is an R package which allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover)
+
+
+The Phenopix package has a five step process:
+  i) a region of interest (ROI) is identified;
+  ii) the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
+  iii) the vegetation indices’ data points are filtered to remove inconsistencies; 
+  iv) a curve is fit to the data and phenophases are determined from the curve; 
+  v) and phenophase uncertainties are calculated.
+  
+##  Worked example
+
+Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
+
+<!--chapter:end:09-Phenology_plants_and_wildlife.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Phenology
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "phenopix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Phenopix is an R package which allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover)
+
+
+The Phenopix package has a five step process:
+  i) a region of interest (ROI) is identified;
+  ii) the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
+  iii) the vegetation indices’ data points are filtered to remove inconsistencies; 
+  iv) a curve is fit to the data and phenophases are determined from the curve; 
+  v) and phenophase uncertainties are calculated.
+  
+##  Worked example
+
+Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
+
+<!--chapter:end:10-behaviour.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Phenology
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "phenopix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Phenopix is an R package which allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover)
+
+
+The Phenopix package has a five step process:
+  i) a region of interest (ROI) is identified;
+  ii) the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
+  iii) the vegetation indices’ data points are filtered to remove inconsistencies; 
+  iv) a curve is fit to the data and phenophases are determined from the curve; 
+  v) and phenophase uncertainties are calculated.
+  
+##  Worked example
+
+Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
+
+<!--chapter:end:11-interactions.Rmd-->
+
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Phenology
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "phenopix")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Phenopix is an R package which allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover)
+
+
+The Phenopix package has a five step process:
+  i) a region of interest (ROI) is identified;
+  ii) the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
+  iii) the vegetation indices’ data points are filtered to remove inconsistencies; 
+  iv) a curve is fit to the data and phenophases are determined from the curve; 
+  v) and phenophase uncertainties are calculated.
+  
+##  Worked example
+
+Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
+
+<!--chapter:end:12-further_options.Rmd-->
+
+`r if (knitr:::is_html_output()) '
+# References {-}
+'`
+
+<!--chapter:end:99-references.Rmd-->
+

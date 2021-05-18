@@ -1,0 +1,23 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Density
+
+There is an explosion in the number of frameowrk looking to hit what is considered the gold stardard in many ecological surveys - population density information. 
+
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "lme4", "dplyr", "unmarked", "lubridate")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+**Key resources**
+
+[Gilbert, Neil A., et al. "Abundance estimation of unmarked animals based on camera‐trap data." Conservation Biology 35.1 (2021): 88-100](173-181.](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517)
+
+
