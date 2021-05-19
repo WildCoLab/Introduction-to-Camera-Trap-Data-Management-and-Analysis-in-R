@@ -62,7 +62,7 @@ You may want to see if your camera project has sufficient survey effort to captu
 
 *Data formatting*
 
-Applying the iNEXT functions to camera trap data is perhaps simplest using 'abundance' function - this requires a string of abundance frequencies contained within a list. We can create this format from the `Independent_total_observations.csv` output of the "SingleSiteExploration" script (see the [Standardisation chapter](#Metadata standardisation).
+Applying the iNEXT functions to camera trap data is perhaps simplest using 'abundance' function - this requires a string of abundance frequencies contained within a list. We can create this format from the `Independent_total_observations.csv` output of the "SingleSiteExploration" script (see the [Standardisation chapter][Data Exploration]).
 
 ```{r}
 totObs <- read.csv("data/processed_data/Algar_30min_Independent_total_observations.csv", header=T)

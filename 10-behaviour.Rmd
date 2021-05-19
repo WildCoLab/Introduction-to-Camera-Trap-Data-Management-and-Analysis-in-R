@@ -3,7 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Phenology
+# Behavior
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
@@ -14,16 +14,12 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Phenopix is an R package which allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover)
+Coming soon!
 
 
-The Phenopix package has a five step process:
-  i) a region of interest (ROI) is identified;
-  ii) the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
-  iii) the vegetation indices’ data points are filtered to remove inconsistencies; 
-  iv) a curve is fit to the data and phenophases are determined from the curve; 
-  v) and phenophase uncertainties are calculated.
-  
-##  Worked example
 
-Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
+## Further reading
+
+[Caravaggi, Anthony, et al. "A review of camera trapping for conservation behaviour research." Remote Sensing in Ecology and Conservation 3.3 (2017): 109-122.](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.48)
+
+[Palencia, Pablo, et al. "Innovations in movement and behavioural ecology from camera traps: day range as model parameter." Methods in Ecology and Evolution.](https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13609)

@@ -43,8 +43,8 @@ kbl(head(dat))%>%
 Then load the activity package.
 
 ```{r}
-# Import the data
-library(activity) # estimate radial time
+# Load the package
+library(activity) 
 ```
 
 We first need to convert the "time" in our datasets into radian time (on the range [0,
@@ -90,7 +90,7 @@ The output above represents: obs = observed overlap index; null = mean null over
 
 Which suggets that there is no significant different between our two species, perhaps not surprising given that they spatially degregate not temporally. 
 
-### Other examples
+## Further reading
 
 Houngbégnon, Fructueux GA, et al. "Daily Activity Patterns and Co-Occurrence of Duikers Revealed by an Intensive Camera Trap Survey across Central African Rainforests." Animals 10.12 (2020): 2200. https://pubmed.ncbi.nlm.nih.gov/33255400/
 

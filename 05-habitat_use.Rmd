@@ -14,11 +14,11 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Camera traps are well suited for the quantification of habitat use across multiple species. To assess habitat use, we typically quantify the detection rate, or a relative abundance index (RAI). RAI estimates are fairly simple to estimate, and understand, than other metrics (such as occupancy)and thus their use is widespread. 
+Camera traps are well suited for the quantification of habitat use across multiple species. To assess habitat use, we typically quantify the detection rate - the number of dections divided by the time interval of interest. Detection rates are fairly simple to estimate and understand thus their use is widespread. 
 
 In its simplest form this represents the number of independent events (or individuals within independent events) of a given species at a given camera, divided by the number of days that camera was active during that period of interest. 
 
-Such abundance indices are typically analysed in a linear modelling framework, for single species, increasingly, for multispecies assemblages. Addressed in turn below. 
+Such detection rates are thought to reflect the habitat use of a species at a given location - extreme care should be taken if you want to use it as an indesx of abundance. Detection rates are typically analysed in a linear modelling framework for single species, and increasingly for multispecies too. 
 
 We will use the "processed_data/Algar_30min_Independent_Monthly_counts.csv" dataframe as the starting point for this data analysis. Which looks like this:
 
@@ -41,22 +41,22 @@ Our next step to create the relative abundance index. We will divide each count 
 In R this would look like:
 
 ```{r}
-# Create a dataframe to store these 'relative abundances'
-monRAI <- monCount
+# Create a dataframe to store these detection rates
+monDR <- monCount
 # Divide the species abundances (which start in column four), by the amount of camera effort
-monRAI[ , 4:ncol(monCount)] <- (monRAI[ , 4:ncol(monCount)]/monRAI$Effort)*100
+monDR[ , 4:ncol(monCount)] <- (monDR[ , 4:ncol(monCount)]/monDR$Effort)*100
 ```
 
-We can then examine the relationship between raw counts (on the x-axis) with our relative abundance index (on the y-axis), using *Odocoileus virginianus* as an example:
+We can then examine the relationship between raw counts (on the x-axis) with our detection rate (on the y-axis), using *Odocoileus virginianus* as an example:
 
 ```{r}
-plot(monRAI$Odocoileus.virginianus ~ monCount$Odocoileus.virginianus,
-     las=1, pch=19, ylab="RAI", xlab="Raw")
+plot(monDR$Odocoileus.virginianus ~ monCount$Odocoileus.virginianus,
+     las=1, pch=19, ylab="DR", xlab="Raw")
 abline(a=0, b=3.22, lty=2, col="grey")
      
 ```
 
-So in months where we have an incomplete sample (say 20 days in January instead of 31), the RAI will be higher than the dashed grey line.
+So in months where we have an incomplete sample (say 20 days in January instead of 31), the DR will be higher than the dashed grey line.
 
 ## Single species habitat use model
 The most common way to analyse habitat use data is through linear models. There are a variety if different frameworks to fit and compare different linear models to address a host of different hypotheses, but if you are just starting out you should be aware of two widely used packages:
@@ -94,7 +94,7 @@ So we have three variables to pick from:
 
 - `Treatment` a catagorical variable which reflects strata where the camera trap was deployed: HumanUse = a camera on a seismic line used and maintained in an "open" state by humans; Offline = a camera in contiguous forest >200m from a seismic line 	
 - `LOW500` is a continuous variable reflecting the proportion of surrounding habitat 500m around the camera which is classified as "Lowland" 
-- `LOS` is a continuous variable reflecting the average straight line distance (in metres) which you can view from the camera trap location.  
+- `LOS` is a continuous variable reflecting the average stDRght line distance (in metres) which you can view from the camera trap location.  
 
 In this example we will start by keeping things simple and just exploring if `LOW500` (the proportion of lowland habitat) influences the habitat use of *Odocoileus virginianus*. We expect that it would, as White-tailed deer prefer upland habitat types in this landscape.
 
@@ -114,7 +114,7 @@ kbl(head(modDat))%>%
 ```
 
 
-Next we will fit a mixed effects model to this data set using `lme4`. You may have noticed that we haven't used the monRAI dataframe we made earlier! That is because we can create a relative abundance index within the model itself by providing an `offset()` term . An offset functions to scale the response term based on the amount of survey effort, and perseveres the original units of the observations (counts). 
+Next we will fit a mixed effects model to this data set using `lme4`. You may have noticed that we haven't used the monDR dataframe we made earlier! That is because we can create a relative abundance index within the model itself by providing an `offset()` term . An offset functions to scale the response term based on the amount of survey effort, and perseveres the original units of the observations (counts). 
 
 The model takes the form:
   
@@ -175,12 +175,17 @@ If you want more applied examples of generating predictions from mixed effects m
 #newDat <- cbind(newDat, m_CI)
 ```
 
-## Further reading
+### Future additions
 
 - Bayesian models - brms materials
 - model fit
-- over dispersion
+- over dispersion`
 - standardizing input variables
+- continuous and catagorical examples
+- Spatial and temporal non-independence 
+- Confidence/credible intervals
+
+### Further reading
 
 
 ## Example multispecies model
@@ -215,7 +220,7 @@ row.names(Y) <- paste(monCount$Deployment.Location.ID, monCount$Date, sep=".")
 Which looks like this:
 
 ```{r}
-kbl(head(Y))%>%
+kbl(Y)%>%
   kable_paper() %>%
   scroll_box(height = "200px")
 ```
@@ -229,7 +234,7 @@ Xdat <- left_join(monCount[c("Deployment.Location.ID", "Date", "Effort")], sta[c
 Which looks like:
 
 ```{r}
-kbl(head(Xdat))%>%
+kbl(Xdat)%>%
   kable_paper() %>%
   scroll_box(height = "200px")
 ```

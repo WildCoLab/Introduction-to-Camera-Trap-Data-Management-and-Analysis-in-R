@@ -3,7 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Phenology
+# Interactions
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
@@ -14,16 +14,42 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Phenopix is an R package which allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover)
+*One species as a predictor of another*
+
+Tattersall, E. R., Burgar, J. M., Fisher, J. T. & Burton, A. C. Boreal predator co-occurrences reveal shared use of seismic lines in a working landscape. Ecol. Evol. 10, 1678–1691 (2020).
 
 
-The Phenopix package has a five step process:
-  i) a region of interest (ROI) is identified;
-  ii) the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
-  iii) the vegetation indices’ data points are filtered to remove inconsistencies; 
-  iv) a curve is fit to the data and phenophases are determined from the curve; 
-  v) and phenophase uncertainties are calculated.
-  
+*Residual co-occurence models*
+See:
+
+Ovaskainen, O. et al. How to make more out of community data? A conceptual framework and its implementation as models and software. Ecol. Lett. 20, 561–576 (2017).
+
+Linear models: Tikhonov, G. et al. Joint species distribution modelling with the r-package Hmsc. Methods Ecol. Evol. 11, 442–447 (2020).
+
+Occupancy: Tobler, Mathias W., et al. "Joint species distribution models with species correlations and imperfect detection." Ecology 100.8 (2019): e02754.
+
+
+
+
+*Attractance-Avoidance Ratios (AAR)* For a given species of interest (e.g. humans) we can record the period of time until the next detection of an animal species of interest, as well a the period of since it was last detected before the human detection. The ratio between these times is known as the attractace avoidance ratio.  
+
+See:
+[Parsons, A. W., et al. "The ecological impact of humans and dogs on wildlife in protected areas in eastern North America." Biological Conservation 203 (2016): 75-88.](https://www.sciencedirect.com/science/article/abs/pii/S0006320716303603)
+
+[Naidoo, R. & Burton, A. C. Relative effects of recreational activities on a temperate terrestrial wildlife assemblage. Conserv. Sci. Pract. (2020)](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/csp2.271)
+
+[Niedballa, Jürgen, et al. "Assessing analytical methods for detecting spatiotemporal interactions between species from camera trapping data." Remote Sensing in Ecology and Conservation 5.3 (2019): 272-285.](https://zslpublications.onlinelibrary.wiley.com/doi/pdf/10.1002/rse2.107)
+
+
+*Manipulative experiments* Measuring species feeding responses to anthropogenic and natural sounds. 
+
+
+
+
 ##  Worked example
 
 Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
+
+
+
+

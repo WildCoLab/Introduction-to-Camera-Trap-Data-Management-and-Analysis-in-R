@@ -1,4 +1,4 @@
-#Metadata standardisation
+# Metadata standardisation
 
 The images produced by camera traps alone are useless. We need to keep accurate records of how the data were collected, labelled, and manipulated if we are to achieve the goal of synthesizing data from multiple projects. Thus, metadata is simply “data that provides information about other data”. 
 

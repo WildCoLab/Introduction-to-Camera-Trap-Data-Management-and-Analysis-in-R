@@ -24,10 +24,13 @@ A recent review of unmarked density approaches: [Gilbert, Neil A., et al. "Abund
 
 *Analysis frameworks*
 
-- Traditional capture-recapture (repeated observations of known/identifiable individuals)
-- SCR: `oSCR` package with [teaching materials](https://sites.google.com/site/spatialcapturerecapture/oscr-package/quick-start) and [recorded workshop videos](https://www.youtube.com/channel/UCc87aAzhX7EUOalyCohzqsQ/featured) 
-- N-Mixture models [Keever, A. C., et al. "Efficacy of N-mixture models for surveying and monitoring white-tailed deer populations." Mammal Research 62.4 (2017)](https://link.springer.com/article/10.1007/s13364-017-0319-z)
-- Spatial counts Chandler, R. B. and Royle, J. A. Spatially explicit models for inference about density in unmarked or partially marked populations. (2013) 
-Random encounter model
-REST
+- **Spatial capture recapture**: `oSCR` package with [teaching materials](https://sites.google.com/site/spatialcapturerecapture/oscr-package/quick-start) and [recorded workshop videos](https://www.youtube.com/channel/UCc87aAzhX7EUOalyCohzqsQ/featured) 
+
+- **N-Mixture models** [Keever, A. C., et al. "Efficacy of N-mixture models for surveying and monitoring white-tailed deer populations." Mammal Research 62.4 (2017)](https://link.springer.com/article/10.1007/s13364-017-0319-z)
+
+- **Spatial counts** Chandler, R. B. and Royle, J. A. Spatially explicit models for inference about density in unmarked or partially marked populations. (2013) 
+
+- **Random encounter model** [Jourdain, N. et al. Statistical Development of Animal Density Estimation Using Random Encounter Modelling. J. Agric. Biol. Environ. Stat. (2020)](https://link.springer.com/article/10.1007/s13253-020-00385-4)
+
+- **Random Encounter and Staying Time (REST)**
 
