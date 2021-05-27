@@ -162,7 +162,7 @@ For example, we might want to compare the species diversity across our two focal
 t <- c(1, seq(2, 300, by=2))
 # For q =2 (shannon)
 out <- iNEXT(strata, q=c(1,2) ,datatype="abundance", size=t)
-ggiNEXT(out, type=1, facet.var="order", color.var="site") + theme_classic() 
+ggiNEXT(out, type=1, facet.var="Order.q", color.var="Assemblage") + theme_classic() 
 ```
 
 The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the different inst just driven by several rarely encountered species). 
@@ -172,20 +172,16 @@ Point estimates and their confidence intervals can also be extracted from iNEXT 
 ```{r}
 # The lapply function applies the same logic across elements in a list
 point.250 <- lapply(out$iNextEst, function(x) { x[ x$m == 250, ] })
-# Turn the output into a dataframe
-point.df <- do.call(rbind, point.250)
-# Extract the strata
-point.df$Strata <- gsub("\\..*","",rownames(point.df))
 
-q.vals <- c("test", "why")
-point.df$order <- as.factor(point.df$order)
+point.250 <- point.250$size_based
+
 # Make a nice ggplot!
-ggplot(point.df, aes(x=order, y=qD, colour=Strata)) + 
-    theme_classic() +
-    #scale_x_discrete(breaks=c("1","2"),labels= c("1","2")) +
-    geom_errorbar(aes(ymin=qD.LCL, ymax=qD.UCL), width=.01) +
-    labs(y="Diversity", x = "q Value") +
-    geom_point() 
+ggplot(point.250, aes(x=Order.q, y=qD, colour=Assemblage)) + 
+       theme_classic() +
+       #scale_x_discrete(breaks=c("1","2"),labels= c("1","2")) +
+       geom_errorbar(aes(ymin=qD.LCL, ymax=qD.UCL), width=.01) +
+       labs(y="Diversity", x = "q Value") +
+       geom_point() 
 ```
 
 ## Discussion

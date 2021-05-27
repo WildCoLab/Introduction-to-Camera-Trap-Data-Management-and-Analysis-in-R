@@ -5,7 +5,7 @@ editor_options:
 ---
 # Behavior
 
-```{r, echo=F, results='hide', message =F, warning=F}
+```{r, echo=F, results='hide', message =F, warning=F, eval=F}
 # Check you have them and load them
 list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "phenopix")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]

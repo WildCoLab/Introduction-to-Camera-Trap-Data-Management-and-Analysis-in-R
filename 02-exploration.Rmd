@@ -44,7 +44,7 @@ colour <- "lightseagreen"
 # This code will not work unless your data passes the following checks
 
 #Load Packages
-list.of.packages <- c("leaflet", "dplyr", "colortools", "kriging", "corrplot", "lubridate", "kableExtra", "tidyr")
+list.of.packages <- c("leaflet", "dplyr", "viridis", "kriging", "corrplot", "lubridate", "kableExtra", "tidyr")
 
 # Check you have them and load them
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -101,7 +101,7 @@ n.stat <- length(unique(eff$Deployment.Location.ID))
 
 # Generate colours to display the catagory levels - R needs them as a factor
 sta[,category] <- factor(sta[,category])
-col.cat <- wheel(colour, num = length(levels(sta[,category])))
+col.cat <- turbo(length(levels(sta[,category])))
 sta$Cols <- col.cat[sta[,category]]
 
 # How big should the figures be
@@ -225,7 +225,7 @@ The following plot helps you determine if you have detections occurring outside 
 
 ```{r, include=F}
 # Make species colour codes
-tmp3 <- data.frame("Species"=unique(dat$Species),"Colour"= wheel("lightseagreen", num = length(unique(dat$Species))))
+tmp3 <- data.frame("Species"=unique(dat$Species),"Colour"= turbo(length(unique(dat$Species))))
 
 ```
 
@@ -289,7 +289,7 @@ if(length(colnames(dat)[colnames(dat)==col.name]>0))
       tmp <- as.data.frame.matrix(tmp)
       
       dat[,col.name]<- factor(dat[,col.name])
-      cols <- wheel("lightseagreen", num = length(levels(dat[,col.name])))
+      cols <- turbo( length(levels(dat[,col.name])))
       # Name catagories with no data N\A for NOT ASSESSED
       row.names(tmp)[row.names(tmp)==""] <- "N/A"
       # make it the last level
@@ -326,7 +326,7 @@ if(length(colnames(dat)[colnames(dat)==col.name]>0))
       tmp <- as.data.frame.matrix(tmp)
       
       dat[,col.name]<- factor(dat[,col.name])
-      cols <- wheel("lightseagreen", num = length(levels(dat[,col.name])))
+      cols <- turbo( length(levels(dat[,col.name])))
       # Name catagories with no data N\A for NOT ASSESSED
       row.names(tmp)[row.names(tmp)==""] <- "N/A"
       # make it the last level
@@ -363,7 +363,7 @@ if(length(colnames(dat)[colnames(dat)==col.name]>0))
       tmp <- as.data.frame.matrix(tmp)
       
       dat[,col.name]<- factor(dat[,col.name])
-      cols <- wheel("lightseagreen", num = length(levels(dat[,col.name])))
+      cols <- turbo( length(levels(dat[,col.name])))
       # Name catagories with no data N\A for NOT ASSESSED
       row.names(tmp)[row.names(tmp)==""] <- "N/A"
       # make it the last level
