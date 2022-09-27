@@ -1,6 +1,6 @@
 --- 
-title: "WildCo: Reproducible camera trap data exploration and analysis examples in R"
-author: "WildCo Lab, UBC"
+title: "An Introduction to Camera Trap Data Management and Analysis in R"
+author: "Christopher Beirne and the Wildlife Coexistence Lab, UBC"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -10,9 +10,9 @@ toc-title: "Contents"
 biblio-style: apalike
 link-citations: yes
 github-repo: "WildCoLab/WildCo_Data_Analysis"
-description: "This resource is a 'living document' representing useful data exploration and data analysis workflows we use within the WildCo lab, WildCAM network and (hopefully) beyond."
+description: "Materials for the three day camera trap data management and analysis course"
 ---
-
+ 
 # Introduction
 
 This guide was made as a way of sharing our research labs collective knowledge on the management, manipulation and analysis of camera trap data. 
