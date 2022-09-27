@@ -49,13 +49,10 @@ You will either be using this book as a companion to the "An Introduction to Cam
 - If you don't want to use GitHub, you can [download the data](https://www.dropbox.com/sh/fpnsinyn1ml9x28/AAB-Y-glHHRDsiCdmQnVLx7Wa?dl=0) and 'follow-along' cutting and pasting the code
 - Explore addition “Further reading” sections at the end of each section for more information or applied examples of the methods discussed
 
-## Prerequisites
-
-
 ## Get in touch
 
 If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R). 
 
 ## Acknowledgements
 
-This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne) with help from the members of the [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/) 
+This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne) with help from the members of the [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/).

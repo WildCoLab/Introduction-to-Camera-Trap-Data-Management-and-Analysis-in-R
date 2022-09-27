@@ -8,5 +8,31 @@ In order reproduce the data management and analysis examples detailed in this bo
 
 ## Download the data files
 
+We have two data sets!
+
+- Example dataset -> ALGAR [Different treatments]
+
+This data was analysed in:
+
+Tattersall, E. R., Burgar, J. M., Fisher, J. T., & Burton, A. C. (2020). Mammal seismic line use varies with restoration: Applying habitat restoration to species at risk conservation in a working landscape. Biological Conservation, 241, 108295.
+
+Tattersall, E. R., Burgar, J. M., Fisher, J. T., & Burton, A. C. (2020). Boreal predator co‐occurrences reveal shared use of seismic lines in a working landscape. Ecology and Evolution, 10(3), 1678-1691.
+
+Beirne, C., Sun, C., Tattersall, E. R., Burgar, J. M., Fisher, J. T., & Burton, A. C. (2021). Multispecies modelling reveals potential for habitat restoration to re‐establish boreal vertebrate community dynamics. Journal of Applied Ecology, 58(12), 2821-2832.
+
+Burton, A. C., Beirne, C., Sun, C., Granados, A., Procko, M., Chen, C., ... & Burgar, J. (2022). Behavioral “bycatch” from camera trap surveys yields insights on prey responses to human‐mediated predation risk. Ecology and evolution, 12(7), e9108.
+
+Sun, C., Burgar, J. M., Fisher, J. T., & Burton, A. C. (2022). A cautionary tale comparing spatial count and partial identity models for estimating densities of threatened and unmarked populations. Global Ecology and Conservation, 38, e02268.
+
+
+
+- Practise dataset -> 3 months from a grid in Peru [On trail and off trail]
+
+Unpublished data!
+
+
+Both are real
+
+
 ## Install the required packages
 
