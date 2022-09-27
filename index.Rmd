@@ -9,38 +9,53 @@ bibliography: [book.bib, packages.bib]
 toc-title: "Contents"
 biblio-style: apalike
 link-citations: yes
-github-repo: "WildCoLab/WildCo_Data_Analysis"
+github-repo: " WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R"
 description: "Materials for the three day camera trap data management and analysis course"
 ---
  
 # Introduction
 
-This guide was made as a way of sharing our research labs collective knowledge on the management, manipulation and analysis of camera trap data. 
+```{r, echo=F, message=F, warning=F}
+library(bookdown)
+knitr::include_graphics("images/Ninja.PNG")
+```
 
-It was born out of the realization that many analysis frameworks we apply as camera trappers, do not have specific examples which involve camera trap data. Thus we wanted a resource which takes a single data set from raw data to analysis, showing all of the steps in between!
+The number of projects employing camera traps to understand ecological phenomena is growing rapidly – as are the number of statistical tools to analyze the resultant data. Consequently, the management and analysis of camera trap data can seem complex and overwhelming. This course aims to guide participants in effective ways to store, manipulate and analyze camera trap data within the R statistical environment.
 
-## What this guide is 
+The idea for this course was born out of the realization that many of the analytical frameworks we apply to camera trap data do not have specific examples involving cameras, which can make learning new methods intimidating. To adress this we wanted a resource which takes a single data set from raw data to analysis, showing all of the steps in between! Hopefully this course will give you the tools to manage, analyze and share camera trap data in an approachable and practical way!
+
+## Ethos
+
+This course is built on the foundation of "standardised data" - data formatted to meet an international standard. The benefits of standardising your data are explained in detail in the [data standardisation chapter](#standard), however the main one is if you format your data to be in a similar format, it should be very easy to apply the methods described here to your owndata!  
+
+## What this course is 
 
 - An R code reference manual for basic concepts in the exploration and analysis of camera data
 - A tool to provide hands on experience of standardized camera trap data in R 
 - A link to resources and papers which showcase the types of analyses you can perform
-- A growing document which will be updated and curated by the Wildlife Coexistence Lab at UBC
+- A stepping stone to more complex analyses
 
-## What this guide is not
+## What this course is not
 
-- A step-by-step guide to the "best" way to explore or analyse your data (although we hopefully provide a good foundation)
-- A statistics guide. The analyses presented within this guide are purposefully overly simplified in order to act as an introduction to each topic without being overwhelming. We link to more comprehensive resources where ever possible. 
+- The "best" way to explore or analyse your data (although we hopefully provide a good foundation)
+- A statistics course - the analyses presented within this guide are purposefully overly simplified in order to act as an introduction to each topic without being overwhelming
 
-## How to use this guide
+## How to use this book
 
-- Browse the pages from the Table of Contents, or use the search box if you are after something specific
+You will either be using this book as a companion to the "An Introduction to Camera Trap Data Management and Analysis in R" course or be working through the examples alone. Regardless, you can use this book in the following ways:
+
+- If this is your first time analysing camera data - or you are an R course participant - work through the book chapter by chapter
+- If you are looking to apply a specific method, browse the sections from the Table of Contents, or use the search box if you are after something specific
 - If you don't want to use GitHub, you can [download the data](https://www.dropbox.com/sh/fpnsinyn1ml9x28/AAB-Y-glHHRDsiCdmQnVLx7Wa?dl=0) and 'follow-along' cutting and pasting the code
 - Explore addition “Further reading” sections at the end of each section for more information or applied examples of the methods discussed
 
+## Prerequisites
+
+
 ## Get in touch
 
-If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/WildCo_Data_Analysis). 
+If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R). 
 
 ## Acknowledgements
 
-This guide is produced by the members of the Wildlife Coexistence Lab at UBC. Check out our [lab website](https://wildlife.forestry.ubc.ca/) 
+This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne) with help from the members of the [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/) 

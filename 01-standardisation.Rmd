@@ -1,4 +1,4 @@
-# Metadata standardisation
+# Metadata standardisation {#standard}
 
 The images produced by camera traps alone are useless. We need to keep accurate records of how the data were collected, labelled, and manipulated if we are to achieve the goal of synthesizing data from multiple projects. Thus, metadata is simply “data that provides information about other data”. 
 
@@ -12,6 +12,7 @@ if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
 
 ```
+
 ## The WildCo Lab data standard
 
 We base our metadata on the [Wildlife Insights Minimum Metadata standards](https://www.wildlifeinsights.org/standards).

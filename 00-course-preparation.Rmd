@@ -1,0 +1,12 @@
+# Preparing for the course
+
+In order reproduce the data management and analysis examples detailed in this book, you will need to take the following steps. 
+
+## Download R Studio
+
+## Create an R project
+
+## Download the data files
+
+## Install the required packages
+
