@@ -13,11 +13,11 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-## The WildCo Lab data standard
+## The Wildlife Insights Minimum Metadata Standards
 
-We base our metadata on the [Wildlife Insights Minimum Metadata standards](https://www.wildlifeinsights.org/standards).
+The convention we use in this course is the based on the [minimum data standards used by Wildlife Insights](https://www.wildlifeinsights.org/standards).
 
-For a dataset to be analysable it must, at an absolute minimum contain the following four elements:
+This dataset standard is composed of four different elements:
 
 - `Project_data.csv` a dataframe containing key information about the project itself, e.g. how the cameras were deployed and what the target features were.
 - `Detection_data.csv` a dataframe containing all of the information contained within each image. This information is typically added by humans, but increasing we are using artificial intelligence to speed up this process. 
