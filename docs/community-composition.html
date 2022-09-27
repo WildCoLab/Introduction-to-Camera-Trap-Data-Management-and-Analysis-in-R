@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 5 Community composition | An Introduction to Camera Trap Data Management and Analysis in R</title>
+  <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 5 Community composition | An Introduction to Camera Trap Data Management and Analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Materials for the three day camera trap data management and analysis course" />
+  <meta name="github-repo" content="WildCoLab/WildCo_Data_Analysis" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 5 Community composition | An Introduction to Camera Trap Data Management and Analysis in R" />
+  
+  <meta name="twitter:description" content="Materials for the three day camera trap data management and analysis course" />
+  
+
+<meta name="author" content="Christopher Beirne and the Wildlife Coexistence Lab, UBC" />
+
+
+<meta name="date" content="2022-09-26" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="common-analysis-data-formats.html"/>
+<link rel="next" href="habitat-use.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">WildCo Data Analysis Intro</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#what-this-guide-is"><i class="fa fa-check"></i><b>1.1</b> What this guide is</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-this-guide-is-not"><i class="fa fa-check"></i><b>1.2</b> What this guide is not</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#how-to-use-this-guide"><i class="fa fa-check"></i><b>1.3</b> How to use this guide</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.4</b> Get in touch</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.5</b> Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html"><i class="fa fa-check"></i><b>2</b> Metadata standardisation</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#the-wildco-lab-data-standard"><i class="fa fa-check"></i><b>2.1</b> The WildCo Lab data standard</a>
+<ul>
+<li class="chapter" data-level="2.1.1" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#project-data"><i class="fa fa-check"></i><b>2.1.1</b> Project data</a></li>
+<li class="chapter" data-level="2.1.2" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#detection-data"><i class="fa fa-check"></i><b>2.1.2</b> Detection data</a></li>
+<li class="chapter" data-level="2.1.3" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#deployment-data"><i class="fa fa-check"></i><b>2.1.3</b> Deployment data</a></li>
+<li class="chapter" data-level="2.1.4" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#station-covariates"><i class="fa fa-check"></i><b>2.1.4</b> Station covariates</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="data-exploration.html"><a href="data-exploration.html"><i class="fa fa-check"></i><b>3</b> Data Exploration</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="data-exploration.html"><a href="data-exploration.html#standardised-exploration-script"><i class="fa fa-check"></i><b>3.1</b> Standardised exploration script</a>
+<ul>
+<li class="chapter" data-level="3.1.1" data-path="data-exploration.html"><a href="data-exploration.html#camera-locations"><i class="fa fa-check"></i><b>3.1.1</b> Camera locations</a></li>
+<li class="chapter" data-level="3.1.2" data-path="data-exploration.html"><a href="data-exploration.html#camera-activity"><i class="fa fa-check"></i><b>3.1.2</b> Camera activity</a></li>
+<li class="chapter" data-level="3.1.3" data-path="data-exploration.html"><a href="data-exploration.html#detection-check"><i class="fa fa-check"></i><b>3.1.3</b> Detection check</a></li>
+<li class="chapter" data-level="3.1.4" data-path="data-exploration.html"><a href="data-exploration.html#species-metadata"><i class="fa fa-check"></i><b>3.1.4</b> Species metadata</a></li>
+<li class="chapter" data-level="3.1.5" data-path="data-exploration.html"><a href="data-exploration.html#independent-camera-detections"><i class="fa fa-check"></i><b>3.1.5</b> Independent camera detections</a></li>
+<li class="chapter" data-level="3.1.6" data-path="data-exploration.html"><a href="data-exploration.html#detection-rates"><i class="fa fa-check"></i><b>3.1.6</b> Detection rates</a></li>
+<li class="chapter" data-level="3.1.7" data-path="data-exploration.html"><a href="data-exploration.html#data-exporting-for-analysis"><i class="fa fa-check"></i><b>3.1.7</b> Data exporting for analysis</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html"><i class="fa fa-check"></i><b>4</b> Common analysis data formats</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html#independent-detections"><i class="fa fa-check"></i><b>4.1</b> Independent detections</a></li>
+<li class="chapter" data-level="4.2" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html#effort-look-up"><i class="fa fa-check"></i><b>4.2</b> Effort look-up</a></li>
+<li class="chapter" data-level="4.3" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html#countsdetections-by-time-interval"><i class="fa fa-check"></i><b>4.3</b> Counts/detections by time interval</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="community-composition.html"><a href="community-composition.html"><i class="fa fa-check"></i><b>5</b> Community composition</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="community-composition.html"><a href="community-composition.html#observed-richness"><i class="fa fa-check"></i><b>5.1</b> Observed richness</a></li>
+<li class="chapter" data-level="5.2" data-path="community-composition.html"><a href="community-composition.html#estimated-richness"><i class="fa fa-check"></i><b>5.2</b> Estimated richness</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="community-composition.html"><a href="community-composition.html#inext-package"><i class="fa fa-check"></i><b>5.2.1</b> iNext package</a></li>
+<li class="chapter" data-level="5.2.2" data-path="community-composition.html"><a href="community-composition.html#multispecies-occupancy-model"><i class="fa fa-check"></i><b>5.2.2</b> Multispecies occupancy model</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="community-composition.html"><a href="community-composition.html#diversity"><i class="fa fa-check"></i><b>5.3</b> Diversity</a></li>
+<li class="chapter" data-level="5.4" data-path="community-composition.html"><a href="community-composition.html#discussion"><i class="fa fa-check"></i><b>5.4</b> Discussion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="habitat-use.html"><a href="habitat-use.html"><i class="fa fa-check"></i><b>6</b> Habitat use</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="habitat-use.html"><a href="habitat-use.html#single-species-habitat-use-model"><i class="fa fa-check"></i><b>6.1</b> Single species habitat use model</a>
+<ul>
+<li class="chapter" data-level="6.1.1" data-path="habitat-use.html"><a href="habitat-use.html#future-additions"><i class="fa fa-check"></i><b>6.1.1</b> Future additions</a></li>
+<li class="chapter" data-level="6.1.2" data-path="habitat-use.html"><a href="habitat-use.html#further-reading"><i class="fa fa-check"></i><b>6.1.2</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="6.2" data-path="habitat-use.html"><a href="habitat-use.html#example-multispecies-model"><i class="fa fa-check"></i><b>6.2</b> Example multispecies model</a></li>
+<li class="chapter" data-level="6.3" data-path="habitat-use.html"><a href="habitat-use.html#further-reading-1"><i class="fa fa-check"></i><b>6.3</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="occupancy.html"><a href="occupancy.html"><i class="fa fa-check"></i><b>7</b> Occupancy</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="occupancy.html"><a href="occupancy.html#single-species-occupancy-model"><i class="fa fa-check"></i><b>7.1</b> Single species occupancy model</a>
+<ul>
+<li class="chapter" data-level="7.1.1" data-path="occupancy.html"><a href="occupancy.html#unmarked-package"><i class="fa fa-check"></i><b>7.1.1</b> unmarked package</a></li>
+</ul></li>
+<li class="chapter" data-level="7.2" data-path="occupancy.html"><a href="occupancy.html#multispecies-occupancy-model-1"><i class="fa fa-check"></i><b>7.2</b> Multispecies occupancy model</a></li>
+<li class="chapter" data-level="7.3" data-path="occupancy.html"><a href="occupancy.html#further-reading-2"><i class="fa fa-check"></i><b>7.3</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="density.html"><a href="density.html"><i class="fa fa-check"></i><b>8</b> Density</a></li>
+<li class="chapter" data-level="9" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>9</b> Activity</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="activity.html"><a href="activity.html#example"><i class="fa fa-check"></i><b>9.1</b> Example</a></li>
+<li class="chapter" data-level="9.2" data-path="activity.html"><a href="activity.html#further-reading-3"><i class="fa fa-check"></i><b>9.2</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="phenology.html"><a href="phenology.html"><i class="fa fa-check"></i><b>10</b> Phenology</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="phenology.html"><a href="phenology.html#worked-example"><i class="fa fa-check"></i><b>10.1</b> Worked example</a></li>
+<li class="chapter" data-level="10.2" data-path="phenology.html"><a href="phenology.html#further-reading-4"><i class="fa fa-check"></i><b>10.2</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="behavior.html"><a href="behavior.html"><i class="fa fa-check"></i><b>11</b> Behavior</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="behavior.html"><a href="behavior.html#further-reading-5"><i class="fa fa-check"></i><b>11.1</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>12</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="interactions.html"><a href="interactions.html#worked-example-1"><i class="fa fa-check"></i><b>12.1</b> Worked example</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="phenology-1.html"><a href="phenology-1.html"><i class="fa fa-check"></i><b>13</b> Phenology</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="phenology-1.html"><a href="phenology-1.html#worked-example-2"><i class="fa fa-check"></i><b>13.1</b> Worked example</a></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Camera Trap Data Management and Analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="community-composition" class="section level1 hasAnchor" number="5">
+<h1><span class="header-section-number">Chapter 5</span> Community composition<a href="community-composition.html#community-composition" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>One of the most fundamental questions researchers and practitioners want to answer with camera traps is <em>how many species are there?</em></p>
+<p>To illustrate this, we will continue to use our case study from Northern Alberta:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="community-composition.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the example dataset</span></span>
+<span id="cb2-2"><a href="community-composition.html#cb2-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/Example_detection_data.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb2-3"><a href="community-composition.html#cb2-3" aria-hidden="true" tabindex="-1"></a>eff <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/Example_deployment_data.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb2-4"><a href="community-composition.html#cb2-4" aria-hidden="true" tabindex="-1"></a>sta <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/Example_station_data.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div id="observed-richness" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> Observed richness<a href="community-composition.html#observed-richness" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+The simplest way to quantify species richness is counting the number of species you detect on your camera traps - ‘observed richness’. In the case of the example data set, this represents 12 species.
+<table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<thead>
+<tr>
+<th style="text-align:left;">
+Species_observed
+</th>
+<th style="text-align:right;">
+Species_count
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Odocoileus virginianus
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Alces alces
+</td>
+<td style="text-align:right;">
+2
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Rangifer tarandus
+</td>
+<td style="text-align:right;">
+3
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lepus americanus
+</td>
+<td style="text-align:right;">
+4
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Canis lupus
+</td>
+<td style="text-align:right;">
+5
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Cervus canadensis
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Canis latrans
+</td>
+<td style="text-align:right;">
+7
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Lynx canadensis
+</td>
+<td style="text-align:right;">
+8
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Ursus americanus
+</td>
+<td style="text-align:right;">
+9
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Grus canadensis
+</td>
+<td style="text-align:right;">
+10
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Martes americana
+</td>
+<td style="text-align:right;">
+11
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Tamiasciurus hudsonicus
+</td>
+<td style="text-align:right;">
+12
+</td>
+</tr>
+</tbody>
+</table>
+<p>Although you it is possible to compare observed richness across different strata, survey effort must be identical between your comparison strata. This often is not the case in camera trap studies where cameras break, run out of battery or are deployed for different lengths of time. The number of species you detect is a function of the amount of effort you spent surveying or the number of individuals detected - the longer a camera is active/the more individuals detected the more species it will detect. Observed richness typically underestimates true richness. Consequently, We need a way of comparing species richness which accounts in some way for survey effort.</p>
+</div>
+<div id="estimated-richness" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> Estimated richness<a href="community-composition.html#estimated-richness" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There are two widely accepted ways to account for survey effect and imperfect detection where estimating species richness using camera traps:</p>
+<ol style="list-style-type: lower-roman">
+<li>using the incidence of rare species to correct observed richness (non-parametric estimators)</li>
+<li>using multispecies occupancy models to account for the species present but not observed</li>
+</ol>
+<div id="inext-package" class="section level3 hasAnchor" number="5.2.1">
+<h3><span class="header-section-number">5.2.1</span> iNext package<a href="community-composition.html#inext-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>The <a href="https://cran.r-project.org/web/packages/iNEXT/">iNext package</a> (INterpolation and EXTrapolation of species richness) - is an easy to use and comes with a wealth of plotting functions - see the <a href="https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.html">iNext Quick Introduction</a> for a great walk through tutorial. Its core functionality is based on:</p>
+<p><em>Chao et. al. (2014) Rarefaction and extrapolation with Hill numbers: a framework for sampling and estimation in species diversity studies. Ecological Monographs</em></p>
+<p>To run this example code you will need <code>iNEXT</code> , <code>ggplot2</code>, and <code>gridExtra</code> packages.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="community-composition.html#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(iNEXT); <span class="fu">library</span>(ggplot2); <span class="fu">library</span>(gridExtra)</span></code></pre></div>
+<p><strong>Single strata</strong></p>
+<p>You may want to see if your camera project has sufficient survey effort to capture the species within the focal area. To do this we can produce species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add individuals or survey units. If the curve plataues, flattens, then that suggests you have sampled the majority of the species in your survey area.</p>
+<p><em>Data formatting</em></p>
+<p>Applying the iNEXT functions to camera trap data is perhaps simplest using ‘abundance’ function - this requires a string of abundance frequencies contained within a list. We can create this format from the <code>Independent_total_observations.csv</code> output of the “SingleSiteExploration” script (see the <a href="data-exploration.html#data-exploration">Standardisation chapter</a>).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="community-composition.html#cb4-1" aria-hidden="true" tabindex="-1"></a>totObs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/Algar_30min_Independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb4-2"><a href="community-composition.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an empty list to store our data</span></span>
+<span id="cb4-3"><a href="community-composition.html#cb4-3" aria-hidden="true" tabindex="-1"></a>site <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb4-4"><a href="community-composition.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum all of the observations of each species (colSums), and then make it an element in the list</span></span>
+<span id="cb4-5"><a href="community-composition.html#cb4-5" aria-hidden="true" tabindex="-1"></a>site[[<span class="dv">1</span>]]<span class="ot">&lt;-</span> <span class="fu">colSums</span>(totObs[<span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(totObs)])</span>
+<span id="cb4-6"><a href="community-composition.html#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Give it the project ID name</span></span>
+<span id="cb4-7"><a href="community-composition.html#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(site) <span class="ot">&lt;-</span> dat<span class="sc">$</span>Project.ID[<span class="dv">1</span>]</span></code></pre></div>
+<p>This will produce a list object which looks like this:</p>
+<pre><code>## $Algar
+##             Alces.alces           Canis.latrans             Canis.lupus 
+##                      62                       3                      22 
+##       Cervus.canadensis         Grus.canadensis        Lepus.americanus 
+##                       1                     134                      10 
+##         Lynx.canadensis        Martes.americana  Odocoileus.virginianus 
+##                      16                      10                     182 
+##       Rangifer.tarandus Tamiasciurus.hudsonicus        Ursus.americanus 
+##                      53                       3                      43</code></pre>
+<p><strong>Analysis</strong></p>
+<p>Once you have created your list, it is simple to run a basic iNEXT analysis, and create a graphs of the result:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="community-composition.html#cb6-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(site, <span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="community-composition.html#cb7-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span></code></pre></div>
+<pre><code>## Warning in ggiNEXT.iNEXT(out, type = 1): invalid color.var setting, the iNEXT
+## object do not consist multiple assemblages, change setting as Order.q</code></pre>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="community-composition.html#cb9-1" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span></code></pre></div>
+<pre><code>## Warning in ggiNEXT.iNEXT(out, type = 2): invalid color.var setting, the iNEXT
+## object do not consist multiple assemblages, change setting as Order.q</code></pre>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="community-composition.html#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-27-1.png" width="672" /></p>
+<p><strong>Multiple strata</strong></p>
+<p>The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories. To make this split, we refer to the <code>sta</code> dataframe, which contains the treatment types for each camera station. We match the Deployment.Location.ID’s in our dataframe with those in each treatment category using the <code>%in%</code> command.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="community-composition.html#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The treatment types for each Deployment.Location.ID are in the sta file</span></span>
+<span id="cb12-2"><a href="community-composition.html#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an object containing all of the site ID&#39;s for the &quot;Offline&quot; cameras</span></span>
+<span id="cb12-3"><a href="community-composition.html#cb12-3" aria-hidden="true" tabindex="-1"></a>off <span class="ot">&lt;-</span> sta<span class="sc">$</span>Deployment.Location.ID[sta<span class="sc">$</span>Treatment<span class="sc">==</span><span class="st">&quot;Offline&quot;</span>]</span>
+<span id="cb12-4"><a href="community-composition.html#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># And &quot;HumanUse&quot; cameras</span></span>
+<span id="cb12-5"><a href="community-composition.html#cb12-5" aria-hidden="true" tabindex="-1"></a>hum <span class="ot">&lt;-</span> sta<span class="sc">$</span>Deployment.Location.ID[sta<span class="sc">$</span>Treatment<span class="sc">==</span><span class="st">&quot;HumanUse&quot;</span>]</span>
+<span id="cb12-6"><a href="community-composition.html#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="community-composition.html#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
+<span id="cb12-8"><a href="community-composition.html#cb12-8" aria-hidden="true" tabindex="-1"></a>strata <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb12-9"><a href="community-composition.html#cb12-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-10"><a href="community-composition.html#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relvent strata</span></span>
+<span id="cb12-11"><a href="community-composition.html#cb12-11" aria-hidden="true" tabindex="-1"></a>strata[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">colSums</span>(totObs[totObs<span class="sc">$</span>Deployment.Location.ID <span class="sc">%in%</span> off, <span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(totObs)])</span>
+<span id="cb12-12"><a href="community-composition.html#cb12-12" aria-hidden="true" tabindex="-1"></a>strata[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">colSums</span>(totObs[totObs<span class="sc">$</span>Deployment.Location.ID <span class="sc">%in%</span> hum, <span class="dv">3</span><span class="sc">:</span><span class="fu">ncol</span>(totObs)])</span>
+<span id="cb12-13"><a href="community-composition.html#cb12-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-14"><a href="community-composition.html#cb12-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
+<span id="cb12-15"><a href="community-composition.html#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(strata) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
+<p>Then, as before, run your iNEXT model and examine the output:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="community-composition.html#cb13-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(strata, <span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>)</span>
+<span id="cb13-2"><a href="community-composition.html#cb13-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span>
+<span id="cb13-3"><a href="community-composition.html#cb13-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span>
+<span id="cb13-4"><a href="community-composition.html#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<p>From the plot on the left you can see that the ‘HumanUse’ strata detected more species than the ‘Offline’ strata. The plot on the right suggests that we have likely sampled all of the species that will be detected within these habitats (samples are ‘complete’).</p>
+<p><strong>Notes</strong>
+These two examples just scratch the surface of the functionality of the iNEXT package, and the ways of using it with camera data.</p>
+<p><strong>Examples</strong></p>
+<p>Some examples of using iNEXT with camera trap data:</p>
+<p><a href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0126373">Cusack et.al 2015</a> Random versus Game Trail-Based Camera Trap Placement Strategy for Monitoring Terrestrial Mammal Communities</p>
+</div>
+<div id="multispecies-occupancy-model" class="section level3 hasAnchor" number="5.2.2">
+<h3><span class="header-section-number">5.2.2</span> Multispecies occupancy model<a href="community-composition.html#multispecies-occupancy-model" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>It is also possible to estimate species richness in a given area/strata using multispecies occupancy models.</p>
+<p>For an example with code in the appendices see:</p>
+<p><a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12399">Tobler, M. et al. Spatiotemporal hierarchical modelling of species richness and occupancy using camera trap data. J. Appl. Ecol. (2015).</a></p>
+<p>A worked example will be coming soon.</p>
+</div>
+</div>
+<div id="diversity" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Diversity<a href="community-composition.html#diversity" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>One issue with species richness assessments is that they weight all species equally, thus a community with 12 species all present in equal abundances will give you the same richness value as a high skewed community with one highly abundant species, and 11 very rare ones. Consequently, you might want to estimate species diversity.</p>
+<p>Luckily, the iNEXT package is well suited for comparisons of diversity indices through the use of hill numbers - of which the ‘q’ value represents the traditional Shannon (q=1) and Simpson (q=2) diversity indices (species richness: q = 0). <em>Note</em> Increasing values of q reduces the influence of rare species on your estimate of community diversity.</p>
+<p>For example, we might want to compare the species diversity across our two focal strata:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="community-composition.html#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We also introduce the object t -&gt; which reflects the range of values over which you want to predict species richness</span></span>
+<span id="cb14-2"><a href="community-composition.html#cb14-2" aria-hidden="true" tabindex="-1"></a>t <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="fu">seq</span>(<span class="dv">2</span>, <span class="dv">300</span>, <span class="at">by=</span><span class="dv">2</span>))</span>
+<span id="cb14-3"><a href="community-composition.html#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># For q =2 (shannon)</span></span>
+<span id="cb14-4"><a href="community-composition.html#cb14-4" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(strata, <span class="at">q=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>) ,<span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>, <span class="at">size=</span>t)</span>
+<span id="cb14-5"><a href="community-composition.html#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>, <span class="at">facet.var=</span><span class="st">&quot;Order.q&quot;</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() </span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the different inst just driven by several rarely encountered species).</p>
+<p>Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 250 individuals:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="community-composition.html#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The lapply function applies the same logic across elements in a list</span></span>
+<span id="cb15-2"><a href="community-composition.html#cb15-2" aria-hidden="true" tabindex="-1"></a>point<span class="fl">.250</span> <span class="ot">&lt;-</span> <span class="fu">lapply</span>(out<span class="sc">$</span>iNextEst, <span class="cf">function</span>(x) { x[ x<span class="sc">$</span>m <span class="sc">==</span> <span class="dv">250</span>, ] })</span>
+<span id="cb15-3"><a href="community-composition.html#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="community-composition.html#cb15-4" aria-hidden="true" tabindex="-1"></a>point<span class="fl">.250</span> <span class="ot">&lt;-</span> point<span class="fl">.250</span><span class="sc">$</span>size_based</span>
+<span id="cb15-5"><a href="community-composition.html#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="community-composition.html#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a nice ggplot!</span></span>
+<span id="cb15-7"><a href="community-composition.html#cb15-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(point<span class="fl">.250</span>, <span class="fu">aes</span>(<span class="at">x=</span>Order.q, <span class="at">y=</span>qD, <span class="at">colour=</span>Assemblage)) <span class="sc">+</span> </span>
+<span id="cb15-8"><a href="community-composition.html#cb15-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb15-9"><a href="community-composition.html#cb15-9" aria-hidden="true" tabindex="-1"></a>       <span class="co">#scale_x_discrete(breaks=c(&quot;1&quot;,&quot;2&quot;),labels= c(&quot;1&quot;,&quot;2&quot;)) +</span></span>
+<span id="cb15-10"><a href="community-composition.html#cb15-10" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>qD.LCL, <span class="at">ymax=</span>qD.UCL), <span class="at">width=</span>.<span class="dv">01</span>) <span class="sc">+</span></span>
+<span id="cb15-11"><a href="community-composition.html#cb15-11" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Diversity&quot;</span>, <span class="at">x =</span> <span class="st">&quot;q Value&quot;</span>) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="community-composition.html#cb15-12" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_point</span>() </span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="discussion" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Discussion<a href="community-composition.html#discussion" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>dicussion of further work and limitations coming soon!</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="common-analysis-data-formats.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="habitat-use.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-community_metrics.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
