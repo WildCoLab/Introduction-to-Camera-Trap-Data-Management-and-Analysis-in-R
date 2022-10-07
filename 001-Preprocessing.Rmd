@@ -1,11 +1,56 @@
 # Preprocessing and labelling
 
-## Renaming
+Once you have deployed your camera traps and brought your SD cards. We have several steps we need to perform before we can start analyzing the data:
 
-## Automated Labelers
+- backup the data
+- preprocess the files
+- label the footage
+- update deployment end dates
 
-## Sensitive images
+We summarise each step below and point to useful tools where necessary.
+
+## Data storage
+
+The file structure of your data backups depends on the structure of your project. We use one of two different options, which each have their merits:
+
+1) Location based
+
+This is likely the most intuitive method if you are manually sorting data or using a image labeller which uses the location as the key organizing element. You would make a folder using the 'placename' (unique location where a camera is deployed), then copy all of the data relating to that site within it (left). Note, if you had multiple camera deployments you would have nested folders with the 'deployment_id' as the name: 
+
+```{r, echo=F, message=F, warning=F}
+knitr::include_graphics("images/preprocessing/folder_structure.PNG")
+```
+
+2) Deployment based
+
+The online-based labelling platforms are typically 'deployment' driven, rather than location based (e.g. Wildlife Insights). In this instance it is necesecary to lump all of the deployments within a single location, as each deployment should stand alone.
+
+In this scenario we have a folder called 'to upload' with all of the images asscociated with a given deployment as nested folders. Once the folder is upload to the platform, then the folder is moved to an "uploaded" folder:
+
+**TO DO**
+
+Crucially - make redundant copies to ensure you do not lose data. We make both local and cloud-based copies of our data sets.  
+
+## Preprocessing
+
+The follow steps represent optional next steps to apply to your data. Whether you need them depends on your questions, the platform you are using to label your data, and even the volume of images you will process. 
+
+### Renaming
+
+When a camera takes images, it applies sequential names which are duplicated across cameras (e.g. RCNX0001, RCNX0002 etc). In the future, if files are accidentally moved it would be difficult (if not impossible) to trace them back their origin. One way to get around this is to rename every camera image with a unique code (e.g. placename_datetime) which will ensure that line of data you generate can be traced back to an image, regardless of how it is stored. 
+
+We have created a tool which can be applied to folders of images organised by location and deployment, to create unique codes for each image.
+
+https://github.com/WildCoLab/WildCo_Image_Renamer
+
+### Automated Labelers
+
+Once you have 
+
+#### Sensitive images
+
+### Timelapse extraction
 
 ## Labelling
 
-## Shift timestamps -> very common issue
+## Update deployment end dates

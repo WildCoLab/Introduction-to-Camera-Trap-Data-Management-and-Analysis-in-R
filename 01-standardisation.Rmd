@@ -2,7 +2,7 @@
 
 The images produced by camera traps alone are useless. We need to keep accurate records of how the data were collected, labelled, and manipulated if we are to achieve the goal of synthesizing data from multiple projects. Thus, metadata is simply “data that provides information about other data”. 
 
-The benefits of 'standardizing' the metadata associated with camera traps, or other sensors of biodiversity, are hopefully clear - it should facilitates the rapid and robust exploration, analysis and sharing of information on wildlife populations. Ultimately resulting in more robust, repeatable, and timely research and management decisions.
+The benefits of 'standardizing' the metadata associated with camera traps, or other sensors of biodiversity, are hopefully clear - it should facilitate the rapid and robust exploration, analysis and sharing of information on wildlife populations. Ultimately resulting in more robust, repeatable, and timely research and management decisions.
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
@@ -15,24 +15,24 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ## The Wildlife Insights Minimum Metadata Standards
 
-The convention we use in this course is the based on the [minimum data standards used by Wildlife Insights](https://www.wildlifeinsights.org/standards).
+The convention we use in this course is the based on the [data standards used by Wildlife Insights](https://docs.google.com/spreadsheets/d/1Jg-WybmVeGlWGrbPpwuwJCgranOV1r3M_LrzELttfK0/edit#gid=412365965).
 
-This dataset standard is composed of four different elements:
+Their standard format is composed of four different elements:
 
-- `Project_data.csv` a dataframe containing key information about the project itself, e.g. how the cameras were deployed and what the target features were.
-- `Detection_data.csv` a dataframe containing all of the information contained within each image. This information is typically added by humans, but increasing we are using artificial intelligence to speed up this process. 
-- `Deployment_data.csv` a dataframe listing the activity of the camera traps involved in your study, and any issues encountered during deployments which may influence their analysis
-- `Station_covariates.csv` a dataframe of time-invariant descriptions of each camera location (e.g. GPS coordinates, GIS information, treatment strata)
+- *Project data* `proj.csv` a dataframe containing key information about the project itself, e.g. how the cameras were deployed and what the target features were.
+- *Image data* `img.csv` a dataframe containing all of the information contained within each image. This information is typically added by humans, but increasing we are using artificial intelligence to speed up this process. 
+- *Deployment data* `dep.csv` a dataframe listing the activity of the camera traps involved in your study, and any issues encountered during deployments which may influence their analysis
+- *Camera data* `cam.csv` a dataframe all the cameras deployed in the project
 
-We provide examples of each of these dataframe below from a subset of 20 cameras the Algar Wildlife Monitoring Project.
+We will use these data throughout the course, below we give a quick summary and explanation of each. 
 
-First we read in the data files:
+First, read in the data files:
 
-```{r}
-pro <- read.csv("data/raw_data/Example_project_data.csv", header=T)
-dat <- read.csv("data/raw_data/Example_detection_data.csv", header=T)
-eff <- read.csv("data/raw_data/Example_deployment_data.csv", header=T)
-sta <- read.csv("data/raw_data/Example_station_data.csv", header=T)
+```{r, message+f, warning=F}
+pro <- read.csv("data/raw_data/example_data/proj.csv", header=T)
+img <- read.csv("data/raw_data/example_data/img.csv", header=T)
+dep <- read.csv("data/raw_data/example_data/dep.csv", header=T)
+cam <- read.csv("data/raw_data/example_data/cam.csv", header=T)
 ```
 
 ### Project data
@@ -50,7 +50,7 @@ The image labels (what is in each picture and its properties. Each image is link
 (at least) one row in the detection data. 
 
 ```{r, echo=F}
-kbl(dat)%>%
+kbl(head(img))%>%
   kable_paper() %>%
   scroll_box(width = "750px", height = "200px")
 ```
@@ -60,17 +60,17 @@ kbl(dat)%>%
 Time varying information. This is the camera effort, how long each stations was active for. There can be one to multiple rows for each Deployment.Location.ID.
 
 ```{r, echo=F}
-kbl(eff)%>%
+kbl(head(dep))%>%
   kable_paper() %>%
   scroll_box(width = "750px", height = "200px")
 
 ```
 
-### Station covariates
+### Camera inventory
 Time invariant information. Each Deployment.Location.ID is linked to one row in this dataframe.
 
 ```{r, echo=F}
-kbl(sta)%>%
+kbl(cam)%>%
   kable_paper() %>%
   scroll_box(width = "750px", height = "200px")
 

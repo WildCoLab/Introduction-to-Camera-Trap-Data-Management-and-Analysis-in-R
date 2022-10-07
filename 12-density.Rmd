@@ -3,13 +3,17 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Density
+# Density {#density}
 
 BASE THE LECTURE ON THIS
 
 https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517 
 
+BASE THE WORK ON THIS:
 
+https://twitter.com/koustubh_sharma/status/1576828316765413376 WOW 
+
+https://www.scr-cameratrap.com/ 
 
 
 There is an explosion in the number of frameworks looking to hit what is considered the gold stardard in many ecological surveys - population density information. 

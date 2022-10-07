@@ -10,7 +10,7 @@ In order reproduce the data management and analysis examples detailed in this bo
 
 We have two data sets!
 
-- Example dataset -> ALGAR [Different treatments]
+### The 'Example' dataset 
 
 This data was analysed in:
 
@@ -26,12 +26,15 @@ Sun, C., Burgar, J. M., Fisher, J. T., & Burton, A. C. (2022). A cautionary tale
 
 
 
-- Practise dataset -> 3 months from a grid in Peru [On trail and off trail]
+### "Your" dataset 
 
-Unpublished data!
+You can either use the dataset I have provided or you can substitute these files for your own data. 
 
+If you used the files I have provided, this is the subset of an unpublished (and as yet un analysed) dataset. I will leave it to you to find out more about it during the course!
 
-Both are real
+If you want to use your own data they *MUST* be in 'Wildlife Insights' format - see the descriptions [here](https://docs.google.com/spreadsheets/d/1Jg-WybmVeGlWGrbPpwuwJCgranOV1r3M_LrzELttfK0/edit?usp=sharing) and for a existing example/template see [here](https://drive.google.com/drive/folders/1MeCeoXepyee7mADlxQZ2k0bjVBOTP5m7?usp=sharing). *NOTE* delete the description row if you are using your own data.  
+
+The green/bolded columns shown in the template example are the **absolute minimal essential columns** - you can have more columns with other information! 
 
 
 ## Install the required packages

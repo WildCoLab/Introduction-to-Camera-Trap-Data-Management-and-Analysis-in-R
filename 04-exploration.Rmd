@@ -1,0 +1,343 @@
+```{r, echo=F, results='hide', message =F, warning=F}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr")
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+
+# Analysis data exploration
+In the error checking section we focused our 'data exploration' on figures which would help us find errors, now we want to shift gears and create plots which actually tell us about our final, independent data.
+
+All of the data we will be analysing from this point onwards will come from the `r data/processed_data/` folder!
+
+## Final locations plot
+
+So lets read in the `camera_locations.csv` and plot the final survey locations in leaflet:
+
+```{r}
+locs <- read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv")
+head(locs)
+# If you want to colour by a category do it here:
+category <- "feature_type"
+# First lets choose a category to colour
+locs[,category] <- factor(locs[,category])
+col.cat <- turbo(length(levels(locs[,category])))
+# Add it to the dataframe
+locs$colours <- col.cat[locs[,category]]
+
+
+
+
+m <- leaflet() %>%
+  # Add a satellite image layer
+  addProviderTiles(providers$Esri.WorldImagery, group="Satellite") %>%  
+  addProviderTiles(providers$Esri.WorldTopoMap, group="Base") %>%     
+  addCircleMarkers(lng=locs$longitude, lat=locs$latitude,
+                   # Colour the markers depending on the 'feature type'
+                   color=locs$colours,
+                   # Add a popup of the deployment code 
+                   popup=paste(locs$placename, locs[,category])) %>%
+  # Add a legend explaining what is going on
+  addLegend("bottomleft", colors = col.cat,  labels = levels(locs[,category]),
+    title = category,
+    labFormat = labelFormat(prefix = "$"),
+    opacity = 1
+  ) %>%
+  # add a layer control box to toggle between the layers
+  addLayersControl(
+    baseGroups = c("Satellite", "Base"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+m
+
+```
+
+## Independent detections summary
+
+When you are writing papers based on camera data, you often put a summary table in the appendix. We will use the species list we created to append summary information as we go. This also allows us to create plots with common names very easily!
+
+```{r}
+# Also read in the species list
+sp_summary <- read.csv("data/processed_data/AlgarRestorationProject_species_list.csv", header=T)
+
+# When we read in out dataframe the spaces will be replaces by "." lets also do this to the names object
+library(stringr)
+sp_summary$sp <- str_replace(sp_summary$sp, " ", ".")
+
+```
+
+### Total number of captures
+To summarise the wildlife detections in this project we can make use of the `total_observations.csv` files:
+
+```{r}
+total_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv", header=T)
+
+```
+
+The format of the output tables is what we would call 'wide' we have the values for differnt species as columns. This format is sometimes useful, other times we might want a "longer" format where every observation a unique species_site combination. We can do this using the 'pivot_longer' function:
+
+```{r}
+
+long_obs <- total_obs %>% 
+  pivot_longer(cols=sp_names, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
+
+# We can them summarise those using dplyr
+tmp <- long_obs %>% group_by(sp) %>% summarise(count=sum(count))
+
+sp_summary <- left_join(sp_summary, tmp)
+
+```
+
+
+### Raw occupancy
+We can very quickly flip a count to a presence absence using `as.logical` this converts and intergers to 1 and keeps 0's as 0!  
+
+```{r}
+# we can very 
+total_binary <-  total_obs %>% mutate(across(sp_names, ~+as.logical(.x)))
+
+```
+
+Now when we do the same calculations as before, we can calculate the number of sites occupied:
+
+```{r}
+long_bin <- total_binary %>% 
+  pivot_longer(cols=sp_names, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
+
+# We can them summarise those using dplyr - this time dividing by the number of locations
+tmp <- long_bin %>% group_by(sp) %>% summarise(occupancy=sum(count)/nrow(locs))
+
+# add the results to the sp_summary
+sp_summary <- left_join(sp_summary, tmp)
+
+```
+
+### Comparison plot
+
+```{r}
+# Lets put the dataframes in a sensible order
+sp_summary <- sp_summary[order(sp_summary$count),]
+
+yform <- list(categoryorder = "array",
+              categoryarray = sp_summary$common_name#,
+#             tickfont = list(size = 7),
+)
+xform <- list(title="Captures")
+
+# Capture rate
+fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$common_name, type = 'bar', orientation = 'h')%>% 
+ layout(yaxis = yform, xaxis=xform)
+
+yform <- list(categoryorder = "array",
+              categoryarray = sp_summary$common_name,
+              showticklabels=F)
+xform <- list(title="Occupancy")
+
+
+# Occupancy
+fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$common_name, type = 'bar', orientation = 'h')%>% 
+ layout(yaxis = yform, xaxis=xform)
+
+subplot(fig1, fig2, titleX = T)
+
+```
+
+## Temporal patterns in capture rates
+
+Next lets summarise the temporal patterns in the number of sites (placenames) surveyed, and the total number of animals captured. We will use the monthly dataframes in order to do this, but you could do it at the weekly or daily scale if required!
+
+```{r}
+mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
+)
+```
+
+```{r}
+
+
+mon_summary <- mon_obs %>% group_by(date) %>% summarise(locs_active=n())
+
+mon_summary$captures 
+
+mon_obs %>% group_by(date) %>% summarise(locs_active=n())
+rowSums(mon_obs[, sp_names])
+```
+
+
+
+
+## Spatial patterns in capture rates
+
+
+
+
+## Species co-occurences
+
+
+
+
+## Covariate plots
+
+
+
+
+
+
+
+
+
+
+
+Using an independence threshold of `r independent` minutes, the number of detections is reduced to `r nrow(ind.dat)`. The rest of the analyses are conducted with this data. The summary of detections is as follows:
+
+```{r ind captures, echo=F, fig.height=sp.height, eval=T}
+
+layout(matrix(c(1,1,2), 1, 3, byrow = TRUE))
+det.sum.total <- as.data.frame(count(ind.dat[ind.dat$Blank==FALSE,], Species))
+det.sum.total <- det.sum.total[order(det.sum.total$n),]
+
+par(mar=c(5,16,1,1))
+barplot(det.sum.total$n, names.arg = paste0(det.sum.total$Species,
+                                           " (n =", det.sum.total$n,")"), las=1, cex.names=1, xlab="Total detections", horiz=T)
+i <-1
+for(i in 1:nrow(det.sum.total))
+{
+  tmp <- subset(ind.dat, Species==det.sum.total$Species[i])
+  det.sum.total$Locations[i] <- length(unique(tmp$deployment_id))
+}
+par(mar=c(5,1,1,1))
+
+barplot(det.sum.total$Locations/n.stat, las=1, cex.names=0.7, xlab="Proportion of sites detected", horiz=T, xlim=c(0,1))
+abline(v=1, lty=2)
+
+```
+
+** Group size distribution**
+
+```{r group size, echo=F, eval=T,fig.height=sp.height}
+par(mfrow=c(1,1))
+par(mar=c(5,10,1,1))
+plot(jitter(as.numeric(ind.dat$Species))~jitter(ind.dat$Minimum.Group.Size), xlab="Minimum group size", yaxt="n", las=1, ylab="")
+axis(2, 1:length(unique(ind.dat$Species)), labels=levels(ind.dat$Species), las=2, cex.axis=0.6)
+
+```
+
+
+**Site-level species covariance**
+
+This plot shows the co variance between different species at the site level for species with >5 unique detections. For example, if you typically get lots of caribou and bears at the same site, they will have positive co variance. If you get caribou where you don't get bears, they will have negative co variance.
+
+```{r covariance, echo=F, fig.height=sp.height,fig.width=sp.height, eval=T}
+par(mfrow=c(1,1))
+tmp <- as.data.frame.matrix(table(ind.dat$deployment_id, ind.dat$Species))
+tmp <- tmp[colSums(tmp)>5]
+M <- cor(tmp)
+
+corrplot(M, method="color", #col=matrix(col(200)),
+         type="upper", order="hclust",
+         #addCoef.col = "black", # Add codepicient of correlation
+         tl.col="black", tl.srt=45, #Text label color and rotation
+         # Combine with significance
+         #p.mat = p.mat, sig.level = 0.01, insig = "blank",
+         # hide correlation codepicient on the principal diagonal
+         diag=FALSE
+         )
+
+```
+
+
+### Detection rates
+We calculate the detection rates of species to make site-level temporal trends comparable through time where sampling depect is not constant (a common issue in camera trap data sets).
+
+Note, when calculating relative abundance, we use the minimum group size column. 
+```{r relative abundance calc, echo=F, warning=F, message=F, eval=T}
+
+det.sum.site <- as.data.frame(table(ind.dat$deployment_id, ind.dat$Species))
+colnames(det.sum.site) <- c("deployment_id","Species", "Detections")
+det.sum.site$Individuals <- NA
+
+i <- 1
+for(i in 1:nrow(det.sum.site))
+{
+   tmp <- subset(ind.dat, deployment_id==as.character(det.sum.site$deployment_id)[i] &
+              Species==as.character(det.sum.site$Species)[i])
+   det.sum.site$Individuals[i] <- sum(tmp$Minimum.Group.Size, na.rm=T)
+}
+
+# Join with the station deport
+CR.site <- left_join(det.sum.site,aggregate(days~deployment_id, data=dep,  FUN=sum, na.rm=T) )
+CR.site$CR.100 <- round((CR.site$Individuals/CR.site$days)*100,3)
+# Add station locations
+CR.site <- left_join(CR.site, sta[, c("deployment_id", "latitude", "longitude")])
+
+```
+
+
+** Site-level temporal plots **
+
+Across all sites and species:
+
+```{r, echo=F, eval=T}
+# Capture rates through time
+focal.sp <- as.character(det.sum.total[det.sum.total$n>0,]$Species)
+focal.sp <- focal.sp[order(focal.sp)]
+# Remove any blanks
+focal.sp <- focal.sp[focal.sp!=""]
+
+# Now determine capture rates using the row.lookup
+# Make a data frame by month and year
+mon.dat <- unique(substr(ind.img$timestamp, 1,7))
+mon.dat <- data.frame("Month"=mon.dat[order(mon.dat)], "deport"= NA)
+mon.dat[as.character(focal.sp)] <- NA
+i<-1
+for(i in 1:nrow(mon.dat))
+{
+  mon.dat$deport[i] <- nrow(subset(row.lookup, substr(row.lookup$Date,1,7)==mon.dat$Month[i]))
+  mon.dat$Total.CR[i] <- (nrow(subset(ind.dat, substr(ind.img$timestamp,1,7)==mon.dat$Month[i]))/mon.dat$deport[i])*100
+}
+
+for(i in 1:length(focal.sp))
+{
+  for(j in 1:nrow(mon.dat))
+  {
+    tmp <- subset(ind.dat, Species==as.character(focal.sp)[i] & substr(ind.img$timestamp,1,7)==mon.dat$Month[j])
+    mon.dat[j, as.character(focal.sp[i])] <- (nrow(tmp)/mon.dat$deport[j])*100
+  }
+}
+
+mon.dat$timestamp <- strptime(paste0(as.character(mon.dat$Month),"-15"), "%Y-%m-%d")
+
+# Remove any silly values 
+mon.dat <- mon.dat[is.infinite(mon.dat$Total.CR)==F,]
+
+```
+
+
+```{r overall CR, echo=F, fig.height=4, eval=T}
+
+par(mfrow=c(1,2))
+
+plot(mon.dat$timestamp, mon.dat$deport, ylab="Monthly deport (days)", xlab="Date", type="l", las=1)
+points(mon.dat$timestamp, mon.dat$deport, pch=19, col=rgb(0,0,0,0.4))
+
+# Overall capture rate
+plot(mon.dat$timestamp, mon.dat$Total.CR, ylab="Monthly total CR per 100 days", xlab="Date", type="l", las=1, ylim=c(0, max(mon.dat$Total.CR)))
+points(mon.dat$timestamp, mon.dat$Total.CR, pch=19, col=rgb(0,0,0,0.4))
+
+```
+
+** Species-specific temporal trends**
+
+Species level variation in monthly capture rates are as follows:
+
+```{r, echo=F, eval=T}
+par(mfrow=c(2,3))
+for(i in 1:length(focal.sp))
+{
+  plot(mon.dat$timestamp, mon.dat[,as.character(focal.sp)[i]], ylab="Capture Rate per 100 days", xlab="", type="l", las=1, main=focal.sp[i])
+  points(mon.dat$timestamp, mon.dat[,as.character(focal.sp)[i]], pch=19, col=rgb(0,0,0,0.4))
+}
+
+```

@@ -1,0 +1,24 @@
+# Analysis covariates
+
+## Custom covariates
+
+Left join with existing dataframes
+
+## Species traits
+
+'combine` database
+```{r}
+
+```
+
+
+## Spatial covariates
+
+'rgee'
+
+
+
+
+
+
+
