@@ -76,6 +76,10 @@ kbl(cam)%>%
 
 ```
 
+### Important note
+These are simply the minimum sheets you require - we derive a lot of other useful data frames when moving from raw camera data to analyzable camera data. See the [Creating analysis dataframes section](#data-creation) for futher examples. 
+
+
 **Further Reading**
 
 Forrester, T. et al. An open standard for camera trap data. Biodivers. Data J. 4, (2016).

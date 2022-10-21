@@ -1,6 +1,6 @@
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
-list.of.packages <- c("kableExtra", "tidyr")
+list.of.packages <- c("kableExtra", "tidyr", "leaflet", "dplyr", "viridis", "corrplot", "lubridate", "plotly")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
@@ -8,10 +8,10 @@ lapply(list.of.packages, require, character.only = TRUE)
 ```
 
 
-# Analysis data exploration
+# Analysis data exploration {#exploration}
 In the error checking section we focused our 'data exploration' on figures which would help us find errors, now we want to shift gears and create plots which actually tell us about our final, independent data.
 
-All of the data we will be analysing from this point onwards will come from the `r data/processed_data/` folder!
+All of the data we will be analysing from this point onwards will come from the `data/processed_data/` folder!
 
 ## Final locations plot
 
@@ -27,9 +27,6 @@ locs[,category] <- factor(locs[,category])
 col.cat <- turbo(length(levels(locs[,category])))
 # Add it to the dataframe
 locs$colours <- col.cat[locs[,category]]
-
-
-
 
 m <- leaflet() %>%
   # Add a satellite image layer
@@ -63,10 +60,6 @@ When you are writing papers based on camera data, you often put a summary table 
 # Also read in the species list
 sp_summary <- read.csv("data/processed_data/AlgarRestorationProject_species_list.csv", header=T)
 
-# When we read in out dataframe the spaces will be replaces by "." lets also do this to the names object
-library(stringr)
-sp_summary$sp <- str_replace(sp_summary$sp, " ", ".")
-
 ```
 
 ### Total number of captures
@@ -82,7 +75,7 @@ The format of the output tables is what we would call 'wide' we have the values 
 ```{r}
 
 long_obs <- total_obs %>% 
-  pivot_longer(cols=sp_names, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
+  pivot_longer(cols=sp_summary$sp, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
 
 # We can them summarise those using dplyr
 tmp <- long_obs %>% group_by(sp) %>% summarise(count=sum(count))
@@ -97,7 +90,7 @@ We can very quickly flip a count to a presence absence using `as.logical` this c
 
 ```{r}
 # we can very 
-total_binary <-  total_obs %>% mutate(across(sp_names, ~+as.logical(.x)))
+total_binary <-  total_obs %>% mutate(across(sp_summary$sp, ~+as.logical(.x)))
 
 ```
 
@@ -105,7 +98,7 @@ Now when we do the same calculations as before, we can calculate the number of s
 
 ```{r}
 long_bin <- total_binary %>% 
-  pivot_longer(cols=sp_names, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
+  pivot_longer(cols=sp_summary$sp, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
 
 # We can them summarise those using dplyr - this time dividing by the number of locations
 tmp <- long_bin %>% group_by(sp) %>% summarise(occupancy=sum(count)/nrow(locs))
@@ -116,6 +109,8 @@ sp_summary <- left_join(sp_summary, tmp)
 ```
 
 ### Comparison plot
+
+Then we can use the dataframe created above to summaries the detections and the occupancy patterns.
 
 ```{r}
 # Lets put the dataframes in a sensible order
@@ -128,7 +123,7 @@ yform <- list(categoryorder = "array",
 xform <- list(title="Captures")
 
 # Capture rate
-fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$common_name, type = 'bar', orientation = 'h')%>% 
+fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
  layout(yaxis = yform, xaxis=xform)
 
 yform <- list(categoryorder = "array",
@@ -138,7 +133,7 @@ xform <- list(title="Occupancy")
 
 
 # Occupancy
-fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$common_name, type = 'bar', orientation = 'h')%>% 
+fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
  layout(yaxis = yform, xaxis=xform)
 
 subplot(fig1, fig2, titleX = T)
@@ -151,87 +146,104 @@ Next lets summarise the temporal patterns in the number of sites (placenames) su
 
 ```{r}
 mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
-)
+
 ```
 
 ```{r}
 
+# Count up the number of stations and the number of camera nights
+mon_summary <- mon_obs %>% group_by(date) %>% summarise(locs_active=n(), cam_days=sum(days))
 
-mon_summary <- mon_obs %>% group_by(date) %>% summarise(locs_active=n())
+# Add in the species specific counts
+mon_summary <- mon_obs %>% group_by(date) %>%  
+  summarise(across(sp_summary$sp, sum, na.rm=TRUE)) %>% 
+  left_join(x=mon_summary)
 
-mon_summary$captures 
+```
 
-mon_obs %>% group_by(date) %>% summarise(locs_active=n())
-rowSums(mon_obs[, sp_names])
+Now lets use lubridate to create a date object and plot the output
+
+```{r}
+# Lets make each mon
+mon_summary$date <- ym(mon_summary$date)
+
+par(mfrow=c(1,2))
+
+plot(mon_summary$date, mon_summary$locs_active,
+     type="l", ylim=c(0, max(mon_summary$locs_active)),
+     las=1, ylab="Number of cameras active", xlab="Date",
+     )
+points(mon_summary$date, mon_summary$locs_active, pch=19)
+
+
+mon_summary$all.sp <- rowSums(mon_summary[, sp_summary$sp])
+
+plot(mon_summary$date, mon_summary$all.sp/(mon_summary$cam_days/100),
+     type="l", 
+     las=1, ylab="Detections per 100 cam days", xlab="Date")
+points(mon_summary$date, mon_summary$all.sp/(mon_summary$cam_days/100), pch=19)
+
+
+```
+
+## Species specific capture rates
+```{r}
+par(mfrow=c(2,2))
+i <- 1
+for(i in 1:length(sp_summary$sp))
+{
+  plot(mon_summary$date, pull(mon_summary, sp_summary$sp[i])/(mon_summary$cam_days/100),  # The pull commmand allows you to grab a specific column in a dataframe and turn it into a vector!
+     type="l", 
+     las=1, ylab="Detections per 100 cam days", xlab="Date",
+     main=sp_summary$sp[i])
+points(mon_summary$date, pull(mon_summary, sp_summary$sp[i])/(mon_summary$cam_days/100), pch=19)
+  
+}
+```
+
+Can you see any interesting patterns in here?
+
+## Spatial patterns in capture rates
+We also often want to explore if there are any spatial patterns in capture rates, these can hint at any ecological relationships we might want to explore further. Here we do it for just a single species, the white-tiled deer. 
+
+Here we make use of the 'total_obs' data frame we imported earlier. We also use the 'locs' dataframe.
+
+```{r}
+
+total_obs <- left_join(total_obs, locs)
+
+focal_species <- "Odocoileus.virginianus"
+
+focal_cr <- pull(total_obs, focal_species)/(total_obs$days/100)
+
+m <- leaflet() %>%
+  addProviderTiles(providers$Esri.WorldTopoMap, group="Base") %>%     
+  addCircleMarkers(lng=locs$longitude, lat=locs$latitude,
+                   # Add a popup of the deployment code 
+                   popup=paste(locs$placename),
+                   radius=(focal_cr/max(focal_cr)*10)+1, stroke=F,
+                   fillOpacity=0.6) 
+m
+
 ```
 
 
-
-
-## Spatial patterns in capture rates
-
-
-
+Try it for some different species. Can you see any different patterns?
 
 ## Species co-occurences
 
+Camera trap data are being increasingly used to model multiple species communties. We can use the `corrplot` package (ADD LINK TO VINGNETTE) to explore the co-occurrence patterns of the species in the community. 
+
+The plot below uses the 'total_obs' dataframe, and performs pairwise correlations between the species on the left, and the species on the top row. Blue colours mean that at locations where you have high counts of one species, you also have high counts of the paired species. Red colours mean if you have high counts of one species, then you are likely to have low counts of the species pair (or vice-versa).
+
+We implement a more nuanced form of this data analysis in **A LATER CHAPTER**
 
 
 
-## Covariate plots
+```{r}
 
-
-
-
-
-
-
-
-
-
-
-Using an independence threshold of `r independent` minutes, the number of detections is reduced to `r nrow(ind.dat)`. The rest of the analyses are conducted with this data. The summary of detections is as follows:
-
-```{r ind captures, echo=F, fig.height=sp.height, eval=T}
-
-layout(matrix(c(1,1,2), 1, 3, byrow = TRUE))
-det.sum.total <- as.data.frame(count(ind.dat[ind.dat$Blank==FALSE,], Species))
-det.sum.total <- det.sum.total[order(det.sum.total$n),]
-
-par(mar=c(5,16,1,1))
-barplot(det.sum.total$n, names.arg = paste0(det.sum.total$Species,
-                                           " (n =", det.sum.total$n,")"), las=1, cex.names=1, xlab="Total detections", horiz=T)
-i <-1
-for(i in 1:nrow(det.sum.total))
-{
-  tmp <- subset(ind.dat, Species==det.sum.total$Species[i])
-  det.sum.total$Locations[i] <- length(unique(tmp$deployment_id))
-}
-par(mar=c(5,1,1,1))
-
-barplot(det.sum.total$Locations/n.stat, las=1, cex.names=0.7, xlab="Proportion of sites detected", horiz=T, xlim=c(0,1))
-abline(v=1, lty=2)
-
-```
-
-** Group size distribution**
-
-```{r group size, echo=F, eval=T,fig.height=sp.height}
 par(mfrow=c(1,1))
-par(mar=c(5,10,1,1))
-plot(jitter(as.numeric(ind.dat$Species))~jitter(ind.dat$Minimum.Group.Size), xlab="Minimum group size", yaxt="n", las=1, ylab="")
-axis(2, 1:length(unique(ind.dat$Species)), labels=levels(ind.dat$Species), las=2, cex.axis=0.6)
-
-```
-
-
-**Site-level species covariance**
-
-This plot shows the co variance between different species at the site level for species with >5 unique detections. For example, if you typically get lots of caribou and bears at the same site, they will have positive co variance. If you get caribou where you don't get bears, they will have negative co variance.
-
-```{r covariance, echo=F, fig.height=sp.height,fig.width=sp.height, eval=T}
-par(mfrow=c(1,1))
-tmp <- as.data.frame.matrix(table(ind.dat$deployment_id, ind.dat$Species))
+tmp <- total_obs[, sp_summary$sp]
 tmp <- tmp[colSums(tmp)>5]
 M <- cor(tmp)
 
@@ -244,100 +256,16 @@ corrplot(M, method="color", #col=matrix(col(200)),
          # hide correlation codepicient on the principal diagonal
          diag=FALSE
          )
-
 ```
 
 
-### Detection rates
-We calculate the detection rates of species to make site-level temporal trends comparable through time where sampling depect is not constant (a common issue in camera trap data sets).
-
-Note, when calculating relative abundance, we use the minimum group size column. 
-```{r relative abundance calc, echo=F, warning=F, message=F, eval=T}
-
-det.sum.site <- as.data.frame(table(ind.dat$deployment_id, ind.dat$Species))
-colnames(det.sum.site) <- c("deployment_id","Species", "Detections")
-det.sum.site$Individuals <- NA
-
-i <- 1
-for(i in 1:nrow(det.sum.site))
-{
-   tmp <- subset(ind.dat, deployment_id==as.character(det.sum.site$deployment_id)[i] &
-              Species==as.character(det.sum.site$Species)[i])
-   det.sum.site$Individuals[i] <- sum(tmp$Minimum.Group.Size, na.rm=T)
-}
-
-# Join with the station deport
-CR.site <- left_join(det.sum.site,aggregate(days~deployment_id, data=dep,  FUN=sum, na.rm=T) )
-CR.site$CR.100 <- round((CR.site$Individuals/CR.site$days)*100,3)
-# Add station locations
-CR.site <- left_join(CR.site, sta[, c("deployment_id", "latitude", "longitude")])
-
-```
+## Covariate plots
 
 
-** Site-level temporal plots **
-
-Across all sites and species:
-
-```{r, echo=F, eval=T}
-# Capture rates through time
-focal.sp <- as.character(det.sum.total[det.sum.total$n>0,]$Species)
-focal.sp <- focal.sp[order(focal.sp)]
-# Remove any blanks
-focal.sp <- focal.sp[focal.sp!=""]
-
-# Now determine capture rates using the row.lookup
-# Make a data frame by month and year
-mon.dat <- unique(substr(ind.img$timestamp, 1,7))
-mon.dat <- data.frame("Month"=mon.dat[order(mon.dat)], "deport"= NA)
-mon.dat[as.character(focal.sp)] <- NA
-i<-1
-for(i in 1:nrow(mon.dat))
-{
-  mon.dat$deport[i] <- nrow(subset(row.lookup, substr(row.lookup$Date,1,7)==mon.dat$Month[i]))
-  mon.dat$Total.CR[i] <- (nrow(subset(ind.dat, substr(ind.img$timestamp,1,7)==mon.dat$Month[i]))/mon.dat$deport[i])*100
-}
-
-for(i in 1:length(focal.sp))
-{
-  for(j in 1:nrow(mon.dat))
-  {
-    tmp <- subset(ind.dat, Species==as.character(focal.sp)[i] & substr(ind.img$timestamp,1,7)==mon.dat$Month[j])
-    mon.dat[j, as.character(focal.sp[i])] <- (nrow(tmp)/mon.dat$deport[j])*100
-  }
-}
-
-mon.dat$timestamp <- strptime(paste0(as.character(mon.dat$Month),"-15"), "%Y-%m-%d")
-
-# Remove any silly values 
-mon.dat <- mon.dat[is.infinite(mon.dat$Total.CR)==F,]
-
-```
+**CHRIS** DO SOME EXAMPLE BIVARIATE CORRELATIONS
 
 
-```{r overall CR, echo=F, fig.height=4, eval=T}
 
-par(mfrow=c(1,2))
 
-plot(mon.dat$timestamp, mon.dat$deport, ylab="Monthly deport (days)", xlab="Date", type="l", las=1)
-points(mon.dat$timestamp, mon.dat$deport, pch=19, col=rgb(0,0,0,0.4))
 
-# Overall capture rate
-plot(mon.dat$timestamp, mon.dat$Total.CR, ylab="Monthly total CR per 100 days", xlab="Date", type="l", las=1, ylim=c(0, max(mon.dat$Total.CR)))
-points(mon.dat$timestamp, mon.dat$Total.CR, pch=19, col=rgb(0,0,0,0.4))
 
-```
-
-** Species-specific temporal trends**
-
-Species level variation in monthly capture rates are as follows:
-
-```{r, echo=F, eval=T}
-par(mfrow=c(2,3))
-for(i in 1:length(focal.sp))
-{
-  plot(mon.dat$timestamp, mon.dat[,as.character(focal.sp)[i]], ylab="Capture Rate per 100 days", xlab="", type="l", las=1, main=focal.sp[i])
-  points(mon.dat$timestamp, mon.dat[,as.character(focal.sp)[i]], pch=19, col=rgb(0,0,0,0.4))
-}
-
-```

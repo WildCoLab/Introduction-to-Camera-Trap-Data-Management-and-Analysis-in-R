@@ -14,6 +14,18 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
+
+[Niedballa, Jürgen, et al. "Assessing analytical methods for detecting spatiotemporal interactions between species from camera trapping data." Remote Sensing in Ecology and Conservation 5.3 (2019): 272-285.](https://zslpublications.onlinelibrary.wiley.com/doi/pdf/10.1002/rse2.107)
+
+FROM THE ABOVE PAPER THE KEY ELEMNTS
+
+"One approach estimates spatiotemporal avoidance, that is,to what extent site visitation by species A (the ‘primary’species, hereafter) influences subsequent visitations by spe-cies B (the ‘secondary’ species, hereafter, e.g. Harmsenet al. 2009; Parsons et al. 2016; Karanth et al. 2017). Suchavoidance behaviour can be mediated by olfactory (Apfel-bach et al. 2005; Ferrero et al. 2011), visual (Blumsteinet al. 2000; Stankowich and Coss 2007) or acoustic cues(Hauser and Wrangham 1990). The second, more com-monly  used  approach  assesses  temporal  segregationbetween species. Here, the temporal overlap in activitybetween two species is estimated to assess whether dailyactivity patterns may have shifted in response to the pres-ence of the other species (Ridout and Linkie 2009; Linkieand Ridout 2011; Foster et al. 2013; Lynam et al. 2013;Ross et al. 2013; Farris et al. 2015; Sunarto et al. 2015).Often, camera trap stations are pooled for this analysis,thus omitting spatial information."
+
+SEE FILES ON DESKTOP FOR CODE
+
+
+
+
 *One species as a predictor of another*
 
 Tattersall, E. R., Burgar, J. M., Fisher, J. T. & Burton, A. C. Boreal predator co-occurrences reveal shared use of seismic lines in a working landscape. Ecol. Evol. 10, 1678–1691 (2020).

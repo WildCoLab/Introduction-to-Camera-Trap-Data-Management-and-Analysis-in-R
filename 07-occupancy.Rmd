@@ -3,7 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Occupancy
+# Occupancy {#occupancy}
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
@@ -209,15 +209,567 @@ p1
 
 As with our habitat use model, *Odocoileus virginianus* occupancy appears to decrease with increasing lowland habitat.  
 
-## Multispecies occupancy model
+## Multispecies occupancy model (two or more)
 
+```{r}
+https://rdrr.io/cran/unmarked/man/occuMulti.html
+#Rota 2016 model
+
+
+#Clipp, H. L., Evans, A., Kessinger, B. E., Kellner, K. F., and C. T. Rota. 2021. A penalized likelihood for multi-species occupancy models improves predictions of species interactions. Ecology.
+
+#Hutchinson, R. A., J. V. Valente, S. C. Emerson, M. G. Betts, and T. G. Dietterich. 2015. Penalized Likelihood Methods Improve Parameter Estimates in Occupancy Models. Methods in Ecology and Evolution. DOI: 10.1111/2041-210X.12368
+
+#MacKenzie, D. I., J. D. Nichols, G. B. Lachman, S. Droege, J. Andrew Royle, and C. A. Langtimm. 2002. Estimating Site Occupancy Rates When Detection Probabilities Are Less Than One. Ecology 83: 2248-2255.
+
+#Rota, C.T., et al. 2016. A multi-species occupancy model for two or more interacting species. Methods in Ecology and Evolution 7: 1164-1173. 
+
+
+# #Simulate 3 species data
+# library(unmarked)
+# N <- 1000
+# nspecies <- 3
+# J <- 5
+# 
+# occ_covs <- as.data.frame(matrix(rnorm(N * 10),ncol=10))
+# names(occ_covs) <- paste('occ_cov',1:10,sep='')
+# 
+# det_covs <- list()
+# for (i in 1:nspecies){
+#   det_covs[[i]] <- matrix(rnorm(N*J),nrow=N)
+# }
+# names(det_covs) <- paste('det_cov',1:nspecies,sep='')
+# 
+# #True vals
+# beta <- c(0.5,0.2,0.4,0.5,-0.1,-0.3,0.2,0.1,-1,0.1)
+# f1 <- beta[1] + beta[2]*occ_covs$occ_cov1
+# f2 <- beta[3] + beta[4]*occ_covs$occ_cov2
+# f3 <- beta[5] + beta[6]*occ_covs$occ_cov3
+# f4 <- beta[7]
+# f5 <- beta[8]
+# f6 <- beta[9]
+# f7 <- beta[10]
+# f <- cbind(f1,f2,f3,f4,f5,f6,f7)
+# z <- expand.grid(rep(list(1:0),nspecies))[,nspecies:1]
+# colnames(z) <- paste('sp',1:nspecies,sep='')
+# dm <- model.matrix(as.formula(paste0("~.^",nspecies,"-1")),z)
+# 
+# psi <- exp(f %*% t(dm))
+# psi <- psi/rowSums(psi)
+# 
+# #True state
+# ztruth <- matrix(NA,nrow=N,ncol=nspecies)
+# for (i in 1:N){
+#   ztruth[i,] <- as.matrix(z[sample(8,1,prob=psi[i,]),])
+# }
+# 
+# p_true <- c(0.6,0.7,0.5)
+# 
+# # fake y data
+# y <- list()
+# 
+# for (i in 1:nspecies){
+#   y[[i]] <- matrix(NA,N,J)
+#   for (j in 1:N){
+#     for (k in 1:J){
+#       y[[i]][j,k] <- rbinom(1,1,ztruth[j,i]*p_true[i])
+#     }
+#   }
+# }
+# names(y) <- c('coyote','tiger','bear')
+# 
+# #Create the unmarked data object
+# data = unmarkedFrameOccuMulti(y=y,siteCovs=occ_covs,obsCovs=det_covs)
+# 
+# #Summary of data object
+# summary(data)
+# plot(data)
+# 
+# # Look at f parameter design matrix
+# data@fDesign
+# 
+# # Formulas for state and detection processes
+# 
+# # Length should match number/order of columns in fDesign
+# occFormulas <- c('~occ_cov1','~occ_cov2','~occ_cov3','~1','~1','~1','~1')
+# 
+# #Length should match number/order of species in data@ylist
+# detFormulas <- c('~1','~1','~1')
+# 
+# fit <- occuMulti(detFormulas,occFormulas,data)
+# 
+# #Look at output
+# fit
+# 
+# plot(fit)
+# 
+# #Compare with known values
+# cbind(c(beta,log(p_true/(1-p_true))),fit@opt$par)
+# 
+# #predict method
+# lapply(predict(fit,'state'),head)
+# lapply(predict(fit,'det'),head)
+# 
+# #marginal occupancy
+# head(predict(fit,'state',species=2))
+# head(predict(fit,'state',species='bear'))
+# head(predict(fit,'det',species='coyote'))
+# 
+# #probability of co-occurrence of two or more species
+# head(predict(fit, 'state', species=c('coyote','tiger')))
+# 
+# #conditional occupancy
+# head(predict(fit,'state',species=2,cond=3)) #tiger | bear present
+# head(predict(fit,'state',species='tiger',cond='bear')) #tiger | bear present
+# head(predict(fit,'state',species='tiger',cond='-bear')) #bear absent
+# head(predict(fit,'state',species='tiger',cond=c('coyote','-bear')))
+# 
+# #residuals (by species)
+# lapply(residuals(fit),head)
+# 
+# #ranef (by species)
+# ranef(fit, species='coyote')
+# 
+# #parametric bootstrap
+# bt <- parboot(fit,nsim=30)
+# 
+# #update model
+# occFormulas <- c('~occ_cov1','~occ_cov2','~occ_cov2+occ_cov3','~1','~1','~1','~1')
+# fit2 <- update(fit,stateformulas=occFormulas)
+# 
+# #List of fitted models
+# fl <- fitList(fit,fit2)
+# coef(fl)
+# 
+# #Model selection
+# modSel(fl)
+# 
+# #Fit model while forcing some natural parameters to be 0
+# #For example: fit model with no species interactions
+# occFormulas <- c('~occ_cov1','~occ_cov2','~occ_cov2+occ_cov3','0','0','0','0')
+# fit3 <- occuMulti(detFormulas,occFormulas,data)
+# 
+# #Alternatively, you can force all interaction parameters above a certain
+# #order to be zero with maxOrder. This will be faster.
+# occFormulas <- c('~occ_cov1','~occ_cov2','~occ_cov2+occ_cov3')
+# fit4 <- occuMulti(detFormulas,occFormulas,data,maxOrder=1)
+# 
+# #Add Bayes penalty term to likelihood. This is useful if your parameter
+# #estimates are very large, eg because of separation.
+# fit5 <- occuMulti(detFormulas, occFormulas, data, penalty=1)
+# 
+# #Find optimal penalty term value from a range of possible values using
+# #K-fold cross validation, and re-fit the model
+# fit_opt <- optimizePenalty(fit5, penalties=c(0,1,2))
+```
+
+
+**NOT IN R**
 [Tobler, M. et al. Spatiotemporal hierarchical modelling of species richness and occupancy using camera trap data. J. Appl. Ecol. (2015).](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12399)
 
-A worked example will be coming soon.
 
-## Further reading
 
-Coming soon!
+## Spatial occupancy model: spOccupancy
 
+Whilst unmarked has been the workhorse for implementing occupancy models in R, there is a new kid on the block - [spOccupancy](https://cloud.r-project.org/web/packages/spOccupancy/index.html).
+
+One of the benefits of spOccupancy is that they have a huge amount of resources to help you leanr and fit models too: [the spOccupancy website](https://www.jeffdoser.com/files/spoccupancy-web/) 
+
+
+### Single species model
+As with any package, formatting raw data into the format it requires can be tricky. Here we walk through one way of preparing data for spOccupancy using camera data. 
+
+#### Data preparation
+
+For the single species model we need to prepare 4 elements:
+
+- Y matrix: a site x time matrix of detections and non-detections
+- occupancy covariates : rows are sites and the columns are covariates [NOTE - currently time invariant]
+- detection covariates : rows are sites and columns are covariate values, but each detection covariate has it s own matrix slice [allows for time varying covariates]
+- coordinates: rows are sites and columnns are y and y coordinates
+
+For this example we will use the monthly data above - and use a single year
+
+
+```{r}
+
+monthly_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
+
+# Use whitetsailed deer
+sp<- "Odocoileus.virginianus"
+monthly_sub  <- monthly_obs[, c("placename", "date", "days", sp)]
+
+# subset to 2019
+monthly_sub <- monthly_sub[substr(monthly_sub$date,1,4)==2019,]
+#monthly_sub$date <- ym(monthly_sub$date) 
+#monthly_sub$month <- month(monthly_sub$date) 
+
+
+###########################
+# Create Y dat
+
+y_dat <- monthly_sub[,c("placename", "date", sp)] %>%
+  pivot_wider(names_from = date, values_from = sp)
+
+y_mat <- as.matrix(y_dat[,unique(monthly_sub$date)])
+row.names(y_mat) <- y_dat$placename
+locs
+
+
+###########################
+# Create occupancy covariates
+
+# Add covariates to the Y dat object
+y_cov <- left_join(y_dat, locs)
+
+
+
+
+occ_covs_mat <- matrix(as.factor(y_cov$feature_type),
+          dimnames=list(row.names(y_mat), "feature_type"))
+
+
+#############################
+# Create detection covariates
+
+det_dat <- monthly_sub[,c("placename", "date", "days")] %>%
+  pivot_wider(names_from = date, values_from = days)
+
+# Effort slice 
+days <- as.matrix(det_dat[,unique(monthly_sub$date)])
+        row.names(days) <- det_dat$placename
+
+det_covs_mat <- list(day=days)
+        
+ 
+############################
+# Create locations dataframe
+
+# We currently have covariartes in lat long - but we need to have them in meters (UTM format or similar)
+loc_dat <- st_as_sf(y_cov[, c("placename", "longitude", "latitude")], coords=c("longitude", "latitude"), crs=4326)
+# Automatic way
+library(gfcanalysis)
+utm_code <- utm_zone(mean(y_cov$longitude), mean(y_cov$latitude), proj4string=TRUE)
+loc_utm <- st_transform(loc_dat, utm_code)
+
+loc_mat <- as.matrix(st_coordinates(loc_utm),
+          dimnames=list(loc_utm$placename, c("x", "y"))) 
+
+# Package all data into list object
+dat_single_sp <- list(y = y_mat, 
+                  occ.covs = occ_covs_mat, 
+                  det.covs = det_covs_mat, 
+                  coords = loc_mat)
+
+
+str(det_covs_mat)
+
+
+```
+
+
+
+
+```{r}
+# swiss-mhb-single-species.R: this script fits a single-species occupancy model 
+#                             using data on the European Goldfinch
+#                             from the Switzerland Breeding Bird Survey 
+#                             (Swiss MHB) in 2014. 
+# Data source citations:   
+# Kéry, M. & Royle, J.A. (2016) _Applied Hierarchical Modeling in Ecology_ AHM1 - 11.3.
+# Swiss Federal Statistical Office (http://www.bfs.admin.ch)
+# Data were derived from objects included in the AHMBook and unmarked R packages.
+rm(list = ls())
+library(spOccupancy)
+# For summarizing MCMC results
+library(MCMCvis)
+# For making species distribution maps
+library(ggplot2)
+library(stars)
+library(pals)
+library(cowplot)
+# If not using the RStudio project, set working directory to the repository
+# directory. 
+# setwd("../")
+# Set seed for same results
+set.seed(250)
+
+# In this example, our goal is to produce a species distribution map of the 
+# European Goldfinch throughout Switzerland.
+
+# 1. Data prep ------------------------------------------------------------
+# Read in the data source (reads in an object called data.goldfinch)
+load("C:/Users/cbeirne/Downloads/europeanGoldfinchSwiss.rda")
+str(data.goldfinch)
+
+data.goldfinch$y
+data.goldfinch$occ.covs
+data.goldfinch$det.covs
+data.goldfinch$coords
+
+
+str(data.goldfinch$det.covs)
+str(dat_single_sp$det.covs)
+
+head(data.goldfinch$det.covs)
+names(data.goldfinch$det.covs)
+
+head(dat_single_sp$det.covs)
+names(data.goldfinch$det.covs)
+
+
+
+# Take a quick look at the spatial locations
+plot(data.goldfinch$coords, pch = 19)
+
+# 2. Model fitting --------------------------------------------------------
+# Fit a non-spatial, single-species occupancy model
+out <- PGOcc(occ.formula = ~ scale(elevation) + I(scale(elevation)^2) + scale(forest), 
+             det.formula = ~ scale(date) + I(scale(date^2)) + scale(dur), 
+             data = data.goldfinch, 
+             n.samples = 5000, 
+             n.thin = 4, 
+             n.burn = 3000, 
+             n.chains = 3,
+             n.report = 500)
+summary(out)
+
+
+
+out <- PGOcc(occ.formula = ~ 1, 
+             det.formula = ~ 1, 
+             data = data.goldfinch, 
+             n.samples = 5000, 
+             n.thin = 4, 
+             n.burn = 3000, 
+             n.chains = 3,
+             n.report = 500)
+summary(out)
+
+
+out_test <- PGOcc(occ.formula = ~ feature_type, 
+             det.formula = ~ scale(day),   #scale(days) + I(scale(date^2)) + 
+             data = dat_single_sp, 
+             n.samples = 5000, 
+             n.thin = 4, 
+             n.burn = 3000, 
+             n.chains = 3,
+             n.report = 500)
+
+summary(out)
+# Fit a spatial, single-species occupancy model using an NNGP and 10 neighbors
+# Note for spatial models, n.samples is broken into a set of "n.batch"
+# batches, which each contain "batch.length" MCMC samples. In other words,
+# n.samples = n.batch * batch.length
+out.sp <- spPGOcc(occ.formula = ~ scale(elevation) + I(scale(elevation)^2) + scale(forest), 
+                  det.formula = ~ scale(date) + I(scale(date^2)) + scale(dur), 
+                  data = data.goldfinch, 
+                  n.batch = 400, 
+                  batch.length = 25,
+                  NNGP = TRUE, 
+                  n.neighbors = 5, 
+                  n.thin = 10, 
+                  n.burn = 5000, 
+                  n.chains = 3,
+                  n.report = 100)
+summary(out.sp)
+
+# 3. Model validation -----------------------------------------------------
+# Perform a posterior predictive check to assess model fit. 
+ppc.out <- ppcOcc(out, fit.stat = 'freeman-tukey', group = 1)
+ppc.out.sp <- ppcOcc(out.sp, fit.stat = 'freeman-tukey', group = 1)
+# Calculate a Bayesian p-value as a simple measure of Goodness of Fit.
+# Bayesian p-values between 0.1 and 0.9 indicate adequate model fit. 
+summary(ppc.out)
+summary(ppc.out.sp)
+
+# 4. Model comparison -----------------------------------------------------
+# Compute Widely Applicable Information Criterion (WAIC)
+# Lower values indicate better model fit. 
+# Non-spatial
+waicOcc(out)
+# Spatial
+waicOcc(out.sp)
+
+# 5. Posterior summaries --------------------------------------------------
+# Concise summary of main parameter estimates
+summary(out.sp)
+# Take a look at objects in resulting object
+names(out.sp)
+str(out.sp$beta.samples)
+# Create simple plot summaries using MCMCvis package.
+# Occupancy covariate effects ---------
+MCMCplot(out.sp$beta.samples, ref_ovl = TRUE, ci = c(50, 95))
+# Detection covariate effects --------- 
+MCMCplot(out.sp$alpha.samples, ref_ovl = TRUE, ci = c(50, 95))
+
+# 6. Prediction -----------------------------------------------------------
+# Predict occupancy probability across Switzerland
+# Load prediction objects (loads objects pred.swiss and coords.0)
+load("C:/Users/cbeirne/Downloads/switzerlandPredData.rda")
+str(pred.swiss)
+# Standardize elevation and forest prediction values by values used to fit model
+elevation.0 <- (pred.swiss[, 'elevation'] - mean(data.goldfinch$occ.covs$elevation)) / 
+                sd(data.goldfinch$occ.covs$elevation)
+forest.0 <- (pred.swiss[, 'forest'] - mean(data.goldfinch$occ.covs$forest)) / 
+                sd(data.goldfinch$occ.covs$forest)
+# Create prediction design matrix
+X.0 <- cbind(1, elevation.0, elevation.0^2, forest.0)
+# Predict at new locations
+out.pred <- predict(out.sp, X.0, coords.0)
+# Occupancy probability means
+psi.0.mean <- apply(out.pred$psi.0.samples, 2, mean)
+# Occupancy probability standard deviations
+psi.0.sd <- apply(out.pred$psi.0.samples, 2, sd)
+# Spatial process mean and sd
+w.0.mean <- apply(out.pred$w.0.samples, 2, mean)
+w.0.sd <- apply(out.pred$w.0.samples, 2, sd)
+
+
+# Create a species distribution map with uncertainty ----------------------
+plot.df <- data.frame(psi.mean = psi.0.mean,
+                      psi.sd = psi.0.sd,
+                      w.mean = w.0.mean, 
+                      w.sd = w.0.sd,
+                      x = coords.0[, 1],
+                      y = coords.0[, 2])
+pred.stars <- st_as_stars(plot.df, dims = c('x', 'y'))
+psi.mean.plot <- ggplot() +
+  geom_stars(data = pred.stars, aes(x = x, y = y, fill = psi.mean),interpolate = TRUE) +
+  scale_fill_gradientn("", colors = ocean.tempo(1000), limits = c(0, 1),
+                       na.value = NA) +
+  theme_bw(base_size = 18) +
+  theme(axis.text.x = element_blank(), 
+        axis.text.y = element_blank()) +
+  labs(x = "Easting", y = "Northing", title = 'Occupancy Mean')
+psi.sd.plot <- ggplot() +
+  geom_stars(data = pred.stars, aes(x = x, y = y, fill = psi.sd),interpolate = TRUE) +
+  scale_fill_gradientn("", colors = ocean.tempo(1000), limits = c(0, 1),
+                       na.value = NA) +
+  theme_bw(base_size = 18) +
+  theme(axis.text.x = element_blank(), 
+        axis.text.y = element_blank()) +
+  labs(x = "Easting", y = "Northing", title = 'Occupancy SD')
+w.mean.plot <- ggplot() +
+  geom_stars(data = pred.stars, aes(x = x, y = y, fill = w.mean),interpolate = TRUE) +
+  scale_fill_gradientn("", colors = ocean.tempo(1000),
+                       na.value = NA) +
+  theme_bw(base_size = 18) +
+  theme(axis.text.x = element_blank(), 
+        axis.text.y = element_blank()) +
+  labs(x = "Easting", y = "Northing", title = 'Spatial Effect Mean')
+w.sd.plot <- ggplot() +
+  geom_stars(data = pred.stars, aes(x = x, y = y, fill = w.sd),interpolate = TRUE) +
+  scale_fill_gradientn("", colors = ocean.tempo(1000),
+                       na.value = NA) +
+  theme_bw(base_size = 18) +
+  theme(axis.text.x = element_blank(), 
+        axis.text.y = element_blank()) +
+  labs(x = "Easting", y = "Northing", title = 'Spatial Effect SD') 
+plot_grid(psi.mean.plot, w.mean.plot, 
+          psi.sd.plot, w.sd.plot, nrow = 2, ncol = 2)
+```
+
+
+### Multi species model
+
+#### Data preparation
+For the multi species model we have a different Y matric structure.
+
+Each slice of the matrix is species (y) by site (x), then each matrix slice is a visit.
+
+
+```{r}
+
+hb.dat <- read.csv(url("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-hbr.178.3&entityid=eecb146279aa290af2292d75d3ba0f8b"))
+# Take a look at the data set
+str(hb.dat)
+
+hb.dat$Date <- ymd(hb.dat$Date)
+class(hb.dat$Date)
+
+hb.dat$Year <- year(hb.dat$Date)
+str(hb.dat)
+
+
+hb.2014 <- hb.dat %>%
+  filter(Year == 2014,  # Only use data from 2014
+         Replicate %in% c("1", "2", "3"), # Only use data from first 3 reps 
+         Plot != 277) # Don't use data from plot 277
+str(hb.2014)
+
+y.long <- hb.2014 %>%
+  group_by(Plot, Date, Replicate, Species) %>%
+  summarize(count = n()) %>%
+  ungroup() %>%
+  glimpse()
+
+
+
+# Species codes.
+sp.codes <- sort(unique(y.long$Species))
+# Plot (site) codes.
+plot.codes <- sort(unique(y.long$Plot))
+# Number of species
+N <- length(sp.codes)
+# Maximum number of replicates at a site
+K <- 3
+# Number of sites
+J <- length(unique(y.long$Plot))
+# Array for detection-nondetection data. 
+y <- array(NA, dim = c(N, J, K))
+# Label the dimensions of y (not necessary, but helpful)
+dimnames(y)[[1]] <- sp.codes
+dimnames(y)[[2]] <- plot.codes
+# Look at the structure of our array y
+str(y)
+
+for (j in 1:J) { # Loop through sites.
+  for (k in 1:K) { # Loop through replicates at each site.
+    # Extract data for current site/replicate combination.
+    curr.df <- y.long %>%
+      filter(Plot == plot.codes[j], Replicate == k)
+    # Check if more than one date for a given replicate
+    if (n_distinct(curr.df$Date) > 1) {
+      # If there is more than 1 date, only use the data
+      # from the first date.
+      curr.dates <- unique(sort(curr.df$Date))
+      curr.df <- curr.df %>% 
+        filter(Date == curr.dates[1])
+    }
+    # If plot j was sampled during replicate k, 
+    # curr.df will have at least 1 row (i.e., at least 
+    # one species will be observed). If not, assume it 
+    # was not sampled for that replicate.
+    if (nrow(curr.df) > 0) {
+      # Extract the species that were observed during
+      # this site/replicate.
+      curr.sp <- which(sp.codes %in% curr.df$Species)
+      # Set value to 1 for species that were observed.
+      y[curr.sp, j, k] <- 1
+      # Set value to 0 for all other species.
+      y[-curr.sp, j, k] <- 0
+    }
+  } # k (replicates)
+} # j (sites)
+str(y)
+
+
+
+y
+
+
+# HOT TAKE
+
+# EACH OCCASION IS A MATRIC slice
+
+#SPECIES AS ROWS 
+
+# SITES A COLUMNS
+
+
+
+
+```
 
 

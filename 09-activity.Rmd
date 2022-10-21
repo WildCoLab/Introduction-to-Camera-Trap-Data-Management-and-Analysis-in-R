@@ -14,7 +14,7 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Given that camera traps record the time of the photo, they represent a powerful tool to explore and contrast the acivity pattterns of the species they detect. Such analyses can give insight into ompetition, predation and coexistance. 
+Given that camera traps record the time of the photo, they represent a powerful tool to explore and contrast the acivity pattterns of the species they detect. Such analyses can give insight into competition, predation and coexistance. Characterising the "activity level" - the proportion of the day which animals are active - is also increasing important for novel estimators of animal density. If an animal isnt active, it isnt available to be detected on cameras! Regardless, understanding activity patterns is very important. 
 
 *Must read* [Frey, Sandra, et al. "Investigating animal activity patterns and temporal niche partitioning using camera‐trap data: Challenges and opportunities." Remote Sensing in Ecology and Conservation 3.3 (2017): 123-132.](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.60) 
 
@@ -23,19 +23,25 @@ Two key packages
 - `overlap` https://cran.r-project.org/web/packages/overlap/index.html
 - `activity` https://cran.r-project.org/web/packages/activity/index.html
 
+## Independent detections or raw data
+
+It is important to consider what our data source should be for 
+
+[Christopher Peral, Marietjie Landman, Graham I. H. Kerley The inappropriate use of time-to-independence biases estimates of activity patterns of free-ranging mammals derived from camera traps Ecology and Evolution](https://onlinelibrary.wiley.com/doi/10.1002/ece3.9408?af=R)
+
 ## Example
 
 To demonstrate how we might investigate temporal niche partitioning, we will be working from the independent observations data frame.
 
 ```{r}
 # Import the data
-dat <- read.csv("data/processed_data/Algar_30min_Independent.csv", header=T)
+img <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_detections.csv", header=T)
 ```
 
 Which looks like this:
 
 ```{r, echo=F}
-kbl(head(dat))%>%
+kbl(head(img))%>%
   kable_paper() %>%
   scroll_box(height = "200px")
 ```
@@ -47,31 +53,87 @@ Then load the activity package.
 library(activity) 
 ```
 
+Find your timedone code at:
+https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+
+IF you cameras correct for daylight savings use the correct code, if they do not, use UTC. 
+
+```{r}
+library(lubridate)
+img$timestamp <- ymd_hms(img$timestamp, tz="UTC")
+```
+
+
+
 We first need to convert the "time" in our datasets into radian time (on the range [0,
 2*pi]) and proportion time (on the range 0-1):
 
 ```{r}
 #Radian time
-dat$rtime <- gettime(dat$Date_Time.Captured, "%Y-%m-%d %H:%M:%S")
+img$rtime <- gettime(img$timestamp, "%Y-%m-%d %H:%M:%S")
 ```
+
+### Accounting for sunrise and sunset
+
+A recent paper highlighted the challenges in trying to understand animal activity patterns at high latitudes - as sunrise/sunset timings vary substantially through the calender year. See:
+
+[Vazquez, Carmen, et al. "Comparing diel activity patterns of wildlife across latitudes and seasons: Time transformations using day length." Methods in Ecology and Evolution 10.12 (2019): 2057-2066.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13290)
+
+If we want to compare activity patterns between two different locations, or different seasons, the day length at the time the camera detections occured can have a huge impact on our estimates of wildlife activity. For example, if we wanted to compare winter and summer activity patterns, in winter animal activity is constrained to a much shorter day length. 
+
+Fortunately, the authors have a solution!
+
+**The average anchoring method**
+
+Instead of using the 'human' 24h clock, we can instead express animal activity relative to an important anchor point in the day (e.g. sunrise). 
+
+NOTE -the transformation is not necessary at latitudes below 20°, or in studies with a duration of less than a month (below 40° latitude).
+
+```{r}
+# We need to add latitude and longitude to our observations
+library(dplyr)
+locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv")
+
+img_locs <- left_join(img, locs)
+
+
+
+tmp <- solartime ( img_locs$timestamp, img_locs$latitude, img_locs$longitude, tz=1, format="%Y-%m-%d %H:%M:%S")
+
+img_locs$solar <- tmp$solar
+img_locs$clock <- tmp$clock
+
+
+
+```
+
+
 
 Then fit the basic activity models available in the package. Note, more complex models are available, including accountting for the fact that the detection distance of camera traps varies from night to day. Here we will keep this simple!
 
 **White-tailed deer**
 ```{r}
-m1 <- fitact(dat$rtime[dat$Species=="Odocoileus virginianus"])
+table(img$sp)
+
+m1 <- fitact(img_locs$solar[img_locs$sp=="Lepus americanus"], sample="model")
 plot(m1)
 ```
 
 **Caribou**
 ```{r}
-m2 <- fitact(dat$rtime[dat$Species=="Rangifer tarandus"])
+m2 <- fitact(img_locs$clock[img_locs$sp=="Lepus americanus"], sample="model")
 plot(m2)
 ```
 
 We can compare the activity plots of both species on the same axis visually:
 
 ```{r}
+
+compareAct(list(m1, m2))
+plot(m1)
+plot(m2, add=TRUE, data="n", tline=list(col="cyan"))
+
 # Plot both on the same axis
 
 plot(m1, yunit="density", data="none", ylim=c(0,0.1), las=1, lwd=2)
@@ -88,7 +150,13 @@ compareCkern(m1, m2, reps = 250)
 
 The output above represents: obs = observed overlap index; null = mean null overlap index; seNull = standard error of the null distribution; pNull = probability observed index arose by chance.
 
-Which suggets that there is no significant different between our two species, perhaps not surprising given that they spatially degregate not temporally. 
+Which suggests that there is no significant different between our two species, perhaps not surprising given that they spatially segregate not temporally. 
+
+
+## Thoughts
+
+Overlap coefficient calculations can be sensitive to sample size - and activity calculations can be unreliable where detections are rare. So use these with caution!
+
 
 ## Further reading
 
