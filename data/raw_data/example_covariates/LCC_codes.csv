@@ -1,0 +1,24 @@
+discrete_classification,color,description,hab_code
+0,282828,Unknown. No or not enough satellite data available.,unknown
+20,FFBB22,Shrubs. Woody perennial plants with persistent and woody stems and without any defined main stem being less than 5 m tall. The shrub foliage can be either evergreen or deciduous.,shrubs
+30,FFFF4C,Herbaceous vegetation. Plants without persistent stem or shoots above ground and lacking definite firm structure. Tree and shrub cover is less than 10 %.,herbs
+40,F096FF,"Cultivated and managed vegetation / agriculture. Lands covered with temporary crops followed by harvest and a bare soil period (e.g., single and multiple cropping systems). Note that perennial woody crops will be classified as the appropriate forest or shrub land cover type.",cultivated
+50,FA0000,Urban / built up. Land covered by buildings and other man-made structures.,urban
+60,B4B4B4,"Bare / sparse vegetation. Lands with exposed soil, sand, or rocks and never has more than 10 % vegetated cover during any time of the year.",bare
+70,F0F0F0,Snow and ice. Lands under snow or ice cover throughout the year.,snow
+80,0032C8,"Permanent water bodies. Lakes, reservoirs, and rivers. Can be either fresh or salt-water bodies.",water
+90,0096A0,"Herbaceous wetland. Lands with a permanent mixture of water and herbaceous or woody vegetation. The vegetation can be present in either salt, brackish, or fresh water.",herbaceous_wetland
+100,FAE6A0,Moss and lichen.,moss_and_lichen
+111,58481F,"Closed forest, evergreen needle leaf. Tree canopy >70 %, almost all needle leaf trees remain green all year. Canopy is never without green foliage.",closed_forest_evergreen_needle
+112,9900,"Closed forest, evergreen broad leaf. Tree canopy >70 %, almost all broadleaf trees remain green year round. Canopy is never without green foliage.",closed_forest_evergreen_broad
+113,70663E,"Closed forest, deciduous needle leaf. Tree canopy >70 %, consists of seasonal needle leaf tree communities with an annual cycle of leaf-on and leaf-off periods.",closed_forest_deciduous_needle
+114,00CC00,"Closed forest, deciduous broad leaf. Tree canopy >70 %, consists of seasonal broadleaf tree communities with an annual cycle of leaf-on and leaf-off periods.",closed_forest_deciduous_broad
+115,4E751F,"Closed forest, mixed.",mixed_forest
+116,7800,"Closed forest, not matching any of the other definitions.",closed_forest_other
+121,666000,"Open forest, evergreen needle leaf. Top layer- trees 15-70 % and second layer- mixed of shrubs and grassland, almost all needle leaf trees remain green all year. Canopy is never without green foliage.",open_forest_evergreen_needle
+122,8DB400,"Open forest, evergreen broad leaf. Top layer- trees 15-70 % and second layer- mixed of shrubs and grassland, almost all broadleaf trees remain green year round. Canopy is never without green foliage.",open_forest_evergreen_broad
+123,8D7400,"Open forest, deciduous needle leaf. Top layer- trees 15-70 % and second layer- mixed of shrubs and grassland, consists of seasonal needle leaf tree communities with an annual cycle of leaf-on and leaf-off periods.",closed_forest_deciduous_needle
+124,A0DC00,"Open forest, deciduous broad leaf. Top layer- trees 15-70 % and second layer- mixed of shrubs and grassland, consists of seasonal broadleaf tree communities with an annual cycle of leaf-on and leaf-off periods.",closed_forest_deciduous_broad
+125,929900,"Open forest, mixed.",open_forest
+126,648C00,"Open forest, not matching any of the other definitions.",open_forest_other
+200,80,"Oceans, seas. Can be either fresh or salt-water bodies.",ocean

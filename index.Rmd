@@ -1,6 +1,6 @@
 --- 
 title: "An Introduction to Camera Trap Data Management and Analysis in R"
-author: "Christopher Beirne and the Wildlife Coexistence Lab, UBC"
+author: "Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network"
 date: "`r Sys.Date()`"
 site: bookdown::bookdown_site
 output: bookdown::gitbook
@@ -12,7 +12,7 @@ link-citations: yes
 github-repo: " WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R"
 description: "Materials for the three day camera trap data management and analysis course"
 ---
- 
+
 # Introduction
 
 ```{r, echo=F, message=F, warning=F}
@@ -22,11 +22,11 @@ knitr::include_graphics("images/Ninja.PNG")
 
 The number of projects employing camera traps to understand ecological phenomena is growing rapidly – as are the number of statistical tools to analyze the resultant data. Consequently, the management and analysis of camera trap data can seem complex and overwhelming. This course aims to guide participants in effective ways to store, manipulate and analyze camera trap data within the R statistical environment.
 
-The idea for this course was born out of the realization that many of the analytical frameworks we apply to camera trap data do not have specific examples involving cameras, which can make learning new methods intimidating. To adress this we wanted a resource which takes a single data set from raw data to analysis, showing all of the steps in between! Hopefully this course will give you the tools to manage, analyze and share camera trap data in an approachable and practical way!
+The idea for this course was born out of the realization that many of the analytical frameworks we apply to camera trap data do not have specific examples involving cameras, which can make learning new methods intimidating. To address this we wanted to develop a resource which takes a single data set from raw data to analysis, showing all of the steps in between! Hopefully this course will give you the tools to manage, analyze and share camera trap data in an approachable and practical way!
 
 ## Ethos
 
-This course is built on the foundation of "standardised data" - data formatted to meet an international standard. The benefits of standardising your data are explained in detail in the [data standardisation chapter](#standard), however the main one is if you format your data to be in a similar format, it should be very easy to apply the methods described here to your owndata!  
+This course is built on the foundation of "standardised data" - data formatted to meet an international standard. The benefits of standardising your data are explained in detail in the [data standardisation chapter](#standard), the principal benefit is that if you copy the data formatting used here, it should be very easy to apply the methods described here to new datasets!  
 
 ## What this course is 
 
@@ -39,6 +39,7 @@ This course is built on the foundation of "standardised data" - data formatted t
 
 - The "best" way to explore or analyse your data (although we hopefully provide a good foundation)
 - A statistics course - the analyses presented within this guide are purposefully overly simplified in order to act as an introduction to each topic without being overwhelming
+- A perfect copy of published analyses - some of the conclusions from our simplified models may differ from published results... trust the publications
 
 ## How to use this book
 
@@ -55,4 +56,4 @@ If you have any questions about this document and the information it contains, p
 
 ## Acknowledgements
 
-This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne) with help from the members of the [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/).
+This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne) with help from the members of the [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/), and [the WildCAM Network](https://wildcams.ca/). 

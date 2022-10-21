@@ -1,0 +1,26 @@
+"","class","order","family","genus","species","common_name","sp","verified"
+"1","Aves","Galliformes","Phasianidae","Tympanuchus","phasianellus","sharp-tailed grouse","Tympanuchus phasianellus",TRUE
+"2","Aves","Gruiformes","Gruidae","Grus","canadensis","Sandhill crane","Grus canadensis",TRUE
+"3","Aves","Passeriformes","Corvidae","Corvus","corax","Common raven","Corvus corax",TRUE
+"4","Aves","Passeriformes","Corvidae","Perisoreus","canadensis","Canada jay","Perisoreus canadensis",TRUE
+"5","Aves","Strigiformes","Strigidae","Strix","nebulosa","Great grey owl","Strix nebulosa",TRUE
+"6","Mammalia","Artiodactyla","Cervidae","Alces","alces","Eurasian elk","Alces alces",TRUE
+"7","Mammalia","Artiodactyla","Cervidae","Cervus","canadensis","elk","Cervus canadensis",TRUE
+"8","Mammalia","Artiodactyla","Cervidae","Odocoileus","virginianus","white-tailed deer","Odocoileus virginianus",TRUE
+"9","Mammalia","Artiodactyla","Cervidae","Rangifer","tarandus","reindeer","Rangifer tarandus",TRUE
+"10","Mammalia","Carnivora","Canidae","Canis","latrans","coyote","Canis latrans",TRUE
+"11","Mammalia","Carnivora","Canidae","Canis","lupus","gray wolf","Canis lupus",TRUE
+"12","Mammalia","Carnivora","Canidae","Vulpes","vulpes","red fox","Vulpes vulpes",TRUE
+"13","Mammalia","Carnivora","Felidae","Lynx","canadensis","Canada lynx","Lynx canadensis",TRUE
+"14","Mammalia","Carnivora","Mustelidae","Lontra","canadensis","Northern American river otter","Lontra canadensis",TRUE
+"15","Mammalia","Carnivora","Mustelidae","Martes","americana","American marten","Martes americana",TRUE
+"16","Mammalia","Carnivora","Ursidae","Ursus","americanus","American black bear","Ursus americanus",TRUE
+"17","Mammalia","Lagomorpha","Leporidae","Lepus","americanus","snowshoe hare","Lepus americanus",TRUE
+"18","Mammalia","Lagomorpha","Leporidae","Oryctolagus","cuniculus","rabbit","Oryctolagus cuniculus",TRUE
+"19","Mammalia","Primates","Hominidae","Homo","sapiens","human","Homo sapiens",TRUE
+"20","Mammalia","Rodentia","Sciuridae","Tamiasciurus","hudsonicus","American red squirrel","Tamiasciurus hudsonicus",TRUE
+"21",NA,NA,NA,"","blank",NA," blank",FALSE
+"22",NA,NA,NA,"","spp.",NA," spp.",FALSE
+"23",NA,NA,NA,"Canachites","canadensis",NA,"Canachites canadensis",TRUE
+"24",NA,NA,NA,"Unknown","unknown",NA,"Unknown unknown",FALSE
+"25",NA,NA,NA,"Weasel","spp.",NA,"Weasel spp.",FALSE

@@ -1,0 +1,3697 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 6 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R</title>
+  <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
+  <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 6 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Materials for the three day camera trap data management and analysis course" />
+  <meta name="github-repo" content="WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 6 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R" />
+  
+  <meta name="twitter:description" content="Materials for the three day camera trap data management and analysis course" />
+  
+
+<meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
+
+
+<meta name="date" content="2022-10-21" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="error-checking.html"/>
+<link rel="next" href="exploration.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
+<script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
+<script src="libs/htmlwidgets-1.5.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
+<script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
+<script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">WildCo Data Analysis Intro</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#ethos"><i class="fa fa-check"></i><b>1.1</b> Ethos</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-this-course-is"><i class="fa fa-check"></i><b>1.2</b> What this course is</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-course-is-not"><i class="fa fa-check"></i><b>1.3</b> What this course is not</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.4</b> How to use this book</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.5</b> Get in touch</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.6</b> Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html"><i class="fa fa-check"></i><b>2</b> Preparing for the course</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#install-r"><i class="fa fa-check"></i><b>2.1</b> Install R</a></li>
+<li class="chapter" data-level="2.2" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#install-rstudio"><i class="fa fa-check"></i><b>2.2</b> Install RStudio</a></li>
+<li class="chapter" data-level="2.3" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#install-the-required-packages"><i class="fa fa-check"></i><b>2.3</b> Install the required packages</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#cran-packages"><i class="fa fa-check"></i><b>2.3.1</b> CRAN packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#other-packages"><i class="fa fa-check"></i><b>2.3.2</b> Other packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#create-an-r-project"><i class="fa fa-check"></i><b>2.4</b> Create an R project</a></li>
+<li class="chapter" data-level="2.5" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#download-the-data-files"><i class="fa fa-check"></i><b>2.5</b> Download the data files</a></li>
+<li class="chapter" data-level="2.6" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#the-example-datasets"><i class="fa fa-check"></i><b>2.6</b> The example datasets</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#example_data"><i class="fa fa-check"></i><b>2.6.1</b> example_data</a></li>
+<li class="chapter" data-level="2.6.2" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#your_data"><i class="fa fa-check"></i><b>2.6.2</b> your_data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#a-bonus-non-essential-package"><i class="fa fa-check"></i><b>2.7</b> A bonus, non essential, package</a></li>
+<li class="chapter" data-level="2.8" data-path="preparing-for-the-course.html"><a href="preparing-for-the-course.html#practise-before-the-course"><i class="fa fa-check"></i><b>2.8</b> Practise before the course</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html"><i class="fa fa-check"></i><b>3</b> Preprocessing and labelling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#data-storage"><i class="fa fa-check"></i><b>3.1</b> Data storage</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#preprocessing"><i class="fa fa-check"></i><b>3.2</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#renaming"><i class="fa fa-check"></i><b>3.2.1</b> Renaming</a></li>
+<li class="chapter" data-level="3.2.2" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#automated-labelers"><i class="fa fa-check"></i><b>3.2.2</b> Automated Labelers</a></li>
+<li class="chapter" data-level="3.2.3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#sensitive-images"><i class="fa fa-check"></i><b>3.2.3</b> Sensitive images</a></li>
+<li class="chapter" data-level="3.2.4" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#timelapse-extraction"><i class="fa fa-check"></i><b>3.2.4</b> Timelapse extraction</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#labelling"><i class="fa fa-check"></i><b>3.3</b> Labelling</a></li>
+<li class="chapter" data-level="3.4" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#end-dates-and-outages"><i class="fa fa-check"></i><b>3.4</b> End dates and outages</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="standard.html"><a href="standard.html"><i class="fa fa-check"></i><b>4</b> Metadata standardisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="standard.html"><a href="standard.html#the-wildlife-insights-minimum-metadata-standards"><i class="fa fa-check"></i><b>4.1</b> The Wildlife Insights Minimum Metadata Standards</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="standard.html"><a href="standard.html#project-data"><i class="fa fa-check"></i><b>4.1.1</b> Project data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="standard.html"><a href="standard.html#detection-data"><i class="fa fa-check"></i><b>4.1.2</b> Detection data</a></li>
+<li class="chapter" data-level="4.1.3" data-path="standard.html"><a href="standard.html#deployment-data"><i class="fa fa-check"></i><b>4.1.3</b> Deployment data</a></li>
+<li class="chapter" data-level="4.1.4" data-path="standard.html"><a href="standard.html#camera-inventory"><i class="fa fa-check"></i><b>4.1.4</b> Camera inventory</a></li>
+<li class="chapter" data-level="4.1.5" data-path="standard.html"><a href="standard.html#important-note"><i class="fa fa-check"></i><b>4.1.5</b> Important note</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="error-checking.html"><a href="error-checking.html"><i class="fa fa-check"></i><b>5</b> Error checking</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="error-checking.html"><a href="error-checking.html#standardised-exploration-script"><i class="fa fa-check"></i><b>5.1</b> Standardised exploration script</a></li>
+<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.2</b> Formatting dates</a>
+<ul>
+<li class="chapter" data-level="5.2.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.2.1</b> Skill check: <code>lubridate</code></a></li>
+<li class="chapter" data-level="5.2.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.2.2</b> Deployment dates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.2.3</b> Image dates</a></li>
+</ul></li>
+<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.3</b> Basic trapping summaries</a></li>
+<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.4</b> Error checks</a>
+<ul>
+<li class="chapter" data-level="5.4.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.4.1</b> Camera locations</a></li>
+<li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
+<li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
+<li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
+<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxise-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxise package</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
+<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.7" data-path="error-checking.html"><a href="error-checking.html#common-analysis-data-formats"><i class="fa fa-check"></i><b>5.7</b> Common analysis data formats</a></li>
+<li class="chapter" data-level="5.8" data-path="error-checking.html"><a href="error-checking.html#independent-detections"><i class="fa fa-check"></i><b>5.8</b> Independent detections</a></li>
+<li class="chapter" data-level="5.9" data-path="error-checking.html"><a href="error-checking.html#effort-look-up"><i class="fa fa-check"></i><b>5.9</b> Effort look-up</a></li>
+<li class="chapter" data-level="5.10" data-path="error-checking.html"><a href="error-checking.html#observations-by-time-interval"><i class="fa fa-check"></i><b>5.10</b> Observations by time interval</a></li>
+<li class="chapter" data-level="5.11" data-path="error-checking.html"><a href="error-checking.html#our-data"><i class="fa fa-check"></i><b>5.11</b> Our data</a>
+<ul>
+<li class="chapter" data-level="5.11.1" data-path="error-checking.html"><a href="error-checking.html#filter-to-target-species"><i class="fa fa-check"></i><b>5.11.1</b> Filter to target species</a></li>
+<li class="chapter" data-level="5.11.2" data-path="error-checking.html"><a href="error-checking.html#create-a-daily-camera-activity-lookup"><i class="fa fa-check"></i><b>5.11.2</b> Create a daily camera activity lookup</a></li>
+<li class="chapter" data-level="5.11.3" data-path="error-checking.html"><a href="error-checking.html#determine-independent-camera-detections"><i class="fa fa-check"></i><b>5.11.3</b> Determine ‘independent’ camera detections</a></li>
+<li class="chapter" data-level="5.11.4" data-path="error-checking.html"><a href="error-checking.html#add-additional-data"><i class="fa fa-check"></i><b>5.11.4</b> Add additional data</a></li>
+</ul></li>
+<li class="chapter" data-level="5.12" data-path="error-checking.html"><a href="error-checking.html#creating-analysis-dataframes"><i class="fa fa-check"></i><b>5.12</b> Creating analysis dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="covariates.html"><a href="covariates.html"><i class="fa fa-check"></i><b>6</b> Analysis covariates</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="covariates.html"><a href="covariates.html#species-traits"><i class="fa fa-check"></i><b>6.1</b> Species traits</a></li>
+<li class="chapter" data-level="6.2" data-path="covariates.html"><a href="covariates.html#camera-station-covariates"><i class="fa fa-check"></i><b>6.2</b> Camera station covariates</a>
+<ul>
+<li class="chapter" data-level="6.2.1" data-path="covariates.html"><a href="covariates.html#locally-collected-covariates"><i class="fa fa-check"></i><b>6.2.1</b> Locally collected covariates</a></li>
+<li class="chapter" data-level="6.2.2" data-path="covariates.html"><a href="covariates.html#remotely-collected-covariates"><i class="fa fa-check"></i><b>6.2.2</b> Remotely collected covariates</a></li>
+<li class="chapter" data-level="6.2.3" data-path="covariates.html"><a href="covariates.html#extracting-data-from-local-rasters"><i class="fa fa-check"></i><b>6.2.3</b> Extracting data from local rasters</a></li>
+<li class="chapter" data-level="6.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>6.2.4</b> elevatr package</a></li>
+<li class="chapter" data-level="6.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>6.2.5</b> Open Street Maps</a></li>
+<li class="chapter" data-level="6.2.6" data-path="covariates.html"><a href="covariates.html#google-earth-engine"><i class="fa fa-check"></i><b>6.2.6</b> Google Earth Engine</a></li>
+<li class="chapter" data-level="6.2.7" data-path="covariates.html"><a href="covariates.html#time-varying-covariates"><i class="fa fa-check"></i><b>6.2.7</b> Time-varying covariates</a></li>
+<li class="chapter" data-level="6.2.8" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>6.2.8</b> Digging deeper</a></li>
+</ul></li>
+<li class="chapter" data-level="6.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>6.3</b> Convert and save your covariates</a></li>
+<li class="chapter" data-level="6.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>6.4</b> Correlations between predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>7</b> Analysis data exploration</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="exploration.html"><a href="exploration.html#final-locations-plot"><i class="fa fa-check"></i><b>7.1</b> Final locations plot</a></li>
+<li class="chapter" data-level="7.2" data-path="exploration.html"><a href="exploration.html#independent-detections-summary"><i class="fa fa-check"></i><b>7.2</b> Independent detections summary</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="exploration.html"><a href="exploration.html#total-number-of-captures"><i class="fa fa-check"></i><b>7.2.1</b> Total number of captures</a></li>
+<li class="chapter" data-level="7.2.2" data-path="exploration.html"><a href="exploration.html#raw-occupancy"><i class="fa fa-check"></i><b>7.2.2</b> Raw occupancy</a></li>
+<li class="chapter" data-level="7.2.3" data-path="exploration.html"><a href="exploration.html#comparison-plot"><i class="fa fa-check"></i><b>7.2.3</b> Comparison plot</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="exploration.html"><a href="exploration.html#temporal-patterns-in-capture-rates"><i class="fa fa-check"></i><b>7.3</b> Temporal patterns in capture rates</a></li>
+<li class="chapter" data-level="7.4" data-path="exploration.html"><a href="exploration.html#species-specific-capture-rates"><i class="fa fa-check"></i><b>7.4</b> Species specific capture rates</a></li>
+<li class="chapter" data-level="7.5" data-path="exploration.html"><a href="exploration.html#spatial-patterns-in-capture-rates"><i class="fa fa-check"></i><b>7.5</b> Spatial patterns in capture rates</a></li>
+<li class="chapter" data-level="7.6" data-path="exploration.html"><a href="exploration.html#species-co-occurences"><i class="fa fa-check"></i><b>7.6</b> Species co-occurences</a></li>
+<li class="chapter" data-level="7.7" data-path="exploration.html"><a href="exploration.html#covariate-plots"><i class="fa fa-check"></i><b>7.7</b> Covariate plots</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="composition.html"><a href="composition.html"><i class="fa fa-check"></i><b>8</b> Community composition</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="composition.html"><a href="composition.html#observed-richness"><i class="fa fa-check"></i><b>8.1</b> Observed richness</a></li>
+<li class="chapter" data-level="8.2" data-path="composition.html"><a href="composition.html#estimated-richness"><i class="fa fa-check"></i><b>8.2</b> Estimated richness</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="composition.html"><a href="composition.html#incidence-patterns"><i class="fa fa-check"></i><b>8.2.1</b> 1) Incidence patterns</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="composition.html"><a href="composition.html#basic-results-plot"><i class="fa fa-check"></i><b>8.3</b> Basic results plot</a></li>
+<li class="chapter" data-level="8.4" data-path="composition.html"><a href="composition.html#sampling-unit-based-incidence-data"><i class="fa fa-check"></i><b>8.4</b> Sampling-unit-based incidence data</a>
+<ul>
+<li class="chapter" data-level="8.4.1" data-path="composition.html"><a href="composition.html#survey-station-example"><i class="fa fa-check"></i><b>8.4.1</b> Survey station example</a></li>
+<li class="chapter" data-level="8.4.2" data-path="composition.html"><a href="composition.html#sampling-duration-example"><i class="fa fa-check"></i><b>8.4.2</b> Sampling duration example</a></li>
+</ul></li>
+<li class="chapter" data-level="8.5" data-path="composition.html"><a href="composition.html#other-diversity-metrics"><i class="fa fa-check"></i><b>8.5</b> Other diversity metrics</a>
+<ul>
+<li class="chapter" data-level="8.5.1" data-path="composition.html"><a href="composition.html#simpson-and-shannon"><i class="fa fa-check"></i><b>8.5.1</b> Simpson and Shannon</a></li>
+<li class="chapter" data-level="8.5.2" data-path="composition.html"><a href="composition.html#non-metric-multidimensional-scaling"><i class="fa fa-check"></i><b>8.5.2</b> Non-metric multidimensional scaling</a></li>
+<li class="chapter" data-level="8.5.3" data-path="composition.html"><a href="composition.html#extensions"><i class="fa fa-check"></i><b>8.5.3</b> Extensions</a></li>
+<li class="chapter" data-level="8.5.4" data-path="composition.html"><a href="composition.html#examples-in-the-literature"><i class="fa fa-check"></i><b>8.5.4</b> Examples in the literature</a></li>
+<li class="chapter" data-level="8.5.5" data-path="composition.html"><a href="composition.html#multispecies-occupancy-model"><i class="fa fa-check"></i><b>8.5.5</b> 2) Multispecies occupancy model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="habitat-use.html"><a href="habitat-use.html"><i class="fa fa-check"></i><b>9</b> Habitat use</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="habitat-use.html"><a href="habitat-use.html#calculating-capture-rate"><i class="fa fa-check"></i><b>9.1</b> Calculating capture rate</a></li>
+<li class="chapter" data-level="9.2" data-path="habitat-use.html"><a href="habitat-use.html#single-species-models"><i class="fa fa-check"></i><b>9.2</b> Single-species models</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="habitat-use.html"><a href="habitat-use.html#simple-linear-model"><i class="fa fa-check"></i><b>9.2.1</b> Simple linear model</a></li>
+<li class="chapter" data-level="9.2.2" data-path="habitat-use.html"><a href="habitat-use.html#mixed-effects-model"><i class="fa fa-check"></i><b>9.2.2</b> Mixed-effects model</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="habitat-use.html"><a href="habitat-use.html#extension"><i class="fa fa-check"></i><b>9.3</b> Extension</a></li>
+<li class="chapter" data-level="9.4" data-path="habitat-use.html"><a href="habitat-use.html#multispecies-model"><i class="fa fa-check"></i><b>9.4</b> Multispecies model</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="habitat-use.html"><a href="habitat-use.html#examples-in-the-literature-1"><i class="fa fa-check"></i><b>9.4.1</b> Examples in the literature</a></li>
+<li class="chapter" data-level="9.4.2" data-path="habitat-use.html"><a href="habitat-use.html#future-additions"><i class="fa fa-check"></i><b>9.4.2</b> Future additions</a></li>
+<li class="chapter" data-level="9.4.3" data-path="habitat-use.html"><a href="habitat-use.html#further-reading"><i class="fa fa-check"></i><b>9.4.3</b> Further reading</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="occupancy.html"><a href="occupancy.html"><i class="fa fa-check"></i><b>10</b> Occupancy</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="occupancy.html"><a href="occupancy.html#single-species-occupancy-model"><i class="fa fa-check"></i><b>10.1</b> Single species occupancy model</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="occupancy.html"><a href="occupancy.html#unmarked-package"><i class="fa fa-check"></i><b>10.1.1</b> unmarked package</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="occupancy.html"><a href="occupancy.html#multispecies-occupancy-model-two-or-more"><i class="fa fa-check"></i><b>10.2</b> Multispecies occupancy model (two or more)</a></li>
+<li class="chapter" data-level="10.3" data-path="occupancy.html"><a href="occupancy.html#spatial-occupancy-model-spoccupancy"><i class="fa fa-check"></i><b>10.3</b> Spatial occupancy model: spOccupancy</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="occupancy.html"><a href="occupancy.html#single-species-model"><i class="fa fa-check"></i><b>10.3.1</b> Single species model</a></li>
+<li class="chapter" data-level="10.3.2" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>10.3.2</b> Multi species model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>11</b> Activity</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="activity.html"><a href="activity.html#independent-detections-or-raw-data"><i class="fa fa-check"></i><b>11.1</b> Independent detections or raw data</a></li>
+<li class="chapter" data-level="11.2" data-path="activity.html"><a href="activity.html#example"><i class="fa fa-check"></i><b>11.2</b> Example</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>11.2.1</b> Accounting for sunrise and sunset</a></li>
+</ul></li>
+<li class="chapter" data-level="11.3" data-path="activity.html"><a href="activity.html#thoughts"><i class="fa fa-check"></i><b>11.3</b> Thoughts</a></li>
+<li class="chapter" data-level="11.4" data-path="activity.html"><a href="activity.html#further-reading-1"><i class="fa fa-check"></i><b>11.4</b> Further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="behavior.html"><a href="behavior.html"><i class="fa fa-check"></i><b>12</b> Behavior</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>12.1</b> Behavioural designations</a></li>
+<li class="chapter" data-level="12.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>12.2</b> Event duration</a></li>
+<li class="chapter" data-level="12.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>12.3</b> Animal speed and day range</a></li>
+<li class="chapter" data-level="12.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>12.4</b> Experimental manipulations</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>13</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="interactions.html"><a href="interactions.html#worked-example"><i class="fa fa-check"></i><b>13.1</b> Worked example</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="density.html"><a href="density.html"><i class="fa fa-check"></i><b>14</b> Density</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="density.html"><a href="density.html#marked-individuals"><i class="fa fa-check"></i><b>14.1</b> Marked individuals</a></li>
+<li class="chapter" data-level="14.2" data-path="density.html"><a href="density.html#unmarked-spatial-capture-recapture-uscr"><i class="fa fa-check"></i><b>14.2</b> Unmarked spatial capture recapture (uSCR)</a></li>
+<li class="chapter" data-level="14.3" data-path="density.html"><a href="density.html#random-encounter-model"><i class="fa fa-check"></i><b>14.3</b> Random encounter model</a>
+<ul>
+<li class="chapter" data-level="14.3.1" data-path="density.html"><a href="density.html#formatting"><i class="fa fa-check"></i><b>14.3.1</b> Formatting</a></li>
+</ul></li>
+<li class="chapter" data-level="14.4" data-path="density.html"><a href="density.html#time-to-event-space-to-event-density-estimates"><i class="fa fa-check"></i><b>14.4</b> Time to event/ Space to event density estimates</a></li>
+<li class="chapter" data-level="14.5" data-path="density.html"><a href="density.html#n-mixture-model-in-unmarked"><i class="fa fa-check"></i><b>14.5</b> N-mixture model in unmarked</a></li>
+<li class="chapter" data-level="14.6" data-path="density.html"><a href="density.html#abmi-methods"><i class="fa fa-check"></i><b>14.6</b> ABMI Methods</a></li>
+<li class="chapter" data-level="14.7" data-path="density.html"><a href="density.html#comparison"><i class="fa fa-check"></i><b>14.7</b> Comparison</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="phenology.html"><a href="phenology.html"><i class="fa fa-check"></i><b>15</b> Phenology</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="phenology.html"><a href="phenology.html#worked-example-1"><i class="fa fa-check"></i><b>15.1</b> Worked example</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="markdown-reports.html"><a href="markdown-reports.html"><i class="fa fa-check"></i><b>16</b> Markdown reports</a></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Camera Trap Data Management and Analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="covariates" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">Chapter 6</span> Analysis covariates<a href="covariates.html#covariates" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Once we have created the building blocks for our data analysis dataframes, we must bring in the variables which will be used in the modelling steps. It is important to not that there are millions of ways to add covariates - both in terms of how you do it, and where you derrive the data from. The covariates you use will dpeend on the questions you have, and the context of your survey. The examples provided here are not comprehensive and serve only as a guide!</p>
+<p><strong>load the required packages</strong></p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="covariates.html#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(kableExtra);<span class="fu">library</span>(dplyr); <span class="fu">library</span>(sf); <span class="fu">library</span>(MODISTools); <span class="fu">library</span>(lubridate); <span class="fu">library</span>(corrplot); <span class="fu">library</span>(traitdata); <span class="fu">library</span>(terra); <span class="fu">library</span>(osmdata); <span class="fu">library</span>(elevatr)</span></code></pre></div>
+<p>We can simplify the covariate options we have available into two distinct categories:</p>
+<p><strong>- Species traits</strong></p>
+<p>The traits are species-level covariates which we think are important in structuring their responces to other covariates, such as human modification.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="covariates.html#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Start by reading in your species list</span></span>
+<span id="cb2-2"><a href="covariates.html#cb2-2" aria-hidden="true" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<p><strong>- Location-level covariates</strong></p>
+<p>Location-level covariates are characteristics of the camera locations which are either fundamental to your question (such as the habitat type, degree of human modification, or distance to the nearest road), or they are things you are not directly interested in but must account for in your analyses. The way we derive and treat these variables are identical however.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="covariates.html#cb3-1" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div id="species-traits" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> Species traits<a href="covariates.html#species-traits" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is easier than ever before to add trait data to your species lists, particularly with the advent of R packages which pool multiple data sources such as the <a href="https://github.com/RS-eco/traitdata"><code>traitdata</code> database</a>, which to date, compiles data from 32 different sources.</p>
+<p>Below we use this package to add trait data to the project species list:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="covariates.html#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This package isn&#39;t available on Cran, so we must use the remotes package</span></span>
+<span id="cb4-2"><a href="covariates.html#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
+<span id="cb4-3"><a href="covariates.html#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="co">#remotes::install_github(&quot;RS-eco/traitdata&quot;, build_vignettes = T, force=T)</span></span>
+<span id="cb4-4"><a href="covariates.html#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the library</span></span>
+<span id="cb4-5"><a href="covariates.html#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(traitdata)</span></code></pre></div>
+<p>To pull the data for a specific database we use the following code:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="covariates.html#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;elton_mammals&quot;</span>)</span>
+<span id="cb5-2"><a href="covariates.html#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="covariates.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To see all the options available run: </span></span></code></pre></div>
+<p>To explore the full list of available datasets clikc <a href="https://opentraits.org/datasets.html">this link</a>.</p>
+<p>Let’s take a look at what categories we have available to us:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="covariates.html#cb6-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">head</span>(elton_mammals) <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;200px&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="covariates.html#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<table>
+<thead>
+<tr>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+MSW3_ID
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Genus
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Species
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Family
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Inv
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Vend
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Vect
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Vfish
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Vunk
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Scav
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Fruit
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Nect
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Seed
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.PlantO
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Source
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Diet.Certainty
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+ForStrat.Value
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+ForStrat.Certainty
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+ForStrat.Comment
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Activity.Nocturnal
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Activity.Crepuscular
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+Activity.Diurnal
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Activity.Source
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Activity.Certainty
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+BodyMass.Value
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+BodyMass.Source
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+BodyMass.SpecLevel
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+Full.Reference
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+scientificNameStd
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Tachyglossus
+</td>
+<td style="text-align:left;">
+aculeatus
+</td>
+<td style="text-align:left;">
+Tachyglossidae
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:right;">
+3025.00
+</td>
+<td style="text-align:left;">
+Ref_117
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nowak R.M. (1999). Walker’s mammals of the world. Sixth edition edn. The Johns Hopkins University Press, Baltimore, Maryland
+</td>
+<td style="text-align:left;">
+Tachyglossus aculeatus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+2
+</td>
+<td style="text-align:left;">
+Zaglossus
+</td>
+<td style="text-align:left;">
+attenboroughi
+</td>
+<td style="text-align:left;">
+Tachyglossidae
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_65
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:right;">
+8532.39
+</td>
+<td style="text-align:left;">
+Ref_2, Ref_3
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Leary, T., Seri, L., Flannery, T., Wright, D., Hamilton, S., Helgen, K., Singadan, R., Menzies, J., Allison, A., James, R., Aplin, K., Salas, L. &amp; Dickman, C. 2008.�Zaglossus attenboroughi. In: IUCN 2010. IUCN Red List of Threatened Species. Version 2010.
+</td>
+<td style="text-align:left;">
+Zaglossus attenboroughi
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+3
+</td>
+<td style="text-align:left;">
+Zaglossus
+</td>
+<td style="text-align:left;">
+bartoni
+</td>
+<td style="text-align:left;">
+Tachyglossidae
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_2
+</td>
+<td style="text-align:left;">
+D1
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:right;">
+7180.00
+</td>
+<td style="text-align:left;">
+Ref_131
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Genus Average
+</td>
+<td style="text-align:left;">
+Zaglossus bartoni
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+4
+</td>
+<td style="text-align:left;">
+Zaglossus
+</td>
+<td style="text-align:left;">
+bruijni
+</td>
+<td style="text-align:left;">
+Tachyglossidae
+</td>
+<td style="text-align:right;">
+100
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:right;">
+10139.50
+</td>
+<td style="text-align:left;">
+Ref_117
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nowak R.M. (1999). Walker’s mammals of the world. Sixth edition edn. The Johns Hopkins University Press, Baltimore, Maryland
+</td>
+<td style="text-align:left;">
+Zaglossus bruijni
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+5
+</td>
+<td style="text-align:left;">
+Ornithorhynchus
+</td>
+<td style="text-align:left;">
+anatinus
+</td>
+<td style="text-align:left;">
+Ornithorhynchidae
+</td>
+<td style="text-align:right;">
+80
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:left;">
+G
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:right;">
+1484.25
+</td>
+<td style="text-align:left;">
+Ref_117
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nowak R.M. (1999). Walker’s mammals of the world. Sixth edition edn. The Johns Hopkins University Press, Baltimore, Maryland
+</td>
+<td style="text-align:left;">
+Ornithorhynchus anatinus
+</td>
+</tr>
+<tr>
+<td style="text-align:right;">
+6
+</td>
+<td style="text-align:left;">
+Caluromys
+</td>
+<td style="text-align:left;">
+philander
+</td>
+<td style="text-align:left;">
+Didelphidae
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+20
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+10
+</td>
+<td style="text-align:right;">
+40
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:left;">
+Ar
+</td>
+<td style="text-align:left;">
+A
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+Ref_1
+</td>
+<td style="text-align:left;">
+ABC
+</td>
+<td style="text-align:right;">
+229.25
+</td>
+<td style="text-align:left;">
+Ref_117
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Nowak R.M. (1999). Walker’s mammals of the world. Sixth edition edn. The Johns Hopkins University Press, Baltimore, Maryland
+</td>
+<td style="text-align:left;">
+Caluromys philander
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>Lets make a new column <code>sp</code> which matches the species column in our ‘sp_summary’ datset. We will use this as the “key” variable to extract the trait data.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="covariates.html#cb7-1" aria-hidden="true" tabindex="-1"></a>elton_mammals<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste0</span>(elton_mammals<span class="sc">$</span>Genus,<span class="st">&quot;.&quot;</span> ,elton_mammals<span class="sc">$</span>Species)</span></code></pre></div>
+<p>We do not want to take all of the trait data, so lets subset to <code>BodyMass.Value</code> and the activity data <code>Activity.Nocturnal  Activity.Crepuscular    Activity.Diurnal</code>.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="covariates.html#cb8-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> elton_mammals[, <span class="fu">c</span>(<span class="st">&quot;sp&quot;</span>,<span class="st">&quot;BodyMass.Value&quot;</span>, <span class="st">&quot;Activity.Nocturnal&quot;</span>, <span class="st">&quot;Activity.Crepuscular&quot;</span>,   <span class="st">&quot;Activity.Diurnal&quot;</span>)]</span>
+<span id="cb8-2"><a href="covariates.html#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="covariates.html#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Lets rename the columsn to make them more usable</span></span>
+<span id="cb8-4"><a href="covariates.html#cb8-4" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> <span class="fu">rename</span>(</span>
+<span id="cb8-5"><a href="covariates.html#cb8-5" aria-hidden="true" tabindex="-1"></a>              <span class="at">mass_g =</span> BodyMass.Value,</span>
+<span id="cb8-6"><a href="covariates.html#cb8-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">act_noct =</span> Activity.Nocturnal,</span>
+<span id="cb8-7"><a href="covariates.html#cb8-7" aria-hidden="true" tabindex="-1"></a>              <span class="at">act_crep =</span> Activity.Crepuscular,</span>
+<span id="cb8-8"><a href="covariates.html#cb8-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">act_diur =</span> Activity.Diurnal)</span>
+<span id="cb8-9"><a href="covariates.html#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="covariates.html#cb8-10" aria-hidden="true" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp_summary, tmp)</span></code></pre></div>
+<p>And then check our output:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="covariates.html#cb9-1" aria-hidden="true" tabindex="-1"></a>sp_summary <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;200px&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="covariates.html#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+class
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+order
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+family
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+genus
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+species
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+common_name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sp
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+mass_g
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+act_noct
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+act_crep
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+act_diur
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Artiodactyla
+</td>
+<td style="text-align:left;">
+Cervidae
+</td>
+<td style="text-align:left;">
+Alces
+</td>
+<td style="text-align:left;">
+alces
+</td>
+<td style="text-align:left;">
+Eurasian elk
+</td>
+<td style="text-align:left;">
+Alces.alces
+</td>
+<td style="text-align:right;">
+356998.16
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Artiodactyla
+</td>
+<td style="text-align:left;">
+Cervidae
+</td>
+<td style="text-align:left;">
+Cervus
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+elk
+</td>
+<td style="text-align:left;">
+Cervus.canadensis
+</td>
+<td style="text-align:right;">
+165015.85
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Artiodactyla
+</td>
+<td style="text-align:left;">
+Cervidae
+</td>
+<td style="text-align:left;">
+Odocoileus
+</td>
+<td style="text-align:left;">
+virginianus
+</td>
+<td style="text-align:left;">
+white-tailed deer
+</td>
+<td style="text-align:left;">
+Odocoileus.virginianus
+</td>
+<td style="text-align:right;">
+55508.56
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Artiodactyla
+</td>
+<td style="text-align:left;">
+Cervidae
+</td>
+<td style="text-align:left;">
+Rangifer
+</td>
+<td style="text-align:left;">
+tarandus
+</td>
+<td style="text-align:left;">
+reindeer
+</td>
+<td style="text-align:left;">
+Rangifer.tarandus
+</td>
+<td style="text-align:right;">
+86033.98
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Canidae
+</td>
+<td style="text-align:left;">
+Canis
+</td>
+<td style="text-align:left;">
+latrans
+</td>
+<td style="text-align:left;">
+coyote
+</td>
+<td style="text-align:left;">
+Canis.latrans
+</td>
+<td style="text-align:right;">
+13406.33
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Canidae
+</td>
+<td style="text-align:left;">
+Canis
+</td>
+<td style="text-align:left;">
+lupus
+</td>
+<td style="text-align:left;">
+gray wolf
+</td>
+<td style="text-align:left;">
+Canis.lupus
+</td>
+<td style="text-align:right;">
+32183.33
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Canidae
+</td>
+<td style="text-align:left;">
+Vulpes
+</td>
+<td style="text-align:left;">
+vulpes
+</td>
+<td style="text-align:left;">
+red fox
+</td>
+<td style="text-align:left;">
+Vulpes.vulpes
+</td>
+<td style="text-align:right;">
+5476.17
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+Canada lynx
+</td>
+<td style="text-align:left;">
+Lynx.canadensis
+</td>
+<td style="text-align:right;">
+9373.25
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Mustelidae
+</td>
+<td style="text-align:left;">
+Lontra
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+Northern American river otter
+</td>
+<td style="text-align:left;">
+Lontra.canadensis
+</td>
+<td style="text-align:right;">
+8087.42
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Mustelidae
+</td>
+<td style="text-align:left;">
+Martes
+</td>
+<td style="text-align:left;">
+americana
+</td>
+<td style="text-align:left;">
+American marten
+</td>
+<td style="text-align:left;">
+Martes.americana
+</td>
+<td style="text-align:right;">
+1250.00
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Ursidae
+</td>
+<td style="text-align:left;">
+Ursus
+</td>
+<td style="text-align:left;">
+americanus
+</td>
+<td style="text-align:left;">
+American black bear
+</td>
+<td style="text-align:left;">
+Ursus.americanus
+</td>
+<td style="text-align:right;">
+99949.36
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Lagomorpha
+</td>
+<td style="text-align:left;">
+Leporidae
+</td>
+<td style="text-align:left;">
+Lepus
+</td>
+<td style="text-align:left;">
+americanus
+</td>
+<td style="text-align:left;">
+snowshoe hare
+</td>
+<td style="text-align:left;">
+Lepus.americanus
+</td>
+<td style="text-align:right;">
+1710.02
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Lagomorpha
+</td>
+<td style="text-align:left;">
+Leporidae
+</td>
+<td style="text-align:left;">
+Oryctolagus
+</td>
+<td style="text-align:left;">
+cuniculus
+</td>
+<td style="text-align:left;">
+rabbit
+</td>
+<td style="text-align:left;">
+Oryctolagus.cuniculus
+</td>
+<td style="text-align:right;">
+1832.22
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Rodentia
+</td>
+<td style="text-align:left;">
+Sciuridae
+</td>
+<td style="text-align:left;">
+Tamiasciurus
+</td>
+<td style="text-align:left;">
+hudsonicus
+</td>
+<td style="text-align:left;">
+American red squirrel
+</td>
+<td style="text-align:left;">
+Tamiasciurus.hudsonicus
+</td>
+<td style="text-align:right;">
+201.17
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>If there are any NA’s, it could be for several reasons:</p>
+<ol style="list-style-type: lower-roman">
+<li>There is no trait data for that species - in this case you could either:</li>
+</ol>
+<ul>
+<li><p>leave them as NA’s (excluding them from later analyses) or if you are lucky, your analysis framework might be able to accomodate missing trait data</p></li>
+<li><p>Give the species the mean values obtained from other species in its genus</p></li>
+</ul>
+<ol start="2" style="list-style-type: lower-roman">
+<li>There is a mismatch in taxonomic resolution - you are working with a subspecies that isn’r recognised. Maybe then you can use the sister-species.</li>
+</ol>
+<p>Whatever you do, remember to report it in your methods section!</p>
+<p>Let’s save our species list for a rainy day!</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="covariates.html#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(sp_summary, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_species_list.csv&quot;</span>), <span class="at">row.names =</span> F)</span></code></pre></div>
+</div>
+<div id="camera-station-covariates" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Camera station covariates<a href="covariates.html#camera-station-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>It is common to have a suite of covariates which you would like to investigate the effects of in your datasets. These could take the form of habitat designations or treatment types. These may already be included with your deployment data, or you may need to derive them from a variety of remote sources. In their simplest form, these variable are time invariant (they do not change), however you may have variables which change through time as well (we discuss these at the end). In the following steps, we walk through the process of manipulating and deriving example covariates.</p>
+<p>For the time invariant covariates, we will add them to our <code>locs</code> dataframe imported above.</p>
+<div id="locally-collected-covariates" class="section level3 hasAnchor" number="6.2.1">
+<h3><span class="header-section-number">6.2.1</span> Locally collected covariates<a href="covariates.html#locally-collected-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>You may have collected some data in the field when deploying or checking your camera traps, and kept that data separate from your camera trap data (e.g. vegetation assessments). Provided that the naming convention you gave to these dataframes is the same as in your camera data (e.g. the location is in a column called <code>placename</code>) - you can do a ’left_join()` to merge the two datasets.</p>
+<p>Import a sample set of local covariates:</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="covariates.html#cb11-1" aria-hidden="true" tabindex="-1"></a>local_covs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/example_covariates/example_dataframe.csv&quot;</span>)</span></code></pre></div>
+<p>Lets take a look at the data structure:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="covariates.html#cb12-1" aria-hidden="true" tabindex="-1"></a>local_covs <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="covariates.html#cb12-2" aria-hidden="true" tabindex="-1"></a>  kableExtra<span class="sc">::</span><span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;250px&quot;</span>)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; ">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+placename
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+line_of_sight_m
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+ALG001
+</td>
+<td style="text-align:right;">
+137.12500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG002
+</td>
+<td style="text-align:right;">
+131.52778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG003
+</td>
+<td style="text-align:right;">
+353.65833
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG004
+</td>
+<td style="text-align:right;">
+158.04167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG005
+</td>
+<td style="text-align:right;">
+305.81944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG006
+</td>
+<td style="text-align:right;">
+60.12500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG007
+</td>
+<td style="text-align:right;">
+310.58333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG008
+</td>
+<td style="text-align:right;">
+112.75000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG009
+</td>
+<td style="text-align:right;">
+299.02778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG010
+</td>
+<td style="text-align:right;">
+102.30556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG011
+</td>
+<td style="text-align:right;">
+223.56944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG012
+</td>
+<td style="text-align:right;">
+140.91667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG013
+</td>
+<td style="text-align:right;">
+394.56944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG014
+</td>
+<td style="text-align:right;">
+196.87500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG015
+</td>
+<td style="text-align:right;">
+163.11111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG016
+</td>
+<td style="text-align:right;">
+116.11111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG017
+</td>
+<td style="text-align:right;">
+138.19444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG018
+</td>
+<td style="text-align:right;">
+304.29167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG019
+</td>
+<td style="text-align:right;">
+330.97222
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG020
+</td>
+<td style="text-align:right;">
+204.40278
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG021
+</td>
+<td style="text-align:right;">
+264.94444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG022
+</td>
+<td style="text-align:right;">
+229.13889
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG023
+</td>
+<td style="text-align:right;">
+218.29167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG024
+</td>
+<td style="text-align:right;">
+425.43056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG025
+</td>
+<td style="text-align:right;">
+56.97222
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG026
+</td>
+<td style="text-align:right;">
+200.05556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:right;">
+252.95833
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG028
+</td>
+<td style="text-align:right;">
+277.50000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:right;">
+206.52778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG030
+</td>
+<td style="text-align:right;">
+43.38889
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG031
+</td>
+<td style="text-align:right;">
+334.27778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG032
+</td>
+<td style="text-align:right;">
+83.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG033
+</td>
+<td style="text-align:right;">
+165.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG034
+</td>
+<td style="text-align:right;">
+337.79167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG035
+</td>
+<td style="text-align:right;">
+439.61111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG036
+</td>
+<td style="text-align:right;">
+62.69444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG037
+</td>
+<td style="text-align:right;">
+392.61111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG038
+</td>
+<td style="text-align:right;">
+352.75000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG039
+</td>
+<td style="text-align:right;">
+339.76389
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG040
+</td>
+<td style="text-align:right;">
+182.75000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG041
+</td>
+<td style="text-align:right;">
+109.25000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG042
+</td>
+<td style="text-align:right;">
+219.56944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG043
+</td>
+<td style="text-align:right;">
+62.41667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG044
+</td>
+<td style="text-align:right;">
+374.26389
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG045
+</td>
+<td style="text-align:right;">
+294.83333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG046
+</td>
+<td style="text-align:right;">
+34.50000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG047
+</td>
+<td style="text-align:right;">
+363.80556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG048
+</td>
+<td style="text-align:right;">
+392.93056
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG049
+</td>
+<td style="text-align:right;">
+80.77778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG050
+</td>
+<td style="text-align:right;">
+139.36111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG051
+</td>
+<td style="text-align:right;">
+208.12500
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG052
+</td>
+<td style="text-align:right;">
+13.95833
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG053
+</td>
+<td style="text-align:right;">
+99.30556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG054
+</td>
+<td style="text-align:right;">
+35.47222
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG055
+</td>
+<td style="text-align:right;">
+189.06944
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG056
+</td>
+<td style="text-align:right;">
+55.41667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG057
+</td>
+<td style="text-align:right;">
+93.04167
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG058
+</td>
+<td style="text-align:right;">
+80.91667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG059
+</td>
+<td style="text-align:right;">
+41.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG060
+</td>
+<td style="text-align:right;">
+189.90278
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG061
+</td>
+<td style="text-align:right;">
+11.16667
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG062
+</td>
+<td style="text-align:right;">
+16.00000
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG063
+</td>
+<td style="text-align:right;">
+28.94444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG064
+</td>
+<td style="text-align:right;">
+34.27778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG065
+</td>
+<td style="text-align:right;">
+20.11111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG066
+</td>
+<td style="text-align:right;">
+36.94444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG067
+</td>
+<td style="text-align:right;">
+188.83333
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG068
+</td>
+<td style="text-align:right;">
+72.27778
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG069
+</td>
+<td style="text-align:right;">
+22.85556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG070
+</td>
+<td style="text-align:right;">
+28.61111
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG071
+</td>
+<td style="text-align:right;">
+20.05556
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG072
+</td>
+<td style="text-align:right;">
+52.44444
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG073
+</td>
+<td style="text-align:right;">
+55.94444
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>It is a dataframe where the survey locations are rows and the local covariates, in this case <code>line_of_sight_m</code>, are columns.</p>
+<p>To add this data to our station data, we use a <code>left_join()</code> operation from the <code>dplyr()</code> package. It uses a key variable which is common in both data frames to add data from the “right-hand side” to the rows in the “left-hand side” which are not already present. Any rows present in the right-hand side which are not in the left-hand side will be skipped.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="covariates.html#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb13-2"><a href="covariates.html#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="covariates.html#cb13-3" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, local_covs)</span></code></pre></div>
+<p>For more examples of joins using <code>dplyr()</code> see: <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">https://dplyr.tidyverse.org/reference/mutate-joins.html</a></p>
+</div>
+<div id="remotely-collected-covariates" class="section level3 hasAnchor" number="6.2.2">
+<h3><span class="header-section-number">6.2.2</span> Remotely collected covariates<a href="covariates.html#remotely-collected-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>To exploit remotely collected data sources we need to use a package to help us with spatial data.</p>
+<div id="key-skills-sf-package" class="section level4 hasAnchor" number="6.2.2.1">
+<h4><span class="header-section-number">6.2.2.1</span> Key skills: <code>sf</code> package<a href="covariates.html#key-skills-sf-package" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The most intuitive package to learn spatial operations in R is the <code>simple features</code> package (a.k.a. <code>sf</code>).
+<code>sf</code> allows you to use spatial dataframes in the style of a typical R dataframe. We use this package frequently as it allows you to rapidly change coordinate projection systems (e.g. lat/long to UTM) and rapidly perform spatial operations.</p>
+<p>Lets convert our “normal” dataframe to an <code>sf</code> dataframe:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="covariates.html#cb14-1" aria-hidden="true" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(locs,                              <span class="co"># We specify the dataframe </span></span>
+<span id="cb14-2"><a href="covariates.html#cb14-2" aria-hidden="true" tabindex="-1"></a>                    <span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="co"># The XY coordinates</span></span>
+<span id="cb14-3"><a href="covariates.html#cb14-3" aria-hidden="true" tabindex="-1"></a>                    <span class="at">crs=</span><span class="dv">4326</span>)                          <span class="co"># And the projection code</span></span></code></pre></div>
+<p>What does an <code>sf</code> object look like? Like a normal dataframe but with a weird header:</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="covariates.html#cb15-1" aria-hidden="true" tabindex="-1"></a>locs_sf</span></code></pre></div>
+<pre><code>## Simple feature collection with 38 features and 4 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: -112.6467 ymin: 56.15983 xmax: -112.3848 ymax: 56.49352
+## Geodetic CRS:  WGS 84
+## First 10 features:
+##                 project_id placename feature_type line_of_sight_m
+## 1  AlgarRestorationProject    ALG027     HumanUse       252.95833
+## 2  AlgarRestorationProject    ALG029     HumanUse       206.52778
+## 3  AlgarRestorationProject    ALG031     HumanUse       334.27778
+## 4  AlgarRestorationProject    ALG032     HumanUse        83.00000
+## 5  AlgarRestorationProject    ALG035     HumanUse       439.61111
+## 6  AlgarRestorationProject    ALG036     NatRegen        62.69444
+## 7  AlgarRestorationProject    ALG037     HumanUse       392.61111
+## 8  AlgarRestorationProject    ALG038     HumanUse       352.75000
+## 9  AlgarRestorationProject    ALG039     HumanUse       339.76389
+## 10 AlgarRestorationProject    ALG043     NatRegen        62.41667
+##                      geometry
+## 1   POINT (-112.4735 56.3328)
+## 2  POINT (-112.5483 56.39474)
+## 3   POINT (-112.482 56.30899)
+## 4  POINT (-112.3968 56.40197)
+## 5  POINT (-112.4761 56.38428)
+## 6  POINT (-112.4058 56.23178)
+## 7  POINT (-112.4449 56.27898)
+## 8  POINT (-112.4792 56.27039)
+## 9  POINT (-112.4094 56.30127)
+## 10 POINT (-112.5842 56.38715)</code></pre>
+<p>That header is important - it tells you the type of data you have (lines, points, polygons etc), and the projection information (<code>CRS</code>).</p>
+<p>We like using <code>sf</code> as it is very easy to transform coordinates into different projections using <code>st_transform()</code>. USe the website <a href="https://epsg.io/">epsg.io</a> to find the CRS codes for the projection you want - e.g. UTM 12N = 26712, then plug it into the following:</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="covariates.html#cb17-1" aria-hidden="true" tabindex="-1"></a>locs_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(locs_sf, <span class="at">crs=</span><span class="dv">26712</span>)</span></code></pre></div>
+<p>Check the header of <code>locs_utm</code> and you should see that the CRS has changed!</p>
+<p>Plotting <code>sf</code> is a little bit weird. If you try to plot them normally you get lots of replicated plots (one for each column) - try it:</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="covariates.html#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(locs_utm)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-18-1.png" width="672" /></p>
+<p>It can be useful as it varied the colours based on the propoerties of the column. Typically, however, we just want to plot the points themselves. We do that by wrapping the object in <code>st_geometry()</code> this just extracts the geometry of the object.</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="covariates.html#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_utm))</span>
+<span id="cb19-2"><a href="covariates.html#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb19-3"><a href="covariates.html#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+<p>We will use <code>st_geometry()</code> frequently below.</p>
+<p>For more in depth information of <code>sf</code> functionality see: <a href="https://r-spatial.github.io/sf/articles/sf1.html">https://r-spatial.github.io/sf/articles/sf1.html</a></p>
+</div>
+</div>
+<div id="extracting-data-from-local-rasters" class="section level3 hasAnchor" number="6.2.3">
+<h3><span class="header-section-number">6.2.3</span> Extracting data from local rasters<a href="covariates.html#extracting-data-from-local-rasters" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Often we have raster data layers stored which we would like to link to our camera locations. We have included one such example here, a raster which reflects the depth from the soil surface to the water table - a proxy for habitat type in this study site. The layer comes from the 1m Wet Area Mapping (WAM) layer:</p>
+<p><a href="https://www.tandfonline.com/doi/full/10.4296/cwrj2011-909">White, Barry, et al. “Using the cartographic depth-to-water index to locate small streams and associated wet areas across landscapes.” Canadian Water Resources Journal 37.4 (2012): 333-347.</a></p>
+<p><em>NOTE</em> the raster has been downscaled to reduce its size for this course - it is no longer at 1m resolution.</p>
+<p>The only time we deviate from the <code>sf</code> package is to deal with rasters. Raster objects in R are processed really slowly, especially if the raster is large. So instead we use the <code>terra</code> package.</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="covariates.html#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb20-2"><a href="covariates.html#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the example raster using the stars package</span></span>
+<span id="cb20-3"><a href="covariates.html#cb20-3" aria-hidden="true" tabindex="-1"></a>ras <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/raw_data/example_covariates/example_raster.tif&quot;</span>)</span>
+<span id="cb20-4"><a href="covariates.html#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Covert your sf locations to the same projection as your raster then put it in terra `vect` format,</span></span>
+<span id="cb20-5"><a href="covariates.html#cb20-5" aria-hidden="true" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> locs_sf <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="covariates.html#cb20-6" aria-hidden="true" tabindex="-1"></a>                <span class="fu">st_transform</span>(<span class="at">crs=</span><span class="fu">st_crs</span>(ras)) <span class="sc">%&gt;%</span> <span class="co"># change the projection to match the raster</span></span>
+<span id="cb20-7"><a href="covariates.html#cb20-7" aria-hidden="true" tabindex="-1"></a>                <span class="fu">vect</span>() <span class="co"># Turn it into a terra object</span></span></code></pre></div>
+<p>Lets check our layers match up!</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb21-1"><a href="covariates.html#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(ras) <span class="co"># The terra package makes nice raster plots with legends</span></span>
+<span id="cb21-2"><a href="covariates.html#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(locs_terra, <span class="at">add=</span>T) <span class="co"># Add the survey locations as black dots</span></span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-21-1.png" width="672" /></p>
+<p>Great! Now lets buffer our camera locations by 250 meters, and take the average depth to water for each location:</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb22-1"><a href="covariates.html#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Buffer by 250m</span></span>
+<span id="cb22-2"><a href="covariates.html#cb22-2" aria-hidden="true" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> <span class="fu">buffer</span>(locs_terra,<span class="dv">250</span>)</span>
+<span id="cb22-3"><a href="covariates.html#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="covariates.html#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract the values to a temporary object - tmp </span></span>
+<span id="cb22-5"><a href="covariates.html#cb22-5" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">extract</span>(ras, locs_terra, <span class="at">fun=</span>mean)</span>
+<span id="cb22-6"><a href="covariates.html#cb22-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-7"><a href="covariates.html#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a new column in locs_sf called water_depth_m</span></span>
+<span id="cb22-8"><a href="covariates.html#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="co"># They are ordered the same way so no need for a fancy join</span></span>
+<span id="cb22-9"><a href="covariates.html#cb22-9" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>water_depth_m <span class="ot">&lt;-</span> tmp<span class="sc">$</span>Depth2WatAlgar</span></code></pre></div>
+<p>Finally, lets check the distribution of our data!</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb23-1"><a href="covariates.html#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Basic boxplot in base R</span></span>
+<span id="cb23-2"><a href="covariates.html#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>water_depth_m)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-23-1.png" width="672" /></p>
+<p>Most locations are on the water table (lowland sites), others are above it (upload sites), and they have different vegetation characteristics in the field.</p>
+</div>
+<div id="elevatr-package" class="section level3 hasAnchor" number="6.2.4">
+<h3><span class="header-section-number">6.2.4</span> elevatr package<a href="covariates.html#elevatr-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Camera studies often occur over a range of elevations - and we can quickly extract these elevations using the <code>elevatr</code> package and an <code>sf</code> dataframe.</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb24-1"><a href="covariates.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(elevatr)</span>
+<span id="cb24-2"><a href="covariates.html#cb24-2" aria-hidden="true" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">get_elev_point</span>(locs_sf, </span>
+<span id="cb24-3"><a href="covariates.html#cb24-3" aria-hidden="true" tabindex="-1"></a>                          <span class="at">src=</span><span class="st">&quot;aws&quot;</span>, <span class="co">#Amazon Web Service Terrain Tiles - available globally</span></span>
+<span id="cb24-4"><a href="covariates.html#cb24-4" aria-hidden="true" tabindex="-1"></a>                          <span class="at">z =</span> <span class="dv">12</span>)  <span class="co"># z specifies the zoom level, the lower the value the faster the code runs, but the coarser the elevation values are</span></span></code></pre></div>
+<pre><code>## Mosaicing &amp; Projecting</code></pre>
+<pre><code>## Note: Elevation units are in meters</code></pre>
+<p>The <code>src</code> option specifies the sources of the DEM data. We use <code>aws</code> Amazon Web Service Terrain Tiles - which are available globally.</p>
+<p>The <code>z</code> option specifies the resolution of the underlying DEM, the high the value, the more detailed it is. However, it will take longer to run so do not go crazy.</p>
+<p>Let’s plot the output:</p>
+<div class="sourceCode" id="cb27"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb27-1"><a href="covariates.html#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>elevation)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-25-1.png" width="672" /></p>
+<p>An elevation of ~ 500m was expected. Great!</p>
+<p>If you want to download a full elevation raster for your area of interests, see the <a href="https://cran.r-project.org/web/packages/elevatr/vignettes/introduction_to_elevatr.html"><code>introduction to elevatr</code></a></p>
+</div>
+<div id="open-street-maps" class="section level3 hasAnchor" number="6.2.5">
+<h3><span class="header-section-number">6.2.5</span> Open Street Maps<a href="covariates.html#open-street-maps" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Open Street Map (OSM) is an incredible resource for generating covariates for camera trap studies. For example, we might be interested in the distance to the nearest rivers, roads, or trails. All of these anthropogenic features are available in OSM!</p>
+<p><strong>CAREFUL</strong> OSM data is user contributed and often incomplete and patchy. Always plot your data and never assume it is complete without checking it first. For an example fo this see <code>water bodies</code> below.</p>
+<p>First lets load the <code>osmdata</code> package.</p>
+<div class="sourceCode" id="cb28"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb28-1"><a href="covariates.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span></code></pre></div>
+<p>The types of features we can extract using the <code>osmdata</code> package are listed here: <a href="https://wiki.openstreetmap.org/wiki/Map_features">https://wiki.openstreetmap.org/wiki/Map_features</a>.</p>
+<div id="highways" class="section level4 hasAnchor" number="6.2.5.1">
+<h4><span class="header-section-number">6.2.5.1</span> Highways<a href="covariates.html#highways" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Camera trap projects are often interested in human disturbance, of which, highways are an important part.</p>
+<p>Let’s start by defining our area of interest. All <code>osmdata</code> queries begin with a bounding box defining the area of the query:</p>
+<div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="covariates.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># First buffer our points by 10km to create an area of interest (aoi)</span></span>
+<span id="cb29-2"><a href="covariates.html#cb29-2" aria-hidden="true" tabindex="-1"></a>aoi <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(locs_sf, <span class="dv">10000</span>)) <span class="co"># Units are in meters </span></span></code></pre></div>
+<p>We then use this bounding box to return all of the features which cross into it:</p>
+<div class="sourceCode" id="cb30"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb30-1"><a href="covariates.html#cb30-1" aria-hidden="true" tabindex="-1"></a>highway <span class="ot">&lt;-</span> <span class="fu">opq</span>(aoi) <span class="sc">%&gt;%</span> <span class="co">#using the bounding box</span></span>
+<span id="cb30-2"><a href="covariates.html#cb30-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">add_osm_feature</span>(<span class="at">key=</span><span class="st">&quot;highway&quot;</span>) <span class="sc">%&gt;%</span> <span class="co">#extract all highway features</span></span>
+<span id="cb30-3"><a href="covariates.html#cb30-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">osmdata_sf</span>()  <span class="co"># conmvert them into simple features format</span></span></code></pre></div>
+<p>The data you extract is its own “class” of data made up from multiple data types:</p>
+<div class="sourceCode" id="cb31"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb31-1"><a href="covariates.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(highway)</span></code></pre></div>
+<p>Which looks very intimidating! However, the key thing is that it is made up of multiple data slices, each of which represents an <code>sf</code> dataset. Let’s take a look at three of these</p>
+<ul>
+<li>$osm_points</li>
+<li>$osm_lines</li>
+<li>$osm_polygons</li>
+</ul>
+<div class="sourceCode" id="cb32"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb32-1"><a href="covariates.html#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb32-2"><a href="covariates.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
+<span id="cb32-3"><a href="covariates.html#cb32-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">main=</span><span class="st">&quot;osm_lines&quot;</span>)</span>
+<span id="cb32-4"><a href="covariates.html#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+<p>The points or the lines datasets look must useful to us, there is nothing in the polygon layer.</p>
+<p>Let’s use the lines element and add out camera stations:</p>
+<div class="sourceCode" id="cb33"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb33-1"><a href="covariates.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb33-2"><a href="covariates.html#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_as_sfc</span>(aoi))     <span class="co"># st_as_sfc created a polygon from a `bbox` object</span></span>
+<span id="cb33-3"><a href="covariates.html#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">add=</span>T)</span>
+<span id="cb33-4"><a href="covariates.html#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_sf), <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<p>We can now calculate the distances from our cameras to these objects using the following codes:</p>
+<p><code>st_nearest_feature</code> gives us the index number of the feature which is closest to each station.</p>
+<p>We can the use this to request the distance from that nearest feature to each camera station using <code>st_distance</code>. Which, put together, looks like:</p>
+<div class="sourceCode" id="cb34"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb34-1"><a href="covariates.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an index of the nearest object in `highway$osm_lines` to locs_sf</span></span>
+<span id="cb34-2"><a href="covariates.html#cb34-2" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, highway<span class="sc">$</span>osm_lines)</span>
+<span id="cb34-3"><a href="covariates.html#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="covariates.html#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Use that index to ask for the distance to that object</span></span>
+<span id="cb34-5"><a href="covariates.html#cb34-5" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(locs_sf, highway<span class="sc">$</span>osm_lines[index,], </span>
+<span id="cb34-6"><a href="covariates.html#cb34-6" aria-hidden="true" tabindex="-1"></a>                                   <span class="at">by_element=</span>T) <span class="co"># Note `by_element=T` tells st_distance to evaluate things line by line. </span></span></code></pre></div>
+</div>
+<div id="water-bodies" class="section level4 hasAnchor" number="6.2.5.2">
+<h4><span class="header-section-number">6.2.5.2</span> water bodies<a href="covariates.html#water-bodies" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>We also might want to calculate the distances to the nearest water body, and important resource for wildlife. We can do that using the following:</p>
+<div class="sourceCode" id="cb35"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb35-1"><a href="covariates.html#cb35-1" aria-hidden="true" tabindex="-1"></a>water <span class="ot">&lt;-</span> <span class="fu">opq</span>(aoi) <span class="sc">%&gt;%</span></span>
+<span id="cb35-2"><a href="covariates.html#cb35-2" aria-hidden="true" tabindex="-1"></a>           <span class="fu">add_osm_feature</span>(<span class="at">key=</span><span class="st">&quot;water&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb35-3"><a href="covariates.html#cb35-3" aria-hidden="true" tabindex="-1"></a>           <span class="fu">osmdata_sf</span>()</span></code></pre></div>
+<p>Lets check our data:</p>
+<div class="sourceCode" id="cb36"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb36-1"><a href="covariates.html#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb36-2"><a href="covariates.html#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
+<span id="cb36-3"><a href="covariates.html#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_lines), <span class="at">main=</span><span class="st">&quot;osm_lines&quot;</span>)</span>
+<span id="cb36-4"><a href="covariates.html#cb36-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-34-1.png" width="672" /></p>
+<div class="sourceCode" id="cb37"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb37-1"><a href="covariates.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span></code></pre></div>
+<p>In this instance, the lines and the polygons are incomplete, out best bet is the points file!</p>
+<div class="sourceCode" id="cb38"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb38-1"><a href="covariates.html#cb38-1" aria-hidden="true" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, water<span class="sc">$</span>osm_points)</span>
+<span id="cb38-2"><a href="covariates.html#cb38-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-3"><a href="covariates.html#cb38-3" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>water_dist_m <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(locs_sf, water<span class="sc">$</span>osm_points[index,], <span class="at">by_element=</span>T) <span class="co"># Note `by_element=T` tells st_distance to evaluate things line by line. </span></span></code></pre></div>
+<p>For more examples of using the <code>osmdata</code> package see: <a href="https://github.com/ropensci/osmdata">the projects github page</a></p>
+</div>
+</div>
+<div id="google-earth-engine" class="section level3 hasAnchor" number="6.2.6">
+<h3><span class="header-section-number">6.2.6</span> Google Earth Engine<a href="covariates.html#google-earth-engine" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>Google Earth Engine is now available within the R environment using the incredible <code>rgee</code> package. Google Earth Engine is a game changer for accessing large freely available datasets, of the sort that might be used in data synthesis projects. The list of data sets you can access is here: <a href="https://developers.google.com/earth-engine/datasets">Google Earth Engine Catalogue</a>.</p>
+<p><strong>Why use <code>rgee</code>?</strong>
+Becasue it allows you to access vast datasets stored in the clound, which you do not need to download on your computer! Its
+However, it can be tricky to set up - and well beyond the scope of this course! If you are feeling a little bit adventurous, you can follow the steps in this <code>rgee</code> vignette”:</p>
+<p><a href="https://cran.r-project.org/web/packages/rgee/vignettes/rgee01.html">Introduction to rgee</a></p>
+<p>This thread also helped me <a href="https://github.com/r-spatial/rgee/issues/269">gcloud issues</a></p>
+<p>If you do manage to get it setup, it opens are world of possibilities!</p>
+<p>Lets look at a <code>rgee</code> workflow for camera traps. First load the <code>rgee</code> package.</p>
+<div class="sourceCode" id="cb39"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb39-1"><a href="covariates.html#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgee)</span>
+<span id="cb39-2"><a href="covariates.html#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ee_Initialize</span>()</span></code></pre></div>
+<pre><code>## ── rgee 1.1.5 ─────────────────────────────────────── earthengine-api 0.1.323 ── 
+##  ✔ user: not_defined
+##  ✔ Initializing Google Earth Engine:
+ ✔ Initializing Google Earth Engine:  DONE!
+## 
+ ✔ Earth Engine account: users/cwbeirne 
+## ────────────────────────────────────────────────────────────────────────────────</code></pre>
+<p>Next let’s check if python and R are communicating properly:</p>
+<div class="sourceCode" id="cb41"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb41-1"><a href="covariates.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ee_check</span>()</span></code></pre></div>
+<p>If they are - you should see something like this:</p>
+<div class="sourceCode" id="cb42"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb42-1"><a href="covariates.html#cb42-1" aria-hidden="true" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">include_graphics</span>(<span class="st">&quot;images/analysis_covariates/rgee_check.PNG&quot;</span>)</span></code></pre></div>
+<p><img src="images/analysis_covariates/rgee_check.PNG" width="352" /></p>
+<div id="discrete-example" class="section level4 hasAnchor" number="6.2.6.1">
+<h4><span class="header-section-number">6.2.6.1</span> Discrete example<a href="covariates.html#discrete-example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>The way <code>rgee</code> works is you first need to call a data layer, for example the <a href="https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_Landcover_100m_Proba-V-C3_Global#bands">100m global landcover dataset</a>.</p>
+<div class="sourceCode" id="cb43"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb43-1"><a href="covariates.html#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Land Cover</span></span>
+<span id="cb43-2"><a href="covariates.html#cb43-2" aria-hidden="true" tabindex="-1"></a>LC_dataset <span class="ot">&lt;-</span> ee<span class="sc">$</span><span class="fu">Image</span>(<span class="st">&quot;COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019&quot;</span>)<span class="sc">$</span><span class="fu">select</span>(<span class="st">&#39;discrete_classification&#39;</span>)</span></code></pre></div>
+<p>We can quickly plot the layer to see what it looks like before moving on:</p>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="covariates.html#cb44-1" aria-hidden="true" tabindex="-1"></a>Map<span class="sc">$</span><span class="fu">setCenter</span>(<span class="sc">-</span><span class="fl">88.6</span>, <span class="fl">26.4</span>, <span class="dv">1</span>);</span>
+<span id="cb44-2"><a href="covariates.html#cb44-2" aria-hidden="true" tabindex="-1"></a>Map<span class="sc">$</span><span class="fu">addLayer</span>(LC_dataset, {}, <span class="st">&quot;Land Cover&quot;</span>);</span></code></pre></div>
+<div id="htmlwidget-0343f19c1667867e45bf" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-0343f19c1667867e45bf">{"x":{"options":{"minZoom":1,"maxZoom":24,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],[],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/360f510402bc53c2e80ef38cbc2e2cf1-4735f717678f83a2e02e122625f411cd/tiles/{z}/{x}/{y}","Land Cover","Land Cover",{"minZoom":0,"maxZoom":24,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],"Land Cover",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]}],"setView":[[26.4,-88.6],1,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<p>We can then extract the values of that layer to our camera locations using <code>ee_extract</code>:</p>
+<div class="sourceCode" id="cb45"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb45-1"><a href="covariates.html#cb45-1" aria-hidden="true" tabindex="-1"></a>habs <span class="ot">&lt;-</span> <span class="fu">ee_extract</span>(LC_dataset, locs_sf)</span>
+<span id="cb45-2"><a href="covariates.html#cb45-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-3"><a href="covariates.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the LCC key</span></span>
+<span id="cb45-4"><a href="covariates.html#cb45-4" aria-hidden="true" tabindex="-1"></a>codes <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/example_covariates/LCC_codes.csv&quot;</span>)</span>
+<span id="cb45-5"><a href="covariates.html#cb45-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-6"><a href="covariates.html#cb45-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Use left join to label the codes</span></span>
+<span id="cb45-7"><a href="covariates.html#cb45-7" aria-hidden="true" tabindex="-1"></a>habs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(habs, codes)</span>
+<span id="cb45-8"><a href="covariates.html#cb45-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-9"><a href="covariates.html#cb45-9" aria-hidden="true" tabindex="-1"></a><span class="co"># And update the locs_sf dataframe</span></span>
+<span id="cb45-10"><a href="covariates.html#cb45-10" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>lcc_habitats <span class="ot">&lt;-</span> habs<span class="sc">$</span>hab_code</span></code></pre></div>
+<p>Let’s checkout the habitat designations:</p>
+<div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="covariates.html#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(locs_sf<span class="sc">$</span>lcc_habitats)</span></code></pre></div>
+<pre><code>## 
+##  closed_forest_deciduous_broad closed_forest_evergreen_needle 
+##                              1                             29 
+##            closed_forest_other   open_forest_evergreen_needle 
+##                              1                              1 
+##              open_forest_other                         shrubs 
+##                              4                              2</code></pre>
+<p>Well that was very fast and very useful!</p>
+</div>
+<div id="continuous-example" class="section level4 hasAnchor" number="6.2.6.2">
+<h4><span class="header-section-number">6.2.6.2</span> Continuous example<a href="covariates.html#continuous-example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Let’s repeat this process with a continuous variable like biomass. We will use the
+<a href="https://developers.google.com/earth-engine/datasets/catalog/NASA_ORNL_biomass_carbon_density_v1">Global Aboveground and Belowground Biomass Carbon Density Maps</a>.</p>
+<p>Lets read in the layer</p>
+<div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="covariates.html#cb48-1" aria-hidden="true" tabindex="-1"></a>biomass <span class="ot">&lt;-</span> ee<span class="sc">$</span><span class="fu">ImageCollection</span>(<span class="st">&quot;NASA/ORNL/biomass_carbon_density/v1&quot;</span>);</span>
+<span id="cb48-2"><a href="covariates.html#cb48-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-3"><a href="covariates.html#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Specify the layer we want to plot</span></span>
+<span id="cb48-4"><a href="covariates.html#cb48-4" aria-hidden="true" tabindex="-1"></a>bio <span class="ot">=</span> biomass<span class="sc">$</span><span class="fu">first</span>()</span>
+<span id="cb48-5"><a href="covariates.html#cb48-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-6"><a href="covariates.html#cb48-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the colours for the visualisation</span></span>
+<span id="cb48-7"><a href="covariates.html#cb48-7" aria-hidden="true" tabindex="-1"></a>viz <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb48-8"><a href="covariates.html#cb48-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">bands=</span><span class="st">&quot;agb&quot;</span>,</span>
+<span id="cb48-9"><a href="covariates.html#cb48-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">max =</span> <span class="dv">129</span>,</span>
+<span id="cb48-10"><a href="covariates.html#cb48-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">min =</span> <span class="dv">0</span>,</span>
+<span id="cb48-11"><a href="covariates.html#cb48-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&#39;#0c0c0c&#39;</span>, <span class="st">&#39;#071aff&#39;</span>, <span class="st">&#39;#ff0000&#39;</span>, <span class="st">&#39;#ffbd03&#39;</span>, <span class="st">&#39;#fbff05&#39;</span>, <span class="st">&#39;#fffdfd&#39;</span>)</span>
+<span id="cb48-12"><a href="covariates.html#cb48-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb48-13"><a href="covariates.html#cb48-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-14"><a href="covariates.html#cb48-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the map</span></span>
+<span id="cb48-15"><a href="covariates.html#cb48-15" aria-hidden="true" tabindex="-1"></a>Map<span class="sc">$</span><span class="fu">addLayer</span>(<span class="at">eeObject =</span> bio, <span class="at">visParams =</span> viz)</span></code></pre></div>
+<div id="htmlwidget-ad3a88276725bb474c7f" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-ad3a88276725bb474c7f">{"x":{"options":{"minZoom":1,"maxZoom":24,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],[],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/485dbdc16c4459f86100887465cef814-3ef55f403224047979bf279ae441659f/tiles/{z}/{x}/{y}","2010","2010",{"minZoom":0,"maxZoom":24,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],"2010",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]}],"setView":[[26.4,-88.6],1,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<p>Extract the data using <code>ee_extract</code>:</p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb49-1"><a href="covariates.html#cb49-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">ee_extract</span>(biomass, locs_sf)</span></code></pre></div>
+<pre><code>## The image scale is set to 1000.</code></pre>
+<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="covariates.html#cb51-1" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>biomass_agb <span class="ot">&lt;-</span> tmp<span class="sc">$</span>X2010_agb</span></code></pre></div>
+<p>Make a plot to see the distribution of values.</p>
+</div>
+<div id="other-layers-of-interest" class="section level4 hasAnchor" number="6.2.6.3">
+<h4><span class="header-section-number">6.2.6.3</span> Other layers of interest<a href="covariates.html#other-layers-of-interest" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Below we highlight other layers we have used in different analyses.</p>
+<p><strong>Global Human Modification Index</strong></p>
+<p><a href="https://developers.google.com/earth-engine/datasets/catalog/CSP_HM_GlobalHumanModification">Human Modification Index</a></p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="covariates.html#cb52-1" aria-hidden="true" tabindex="-1"></a>hmi <span class="ot">&lt;-</span> ee<span class="sc">$</span><span class="fu">ImageCollection</span>(<span class="st">&quot;CSP/HM/GlobalHumanModification&quot;</span>)</span>
+<span id="cb52-2"><a href="covariates.html#cb52-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-3"><a href="covariates.html#cb52-3" aria-hidden="true" tabindex="-1"></a><span class="co"># select the first image of the collection which corresponds to the cumulative HM  </span></span>
+<span id="cb52-4"><a href="covariates.html#cb52-4" aria-hidden="true" tabindex="-1"></a>hm <span class="ot">=</span> hmi<span class="sc">$</span><span class="fu">first</span>()</span>
+<span id="cb52-5"><a href="covariates.html#cb52-5" aria-hidden="true" tabindex="-1"></a>viz <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb52-6"><a href="covariates.html#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">bands=</span><span class="st">&quot;gHM&quot;</span>,</span>
+<span id="cb52-7"><a href="covariates.html#cb52-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">max =</span> <span class="dv">1</span>,</span>
+<span id="cb52-8"><a href="covariates.html#cb52-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">min =</span> <span class="dv">0</span>,</span>
+<span id="cb52-9"><a href="covariates.html#cb52-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">&#39;#0c0c0c&#39;</span>, <span class="st">&#39;#071aff&#39;</span>, <span class="st">&#39;#ff0000&#39;</span>, <span class="st">&#39;#ffbd03&#39;</span>, <span class="st">&#39;#fbff05&#39;</span>, <span class="st">&#39;#fffdfd&#39;</span>)</span>
+<span id="cb52-10"><a href="covariates.html#cb52-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb52-11"><a href="covariates.html#cb52-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb52-12"><a href="covariates.html#cb52-12" aria-hidden="true" tabindex="-1"></a>Map<span class="sc">$</span><span class="fu">addLayer</span>(<span class="at">eeObject =</span> hm, <span class="at">visParams =</span> viz)</span></code></pre></div>
+<div id="htmlwidget-4cd1f054041ee310f92d" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-4cd1f054041ee310f92d">{"x":{"options":{"minZoom":1,"maxZoom":24,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],[],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/b85e4f4ff6d9547ea7845bc6e46dfe45-1e452e4ff5835ee0bb4e1dee586fe738/tiles/{z}/{x}/{y}","2016","2016",{"minZoom":0,"maxZoom":24,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],"2016",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]}],"setView":[[26.4,-88.6],1,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<p><strong>Protected area status</strong></p>
+<p><a href="https://developers.google.com/earth-engine/datasets/catalog/WCMC_WDPA_current_polygons">WDPA: World Database on Protected Areas</a></p>
+<p>Note - you have to zoom in to see the polygons!</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="covariates.html#cb53-1" aria-hidden="true" tabindex="-1"></a>gpa  <span class="ot">&lt;-</span> ee<span class="sc">$</span><span class="fu">FeatureCollection</span>(<span class="st">&quot;WCMC/WDPA/current/polygons&quot;</span>)</span>
+<span id="cb53-2"><a href="covariates.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot it (note you have to zoom in to see the data)</span></span>
+<span id="cb53-3"><a href="covariates.html#cb53-3" aria-hidden="true" tabindex="-1"></a>Map<span class="sc">$</span><span class="fu">addLayer</span>(gpa, {}, <span class="st">&quot;default display&quot;</span>) </span></code></pre></div>
+<div id="htmlwidget-a432f531cb2b36d529ef" style="width:672px;height:480px;" class="leaflet html-widget"></div>
+<script type="application/json" data-for="htmlwidget-a432f531cb2b36d529ef">{"x":{"options":{"minZoom":1,"maxZoom":24,"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}},"preferCanvas":false,"bounceAtZoomLimits":false,"maxBounds":[[[-90,-370]],[[90,370]]]},"calls":[{"method":"addProviderTiles","args":["CartoDB.Positron","CartoDB.Positron","CartoDB.Positron",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenStreetMap","OpenStreetMap","OpenStreetMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["CartoDB.DarkMatter","CartoDB.DarkMatter","CartoDB.DarkMatter",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["Esri.WorldImagery","Esri.WorldImagery","Esri.WorldImagery",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addProviderTiles","args":["OpenTopoMap","OpenTopoMap","OpenTopoMap",{"errorTileUrl":"","noWrap":false,"detectRetina":false,"pane":"tilePane","maxZoom":24}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],[],{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"addScaleBar","args":[{"maxWidth":100,"metric":true,"imperial":true,"updateWhenIdle":true,"position":"bottomleft"}]},{"method":"addTiles","args":["https://earthengine.googleapis.com/v1alpha/projects/earthengine-legacy/maps/3a181abfbdf9de02efaff485f829e9f4-0951195a9d44fc25d889860bded8ce45/tiles/{z}/{x}/{y}","default display","default display",{"minZoom":0,"maxZoom":24,"tileSize":256,"subdomains":"abc","errorTileUrl":"","tms":false,"noWrap":false,"zoomOffset":0,"zoomReverse":false,"opacity":1,"zIndex":1,"detectRetina":false}]},{"method":"addLayersControl","args":[["CartoDB.Positron","OpenStreetMap","CartoDB.DarkMatter","Esri.WorldImagery","OpenTopoMap"],"default display",{"collapsed":true,"autoZIndex":true,"position":"topleft"}]},{"method":"hideGroup","args":[null]}],"setView":[[26.4,-88.6],1,[]]},"evals":[],"jsHooks":{"render":[{"code":"function(el, x, data) {\n  return (\n      function(el, x, data) {\n      // get the leaflet map\n      var map = this; //HTMLWidgets.find('#' + el.id);\n      // we need a new div element because we have to handle\n      // the mouseover output separately\n      // debugger;\n      function addElement () {\n      // generate new div Element\n      var newDiv = $(document.createElement('div'));\n      // append at end of leaflet htmlwidget container\n      $(el).append(newDiv);\n      //provide ID and style\n      newDiv.addClass('lnlt');\n      newDiv.css({\n      'position': 'relative',\n      'bottomleft':  '0px',\n      'background-color': 'rgba(255, 255, 255, 0.7)',\n      'box-shadow': '0 0 2px #bbb',\n      'background-clip': 'padding-box',\n      'margin': '0',\n      'padding-left': '5px',\n      'color': '#333',\n      'font': '9px/1.5 \"Helvetica Neue\", Arial, Helvetica, sans-serif',\n      'z-index': '700',\n      });\n      return newDiv;\n      }\n\n\n      // check for already existing lnlt class to not duplicate\n      var lnlt = $(el).find('.lnlt');\n\n      if(!lnlt.length) {\n      lnlt = addElement();\n\n      // grab the special div we generated in the beginning\n      // and put the mousmove output there\n\n      map.on('mousemove', function (e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                           ' lon: ' + (e.latlng.lng).toFixed(5) +\n                           ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                           ' | zoom: ' + map.getZoom() +\n                           ' | x: ' + L.CRS.EPSG3857.project(e.latlng).x.toFixed(0) +\n                           ' | y: ' + L.CRS.EPSG3857.project(e.latlng).y.toFixed(0) +\n                           ' | epsg: 3857 ' +\n                           ' | proj4: +proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +no_defs ');\n      } else {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      }\n      });\n\n      // remove the lnlt div when mouse leaves map\n      map.on('mouseout', function (e) {\n      var strip = document.querySelector('.lnlt');\n      if( strip !==null) strip.remove();\n      });\n\n      };\n\n      //$(el).keypress(67, function(e) {\n      map.on('preclick', function(e) {\n      if (e.originalEvent.ctrlKey) {\n      if (document.querySelector('.lnlt') === null) lnlt = addElement();\n      lnlt.text(\n                      ' lon: ' + (e.latlng.lng).toFixed(5) +\n                      ' | lat: ' + (e.latlng.lat).toFixed(5) +\n                      ' | zoom: ' + map.getZoom() + ' ');\n      var txt = document.querySelector('.lnlt').textContent;\n      console.log(txt);\n      //txt.innerText.focus();\n      //txt.select();\n      setClipboardText('\"' + txt + '\"');\n      }\n      });\n\n      }\n      ).call(this.getMap(), el, x, data);\n}","data":null},{"code":"function(el, x, data) {\n  return (function(el,x,data){\n           var map = this;\n\n           map.on('keypress', function(e) {\n               console.log(e.originalEvent.code);\n               var key = e.originalEvent.code;\n               if (key === 'KeyE') {\n                   var bb = this.getBounds();\n                   var txt = JSON.stringify(bb);\n                   console.log(txt);\n\n                   setClipboardText('\\'' + txt + '\\'');\n               }\n           })\n        }).call(this.getMap(), el, x, data);\n}","data":null}]}}</script>
+<p>As ever, these codes just scratch the surface of the power of Google Earth Engine. See the <a href="https://cran.r-project.org/web/packages/rgee/vignettes/rgee01.html">rgee documentation</a> for more ideas!</p>
+</div>
+</div>
+<div id="time-varying-covariates" class="section level3 hasAnchor" number="6.2.7">
+<h3><span class="header-section-number">6.2.7</span> Time-varying covariates<a href="covariates.html#time-varying-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div id="modistools" class="section level4 hasAnchor" number="6.2.7.1">
+<h4><span class="header-section-number">6.2.7.1</span> MODISTools<a href="covariates.html#modistools" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p><code>MODIStools</code> is an R interface to the <a href="https://modis.ornl.gov/data/modis_webservice.html">MODIS Land Products Subsets</a> web services. It allows for easy access to ‘MODIS’ time series directly to your computer! When using <code>MODIStools</code> you should reference:</p>
+<p><a href="https://github.com/ropensci/MODISTools">Hufkens (2022). The MODISTools package: an interface to the MODIS Land Products Subsets Web Services</a></p>
+<p>Also click that link for more details on how to use it.</p>
+<p>Let’s load the package:</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="covariates.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MODISTools)</span></code></pre></div>
+<p>For <code>MODIStools</code> to work, we need to provide a dataframe with the following columns:
+- <code>site_name</code> - the placename
+- `lat’
+- ‘long’</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="covariates.html#cb55-1" aria-hidden="true" tabindex="-1"></a>modis_locs <span class="ot">&lt;-</span> locs <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="covariates.html#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb55-3"><a href="covariates.html#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">site_name=</span>placename, <span class="at">lat=</span>latitude, <span class="at">lon=</span>longitude)</span></code></pre></div>
+<p>We can then look at the available bands for different products.</p>
+<p>Two commonly used ones are <a href="https://lpdaac.usgs.gov/products/mod13q1v006/">MOD13Q1</a> for the derivation of NDVI/EVI, and <a href="https://lpdaac.usgs.gov/products/mod15a2hv006/">MOD15A2H</a> for the derivation of leaf area index (LAI).</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="covariates.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list available bands for a product</span></span>
+<span id="cb56-2"><a href="covariates.html#cb56-2" aria-hidden="true" tabindex="-1"></a>bands <span class="ot">&lt;-</span> <span class="fu">mt_bands</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>) <span class="co">#MOD15A2H</span></span>
+<span id="cb56-3"><a href="covariates.html#cb56-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(bands)</span></code></pre></div>
+<pre><code>##                                     band                description
+## 1          250m_16_days_blue_reflectance Surface Reflectance Band 3
+## 2 250m_16_days_composite_day_of_the_year       Day of year VI pixel
+## 3                       250m_16_days_EVI         16 day EVI average
+## 4           250m_16_days_MIR_reflectance Surface Reflectance Band 7
+## 5                      250m_16_days_NDVI        16 day NDVI average
+## 6           250m_16_days_NIR_reflectance Surface Reflectance Band 2
+##                    units    valid_range fill_value scale_factor add_offset
+## 1            reflectance     0 to 10000      -1000       0.0001          0
+## 2 Julian day of the year       1 to 366         -1         &lt;NA&gt;       &lt;NA&gt;
+## 3   EVI ratio - No units -2000 to 10000      -3000       0.0001          0
+## 4            reflectance     0 to 10000      -1000       0.0001          0
+## 5  NDVI ratio - No units -2000 to 10000      -3000       0.0001          0
+## 6            reflectance     0 to 10000      -1000       0.0001          0</code></pre>
+<p>When we run <code>MODIStools</code> the underlying algorithm chooses the best available pixel value from all the acquisitions from the 16 day period. The criteria used is lowest cloud cover, lowest satellite view angle, and the highest NDVI/EVI value.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="covariates.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="co"># list available dates for a prodcut at a location</span></span>
+<span id="cb58-2"><a href="covariates.html#cb58-2" aria-hidden="true" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">mt_dates</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>, <span class="at">lat =</span> modis_locs<span class="sc">$</span>lat[<span class="dv">1</span>], <span class="at">lon =</span> modis_locs<span class="sc">$</span>lon[<span class="dv">1</span>]) <span class="co">#MOD15A2H</span></span>
+<span id="cb58-3"><a href="covariates.html#cb58-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dates);<span class="fu">tail</span>(dates)</span></code></pre></div>
+<pre><code>##   modis_date calendar_date
+## 1   A2000049    2000-02-18
+## 2   A2000065    2000-03-05
+## 3   A2000081    2000-03-21
+## 4   A2000097    2000-04-06
+## 5   A2000113    2000-04-22
+## 6   A2000129    2000-05-08</code></pre>
+<pre><code>##     modis_date calendar_date
+## 515   A2022177    2022-06-26
+## 516   A2022193    2022-07-12
+## 517   A2022209    2022-07-28
+## 518   A2022225    2022-08-13
+## 519   A2022241    2022-08-29
+## 520   A2022257    2022-09-14</code></pre>
+<p>In the interest of processing time, lets not pull the NDVI scores for the full date range. Instead, we will focus on mid summer in 2019.</p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="covariates.html#cb61-1" aria-hidden="true" tabindex="-1"></a>algar_ndvi <span class="ot">&lt;-</span> <span class="fu">mt_batch_subset</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>,</span>
+<span id="cb61-2"><a href="covariates.html#cb61-2" aria-hidden="true" tabindex="-1"></a>                              <span class="at">df=</span>modis_locs,</span>
+<span id="cb61-3"><a href="covariates.html#cb61-3" aria-hidden="true" tabindex="-1"></a>                              <span class="at">band =</span> <span class="st">&quot;250m_16_days_NDVI&quot;</span>,</span>
+<span id="cb61-4"><a href="covariates.html#cb61-4" aria-hidden="true" tabindex="-1"></a>                              <span class="at">start =</span> <span class="st">&quot;2019-07-01&quot;</span>,</span>
+<span id="cb61-5"><a href="covariates.html#cb61-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">end =</span> <span class="st">&quot;2019-08-31&quot;</span>,</span>
+<span id="cb61-6"><a href="covariates.html#cb61-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">km_lr =</span> <span class="dv">0</span>,         <span class="co"># Use these options if you want to buffer the value (km left)</span></span>
+<span id="cb61-7"><a href="covariates.html#cb61-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">km_ab =</span> <span class="dv">0</span>,         <span class="co"># Use these options if you want to buffer the value (km above)</span></span>
+<span id="cb61-8"><a href="covariates.html#cb61-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">internal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<p>The raw output is somewhat intimidating:</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="covariates.html#cb62-1" aria-hidden="true" tabindex="-1"></a>algar_ndvi[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ] <span class="sc">%&gt;%</span> </span>
+<span id="cb62-2"><a href="covariates.html#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb62-3"><a href="covariates.html#cb62-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;300px&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb62-4"><a href="covariates.html#cb62-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+xllcorner
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+yllcorner
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+cellsize
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+nrows
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+ncols
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+band
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+units
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+scale
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+latitude
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+longitude
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+site
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+product
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+start
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+end
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+complete
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+modis_date
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+calendar_date
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+tile
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+proc_date
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+pixel
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1.1
+</td>
+<td style="text-align:left;">
+-6933243.15
+</td>
+<td style="text-align:left;">
+6263756.27
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.33280
+</td>
+<td style="text-align:right;">
+-112.4735
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019193
+</td>
+<td style="text-align:left;">
+2019-07-12
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019210000536
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7918
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.1
+</td>
+<td style="text-align:left;">
+-6933243.15
+</td>
+<td style="text-align:left;">
+6263756.27
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.33280
+</td>
+<td style="text-align:right;">
+-112.4735
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019209
+</td>
+<td style="text-align:left;">
+2019-07-28
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019226013340
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7794
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3.1
+</td>
+<td style="text-align:left;">
+-6933243.15
+</td>
+<td style="text-align:left;">
+6263756.27
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.33280
+</td>
+<td style="text-align:right;">
+-112.4735
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019225
+</td>
+<td style="text-align:left;">
+2019-08-13
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019248132009
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7777
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4.1
+</td>
+<td style="text-align:left;">
+-6933243.15
+</td>
+<td style="text-align:left;">
+6263756.27
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.33280
+</td>
+<td style="text-align:right;">
+-112.4735
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019241
+</td>
+<td style="text-align:left;">
+2019-08-29
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019262164703
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7341
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1.11
+</td>
+<td style="text-align:left;">
+-6926756.76
+</td>
+<td style="text-align:left;">
+6270705.96
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.39474
+</td>
+<td style="text-align:right;">
+-112.5483
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019193
+</td>
+<td style="text-align:left;">
+2019-07-12
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019210000536
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7983
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.11
+</td>
+<td style="text-align:left;">
+-6926756.76
+</td>
+<td style="text-align:left;">
+6270705.96
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.39474
+</td>
+<td style="text-align:right;">
+-112.5483
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019209
+</td>
+<td style="text-align:left;">
+2019-07-28
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019226013340
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+8134
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3.11
+</td>
+<td style="text-align:left;">
+-6926756.76
+</td>
+<td style="text-align:left;">
+6270705.96
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.39474
+</td>
+<td style="text-align:right;">
+-112.5483
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019225
+</td>
+<td style="text-align:left;">
+2019-08-13
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019248132009
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7933
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4.11
+</td>
+<td style="text-align:left;">
+-6926756.76
+</td>
+<td style="text-align:left;">
+6270705.96
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.39474
+</td>
+<td style="text-align:right;">
+-112.5483
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019241
+</td>
+<td style="text-align:left;">
+2019-08-29
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019262164703
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6749
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1.12
+</td>
+<td style="text-align:left;">
+-6938107.98
+</td>
+<td style="text-align:left;">
+6261208.01
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.30899
+</td>
+<td style="text-align:right;">
+-112.4820
+</td>
+<td style="text-align:left;">
+ALG031
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019193
+</td>
+<td style="text-align:left;">
+2019-07-12
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019210000536
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7553
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.12
+</td>
+<td style="text-align:left;">
+-6938107.98
+</td>
+<td style="text-align:left;">
+6261208.01
+</td>
+<td style="text-align:left;">
+231.656358264
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+NDVI ratio - No units
+</td>
+<td style="text-align:left;">
+0.0001
+</td>
+<td style="text-align:right;">
+56.30899
+</td>
+<td style="text-align:right;">
+-112.4820
+</td>
+<td style="text-align:left;">
+ALG031
+</td>
+<td style="text-align:left;">
+MOD13Q1
+</td>
+<td style="text-align:left;">
+2019-07-01
+</td>
+<td style="text-align:left;">
+2019-08-31
+</td>
+<td style="text-align:left;">
+TRUE
+</td>
+<td style="text-align:left;">
+A2019209
+</td>
+<td style="text-align:left;">
+2019-07-28
+</td>
+<td style="text-align:left;">
+h11v03
+</td>
+<td style="text-align:left;">
+2019226013340
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+7986
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>So lets simplify it to the key elements of information and rename them to match our camera data where approriate:</p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="covariates.html#cb63-1" aria-hidden="true" tabindex="-1"></a>ndvi_simple <span class="ot">&lt;-</span> algar_ndvi <span class="sc">%&gt;%</span> </span>
+<span id="cb63-2"><a href="covariates.html#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(   site, band, calendar_date, value) <span class="sc">%&gt;%</span> </span>
+<span id="cb63-3"><a href="covariates.html#cb63-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">placename=</span>site)</span>
+<span id="cb63-4"><a href="covariates.html#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-5"><a href="covariates.html#cb63-5" aria-hidden="true" tabindex="-1"></a>ndvi_simple[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ] <span class="sc">%&gt;%</span> </span>
+<span id="cb63-6"><a href="covariates.html#cb63-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb63-7"><a href="covariates.html#cb63-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;300px&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb63-8"><a href="covariates.html#cb63-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
+<table>
+<thead>
+<tr>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+placename
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+band
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+calendar_date
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+value
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left;">
+1.1
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-07-12
+</td>
+<td style="text-align:right;">
+7918
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.1
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-07-28
+</td>
+<td style="text-align:right;">
+7794
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3.1
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-08-13
+</td>
+<td style="text-align:right;">
+7777
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4.1
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-08-29
+</td>
+<td style="text-align:right;">
+7341
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1.11
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-07-12
+</td>
+<td style="text-align:right;">
+7983
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.11
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-07-28
+</td>
+<td style="text-align:right;">
+8134
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+3.11
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-08-13
+</td>
+<td style="text-align:right;">
+7933
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+4.11
+</td>
+<td style="text-align:left;">
+ALG029
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-08-29
+</td>
+<td style="text-align:right;">
+6749
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+1.12
+</td>
+<td style="text-align:left;">
+ALG031
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-07-12
+</td>
+<td style="text-align:right;">
+7553
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+2.12
+</td>
+<td style="text-align:left;">
+ALG031
+</td>
+<td style="text-align:left;">
+250m_16_days_NDVI
+</td>
+<td style="text-align:left;">
+2019-07-28
+</td>
+<td style="text-align:right;">
+7986
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>So we have multiple observations per site. Lets take an average and add it to our <code>locs_sf</code> dataframe.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="covariates.html#cb64-1" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> ndvi_simple <span class="sc">%&gt;%</span>             <span class="co">#Take the NDVI layer</span></span>
+<span id="cb64-2"><a href="covariates.html#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(placename) <span class="sc">%&gt;%</span>          <span class="co"># Group observations by the placename</span></span>
+<span id="cb64-3"><a href="covariates.html#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_ndvi=</span><span class="fu">mean</span>(value)) <span class="co"># Take the mean of the values and call the new column `mean_ndvi`</span></span>
+<span id="cb64-4"><a href="covariates.html#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="covariates.html#cb64-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the new data to our locations dataframe</span></span>
+<span id="cb64-6"><a href="covariates.html#cb64-6" aria-hidden="true" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs_sf, tmp)</span></code></pre></div>
+<p>And check the output:</p>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="covariates.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>mean_ndvi,</span>
+<span id="cb65-2"><a href="covariates.html#cb65-2" aria-hidden="true" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Mean NDVI score&quot;</span>,</span>
+<span id="cb65-3"><a href="covariates.html#cb65-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+</div>
+<div id="following-sites-through-time" class="section level4 hasAnchor" number="6.2.7.2">
+<h4><span class="header-section-number">6.2.7.2</span> Following sites through time<a href="covariates.html#following-sites-through-time" class="anchor-section" aria-label="Anchor link to header"></a></h4>
+<p>Whilst it is interesting to compare average NDVI score between different sites, we might also want to use NDVI to control for changes in plant productivity with the seasons. It would take too long to do for this for all sites during this course, however we can do it for two different sites across one whole year (2017):</p>
+<p><strong>NOTE - NOT CURRENTLY WORKING</strong></p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="covariates.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert the dates</span></span>
+<span id="cb66-2"><a href="covariates.html#cb66-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb66-3"><a href="covariates.html#cb66-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="covariates.html#cb66-4" aria-hidden="true" tabindex="-1"></a>time_ndvi <span class="ot">&lt;-</span> <span class="fu">mt_batch_subset</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>,</span>
+<span id="cb66-5"><a href="covariates.html#cb66-5" aria-hidden="true" tabindex="-1"></a>                              <span class="at">df=</span>modis_locs[<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">66</span>),],          <span class="co">#Just ALG001 and ALG066</span></span>
+<span id="cb66-6"><a href="covariates.html#cb66-6" aria-hidden="true" tabindex="-1"></a>                              <span class="at">band =</span> <span class="st">&quot;250m_16_days_NDVI&quot;</span>,</span>
+<span id="cb66-7"><a href="covariates.html#cb66-7" aria-hidden="true" tabindex="-1"></a>                              <span class="at">start =</span> <span class="st">&quot;2017-01-01&quot;</span>,         <span class="co"># The first observation in out dataset</span></span>
+<span id="cb66-8"><a href="covariates.html#cb66-8" aria-hidden="true" tabindex="-1"></a>                              <span class="at">end =</span> <span class="st">&quot;2017-12-31&quot;</span>,           <span class="co"># the last observation</span></span>
+<span id="cb66-9"><a href="covariates.html#cb66-9" aria-hidden="true" tabindex="-1"></a>                              <span class="at">km_lr =</span> <span class="dv">0</span>,</span>
+<span id="cb66-10"><a href="covariates.html#cb66-10" aria-hidden="true" tabindex="-1"></a>                              <span class="at">km_ab =</span> <span class="dv">0</span>,</span>
+<span id="cb66-11"><a href="covariates.html#cb66-11" aria-hidden="true" tabindex="-1"></a>                              <span class="at">internal =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb66-12"><a href="covariates.html#cb66-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-13"><a href="covariates.html#cb66-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Simplify the output</span></span>
+<span id="cb66-14"><a href="covariates.html#cb66-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-15"><a href="covariates.html#cb66-15" aria-hidden="true" tabindex="-1"></a>time_simple <span class="ot">&lt;-</span> time_ndvi <span class="sc">%&gt;%</span> </span>
+<span id="cb66-16"><a href="covariates.html#cb66-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(   site, band, calendar_date, value) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-17"><a href="covariates.html#cb66-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">placename=</span>site)</span>
+<span id="cb66-18"><a href="covariates.html#cb66-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb66-19"><a href="covariates.html#cb66-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to date objects</span></span>
+<span id="cb66-20"><a href="covariates.html#cb66-20" aria-hidden="true" tabindex="-1"></a>time_simple<span class="sc">$</span>calendar_date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(time_simple<span class="sc">$</span>calendar_date)</span></code></pre></div>
+<p>Lets plot the NDVi through time for each.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="covariates.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(plotly)</span>
+<span id="cb67-2"><a href="covariates.html#cb67-2" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(time_simple, <span class="at">x =</span> <span class="sc">~</span>calendar_date, <span class="at">y =</span> <span class="sc">~</span>value, <span class="at">name =</span> time_simple<span class="sc">$</span>placename, <span class="at">type =</span> <span class="st">&#39;scatter&#39;</span>, <span class="at">mode =</span> <span class="st">&#39;lines&#39;</span>,<span class="at">split =</span> <span class="sc">~</span>placename) </span>
+<span id="cb67-3"><a href="covariates.html#cb67-3" aria-hidden="true" tabindex="-1"></a>fig</span></code></pre></div>
+</div>
+</div>
+<div id="digging-deeper" class="section level3 hasAnchor" number="6.2.8">
+<h3><span class="header-section-number">6.2.8</span> Digging deeper<a href="covariates.html#digging-deeper" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>If you want to dig into estimating NDVI metrics from camera trap viewshed, rather than from satellite data, check out the <code>phenopix</code> R package. It allows the user to extract visual information from time lapse images. It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover).</p>
+<p><a href="https://www.sciencedirect.com/science/article/pii/S2530064417300019">Alberton, B. et al. 2017. Introducing digital cameras to monitor plant phenology in the tropics: applications for conservation. Perspect. Ecol. Conserv</a></p>
+<p><a href="https://rdrr.io/rforge/phenopix/">Filippa, G. et al. 2017. phenopix: Process Digital Images of a Vegetation Cover. R package version 2.3.1.</a></p>
+<p>The Phenopix package has a five step process:</p>
+<ol style="list-style-type: decimal">
+<li>a region of interest (ROI) is identified;</li>
+<li>the red, green, and blue digital numbers from each image in the timeseries is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers;</li>
+<li>the vegetation indices’ data points are filtered to remove inconsistencies;</li>
+<li>a curve is fit to the data and phenophases are determined from the curve;</li>
+<li>phenophase uncertainties are calculated.</li>
+</ol>
+<p>To see an application and comparison of these metrics, we highly recommend that you check out Catherine Sun’s (WildCo alumni) paper on the subject:</p>
+<p><a href="https://zslpublications.onlinelibrary.wiley.com/doi/10.1002/rse2.222">Sun, Catherine, et al. “Simultaneous monitoring of vegetation dynamics and wildlife activity with camera traps to assess habitat change.” Remote Sensing in Ecology and Conservation 7.4 (2021): 666-684.</a></p>
+</div>
+</div>
+<div id="convert-and-save-your-covariates" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Convert and save your covariates<a href="covariates.html#convert-and-save-your-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="covariates.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert columns to numeric</span></span>
+<span id="cb68-2"><a href="covariates.html#cb68-2" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(locs_sf<span class="sc">$</span>road_dist_m)</span>
+<span id="cb68-3"><a href="covariates.html#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="covariates.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert it back to a dataframe</span></span>
+<span id="cb68-5"><a href="covariates.html#cb68-5" aria-hidden="true" tabindex="-1"></a>locs_sf<span class="sc">$</span>geometry <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb68-6"><a href="covariates.html#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="covariates.html#cb68-7" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, locs_sf)</span>
+<span id="cb68-8"><a href="covariates.html#cb68-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-9"><a href="covariates.html#cb68-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-10"><a href="covariates.html#cb68-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Write the dataset</span></span>
+<span id="cb68-11"><a href="covariates.html#cb68-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-12"><a href="covariates.html#cb68-12" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(locs, <span class="st">&quot;AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>, <span class="at">row.names=</span>F)</span></code></pre></div>
+</div>
+<div id="correlations-between-predictors" class="section level2 hasAnchor" number="6.4">
+<h2><span class="header-section-number">6.4</span> Correlations between predictors<a href="covariates.html#correlations-between-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So we have used a variety of different techniques to generate covariates for our subsequent analyses. However, it is important to note that we cannot just through these variables into a model.</p>
+<p>One way to check if your different variables are confound/correlated is using the <code>corrplot</code> package.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="covariates.html#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb69-2"><a href="covariates.html#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="covariates.html#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co"># First we need to create a correlation matrix between the different variables of interest</span></span>
+<span id="cb69-4"><a href="covariates.html#cb69-4" aria-hidden="true" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;line_of_sight_m&quot;</span>, <span class="st">&quot;water_depth_m&quot;</span>, <span class="st">&quot;elevation&quot;</span>,</span>
+<span id="cb69-5"><a href="covariates.html#cb69-5" aria-hidden="true" tabindex="-1"></a>                     <span class="st">&quot;road_dist_m&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)])</span></code></pre></div>
+<p>Now lets make the basic <code>corrplot</code>:</p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="covariates.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(M)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-60-1.png" width="672" /></p>
+<p>The cells denote pairewaise correlations between the rows and the columns. The great thing about <code>corrplot</code> is customisation option are near endless - see <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html">the corrplot vignette</a>.</p>
+<p>Let’s make a better, more informative, corrplot!</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="covariates.html#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">corrplot</span>(M,                              <span class="co">#The correlation matrix we made</span></span>
+<span id="cb71-2"><a href="covariates.html#cb71-2" aria-hidden="true" tabindex="-1"></a>         <span class="at">method=</span><span class="st">&quot;color&quot;</span>,                 <span class="co"># How we want the cells </span></span>
+<span id="cb71-3"><a href="covariates.html#cb71-3" aria-hidden="true" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,                   <span class="co"># Just show the upper part (it is usually mirrored)</span></span>
+<span id="cb71-4"><a href="covariates.html#cb71-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">order=</span><span class="st">&quot;hclust&quot;</span>,                 <span class="co"># Order the variables using the hclust method</span></span>
+<span id="cb71-5"><a href="covariates.html#cb71-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>,          <span class="co"># Add coefficient of correlation  </span></span>
+<span id="cb71-6"><a href="covariates.html#cb71-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>,      <span class="co"># Control the text label color and rotation</span></span>
+<span id="cb71-7"><a href="covariates.html#cb71-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">diag=</span>F                          <span class="co"># Supress the diagnal correlations (which are 1 anyway)</span></span>
+<span id="cb71-8"><a href="covariates.html#cb71-8" aria-hidden="true" tabindex="-1"></a>         )</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-61-1.png" width="672" /></p>
+<p>In general there is very low correlation between our different predictors! If we were seeing parwise correlations &gt;0.7 we perhaps wouldn’t include those in the same model.</p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="error-checking.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="exploration.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-analysis_covariates.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
