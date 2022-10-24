@@ -3,7 +3,7 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
-# Interactions
+# Interactions {#interactions}
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them

@@ -7,11 +7,11 @@ editor_options:
 
 **By Christopher Beirne and Laura Stewart**
 
-One of the most fundamental questions researchers and practitioners want to answer with camera traps is *how many species are there in my survey area?*. However, exploring patterns in species richness can also tell us if we have performed 'enough' surveying. 
+One of the most fundamental questions researchers and practitioners want to answer is *how many species are there in my survey area?*. Exploring patterns in species richness can also tell us if we have performed 'enough' surveying. 
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
-list.of.packages <- c("iNEXT", "kableExtra", "tidyr", "ggplot2", "gridExtra", "dplyr")
+list.of.packages <- c("iNEXT", "kableExtra", "tidyr", "ggplot2", "gridExtra", "dplyr", "viridis")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
@@ -23,10 +23,12 @@ The simplest way to quantify species richness is counting the number of species 
 
 ```{r}
 sp_summary <- read.csv("data/processed_data/AlgarRestorationProject_species_list.csv", header=T)
+
 # Use nrow() to count the number of species
+nrow(sp_summary)
 ```
 
-In the case of the example data set, this represents `r nrow(sp_summary)` species. 
+In the case of the example data set, this represents `r nrow(sp_summary)` mammal species. 
 
 ```{r, echo=F}
 sp_summary %>%
@@ -34,27 +36,25 @@ sp_summary %>%
   kable_styling(full_width = F) 
 ```
 
-It is possible to compare observed richness across different strata of interest, **however** survey effort must be identical between your comparison strata. This very rarely the case in camera trap studies where cameras break, run out of battery or are deployed for different lengths of time. 
+It is possible to compare observed richness across different strata of interest, **however survey effort must be identical between your comparison strata**. This very rarely the case in camera trap studies where cameras break, run out of battery or are deployed for different lengths of time. 
 
-The number of species you detect is a function of the amount of effort you spent surveying or the number of individuals detected - the longer a camera is active/the more individuals detected the more species it will detect. Observed richness typically underestimates true richness. Consequently, We need a way of comparing species richness which accounts in some way for survey effort.
+The number of species you detect is a function of the amount of effort you spent surveying/the number of individuals detected - the longer a camera is active/the more individuals detected, the more species it will detect. What this means is, unless you saturate a landscape with camera traps, observed richness will underestimate true richness. Consequently, We need ways of comparing species richness which accounts in some way for survey effort.
 
 ## Estimated richness
 
 There are two commonly used ways to account for survey effort when estimating species richness using camera traps:
 
-  i)  using the incidence of rare species to 'correct' observed richness (non-parametric estimators) 
-  ii) using multispecies occupancy models to account for the species present but not observed 
+  i)  using the incidence of rare species to 'correct' observed richness (`iNext`) 
+  ii) using multispecies occupancy models to account for the species present but not observed (occupancy model) 
 
 
-### 1) Incidence patterns
+### iNext package
 
-#### iNext package
+The [iNext package](https://cran.r-project.org/web/packages/iNEXT/) (INterpolation and EXTrapolation of species richness) - is both easy to use and rapid to compute. It also  comes with a wealth of plotting functions - see the [iNext Quick Introduction](https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.pdf) for a great walk through tutorial. Its core functionality is based on:
 
-The [iNext package](https://cran.r-project.org/web/packages/iNEXT/) (INterpolation and EXTrapolation of species richness) - is an easy to use and comes with a wealth of plotting functions - see the [iNext Quick Introduction](https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.pdf) for a great walk through tutorial. Its core functionality is based on:
+[Chao, Anne, et al. "Rarefaction and extrapolation with Hill numbers: a framework for sampling and estimation in species diversity studies." Ecological monographs 84.1 (2014): 45-67.](https://esajournals.onlinelibrary.wiley.com/doi/10.1890/13-0133.1) Which has, to date, been cited >2000 times!
 
-*Chao et. al. (2014) Rarefaction and extrapolation with Hill numbers: a framework for sampling and estimation in species diversity studies. Ecological Monographs*
-
-To run this example code you will need `iNEXT` , `ggplot2`, and `gridExtra` packages.
+To run this example code you will need to load the `iNEXT` , `ggplot2`, and `gridExtra` packages.
 
 ```{r}
 library(iNEXT); library(ggplot2); library(gridExtra)
@@ -62,11 +62,17 @@ library(iNEXT); library(ggplot2); library(gridExtra)
 
 **Single strata**
 
-You may want to see if your camera project has sufficient survey effort to capture the species within the focal area. To do this we can produce species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add individuals or survey units. If the curve plateaus, flattens, then that suggests you have sampled the majority of the species in your survey area.
+You may want to see if your camera project has sufficient survey effort to capture the species within the area of interest. To do this we can compute a species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add individuals or survey units. If the curve plateaus (flattens), then that suggests you have sampled the majority of the species in your survey area.
 
 *Data formatting*
 
-Applying the iNEXT functions to camera trap data is perhaps simplest using 'abundance' function, this represents the frequency with which each species is detected. Implementing the abundance data requires a string of abundance frequencies contained within a list. We can create this format from the total observations dataset we crated:
+Applying the iNEXT functions to camera trap data is perhaps simplest using 'abundance' function, this represents the frequency with which each species is detected. The abundance data model requires a string of abundance frequencies contained within a list. 
+
+```{r, echo=F, message=F, warning=F}
+knitr::include_graphics("images/community_metrics/data_format.PNG")
+```
+
+We can create this format from the `...total_observations` dataset:
 
 ```{r}
 # Import the total observations dataset
@@ -74,13 +80,13 @@ total_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_indepen
 
 # Make an empty list to store our data
 project_level <- list()
-# Sum all of the observations of each species (colSums), and then make it an element in the list
+# Sum all of the observations of each species (colSums), and then make it an element within the project_level list
 project_level[[1]]<- colSums(total_obs[, sp_summary$sp])
 # Give it a name
 names(project_level) <- "project_level"
 ```
 
-This will produce a list object which looks like this: 
+This produces a list object which looks like this: 
 
 ```{r, echo=F}
 project_level
@@ -88,11 +94,11 @@ project_level
 
 **Analysis**
 
-Once you have created your list, it is simple to run a basic iNEXT analysis, and create a graphs of the result. Below we show a basic iNEXT call with some of its default arguments.
+Once you have created your list, we can run a basic `iNEXT` analysis and create a graphs of the results. Below we show a basic `iNEXT` call with some of its default arguments.
 
 ```{r}
 out <- iNEXT(project_level,          # The data frame
-             q=0,                    # The type of diversity estimator (see below)
+             q=0,                    # The type of diversity estimator (see discussion of the options below)
              datatype="abundance",   # The type of analysis
              knots=40,               # The number of data points in your line (more = smoother)
              se=TRUE,                # Logical statement if you want confidence intervals
@@ -104,17 +110,18 @@ out <- iNEXT(project_level,          # The data frame
 
 **a note on q values**
 
-The iNEXT package uses the concept of hill numbers to calculate its community indices. The values of q reflect traditional diversity estimators: 
+The iNEXT package uses the concept of hill numbers to calculate its community indices. The q values reflect traditional diversity estimators: 
 
   - 0 = species richness 
   - 1 = Shannon diversity
   - 2 = Simpson diversity 
+
+They differ in the weighting of rare species. 0 treats the 'value' of every species equally, rare or common. As the the q value increases, the influence of rare species becomes weaker and weaker. 
   
 **a note on coverage**
 
-Whilst many uses will be familier with diversity indices, iNEXT also calculates 'sample coverage' - the proportion of the total number of individuals that belong to the species detected in the sample. The way to think about this is, if you an an unsurveyed individual to the population you have surveyed, what is the likelyhood it belongs to the species not already detected? If your sample coverage is high, this probability will be very low! 
-  
-  
+Whilst many users will be familiar with diversity indices, iNEXT also calculates 'sample coverage' - the proportion of the total number of individuals that belong to the species detected in the sample. The way to conceptualize this is - if you add an un-surveyed individual to the surveyed population, what is the likelihood it belongs to the species not already detected? If your sample coverage is high, this probability will be very low! 
+ 
 We will start with observed richness. 
 
 The `iNEXT()` function returns the "iNEXT" object including three output lists: 
@@ -131,7 +138,7 @@ Lets check out each one in turn:
 
 `$DataInfo` is  shown below, returns summary data such as the reference sample size (n), observed species richness (S.obs - which is hopefully the same as what we calculated above), sample coverage estimate for the reference sample (SC), and the first ten frequency counts (f1‐f10).
 
-```{r, echo=F, message=F, warning=F}
+```{r, echo=F, message=F, warning=F,  out.width="100%"}
 knitr::include_graphics("images/community_metrics/data_info.PNG")
 ```
 
@@ -139,19 +146,19 @@ knitr::include_graphics("images/community_metrics/data_info.PNG")
 
 Let's first look at `$iNextEst$size_based`:
 
-```{r, echo=F, message=F, warning=F}
+```{r, echo=F, message=F, warning=F,  out.width="100%"}
 knitr::include_graphics("images/community_metrics/size_based.PNG")
 ```
 
 Next `$iNextEst$coverage_based`:
 
-```{r, echo=F, message=F, warning=F}
+```{r, echo=F, message=F, warning=F,  out.width="100%"}
 knitr::include_graphics("images/community_metrics/coverage_based.PNG")
 ```
 
 `$AsyEst` gives the asymptotic estimates and their related statistics.
 
-```{r, echo=F, message=F, warning=F}
+```{r, echo=F, message=F, warning=F,  out.width="100%"}
 knitr::include_graphics("images/community_metrics/AsyEst.PNG")
 ```
 
@@ -174,12 +181,12 @@ The iNEXT package gets really interesting when we start to compare multiple diff
 
 The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories. 
 
-We will now compare the different categories in the ***To make this split, we refer to the 'camera_locations.csv' dataframe, which contains the 'feature_types' for each camera station. We match the 'placenames' in our locations dataframe with the corresponding capture data in `total_obs`  using the `%in%` command (this is one of our favourite commands). ***
+We will compare the different categories using the `feature_type` column in the covariate file. We match the 'placenames' in our locations dataframe with the corresponding capture data in `total_obs`  using the `%in%` command.
 
 ```{r}
 # Read in the locations data frame
 
-locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv")
+locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
 
 # We first want to create a data subset for each of the strata we are interested in:
 
@@ -211,29 +218,36 @@ grid.arrange(p1, p2, nrow = 1)
 From the plot on the left you can see that the 'HumanUse' strata detected more species than the 'Offline' strata. The plot on the right suggests that we have likely sampled all of the species that will be detected within these habitats (samples are 'complete').
 
 
-## Sampling-unit-based incidence data
+## Sampling-unit-based accumulation curves
 
-The example above is useful, but we typically do not think about our survey effort in terms of the number of individuals we catch, rather we think about the number of camera stations we deploy on the landscape, or perhaps units of time (e.g. camera days). 
+The example above is useful, but in camera trap projects we typically do not think about our survey effort in terms of the number of individuals we catch, rather the number of camera stations we deploy on the landscape or the units of time they are active (e.g. camera days). 
 
-Performing our species accumulation curves using survey location, rather than individuals encountered, allows us to determine if we have enough survey locations in a given strata to detect all of the species present.
+Performing our species accumulation curves using survey location, rather than individuals encountered, allows us to determine if we have enough survey locations in a given strata to detect all of the species present. Repeating the analyses using camera days would also give insight into whether we need for survey effort in a given location. 
 
-Performing the analyses using camera_days would also give insight into whether we need for survey effort in a given location. 
+The data formatting for a sampling-unit based accumulation curve is different to that of an individual-based curve. As before we need a list of strata. However, now we need the elements in the list to represent the number of sampling units first, then the number of those units where each given species was detected following it.
 
-The dataformatting for a sampling-unit based accumulation curve is diffferent to that of an individual-based curve. As before we need a list of strata, however now we need the elements in the list to represent the number of sampling units first, then the number of those unites where a given species was detected follow it:
+The example that comes with the `iNext` package looks like this.
+
+```{r, echo=F, message=F, warning=F}
+knitr::include_graphics("images/community_metrics/unit_based.PNG")
+```
+
+The yellow number is the total number of survey units in each location, the red numbers are the number of sites in which each species occurs. 
 
 ### Survey station example
 
-Lets build this example for survey stations
+Lets build this example for survey stations using our data:
 
 ```{r}
 # As before we can use out total_obs dataframe.
-inc_dat <- total_obs %>% mutate(across(sp_summary$sp, ~+as.logical(.x)))
+inc_dat <- total_obs %>% 
+      mutate(across(sp_summary$sp, ~+as.logical(.x)))  # Turn species counts into 0's and 1's
 
 # Create a new empty list
 inc_locations <- list()
 
 # Only sum the data for each relvent locations
-inc_locations[[1]] <- c(length(off),  # Count the number of stations
+inc_locations[[1]] <- c(length(off),  # First count the number of stations
                      # Then subset the detections to those stations, sum the columns, and sort the incidents
                      inc_dat[inc_dat$placename %in% off, sp_summary$sp] %>%  colSums() %>% sort(decreasing=T))
 
@@ -252,24 +266,25 @@ names(inc_locations) <- c("Offline", "HumanUse")
 out.inc <- iNEXT(inc_locations, q=0, datatype="incidence_freq")
 # Sample‐size‐based R/E curves
 ggiNEXT(out.inc, type=1, color.var="Assemblage") +
-theme_bw() 
+theme_classic() 
 ```
+
+So it looks like the human use features are more diverse than the offline features.
 
 ### Sampling duration example
 
-If we want to explore the species accumulation patterns as a function of the number of survey nights, we can make use of the 'obs_week' dataframes.
+If we want to explore the species accumulation patterns as a function of the number of survey nights, we can make use of the `...weekly_observations` dataframes.
 
 ```{r}
 week_obs<- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv", header=T)
 
-
-# As before we can use out total_obs dataframe.
-inc_dat <- week_obs %>% mutate(across(sp_summary$sp, ~+as.logical(.x)))
+# Turn it into binary incidents
+inc_dat <- week_obs %>% mutate(across(sp_summary$sp, ~+as.logical(.x))) 
 
 # Create a new empty list
 inc_time <- list()
 
-# Only sum the data for each relvent strata
+# Only sum the data for each relevent strata
 inc_time[[1]] <- c(nrow(inc_dat[inc_dat$placename %in% off,]),  # Count the number of weeks we have data for in each strata
                      # Then subset the detections to those stations, sum the columns, and sort the incidents
                      inc_dat[inc_dat$placename %in% off, sp_summary$sp] %>%  colSums() %>% sort(decreasing=T))
@@ -288,8 +303,10 @@ names(inc_time) <- c("Offline", "HumanUse")
 out.inc <- iNEXT(inc_time, q=0, datatype="incidence_freq")
 # Sample‐size‐based R/E curves
 ggiNEXT(out.inc, type=1, color.var="Assemblage") +
-theme_bw() 
+theme_classic() 
 ```
+
+Suggests the same pattern!
 
 ## Other diversity metrics
 
@@ -330,16 +347,6 @@ ggplot(point_estimate, aes(x=c(-0.1,0.9, 1.9,
        geom_point() 
 ```
 
-### Non-metric multidimensional scaling
-
-[Bandyopadhyay, M., Burton, A. C., Gupta, S. K., & Krishnamurthy, R. (2022). Understanding the distribution and fine-scale habitat selection of mesocarnivores along a habitat quality gradient in western Himalaya. PeerJ, 10, e13993.](https://www.researchgate.net/publication/363630774_Understanding_the_distribution_and_fine-scale_habitat_selection_of_mesocarnivores_along_a_habitat_quality_gradient_in_western_Himalaya)
-
-
-### Extensions
-
-- Repeat for different strata
-- Repeat the analysis with survey nights
-- Creating custom plots?
 
 ### Examples in the literature
 
@@ -362,14 +369,93 @@ Chao A, Gotelli NJ, Hsieh TC, Sande EL, Ma KH, Colwell RK, Ellison AM (2014). �
 Hsieh TC, Ma KH, Chao A (2022). iNEXT: Interpolation and Extrapolation for Species Diversity. R package version 3.0.0, http://chao.stat.nthu.edu.tw/wordpress/software_download/.
 
 
-
-### 2) Multispecies occupancy model
+### Multispecies occupancy model
 
 It is also possible to estimate species richness in a given area/strata using multispecies occupancy models.  For an example with code in the appendices see:
 
 [Tobler, M. et al. Spatiotemporal hierarchical modelling of species richness and occupancy using camera trap data. J. Appl. Ecol. (2015).](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12399)
 
 
+## Community structure
+
+One of the shortfalls in the diversity index approaches is that you can compare two sites with completely different mammal assemblages, but identical diversity estimates! So we would conclude that the two are the same, however,in reality their compositions are totally different. Another way to assess community structure is with ordination methods (e.g non-metric multidimensional
+scaling or NMDS). 
+
+For a fantastic (although now somewhat dated) blog on NMDS methods see: [Sample(ecology)'s NMDS tutorial in R](https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/).
+
+Luckily a basic NMDS is very easy to run from our `...total_observations` dataframe:
+
+```{r}
+#install.packages("vegan")
+library(vegan)
+# Import your count data
+total_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv", header=T)
+
+#Import the location covariates
+locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
+
+# Add the covariates to your total_obs dataframe
+dat <- left_join(total_obs, locs)
+
+# To keep things simple, we will subset to HumanUse and Offline (as above)
+dat <- dat[dat$feature_type %in% c("HumanUse", "Offline"),]
+
+# Convert to catagorical factors
+dat <- dat %>% 
+            mutate_if(is.character,as.factor)
 
 
 
+# Subset to just the count columns
+counts <- dat[,sp_summary$sp]
+
+# Covert it into a matrix
+m_counts <-  as.matrix(counts)
+
+set.seed(123) # To make sure we all get the same result
+
+nmds = metaMDS(m_counts, distance = "bray")
+nmds
+
+# Make a dataframe out of the x and Y scores
+site.scores <- as.data.frame(scores(nmds)$sites)
+species.scores <- as.data.frame(scores(nmds)$species)
+
+# Add in the covariate data
+#add covariate columns to data frame 
+site.scores$placename = dat$placename
+site.scores$feature_type = dat$feature_type
+
+# Assign colours to our feature_types using viridis
+# then use the turbo() function to assign each level a colour
+col.cat <- cividis(length(levels(dat$feature_type)))
+# then we apply it to the dataframe
+dat$colours <- col.cat[dat$feature_type]
+
+
+```
+
+Lets make a plot in base R using the default plotting functions:
+
+```{r}
+par(mfrow=c(1,1))
+# Make an empty plot type="n
+ordiplot(nmds,type="n", las=1,
+         xlim=c(-1.5,1.2))
+# Add the species loadings
+orditorp(nmds,display="species",col="red",air=0.5)
+# Add the site loadings
+points(site.scores$NMDS1, site.scores$NMDS2, col=dat$colours, pch=19)
+# Add a legend
+legend("topleft", levels(dat$feature_type), col=col.cat, pch=19 )
+```
+
+The different `feature_types` to not differ majorly in their species compositions - there is a huge degree of overlap between sites. 
+
+The NMDS framework is flexible - we can also add environmental covariates using `envfit` to explain differences we might find. Checkout [a great blog on this by Jackie Zorz](https://jkzorz.github.io/2020/04/04/NMDS-extras.html) for more information!
+
+### Examples in the literature
+
+[Haysom, J. K., Deere, N. J., Wearn, O. R., Mahyudin, A., Jami, J. B., Reynolds, G., & Struebig, M. J. (2021). Life in the Canopy: Using Camera-Traps to Inventory Arboreal Rainforest Mammals in Borneo. Frontiers in Forests and Global Change, 83](https://www.frontiersin.org/articles/10.3389/ffgc.2021.673071/full)
+
+**Note - they also use iNext!** Give that paper a look!

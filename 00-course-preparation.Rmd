@@ -47,7 +47,7 @@ Finally, we have provided the links to install and setup R Google Earth Engine (
 ### CRAN packages
 Copy and paste the following code into your R terminal and press enter. *Note - if you hover over the code block a copy button appears in the top right.*
 
-```{r, echo=T, eval=F}
+```{r, echo=T, eval=F, class.source="Rmain"}
 # A list of the required packages
 list.of.packages <- c("activity",
                       "corrplot",
@@ -79,7 +79,10 @@ list.of.packages <- c("activity",
                       "tibble",
                       "tidyr", 
                       "unmarked",
-                      "viridis")
+                      "viridis",
+                      "jtools",
+                      "vegan",
+                      "MuMIn")
 
 # A check to see which ones you have and which are missing
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -92,7 +95,7 @@ lapply(list.of.packages, require, character.only = TRUE)
 ### Other packages
 Some packages must be compiled from sources other than CRAN. Copy and paste following code block into your R console and press enter.
 
-```{r, echo=T, eval=F}
+```{r, echo=T, eval=F, class.source="Rmain"}
 # We use the remotes package to access package repositories not on the CRAN interface (e.g. on github)
 library(remotes)
 
@@ -215,7 +218,7 @@ All of the packages above work with R alone. However, the R Google Earth Engine 
 
 We have, however, provided some example code if you want to try it in your own time. The first step is to install the `rgee` package. 
 
-```{r, echo=T, eval=F}
+```{r, echo=T, eval=F, class.source="Rmain"}
 install.packages("rgee")
 library("rgee")
 ```

@@ -2,9 +2,9 @@
 
 Once we have created the building blocks for our data analysis dataframes, we must bring in the variables which will be used in the modelling steps. It is important to not that there are millions of ways to add covariates - both in terms of how you do it, and where you derrive the data from. The covariates you use will dpeend on the questions you have, and the context of your survey. The examples provided here are not comprehensive and serve only as a guide!
 
-**load the required packages**
+**Load the required packages**
 
-```{r, echo=T, eval=F}
+```{r, echo=T, eval=F, class.source="Rmain"}
 library(kableExtra);library(dplyr); library(sf); library(MODISTools); library(lubridate); library(corrplot); library(traitdata); library(terra); library(osmdata); library(elevatr)
 ```
 
@@ -18,7 +18,7 @@ We can simplify the covariate options we have available into two distinct catego
  
 The traits are species-level covariates which we think are important in structuring their responces to other covariates, such as human modification.  
 
-```{r}
+```{r, class.source="Rmain"}
 # Start by reading in your species list
 sp_summary <- read.csv("data/processed_data/AlgarRestorationProject_species_list.csv", header=T)
 ```
@@ -28,7 +28,7 @@ sp_summary <- read.csv("data/processed_data/AlgarRestorationProject_species_list
 
 Location-level covariates are characteristics of the camera locations which are either fundamental to your question (such as the habitat type, degree of human modification, or distance to the nearest road), or they are things you are not directly interested in but must account for in your analyses. The way we derive and treat these variables are identical however. 
 
-```{r}
+```{r, class.source="Rmain"}
 locs <- read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv", header=T)
 ```
 
@@ -39,7 +39,7 @@ It is easier than ever before to add trait data to your species lists, particula
 
 Below we use this package to add trait data to the project species list:
 
-```{r}
+```{r, class.source="Rmain"}
 
 # This package isn't available on Cran, so we must use the remotes package
 #library(remotes)
@@ -50,7 +50,7 @@ library(traitdata)
 
 To pull the data for a specific database we use the following code:
 
-```{r}
+```{r, class.source="Rmain"}
 data("elton_mammals")
 
 # To see all the options available run: 
@@ -68,13 +68,13 @@ Let's take a look at what categories we have available to us:
 
 Lets make a new column `sp` which matches the species column in our 'sp_summary' datset. We will use this as the "key" variable to extract the trait data. 
 
-```{r}
+```{r, class.source="Rmain"}
 elton_mammals$sp <- paste0(elton_mammals$Genus,"." ,elton_mammals$Species)
 ```
 
 We do not want to take all of the trait data, so lets subset to `BodyMass.Value` and the activity data `Activity.Nocturnal	Activity.Crepuscular	Activity.Diurnal`.
 
-```{r, warning=F, message=F}
+```{r, warning=F, message=F, class.source="Rmain"}
 tmp <- elton_mammals[, c("sp","BodyMass.Value", "Activity.Nocturnal", "Activity.Crepuscular",	"Activity.Diurnal")]
 
 # Lets rename the columsn to make them more usable
@@ -108,7 +108,7 @@ Whatever you do, remember to report it in your methods section!
 
 Let's save our species list for a rainy day!
 
-```{r}
+```{r, class.source="Rmain"}
 write.csv(sp_summary, paste0("data/processed_data/", locs$project_id[1],"_species_list.csv"), row.names = F)
 ```
 
@@ -124,7 +124,7 @@ You may have collected some data in the field when deploying or checking your ca
 
 Import a sample set of local covariates:
 
-```{r}
+```{r, class.source="Rmain"}
 local_covs <- read.csv("data/raw_data/example_covariates/example_dataframe.csv")
 ```
 
@@ -139,7 +139,7 @@ It is a dataframe where the survey locations are rows and the local covariates, 
 
 To add this data to our station data, we use a `left_join()` operation from the `dplyr()` package. It uses a key variable which is common in both data frames to add data from the "right-hand side" to the rows in the "left-hand side" which are not already present. Any rows present in the right-hand side which are not in the left-hand side will be skipped.
 
-```{r, message=F, warning=F}
+```{r, message=F, warning=F, class.source="Rmain"}
 library(dplyr)
 
 locs <- left_join(locs, local_covs)
@@ -159,7 +159,7 @@ The most intuitive package to learn spatial operations in R is the `simple featu
 
 Lets convert our "normal" dataframe to an `sf` dataframe:
 
-```{r}
+```{r, class.source="Rmain"}
 locs_sf <- st_as_sf(locs,                              # We specify the dataframe 
                     coords=c("longitude", "latitude"), # The XY coordinates
                     crs=4326)                          # And the projection code
@@ -167,7 +167,7 @@ locs_sf <- st_as_sf(locs,                              # We specify the datafram
 
 What does an `sf` object look like? Like a normal dataframe but with a weird header: 
 
-```{r}
+```{r, class.source="Rinfo"}
 locs_sf
 ```
 
@@ -175,7 +175,7 @@ That header is important - it tells you the type of data you have (lines, points
 
 We like using `sf` as it is very easy to transform coordinates into different projections using `st_transform()`. USe the website [epsg.io](https://epsg.io/) to find the CRS codes for the projection you want - e.g. UTM 12N = 26712, then plug it into the following:
 
-```{r, eval=T}
+```{r, eval=T, class.source="Rinfo"}
 locs_utm <- st_transform(locs_sf, crs=26712)
 ```
 
@@ -183,13 +183,13 @@ Check the header of `locs_utm` and you should see that the CRS has changed!
 
 Plotting `sf` is a little bit weird. If you try to plot them normally you get lots of replicated plots (one for each column) - try it:
 
-```{r}
+```{r, class.source="Rinfo"}
 plot(locs_utm)
 ```
 
 It can be useful as it varied the colours based on the propoerties of the column. Typically, however, we just want to plot the points themselves. We do that by wrapping the object in `st_geometry()` this just extracts the geometry of the object.
 
-```{r}
+```{r, class.source="Rinfo"}
 plot(st_geometry(locs_utm))
 axis(1)
 axis(2)
@@ -210,7 +210,7 @@ Often we have raster data layers stored which we would like to link to our camer
 
 The only time we deviate from the `sf` package is to deal with rasters. Raster objects in R are processed really slowly, especially if the raster is large. So instead we use the `terra` package.
 
-```{r}
+```{r, class.source="Rmain"}
 library(terra)
 # Import the example raster using the stars package
 ras <- rast("data/raw_data/example_covariates/example_raster.tif")
@@ -223,14 +223,14 @@ locs_terra <- locs_sf %>%
 
 Lets check our layers match up!
 
-```{r}
+```{r, class.source="Rinfo"}
 plot(ras) # The terra package makes nice raster plots with legends
 plot(locs_terra, add=T) # Add the survey locations as black dots
 ```
 
 Great! Now lets buffer our camera locations by 250 meters, and take the average depth to water for each location:
 
-```{r}
+```{r, class.source="Rmain"}
 # Buffer by 250m
 locs_terra <- buffer(locs_terra,250)
 
@@ -245,7 +245,7 @@ locs_sf$water_depth_m <- tmp$Depth2WatAlgar
 
 Finally, lets check the distribution of our data!
 
-```{r}
+```{r, class.source="Rinfo"}
 # Basic boxplot in base R
 boxplot(locs_sf$water_depth_m)
 ```
@@ -257,7 +257,7 @@ Most locations are on the water table (lowland sites), others are above it (uplo
 Camera studies often occur over a range of elevations - and we can quickly extract these elevations using the `elevatr` package and an `sf` dataframe.
 
 
-```{r}
+```{r, class.source="Rmain"}
 library(elevatr)
 locs_sf <- get_elev_point(locs_sf, 
                           src="aws", #Amazon Web Service Terrain Tiles - available globally
@@ -270,7 +270,7 @@ The `z` option specifies the resolution of the underlying DEM, the high the valu
 
 Let's plot the output:
 
-```{r}
+```{r, class.source="Rinfo"}
 boxplot(locs_sf$elevation)
 ```
 
@@ -285,7 +285,7 @@ Open Street Map (OSM) is an incredible resource for generating covariates for ca
 
 First lets load the `osmdata` package.
 
-```{r}
+```{r, class.source="Rmain"}
 library(osmdata)
 ```
 
@@ -297,7 +297,7 @@ Camera trap projects are often interested in human disturbance, of which, highwa
 
 Let's start by defining our area of interest. All `osmdata` queries begin with a bounding box defining the area of the query:  
 
-```{r}
+```{r, class.source="Rmain"}
 # First buffer our points by 10km to create an area of interest (aoi)
 aoi <- st_bbox(st_buffer(locs_sf, 10000)) # Units are in meters 
 
@@ -305,7 +305,7 @@ aoi <- st_bbox(st_buffer(locs_sf, 10000)) # Units are in meters
 
 We then use this bounding box to return all of the features which cross into it:
 
-```{r}
+```{r, class.source="Rmain"}
 highway <- opq(aoi) %>% #using the bounding box
            add_osm_feature(key="highway") %>% #extract all highway features
            osmdata_sf()  # conmvert them into simple features format
@@ -315,7 +315,7 @@ highway <- opq(aoi) %>% #using the bounding box
 
 The data you extract is its own "class" of data made up from multiple data types:
 
-```{r, eval=F}
+```{r, eval=F, class.source="Rinfo"}
 str(highway)
 ```
 
@@ -325,7 +325,7 @@ Which looks very intimidating! However, the key thing is that it is made up of m
 - $osm_lines
 - $osm_polygons
 
-```{r}
+```{r, class.source="Rinfo"}
 par(mfrow=c(1,3))
 plot(st_geometry(highway$osm_points), main="osm_points")
 plot(st_geometry(highway$osm_lines), main="osm_lines")
@@ -336,7 +336,7 @@ The points or the lines datasets look must useful to us, there is nothing in the
 
 Let's use the lines element and add out camera stations:
 
-```{r}
+```{r, class.source="Rinfo"}
 par(mfrow=c(1,1))
 plot(st_as_sfc(aoi))     # st_as_sfc created a polygon from a `bbox` object
 plot(st_geometry(highway$osm_lines), add=T)
@@ -349,7 +349,7 @@ We can now calculate the distances from our cameras to these objects using the f
 
 We can the use this to request the distance from that nearest feature to each camera station using `st_distance`. Which, put together, looks like:
 
-```{r}
+```{r, class.source="Rmain"}
 # Create an index of the nearest object in `highway$osm_lines` to locs_sf
 index <- st_nearest_feature(locs_sf, highway$osm_lines)
 
@@ -362,7 +362,7 @@ locs_sf$road_dist_m <- st_distance(locs_sf, highway$osm_lines[index,],
 
 We also might want to calculate the distances to the nearest water body, and important resource for wildlife. We can do that using the following: 
 
-```{r}
+```{r, class.source="Rmain"}
 water <- opq(aoi) %>%
            add_osm_feature(key="water") %>%
            osmdata_sf()
@@ -371,7 +371,7 @@ water <- opq(aoi) %>%
 
 Lets check our data:
 
-```{r}
+```{r, class.source="info"}
 par(mfrow=c(1,3))
 plot(st_geometry(water$osm_points), main="osm_points")
 plot(st_geometry(water$osm_lines), main="osm_lines")
@@ -381,7 +381,7 @@ par(mfrow=c(1,1))
 
 In this instance, the lines and the polygons are incomplete, out best bet is the points file!
 
-```{r}
+```{r, class.source="Rmain"}
 index <- st_nearest_feature(locs_sf, water$osm_points)
 
 locs_sf$water_dist_m <- st_distance(locs_sf, water$osm_points[index,], by_element=T) # Note `by_element=T` tells st_distance to evaluate things line by line. 
@@ -405,7 +405,7 @@ If you do manage to get it setup, it opens are world of possibilities!
 
 Lets look at a `rgee` workflow for camera traps. First load the `rgee` package.
 
-```{r}
+```{r, class.source="Rinfo"}
 library(rgee)
 ee_Initialize()
 
@@ -413,13 +413,13 @@ ee_Initialize()
 
 Next let's check if python and R are communicating properly:
 
-```{r, eval=F}
+```{r, eval=F, class.source="Rinfo"}
 ee_check()
 ```
 
 If they are - you should see something like this:
 
-```{r}
+```{r, class.source="Rinfo"}
 knitr::include_graphics("images/analysis_covariates/rgee_check.PNG")
 ```
 
@@ -429,7 +429,7 @@ knitr::include_graphics("images/analysis_covariates/rgee_check.PNG")
 The way `rgee` works is you first need to call a data layer, for example the [100m global landcover dataset](https://developers.google.com/earth-engine/datasets/catalog/COPERNICUS_Landcover_100m_Proba-V-C3_Global#bands).
 
 
-```{r}
+```{r, class.source="Rinfo"}
 
 #Land Cover
 LC_dataset <- ee$Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019")$select('discrete_classification')
@@ -438,7 +438,7 @@ LC_dataset <- ee$Image("COPERNICUS/Landcover/100m/Proba-V-C3/Global/2019")$selec
 
 We can quickly plot the layer to see what it looks like before moving on:
 
-```{r}
+```{r, class.source="Rinfo"}
 
 Map$setCenter(-88.6, 26.4, 1);
 Map$addLayer(LC_dataset, {}, "Land Cover");
@@ -447,7 +447,7 @@ Map$addLayer(LC_dataset, {}, "Land Cover");
 
 We can then extract the values of that layer to our camera locations using `ee_extract`:
 
-```{r, message=F, warning=F}
+```{r, message=F, warning=F, class.source="Rinfo"}
 habs <- ee_extract(LC_dataset, locs_sf)
 
 # Read in the LCC key
@@ -462,7 +462,7 @@ locs_sf$lcc_habitats <- habs$hab_code
 
 Let's checkout the habitat designations:
 
-```{r}
+```{r, class.source="Rinfo"}
 table(locs_sf$lcc_habitats)
 ```
 
@@ -475,7 +475,7 @@ Let's repeat this process with a continuous variable like biomass. We will use t
 
 Lets read in the layer 
 
-```{r}
+```{r, class.source="Rinfo"}
 biomass <- ee$ImageCollection("NASA/ORNL/biomass_carbon_density/v1");
 
 # Specify the layer we want to plot
@@ -496,7 +496,7 @@ Map$addLayer(eeObject = bio, visParams = viz)
 
 Extract the data using `ee_extract`:
 
-```{r}
+```{r, class.source="Rinfo"}
 tmp <- ee_extract(biomass, locs_sf)
 locs_sf$biomass_agb <- tmp$X2010_agb
 ```
@@ -511,7 +511,7 @@ Below we highlight other layers we have used in different analyses.
 
 [Human Modification Index](https://developers.google.com/earth-engine/datasets/catalog/CSP_HM_GlobalHumanModification)
 
-```{r}
+```{r, class.source="Rinfo"}
 hmi <- ee$ImageCollection("CSP/HM/GlobalHumanModification")
 
 # select the first image of the collection which corresponds to the cumulative HM  
@@ -533,7 +533,7 @@ Map$addLayer(eeObject = hm, visParams = viz)
 
 Note - you have to zoom in to see the polygons! 
 
-```{r}
+```{r, class.source="Rinfo"}
 gpa  <- ee$FeatureCollection("WCMC/WDPA/current/polygons")
 # Plot it (note you have to zoom in to see the data)
 Map$addLayer(gpa, {}, "default display") 
@@ -555,7 +555,7 @@ Also click that link for more details on how to use it.
 
 Let's load the package:
 
-```{r}
+```{r, class.source="Rmain"}
 library(MODISTools)
 ```
 
@@ -564,7 +564,7 @@ For `MODIStools` to work, we need to provide a dataframe with the following colu
 - `lat'
 - 'long'
 
-```{r}
+```{r, class.source="Rmain"}
 modis_locs <- locs %>% 
   select("placename", "longitude", "latitude") %>% 
   rename(site_name=placename, lat=latitude, lon=longitude)
@@ -574,7 +574,7 @@ We can then look at the available bands for different products.
 
 Two commonly used ones are [MOD13Q1](https://lpdaac.usgs.gov/products/mod13q1v006/) for the derivation of NDVI/EVI, and [MOD15A2H](https://lpdaac.usgs.gov/products/mod15a2hv006/) for the derivation of leaf area index (LAI).
 
-```{r}
+```{r, class.source="Rinfo"}
 # list available bands for a product
 bands <- mt_bands(product = "MOD13Q1") #MOD15A2H
 head(bands)
@@ -582,7 +582,7 @@ head(bands)
 
 When we run `MODIStools` the underlying algorithm chooses the best available pixel value from all the acquisitions from the 16 day period. The criteria used is lowest cloud cover, lowest satellite view angle, and the highest NDVI/EVI value.
 
-```{r}
+```{r, class.source="Rinfo"}
 # list available dates for a prodcut at a location
 dates <- mt_dates(product = "MOD13Q1", lat = modis_locs$lat[1], lon = modis_locs$lon[1]) #MOD15A2H
 head(dates);tail(dates)
@@ -590,7 +590,7 @@ head(dates);tail(dates)
 
 In the interest of processing time, lets not pull the NDVI scores for the full date range. Instead, we will focus on mid summer in 2019. 
 
-```{r}
+```{r, class.source="Rmain"}
 algar_ndvi <- mt_batch_subset(product = "MOD13Q1",
                               df=modis_locs,
                               band = "250m_16_days_NDVI",
@@ -604,7 +604,7 @@ algar_ndvi <- mt_batch_subset(product = "MOD13Q1",
 
 The raw output is somewhat intimidating:
 
-```{r}
+```{r, class.source="Rmain"}
 algar_ndvi[1:10, ] %>% 
   kbl() %>% 
   scroll_box(height = "300px") %>%
@@ -613,7 +613,7 @@ algar_ndvi[1:10, ] %>%
 
 So lets simplify it to the key elements of information and rename them to match our camera data where approriate:
 
-```{r}
+```{r, class.source="Rmain"}
 ndvi_simple <- algar_ndvi %>% 
   select(	site, band, calendar_date, value) %>% 
   rename(placename=site)
@@ -627,7 +627,7 @@ ndvi_simple[1:10, ] %>%
 
 So we have multiple observations per site. Lets take an average and add it to our `locs_sf` dataframe.
 
-```{r, message=F, warning=F}
+```{r, message=F, warning=F, class.source="Rmain"}
 tmp <- ndvi_simple %>%             #Take the NDVI layer
   group_by(placename) %>%          # Group observations by the placename
   summarize(mean_ndvi=mean(value)) # Take the mean of the values and call the new column `mean_ndvi`
@@ -638,7 +638,7 @@ locs_sf <- left_join(locs_sf, tmp)
 ```
 
 And check the output:
-```{r}
+```{r, class.source="Rinfo"}
 boxplot(locs_sf$mean_ndvi,
         ylab="Mean NDVI score",
         las=1)
@@ -651,7 +651,7 @@ Whilst it is interesting to compare average NDVI score between different sites, 
 
 **NOTE - NOT CURRENTLY WORKING**
 
-```{r, eval=F}
+```{r, eval=F, class.source="Rinfo"}
 # Convert the dates
 library(lubridate)
 
@@ -677,7 +677,7 @@ time_simple$calendar_date <- ymd(time_simple$calendar_date)
 
 Lets plot the NDVi through time for each.
 
-```{r, eval=F}
+```{r, eval=F, class.source="Rinfo"}
 library(plotly)
 fig <- plot_ly(time_simple, x = ~calendar_date, y = ~value, name = time_simple$placename, type = 'scatter', mode = 'lines',split = ~placename) 
 fig
@@ -709,7 +709,7 @@ To see an application and comparison of these metrics, we highly recommend that 
 
 ## Convert and save your covariates
 
-```{r, message=F, warning=F}
+```{r, message=F, warning=F, class.source="Rmain"}
 # Convert columns to numeric
 locs_sf$road_dist_m <- as.numeric(locs_sf$road_dist_m)
 
@@ -721,7 +721,7 @@ locs <- left_join(locs, locs_sf)
 
 # Write the dataset
 
-write.csv(locs, "AlgarRestorationProject_camera_locations_and_covariates.csv", row.names=F)
+write.csv(locs, paste0("data/processed_data/", locs$project_id[1],"_camera_locations_and_covariates.csv"), row.names=F)
 
 ```
 
@@ -733,7 +733,7 @@ So we have used a variety of different techniques to generate covariates for our
 One way to check if your different variables are confound/correlated is using the `corrplot` package.
 
 
-```{r}
+```{r, class.source="Rmain"}
 library(corrplot)
 
 # First we need to create a correlation matrix between the different variables of interest
@@ -743,7 +743,7 @@ M <- cor(locs[, c("line_of_sight_m", "water_depth_m", "elevation",
 
 Now lets make the basic `corrplot`:
 
-```{r}
+```{r, class.source="Rinfo"}
 corrplot(M)
 ```
 
@@ -751,7 +751,7 @@ The cells denote pairewaise correlations between the rows and the columns. The g
 
 Let's make a better, more informative, corrplot!
 
-```{r}
+```{r, class.source="Rmain"}
 
 corrplot(M,                              #The correlation matrix we made
          method="color",                 # How we want the cells 

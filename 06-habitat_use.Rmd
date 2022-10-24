@@ -7,22 +7,20 @@ editor_options:
 
 ```{r, echo=F, results='hide', message =F, warning=F}
 # Check you have them and load them
-list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "lme4", "dplyr", "Hmsc")
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "lme4", "dplyr", "Hmsc", "jtools", "lubridate")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Camera traps are well suited for the quantification of habitat use across multiple species. To assess habitat use, we typically quantify the detection rate - the number of detections divided by the time interval of interest. Detection rates are fairly simple to estimate and understand thus their use is widespread. 
+Camera traps are well suited for the quantification of habitat use across multiple species. To assess habitat use, we typically quantify the detection rate - the number of detections divided by the time interval of interest. As detection rates are fairly simple to estimate and conceptually simple to understand, thus their use is widespread in the camera trap literature. 
 
-In its simplest form this represents the number of independent events (or individuals within independent events) of a given species at a given camera, divided by the number of days that camera was active during that period of interest. 
+In its simplest form habitat use represents the number of independent events of a given species at a given camera, divided by the number of days that camera was active during that period of interest. 
 
-Such detection rates are thought to reflect the habitat use of a species at a given location - extreme care should be taken if you want to use it as an indesx of abundance. Detection rates are typically analysed in a linear modelling framework for single species, and increasingly for multispecies too. 
+This 'detection rate' is thought to reflect the habitat use of a species at a given location. Extreme care should be taken if you want to equate use with abundance or density - something we discuss a litle more in the [density chapter](#density). 
 
-
-Palmer, Meredith S., et al. "Evaluating relative abundance indices for terrestrial herbivores from large‐scale camera trap surveys." African journal of ecology 56.4 (2018): 791-803. 
-
+Detection rates are typically analysed in a linear modelling framework, and come in single species and multi-species versions (see below).  
 
 ## Calculating capture rate
 
@@ -70,35 +68,44 @@ plot(total_cr$Odocoileus.virginianus ~ total_obs$Odocoileus.virginianus,
 
 As you can see they are not a perfect match, as the capture accounts for the variation in effort between different sites.  
 
+### Examples from the literature
+
+[Palmer, Meredith S., et al. "Evaluating relative abundance indices for terrestrial herbivores from large‐scale camera trap surveys." African journal of ecology 56.4 (2018): 791-803.](https://onlinelibrary.wiley.com/doi/abs/10.1111/aje.12566) 
+
 ## Single-species models
 
-The most common way to analyse habitat use data is through linear models. Linear models typically relate a continuous response variable - in our case capture rate - to a set of one or more discrete or continuous predictor variables. In this simple example we will explore the relationship between the capture rate of a species with the 'feature_type' where the camera was deployed. 
+The most common way to analyse habitat-use data is through linear models. Linear models typically relate a continuous response variable - in our case capture rate - to a set of one or more discrete or continuous predictor variables. In this simple example we will explore the relationship between the capture rate of a species with the catagorical 'feature_type' variable and the continuous `line_of_sight_m` variables. 
 
-There are a variety if different frameworks to fit and compare different linear models to address a host of different hypotheses, but if you are just starting out you should be aware of two widely used packages:
+There are a variety if different frameworks to fit and compare different linear models to address a host of different hypotheses, but if you are just starting out you should investiagte two widely used packages:
 
 - `lme4` -> frequentest and information theoretic approaches 
 - `brms` -> bayesian approaches
 
-There is no right or wrong about which package and which approach you use to test your hypotheses, just make sure you understand the implications of your choices!
-
+There is no right or wrong about which package and which approach you use to test your hypotheses. Some packages have functionalities that others don't, which may force your hand. Just make sure you understand the implications of your choices when it comes to reporting your results!
 
 ### Simple linear model
-We will start by analysing a linear model with a single observation for each survey site.
+
+We will start by analyzing a frequentist linear model with a single observation for each camera location.
 
 In this worked example we will analyse how habitat use varies using a linear model `lm()`. The model takes the form:
   
-  Response term (y) ~ fixed effect (x), data frame (data=)
+  Response term (y) ~ fixed effect 1 (x1) + fixed effect 2 (x2), data frame (data=)
 
+It is beyond the scope of this course to test the model assumptions or interrogate the findings, there are better resources to allow you to do that (e.g. we highly recommend reading [Gałecki, Andrzej, and Tomasz Burzykowski. "Linear mixed-effects model." Linear mixed-effects models using R. Springer, New York, NY, 2013. 245-273](https://link.springer.com/book/10.1007/978-1-4614-3900-4)).
 
-We will not test the model assumptions or interrogate the findings, there are better resources to allow you to do that! Here we simply demonstrate how to use our camera data to fit the model.
-
-In this example we will explore if the habitat use of *Odocoileus virginianus* varied based on the categories in `feature_type'.
+In this example we will explore if the habitat use of *Odocoileus virginianus* varies based on the `feature_type' the line of sight where it is found.
 
 **Preparing our data**
 
 Recall that the information about each location is recorded in the  file:
+
 ```{r}
-locs <- read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv", header=T)
+locs <- read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv", header=T)
+
+# Convert to catagorical factors
+locs <- locs %>% 
+            mutate_if(is.character,as.factor)
+
 
 kbl(head(locs))%>%
   kable_paper() %>%
@@ -106,7 +113,16 @@ kbl(head(locs))%>%
 
 ```
 
-So we will explore the influence of 'feature_type' on our response term. 
+Add our covariates to our capture rate dataframe: 
+
+```{r}
+library(dplyr)
+mod_dat <- left_join(total_cr, locs)
+```
+
+### Catagorical predictor
+
+So we start by exploring the influence of 'feature_type' on our response term. 
 
 What are the categories we have in our feature type variable?
 
@@ -114,22 +130,13 @@ What are the categories we have in our feature type variable?
 table(locs$feature_type)
 ```
 
-
 `feature_type` is a a catagorical variable which reflects strata where the camera trap was deployed: 
 
   - HumanUse = a camera on a seismic line used and maintained in an "open" state by humans
   - Offline = a camera in contiguous forest >200m from a seismic line 	
   - NatRegen = a seismic line which is naturally regenerating
-  - SPP = a siesmic line which has had a restoration treatment (SPP) applied to it
-  - Control = a seismic line which has been left untreated
 
-
-```{r}
-library(dplyr)
-mod_dat <- left_join(total_cr, locs[c("placename", "feature_type")])
-```
-
-Lets do a quick raw data plot to see what reults we might expect:
+Lets do a quick raw data plot to see what results we might expect:
 
 ```{r}
 boxplot(mod_dat$Odocoileus.virginianus~mod_dat$feature_type,
@@ -138,39 +145,107 @@ boxplot(mod_dat$Odocoileus.virginianus~mod_dat$feature_type,
         ylab="Habitat use")
 ```
 
-
+It looks like white-tailed deer habitat use may be higher in naturally regenerating areas, but there is a lot of overlap between sites. 
 
 Next we will fit a simple linear model using the `lm()' function in base R. 
 
 ```{r}
-lm_res <- lm(Odocoileus.virginianus ~ feature_type, data = mod_dat)
+# model results <- lm( Y data ~ x Data, data= dataframe source)
+lm_cat <- lm(Odocoileus.virginianus ~ feature_type, data = mod_dat)
 ```
 
 Lets looks at the model summary:
 
 ```{r}
-summary(lm_res)
+summary(lm_cat)
 ```
 
+Categorical covariates are show as contrasts from the reference level (in this case HumanUse), and the p-value relate to testing whether the other categories are significantly different from the reference level. Other things to note are that our R-squared value (how much variation the model explains) is fairly low - but that is common in camera trap models. 
 
-We can take a quick look at the predictions using the `jtools' package:
+We can take a quick look at the predictions using the `jtools` package. More examples of its use are can be found in the `[Visualizing regression model predictions vignette](https://jtools.jacob-long.com/articles/effect_plot.html) associated with the package.
 
 ```{r}
-effect_plot(lm_res, pred = feature_type, interval = TRUE, y.label = "Habitat use")
+effect_plot(lm_cat,                  # The model object
+            pred = feature_type,     # The variable you want to predict
+            interval = TRUE,         # Whether you want confidence intervals (default = 0.95)
+            partial.residuals = T,   # Show the residual variation -after sccounting for fixed effects  
+            y.label = "Habitat use") # Change the y axis label
+
 ```
 
-But, can you see any problems with this type of model? 
+### Continuous predictor
 
-- Negative predictions - but you can't get a negative capture rate
-- We do not account for seasonality
+Let's also explore a continuous predictor `line_of_sight_m':
+
+```{r}
+plot(mod_dat$Odocoileus.virginianus~mod_dat$line_of_sight_m,
+        las=1,
+        xlab="line_of_sight_m",
+        ylab="Habitat use")
+```
+
+Next we will fit a simple linear model using the `lm()' function in base R. 
+
+```{r}
+# model results <- lm( Y data ~ x Data, data= dataframe source)
+lm_con <- lm(Odocoileus.virginianus ~ line_of_sight_m, data = mod_dat)
+```
+
+Lets looks at the model summary:
+
+```{r}
+summary(lm_con)
+```
+
+Here the effect represents the gradient of the relationship between `line_of_sight_m` and the habitat use of white-tailed deer. The effect is negative, and the p-value is below the arbitrary 0.05 threshold, whih suggests it my be an important predictor of white-tailed deer habitat use. 
+
+It will make more sense if we plot it - again using `jtools`
+
+```{r}
+effect_plot(lm_con,                  # The model object
+            pred = line_of_sight_m,  # The variable you want to predict
+            interval = TRUE,         # Whether you want confidence intervals (default = 0.95)
+            partial.residuals = T,   # Show the residual variation -after sccounting for fixed effects  
+            y.label = "Habitat use") # Change the y axis label
+```
+
+### Model comparisons 
+There are times when we may want to compare which model is "the best", or which model is the most parsimonious. One way to do this is through the use of Information Theory - we can compare which model explains the most amount of variation after applying a penalty for how complex it is (more complex models will always explain more variation, even if just by chance).
+
+One useful package for this is the `MuMIn` package and the function `model.sel()` for model selection: 
+
+```{r}
+library(MuMIn)
+
+# Lets also create a "null model" something without any predictors in at all, to compare these models to:
+lm_null <- lm(Odocoileus.virginianus ~ 1, data = mod_dat) 
+```
+
+Now compare the three alternative models:
+
+```{r}
+model.sel(lm_null, lm_cat, lm_con)
+```
+
+Whilst both models improve on the null model, there is stronger support for `line_of_sight_m` than for our feature types in influencing white-tailed deer habitat use. Cool!
+
+But can you see any problems with this type of model? 
+
+We probably should be concerned about the fact that: 
+
+- There are negative predictions for both sets of confidence intervals - but you can't get a negative capture rate!
+- We do not account for seasonality - we saw species detection rates change with time of year in the [data exploration section](#exploration)
+
+And more besides!
 
 
-### Mixed-effects model
+### Mixed-effects models
 
-Let's build a more robust habitat use model which addresses some of the issues highlighted here. To do this we will take advantage of a type of analysis called 'mixed effects modelling'. Mixed effects models allow us to perform robust data analysis on populations which have been repeatedly sampled through time. As such, we can break our data set down into months without violating the assumptions of the models. 
+Let's build a more robust habitat-use model which addresses some of the issues highlighted here. To do this we will take advantage of a type of analysis called 'mixed effects modelling'. Mixed effects models allow us to perform robust analysis of populations which have been repeatedly sampled through time. As such, we can break our data set down into months without violating the assumptions of the models. 
 
-For a deep-dive into the inner workings of mixed effects models, see the following paper:
+If you are new to mixed effects models you must try this fantastic interactive aid to help you understand how they work: [Michael Freeman's 'An Introduction to Hierarchical Modeling'](http://mfviz.com/hierarchical-models/)
 
+And for a deep-dive into the inner workings of mixed effects models and their assumptions, see the following paper:
 [Harrison, Xavier A., et al. "A brief introduction to mixed effects modelling and multi-model inference in ecology." PeerJ 6 (2018): e4794.](https://peerj.com/articles/4794/)
 
 First we must install the packages we require: 'lme4' and `tidyr':
@@ -203,6 +278,8 @@ boxplot(mod_dat$Odocoileus.virginianus~mod_dat$feature_type,
         ylab="Habitat use")
 ```
 
+The patterns are similar to the `total_obs` dataset, however there is more noise!
+
 Now that we have monthly data, we might also want to control for some element of seasonality in our models. We can extract the month from our date column.
 
 ```{r}
@@ -212,87 +289,101 @@ mod_dat$month<- month(mod_dat$date, label=T)
 ```
 
 
-
-
-
-Next we will fit a mixed effects model to this data set using `lme4`. You may have noticed that we haven't calculated a separate capture rate dataframe as we did in the simple example! That is because we can create a relative abundance index within the model itself by providing an `offset()` term . An offset functions to scale the response term based on the amount of survey effort, and preserves the original units of the observations (counts). 
+Next we will fit a mixed effects model to this data set using `lme4`. You may have noticed that we haven't calculated a separate capture rate dataframe as we did in the simple example! That is because we can create a relative abundance index within the model itself by providing an `offset()` term . An offset term serves to scale the response term based on the amount of survey effort, and preserves the original units of the observations (counts). 
 
 The model takes the form:
   
-  Response term ~ fixed effect + offset() + (1|random intercept), data frame, distribution
+Response term ~ fixed effect + offset() + (1|random intercept), data frame, distribution
 
 We include `placename` as the random intercept, as camera locations are repeatedly sampled at monthly intervals and thus our data (rows in the dataframe) are not independent. We use the `poisson`  family, as our response term is a count.  
 
 ```{r}
-glmm_res <- glmer(Odocoileus.virginianus ~ feature_type + month + offset(log(days)) + (1|placename) , data=mod_dat, family="poisson")
+glmm_cat <- glmer(Odocoileus.virginianus ~ 
+                    feature_type + month + offset(log(days)) + (1|placename) , data=mod_dat, family="poisson")
 ```
+
+Oh that warning doesn't look friendly. Convergence errors often arise as when we fit a model which is too complicated! It basically says the the model hasn't completely "solved" the parameters within it. In it's current form the model is estimating and effect for every single month of the year, thats a lot of thing to estimate with such a small dataset.
+
+Let's simplify things to `summer` and `winter`!
+
+```{r}
+# Lets creat a new column and give it the value summer
+mod_dat$season <- "summer"
+mod_dat$season[month(mod_dat$date) %in% c(10,11,12,1,2,3)] <- "winter"
+
+# make it a factor factors
+mod_dat <- mod_dat %>% 
+            mutate_if(is.character,as.factor)
+```
+
+```{r}
+glmm_cat <- glmer(Odocoileus.virginianus ~ 
+                    feature_type + season + offset(log(days)) + (1|placename) , data=mod_dat, family="poisson")
+```
+
 
 We can view a summary of the model fit using:
 
 ```{r}
-summary(glmm_res)
+summary(glmm_cat)
 ```
 
-We can plot the predictiosn from these models using the `jtools` package.
+We can plot the predictions from these models using the `jtools` package.
 
 First lets look at the effects of `feature_type`:
 
 ```{r}
-effect_plot(glmm_res, pred = feature_type, interval = TRUE, y.label = "Habitat use",
+effect_plot(glmm_cat, pred = feature_type, interval = TRUE, y.label = "Habitat use",
             , data=mod_dat)
 ```
 
-So although our simple linear model suggested there was a difference between the different feature_type strata, a more robust mixed-effects model suggests that these difference my have been driven by other effects. 
+As with our simple linear model, the mixed effects model also suggests a difference between the different `feature_type` strata for white-tailed deer habitat -se. 
 
-Next, lets look at the effect of month:
+Lets also look at the effect of our new `season` variable:
 
 ```{r}
-effect_plot(glmm_res, pred = month, interval = TRUE, y.label = "Habitat use"
+effect_plot(glmm_cat, pred = season, interval = TRUE, y.label = "Habitat use",
             , data=mod_dat)
 ```
 
-Here we see much stronger structure, suggesting marked seasonality in the habitat-use of white-tailled deer in this landscape.
+Which suggests habitat use is slightly lower in winter then in summer. 
+
+### On your own
+
+Using this code as a scaffold, explore some more of the patterns we explored in the [data exploration chapter](#exploration).
+
+Remember we have the following species:
+
+```{r, echo=F}
+sp_summary$sp
+```
+
+And the following covariates:
+
+```{r}
+colnames(locs)[colnames(locs) %in% c("feature_type","line_of_sight_m", "water_depth_m", "elevation", "road_dist_m", "water_dist_m",    "lcc_habitats", "mean_ndvi")]
+```
+
+**A note of caution**
 
 As stated at the start of this guide, we are not focusing on whether the models we apply are appropriate or finding "the best" models for this datasheet, so do not spend too much time trying to interpret this information! 
 
-```{r, include=F, eval=F}
+### Advance mixed-model predictions
 
-We can plot the relationship between by keeping things simple and just exploring if `LOW500` influences the habitat use of *Odocoileus virginianus* habitat using the predict function and `ggplot2`.
+Tools such as `jtools` are great for generating simple predictions from mixed models, however the more complex the models get, the more you may want to specify your own prediction dataframes. 
 
-To do this we create a dummy dataframe of "new" data (`newDat`):
-
-# newDat <- cbind(expand.grid(LOW500=seq(min(sta$LOW500),max(sta$LOW500), length.out=50)),Effort=100)
-# 
-# # Type "response" gives predictions on the original (count) scale.
-# newDat$Pred <- predict(m1,newdata=newDat,re.form=NA,
-#                   type="response")
-# 
-# plot(newDat$Pred~newDat$LOW500, type="l",
-#      ylim=c(0, max(newDat$Pred)), lwd=2,
-#      las=1, ylab="Predicted habitat use",
-#      xlab="Proportion lowland habitat")
+If you want more applied examples of generating predictions from mixed effects models, check out [Ben Bolkers workbook](https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html). There is also some great discussion about model selection and r-squared values.  
 
 
+### Examples in the literature
+
+[Tattersall, E. R., Burgar, J. M., Fisher, J. T., & Burton, A. C. (2020). Mammal seismic line use varies with restoration: Applying habitat restoration to species at risk conservation in a working landscape. Biological Conservation, 241, 108295.](https://www.sciencedirect.com/science/article/abs/pii/S0006320719307013)
 
 
+## Multispecies models
+In the above examples, we analyse each individual species separately. This is great if you only care about one species, however we often want a more holistic understanding of wildlife communities! Recent advances in computer power and analytic approaches mean it is becoming increasingly popular to model multiple species within the same framework! This opens up a variety of things not previously possible. 
 
-So our model suggests that the habitat use of *Odocoileus virginianus* decreases as the proportion of lowland habitat increases. This is consistent with our understanding of White-tailed deer, which prefer upland habitats!
-
-If you want more applied examples of generating predictions from mixed effects models, check out [Ben Bolkers workbook](https://bbolker.github.io/mixedmodels-misc/ecostats_chap.html) 
-
-
-```
-
-## Extension 
-
-- Repeat for a different species
-- Try different distributions (e.g. negative biinomial)
-- Implement the same model using the 'brms' package
-
-
-
-## Multispecies model
-In the above examples, we analyse each individual species separately. Given modern advances in computer power and analytic approaches, it is becoming increasingly popular to model multiple species within the same framework. This opens up a variety of things not previously possible. 
+**A note of caution** In experimenting with single species models you may have realized it can sometimes be hard to build a sensible and robust model. Now do this for >10 species in the **same model**, and the potnetial to get silly results increases. Tread carefully!
 
 As with single species linear models, there are many choices available for modeling multiple species in the same framework. Two notable options are:
 
@@ -329,13 +420,8 @@ kbl(head(Y))%>%
 We then create the XData in a similar way to before, but this time dropping the species information:
 
 ```{r}
-Xdat <- left_join(monthly_obs[c("placename", "date", "days")], locs[c("placename", "feature_type")])
+Xdat <- left_join(monthly_obs[c("placename", "date", "days")], locs)
 # All XData must be numeric or factors, so lets check what we have
-str(Xdat)
-
-Xdat$feature_type <- as.factor(Xdat$feature_type)
-Xdat$date <- as.factor(Xdat$date)
-
 
 ```
 
@@ -368,29 +454,16 @@ rL = HmscRandomLevel(units = studyDesign$station)
 
 Specify our model""
 
-```{r, message =F, warning=F, eval=F}
+```{r, message =F, warning=F, eval=T}
 # Model specification
-m = Hmsc(Y = Y, XData = Xdat[,c("feature_type", "days")], 
-         XFormula = ~feature_type + log(days),
+mod <- Hmsc(Y = Y, XData = Xdat[,c("line_of_sight_m", "water_depth_m", "days")], 
+         XFormula = ~line_of_sight_m + water_depth_m + log(days),
          studyDesign = studyDesign, ranLevels = list(station = rL), 
          distr="poisson")
 
 
-m = sampleMcmc(m, thin = thin, samples = samples, transient = transient,
+out <-  sampleMcmc(mod, thin = thin, samples = samples, transient = transient,
                nChains = nChains, verbose = verbose)
-
-```
-
-
-```{r, echo=F, message=F, warning=F}
-# Model specification
-m = Hmsc(Y = Y, XData = Xdat[,c("LOW500", "Effort")], 
-         XFormula = ~LOW500 + log(Effort),
-         studyDesign = studyDesign, ranLevels = list(station = rL), 
-         distr="poisson")
-
-m = sampleMcmc(m, thin = thin, samples = samples, transient = transient,
-               nChains = nChains, verbose = F)
 
 ```
 
@@ -398,19 +471,34 @@ m = sampleMcmc(m, thin = thin, samples = samples, transient = transient,
 We can plot a basic summary of the modelled effects using the following code.
 
 ```{r}
-postBeta = getPostEstimate(m, parName = "Beta")
+postBeta = getPostEstimate(out, parName = "Beta")
 par(mar=c(8,12,1,1))
-plotBeta(m, post = postBeta, param = "Support", supportLevel = 0)
+plotBeta(out, post = postBeta, param = "Support", supportLevel = 0)
 ```
 
 We the colours denote the size and magnitude of the effect of proportion of lowland habitat. *NOTE* treat these results with cauthion as the number of model runs is very low (to increase speed) and the model assumptions have not been interrograted. 
 
 
-**CHRIS EXPAND AND ADD COVARIANCE**
+
+```{r}
+OmegaCor = computeAssociations(out)
+supportLevel = 0.95
+toPlot = ((OmegaCor[[1]]$support>supportLevel)
++ (OmegaCor[[1]]$support<(1-supportLevel))>0)*OmegaCor[[1]]$mean
+corrplot(toPlot, 
+         method = "color",
+         order = "FPC",
+        col = colorRampPalette(c("blue","white","red"))(200),
+        title = paste("random effect level:", 
+                      m$rLNames[1]), mar=c(0,0,1,0))
 
 
+```
 
-** SHOW HOW TO EXTRACT YOUR OWN STUFF**
+### Further reading
+
+The `Hmsc` vignettes
+
 
 ### Examples in the literature
 

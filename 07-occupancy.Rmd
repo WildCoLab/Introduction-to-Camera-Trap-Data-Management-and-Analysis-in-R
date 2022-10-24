@@ -5,213 +5,336 @@ editor_options:
 ---
 # Occupancy {#occupancy}
 
-```{r, echo=F, results='hide', message =F, warning=F}
+```{r, echo=T, results='hide', message =F, warning=F}
 # Check you have them and load them
-list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "dplyr", "unmarked", "lubridate")
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "dplyr", "unmarked", "lubridate", "tibble", "sf", "gfcanalysis",
+                      "spOccupancy")
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
 if(length(new.packages)) install.packages(new.packages)
 lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Name a better duo than that camera trapping and occupancy modelling. I'll wait.
+Occupancy modelling has been one of the mainstays of camera traps data analysis for many years, so learning how to wangle our data into occupancy-style formats is essential. 
 
-Occupancy modelling has been the mainstay of analysing data from camera traps for many years, so learning how to wangle our data into occupancy style format is essential. 
+When we survey wild and free ranging populations using any sampling methodology, the probability of detecting a given individual or species if it is actually present on the landscape at the time of sampling is typically less than  one. This is because wild animals are often hard to see! This issue is termed "imperfect detection". 
+
+In order to deal with the imperfect detection issue - occupancy models separate our the counts of a given species at a site into two processes: 
+
+1) occupancy (ψ) - which is the probability of a species occurring within a spatial unit (or “site”) during the sampling session
+2) detection probability (p) - the probability that the species will be detected given that it already occurs at a site 
+
+In order to separate out the occupancy process from the detection process, surveys need to occur at replicated 'sites' and we need repeated 'visits' to the same site. It is important to know that in camera trap studies, practitioners typically treat individual locations as sites and rather than repeated return to a location to survey it at different times, they divide the continuous camera activity data into block of time (e.g. 1 to 7 day windows).   
+
+Occupancy models were not developed specifically for camera traps - thus there are a suite of assumptions we need to make about the populations we survey when applying occupancy models. We do not adress these here. However, below we provide a list introductory resources for you to dig into the occupancy models to decide if they are appropriate for your situation:
+
+[Burton, A. Cole, et al. "Wildlife camera trapping: a review and recommendations for linking surveys to ecological processes." Journal of Applied Ecology 52.3 (2015): 675-685.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12432)
+
+[MacKenzie, Darryl I., et al. Occupancy estimation and modeling: inferring patterns and dynamics of species occurrence. Elsevier, 2017.](https://pubs.er.usgs.gov/publication/5200296)
+
+Let's focus our time on getting our data into the right formt, and applying some occupancy models!
 
 ## Single species occupancy model
 
-In this example we will use the weekly observations dataframe fro the SingleSiteExploration script.
+In this example we will use the `...weekly_observations` dataframe we created in the [data creation](#data-creation) section. We do this because 7 days is a time interval which occupancy models are often devided into for occupancy analyses.  
 
 ```{r}
-weekObs <- read.csv("data/processed_data/Algar_30min_Independent_Weekly_observations.csv", header=T)
+# Import the weekly observations data set
+week_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv", header=T)
 ```
 
 Which, as a quick reminder, looks like this:
 
 ```{r}
-kbl(weekObs)%>%
+kbl(week_obs)%>%
   kable_paper() %>%
   scroll_box( height = "200px")
 ```
 
-We first need to create a site x occasion matrix for our focal species, *Odocoileus virginianus*, using a 7 day occasion length. This means we need to break our camera data into seven day bins. We can visualise what this entailes using the camera activity plots in the SingleSiteExploration script:
+As with previous chapters, we will start by focusing on the white-tailed deer (*Odocoileus virginianus*). 
 
-```{r, echo=F}
-# Import the original effort data
-eff <- read.csv("data/raw_data/Example_deployment_data.csv", header=T)
-tz<- "UTC"
-# Put the time is POSIX format
-eff$Camera.Deployment.Begin.Date <- as.Date(ymd_hms(eff$Camera.Deployment.Begin.Date, truncated=3, tz=tz))
-eff$Camera.Deployment.End.Date   <- as.Date(ymd_hms(eff$Camera.Deployment.End.Date, truncated=3, tz=tz))
+We first need to create a site by occasion matrix for our focal species, using a 7-day occasion length. This means we need to break our camera data into seven day bins. 
 
-# Count the number of camera ststions
-n.stat <- length(unique(eff$Deployment.Location.ID))
+We can visualize what this entails using the camera activity plots we created in the [error checking chapter](#error-checking):
 
-# Plot them
+**NOT IMPLEMENTED YET**
 
-# Adjust layout
-par(mar=c(6,6,1,1))
-plot(c(min(eff$Camera.Deployment.Begin.Date, na.rm=T), 
-       max(eff$Camera.Deployment.End.Date, na.rm=T)), 
-       c(1,n.stat), las=1, ylab="", xlab="", type="n", yaxt="n", xaxt="n")
+```{r, echo=T, eval=F}
+# Import the depolyment data
+dep <- read.csv("data/raw_data/example_data/dep.csv", header=T)
 
-# Put them in alphabetical order
-plot.order <- unique(eff$Deployment.Location.ID)
-plot.order <- rev(plot.order[order(plot.order)])
+# Put the dates in posix format
+dep$start_date <- ymd(dep$start_date)
+dep$end_date   <- ymd(dep$end_date)
+dep$days <- interval(dep$start_date, dep$end_date)/ddays(1)
 
-axis(2, at= 1:n.stat, labels= plot.order, las=1, cex.axis=0.8)
+# Call the plot
+p <- plot_ly()
 
-# Make nice x-axis labels
-tmp <- as.Date(paste0(substr(c(min(eff$Camera.Deployment.Begin.Date, na.rm=T), 
-       max(eff$Camera.Deployment.End.Date, na.rm=T)),1,7),"-01"))
+# We want a separate row for each 'placename' - so lets turn it into a factor
+dep$placename <- as.factor(dep$placename)
 
-axis(1, at= seq(tmp[1], tmp[2], by="month"), 
-     labels= substr(seq(tmp[1], tmp[2], by="month"),1,7), las=2, cex.axis=0.8)
+# loop through each place name
+for(i in seq_along(levels(dep$placename)))
+  {
+      #Subset the data to just that placename
+      tmp <- dep[dep$placename==levels(dep$placename)[i],]
+      # Order by date
+      tmp <- tmp[order(tmp$start_date),]
+      # Loop through each deployment at that placename
+      for(j in 1:nrow(tmp))
+      {
+        # Add a line to 'p'
+        p <- add_trace(p, 
+                       #Use the start and end date as x coordinates
+                       x = c(tmp$start_date[j], tmp$end_date[j]), 
+                       #Use the counter for the y coordinates
+                       y = c(i,i), 
+                       # State the type of chart
+                       type="scatter",
+                       # make a line that also has points
+                       mode = "lines+markers", 
+                       # Add the deployment ID as hover text
+                       hovertext=tmp$deployment_id[j], 
+                       # Colour it all black
+                       color=I("black"), 
+                       # Supress the legend
+                       showlegend = FALSE)
+      }
+      
+  }
+# Add a catagorical y axis
+ p <- p %>%   layout(yaxis = list(
+
+      ticktext = as.list(levels(dep$placename)), 
+
+      tickvals = as.list(1:length(levels(dep$placename))),
+
+      tickmode = "array"),
+      
+      xaxis = list(tickvals = list(5.1, 5.9, 6.3, 7.5)))
 
 
-#Horizontal lines for months
-abline(v=as.numeric(seq(min(eff$Camera.Deployment.Begin.Date, na.rm=T),max(eff$Camera.Deployment.End.Date, na.rm=T), by=7)), col=rgb(0,0,0,0.1))
+p <-  p %>% layouryaxis = list(
+
+                     zerolinecolor = '#ffff',
+
+                     zerolinewidth = 2,
+
+                     gridcolor = 'ffff',
+
+                     tickvals = list(5.1, 5.9, 6.3, 7.5))
 
 
-#mtext("Camera Deployment ID", 2, 4)
-# Make lines for each of the cameras
-for(i in 1:length(plot.order))
-{
-  abline(h=i, col=rgb(0,0,0,0.1))
-  tmp <- eff[eff$Deployment.Location.ID==plot.order[i],]
-  for(j in 1:nrow(tmp))
-    {
-      lines(c(tmp$Camera.Deployment.Begin.Date[j],
-                       tmp$Camera.Deployment.End.Date[j]),
-            c(i,i), lwd=2)
-    }
-  
-}
+
+
+#Where each think black line is an active camera, and each thin grey box represents a potential one-week slice of the detection history. 
 
 
 ```
-Where each think black line is an active camera, and each thin grey box represents a potential one-week slice of the detection history. 
 
 We can create the detection histories using the following code:
+
 ```{r, message=F, warning=F}
-library(dplyr)
-library(tidyr)
-library(magrittr)
-library(tibble)
+# Use whitetsailed deer
+focal_sp<- "Odocoileus.virginianus"
+tmp_week  <- week_obs[, c("placename", "date", "days", focal_sp)]
 
-##Subset to your focal data
-tmp <- weekObs[,c("Deployment.Location.ID", "Date", "Odocoileus.virginianus")]
+# subset to 2019
+tmp_week <- tmp_week[substr(tmp_week$date,1,4)==2019,]
 
-# Turn the counts into presence/absence
-tmp$Odocoileus.virginianus[tmp$Odocoileus.virginianus>0] <- 1
 
-# Create a history
-detHist <-  tmp %>%
-  #Convert from long into wide format (a detection history) using spread
-  spread(Date,Odocoileus.virginianus, fill = NA) %>% 
-  # group by deployment location
-  group_by(Deployment.Location.ID,) %>%
-  column_to_rownames( var = "Deployment.Location.ID")
+###########################
+# Create the Y data matrix 
+y_dat <- tmp_week[,c("placename", "date", focal_sp)] %>%
+            pivot_wider(names_from = date, values_from = focal_sp)
 
-detHist <- as.matrix(detHist)
+# Convert it to a matirx - but only keeo the date values
+y_mat <- as.matrix(y_dat[,unique(tmp_week$date)])
+# Update the row names
+row.names(y_mat) <- y_dat$placename
 ```
 
 The resulting data frame looks like this:
 
 ```{r, echo=F}
-kbl(detHist)%>%
+kbl(y_mat)%>%
   kable_paper() %>%
   scroll_box( height = "200px")
 ```
 
-It is a matrix of all the weeks the cameras were active, and whether the species was present or absent in that interval. It should mirror the camera activity plot above. The `fill = NA` command puts a zero where there is data for a given day. However, we have lost our effort information - the number of days each camera was active in a given time period. So we need another data frame!
+It is a matrix of all the weeks the cameras were active, and whether the count of the independent detections in that interval. The `fill = NA` command puts a zero where there is data for a given day. 
 
-To get that information we need to create an effort history `effHist`:
+You can see that in some columns we have values > 1 - this is because we had more than one independent observation in that week. Occupancy analyses (typically) require this data to be in detection/non-dection (0 or 1) format. So lets change that here.
+
+```{r}
+# Where y_mat is > 1, and where y_mat isn't NA - give it the value 1
+y_mat[y_mat>1 & is.na(y_mat)==F] <- 1
+```
+
+However, we have lost our effort information - the number of days each camera was active in a given time period. So we need another data frame!
+
+To get that information we need to create an effort history `eff_mat`:
 
 ```{r}
 # To create the effort matrix - inst of the Focal Species bring in the effort
-effDat <- weekObs[,c("Deployment.Location.ID", "Date", "Effort")]
+eff_mat <- tmp_week[,c("placename", "date", "days")]
 
-effHist <-  effDat %>%
+eff_mat <-  eff_mat %>%
   # Create a matrix based on dates and effort
-  spread(Date,Effort, fill = NA) %>% 
+  spread(date,days, fill = NA) %>% 
   # group by deloyment Location ID, then make that the row.namesd
-  group_by(Deployment.Location.ID,) %>%
-  column_to_rownames( var = "Deployment.Location.ID") 
+  group_by(placename) %>%
+  column_to_rownames( var = "placename") 
 
-effHist <- as.matrix(effHist)
+eff_mat <- as.matrix(eff_mat)
+
 ```
 
 Check that it looks sensible:
 
 ```{r, echo=F}
-kbl(effHist)%>%
+kbl(eff_mat)%>%
   kable_paper() %>%
   scroll_box( height = "200px")
 ```
 
-We might want to remove all of the weeks where we did not get a complete sample:
+We might want to remove all of the data from the weeks where we did not get a complete sample:
 
 ```{r}
-detHist[effHist!=7] <- NA
+y_mat[eff_mat!=7] <- NA
 ```
 
 Now we are ready to feed this into the `unmarked` package. 
 
 ### unmarked package
 
-First we must make an unmarked dataframe - a data structure which speaks to the unmakred package architecture:
+First we must make an unmarked dataframe - a data structure which speaks to the unmarked package architecture:
 
 ```{r}
 library(unmarked)
-sta <- read.csv("data/raw_data/Example_station_data.csv", header=T)
+locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
 # Unmarked wants your detection history, effort data and site covariates as matrices.
 
-# Build an unmarkedFramOccu
-unDat <- unmarkedFrameOccu(y = detHist,
-                          # siteCovs = dataframe with site rows x column variables (in same order as detHist)
-                           siteCovs = sta) 
+# Check the order of your matrices and covariates files matches... or you will get nonsense!
+table(locs$placename == row.names(y_mat))
+
 ```
 
-We then fit the model, as before with the proportion of lowland habitat as a predictor:
+**Data standardization**
+
+Unmarked models benefit from data standardization - it can help the solving algorythmns converge,
+
+```{r}
+library(MuMIn)
+z_locs <- stdize(locs)
+```
+
+Take a look at it to see what it has done!
+
+```{r}
+# Build an unmarkedFramOccu
+un_dat <- unmarkedFrameOccu(y = y_mat,
+                          # siteCovs = dataframe with site rows x column variables (in same order as detHist)
+                           siteCovs = z_locs) 
+
+```
+
+We can then fit the occupancy model, lets start with a "null" model with no predictors on detection or occupancy.
 
 ```{r}
 # Fit general model all variables
-m1 <- occu(formula = ~1 # detection formula first
-                     ~LOW500, # occupancy formula second,
-                data = unDat)
+m0 <- occu(formula = ~1 # detection formula first
+                     ~1, # occupancy formula second,
+                data = un_dat)
 ```
 
 Then view the results.
 
 ```{r}
-summary(m1)
+summary(m0)
 
 ```
 
-As with the linear models of habitat use, we can generate predictions through the use of a dummy dataframe (`newDat`), then plot the results:
+The estimate you see for both occupancy and detection probability is on the log-link scale. If we want to calculate the occupancy probability, we can use the `backTransform()` function:
+
+```{r}
+backTransform(m0, type = "state")
+```
+
+So the probability that a white-tailed deer occupies one of the survey locations is ~0.66. For the detection probability we specify "det":
+
+```{r}
+backTransform(m0, type = "det")
+
+```
+
+The probability that we detect a white-tailed deer in a given unit of time (7-days), given that it is there to be detected, is ~0.2.
+
+Le's fit a couple of other models!
+
+First with a continuous covariate on the occupancy probability, then a catagorical one too:
+
+```{r}
+# Occupancy is influence by line of sight
+m1 <- occu(formula = ~1 # detection formula first
+                     ~z.line_of_sight_m, # occupancy formula second,
+                data = un_dat)
+
+# Occupancy is influenced by the feature_type a camera is deployed on
+m2 <- occu(formula = ~1 # detection formula first
+                     ~feature_type, # occupancy formula second,
+                data = un_dat)
+
+```
+
+
+We can perform model selection on these different scenarios in the same way as in the [habitat use chapter](#habitat-use) - using the `MuMIn` package:
+
+```{r}
+model.sel(m0,m1,m2)
+```
+
+The best supported model contains `z.line_of_sight_m`, although the improvement on the null model is minimal. 
+
+### Plotting predictions
+
+We can observe the relationship between our covariates and our occupancy probabilities through the use of a dummy dataframes (which we will call `new_dat`). A dummy dataframe is essential just a dataframe built up of `dummy` data - which lies within the upper and lower limits of the covariates we already have. We wouldnt want to extrapolate beyond our data! We can then plot the results:
 
 ```{r}
 # Generate new data to predict from 
-newDat <- cbind(expand.grid(LOW500=seq(min(sta$LOW500),max(sta$LOW500), length.out=100)))
+new_dat <- cbind(expand.grid(
+                  z.line_of_sight_m=seq(min(z_locs$z.line_of_sight_m),max(z_locs$z.line_of_sight_m), length.out=25) 
+                ))
+                 
 
-newDat <- predict(m1, type="state", newdata = newDat, appendData=TRUE)
+new_dat <- predict(m1, type="state", newdata = new_dat, appendData=TRUE)
 
-p1 <- ggplot(newDat, aes(x = LOW500, y = Predicted)) +
+library(ggplot2)
+
+p1 <- ggplot(new_dat, aes(x = z.line_of_sight_m, y = Predicted)) +
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.5, linetype = "dashed") +
   geom_path(size = 1) +
-  labs(x = "Proportion lowland habitat", y = "Occupancy probability") +
+  labs(x = "Line of sight", y = "Occupancy probability") +
   theme_classic() +
   coord_cartesian(ylim = c(0,1))
 
 p1
 ```
 
-As with our habitat use model, *Odocoileus virginianus* occupancy appears to decrease with increasing lowland habitat.  
+As with our habitat use model, white-tailed deer (**Odocoileus virginianus**) occupancy appears to decrease with increasing line of sight.  
+
+
+### On your own
+
+Let's explore some of the models we fit in the [habitat use chapter](#habitat-use) in the occupancy framework. We have not included any detection covariates in this example dataset, so hold that constand for now!
+
+
+
+```{r, eval=F, include=F}
 
 ## Multispecies occupancy model (two or more)
 
-```{r}
 https://rdrr.io/cran/unmarked/man/occuMulti.html
 #Rota 2016 model
 
@@ -373,8 +496,7 @@ https://rdrr.io/cran/unmarked/man/occuMulti.html
 
 Whilst unmarked has been the workhorse for implementing occupancy models in R, there is a new kid on the block - [spOccupancy](https://cloud.r-project.org/web/packages/spOccupancy/index.html).
 
-One of the benefits of spOccupancy is that they have a huge amount of resources to help you leanr and fit models too: [the spOccupancy website](https://www.jeffdoser.com/files/spoccupancy-web/) 
-
+One of the benefits of `spOccupancy` is that they have a huge amount of resources to help you learn and fit models too: [the spOccupancy website](https://www.jeffdoser.com/files/spoccupancy-web/) 
 
 ### Single species model
 As with any package, formatting raw data into the format it requires can be tricky. Here we walk through one way of preparing data for spOccupancy using camera data. 
@@ -386,16 +508,15 @@ For the single species model we need to prepare 4 elements:
 - Y matrix: a site x time matrix of detections and non-detections
 - occupancy covariates : rows are sites and the columns are covariates [NOTE - currently time invariant]
 - detection covariates : rows are sites and columns are covariate values, but each detection covariate has it s own matrix slice [allows for time varying covariates]
-- coordinates: rows are sites and columnns are y and y coordinates
+- coordinates: rows are sites and columns are y and y coordinates
 
 For this example we will use the monthly data above - and use a single year
 
 
 ```{r}
-
 monthly_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
 
-# Use whitetsailed deer
+# Use white-tailed deer
 sp<- "Odocoileus.virginianus"
 monthly_sub  <- monthly_obs[, c("placename", "date", "days", sp)]
 
@@ -411,22 +532,24 @@ monthly_sub <- monthly_sub[substr(monthly_sub$date,1,4)==2019,]
 y_dat <- monthly_sub[,c("placename", "date", sp)] %>%
   pivot_wider(names_from = date, values_from = sp)
 
+
 y_mat <- as.matrix(y_dat[,unique(monthly_sub$date)])
 row.names(y_mat) <- y_dat$placename
-locs
+z_locs
 
 
 ###########################
 # Create occupancy covariates
 
 # Add covariates to the Y dat object
-y_cov <- left_join(y_dat, locs)
-
-
+y_cov <- left_join(y_dat, z_locs)
 
 
 occ_covs_mat <- matrix(as.factor(y_cov$feature_type),
           dimnames=list(row.names(y_mat), "feature_type"))
+
+
+occ_covs_df <- z_locs
 
 
 #############################
@@ -445,11 +568,11 @@ det_covs_mat <- list(day=days)
 ############################
 # Create locations dataframe
 
-# We currently have covariartes in lat long - but we need to have them in meters (UTM format or similar)
-loc_dat <- st_as_sf(y_cov[, c("placename", "longitude", "latitude")], coords=c("longitude", "latitude"), crs=4326)
+# We currently have covariates in lat long - but we need to have them in meters (UTM format or similar)
+loc_dat <- st_as_sf(locs[, c("placename", "longitude", "latitude")], coords=c("longitude", "latitude"), crs=4326)
 # Automatic way
 library(gfcanalysis)
-utm_code <- utm_zone(mean(y_cov$longitude), mean(y_cov$latitude), proj4string=TRUE)
+utm_code <- utm_zone(mean(st_coordinates(loc_dat)[,1]), mean(st_coordinates(loc_dat)[,2]), proj4string=TRUE)
 loc_utm <- st_transform(loc_dat, utm_code)
 
 loc_mat <- as.matrix(st_coordinates(loc_utm),
@@ -457,7 +580,7 @@ loc_mat <- as.matrix(st_coordinates(loc_utm),
 
 # Package all data into list object
 dat_single_sp <- list(y = y_mat, 
-                  occ.covs = occ_covs_mat, 
+                  occ.covs = occ_covs_df, 
                   det.covs = det_covs_mat, 
                   coords = loc_mat)
 
@@ -465,12 +588,23 @@ dat_single_sp <- list(y = y_mat,
 str(det_covs_mat)
 
 
+
+out <- PGOcc(occ.formula = ~ z.line_of_sight_m, 
+             det.formula = ~ 1, 
+             data = dat_single_sp, 
+             n.samples = 5000, 
+             n.thin = 4, 
+             n.burn = 3000, 
+             n.chains = 3,
+             n.report = 500)
+summary(out)
+
+
+
 ```
 
 
-
-
-```{r}
+```{r, eval=F}
 # swiss-mhb-single-species.R: this script fits a single-species occupancy model 
 #                             using data on the European Goldfinch
 #                             from the Switzerland Breeding Bird Survey 
@@ -679,7 +813,7 @@ For the multi species model we have a different Y matric structure.
 Each slice of the matrix is species (y) by site (x), then each matrix slice is a visit.
 
 
-```{r}
+```{r, eval=F}
 
 hb.dat <- read.csv(url("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-hbr.178.3&entityid=eecb146279aa290af2292d75d3ba0f8b"))
 # Take a look at the data set
