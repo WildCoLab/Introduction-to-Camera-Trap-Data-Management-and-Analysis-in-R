@@ -15,7 +15,7 @@ description: "Materials for the three day camera trap data management and analys
 
 # Introduction
 
-```{r, echo=F, message=F, warning=F}
+```{r ch0_1, echo=F, message=F, warning=F}
 library(bookdown)
 knitr::include_graphics("images/Ninja.PNG")
 ```
@@ -26,7 +26,7 @@ The idea for this course was born out of the realization that many of the analyt
 
 ## Ethos
 
-This course is built on the foundation of "standardised data" - data formatted to meet an international standard. The benefits of standardising your data are explained in detail in the [data standardisation chapter](#standard), the principal benefit is that if you copy the data formatting used here, it should be very easy to apply the methods described here to new datasets!  
+This course is built on the foundation of "standardized data" - data formatted to meet an international standard. The benefits of standardizing your data are explained in detail in the [data standardization chapter](#standard), the principal benefit is that if you copy the data formatting used here, it should be very easy to apply the methods described here to new datasets!  
 
 ## What this course is 
 
@@ -45,15 +45,33 @@ This course is built on the foundation of "standardised data" - data formatted t
 
 You will either be using this book as a companion to the "An Introduction to Camera Trap Data Management and Analysis in R" course or be working through the examples alone. Regardless, you can use this book in the following ways:
 
-- If this is your first time analysing camera data - or you are an R course participant - work through the book chapter by chapter
+- If this is your first time analyzing camera data - or you are an R course participant - work through the book chapter by chapter
 - If you are looking to apply a specific method, browse the sections from the Table of Contents, or use the search box if you are after something specific
-- If you don't want to use GitHub, you can [download the data](https://www.dropbox.com/sh/fpnsinyn1ml9x28/AAB-Y-glHHRDsiCdmQnVLx7Wa?dl=0) and 'follow-along' cutting and pasting the code
-- Explore addition “Further reading” sections at the end of each section for more information or applied examples of the methods discussed
+- [Download the example data via dropbox](https://www.dropbox.com/sh/fpnsinyn1ml9x28/AAB-Y-glHHRDsiCdmQnVLx7Wa?dl=0) and 'follow-along' by cutting and pasting the code
+- Explore additional “Further reading” sections which highlight key literature or R packages in each section
+
+**Important note** The code chunks are color coded by their function:
+
+```{r, class.source="Rmain"}
+# Green chunks are essential code which must be copied and run in 
+# R for the document to work
+```
+
+```{r ch0_2, class.source="Rinfo"}
+# Orange chunks are non-essential code which to help your 
+# understanding and skill development 
+```
+
+When you hover over these colored chunks a 'copy' symbol will appear in the top right to transfer your code!
+
+```{r ch0_3, echo=F}
+print("Gray code chucks are code output from R")
+```
 
 ## Get in touch
 
-If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [data analysis GitHub page](https://github.com/WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R). 
+If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [the course GitHub page](https://github.com/WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R). 
 
 ## Acknowledgements
 
-This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne) with help from the members of the [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/), and [the WildCAM Network](https://wildcams.ca/). 
+This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne), Cole Burton's [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/), and [the WildCAM Network](https://wildcams.ca/). 

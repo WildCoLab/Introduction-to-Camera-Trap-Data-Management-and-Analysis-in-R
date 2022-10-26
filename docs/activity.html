@@ -4,34 +4,34 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Chapter 9 Activity | An Introduction to Camera Trap Data Management and Analysis in R</title>
+  <title>Chapter 12 Activity | An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
   <meta name="generator" content="bookdown 0.29 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Chapter 9 Activity | An Introduction to Camera Trap Data Management and Analysis in R" />
+  <meta property="og:title" content="Chapter 12 Activity | An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
   
   <meta property="og:description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="github-repo" content="WildCoLab/WildCo_Data_Analysis" />
+  <meta name="github-repo" content="WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Chapter 9 Activity | An Introduction to Camera Trap Data Management and Analysis in R" />
+  <meta name="twitter:title" content="Chapter 12 Activity | An Introduction to Camera Trap Data Management and Analysis in R" />
   
   <meta name="twitter:description" content="Materials for the three day camera trap data management and analysis course" />
   
 
-<meta name="author" content="Christopher Beirne and the Wildlife Coexistence Lab, UBC" />
+<meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-09-26" />
+<meta name="date" content="2022-10-25" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
-<link rel="prev" href="density.html"/>
-<link rel="next" href="phenology.html"/>
+<link rel="prev" href="occupancy.html"/>
+<link rel="next" href="density.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -66,6 +66,13 @@
 <script src="libs/leaflet-binding-2.1.1/leaflet.js"></script>
 <script src="libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
 <script src="libs/leaflet-providers-plugin-2.1.1/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.10.0/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.5.1/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.5.1/plotly-latest.min.js"></script>
+<script src="libs/clipboard-0.0.1/setClipboardText.js"></script>
 
 
 <style type="text/css">
@@ -152,94 +159,236 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="divider"></li>
 <li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
-<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#what-this-guide-is"><i class="fa fa-check"></i><b>1.1</b> What this guide is</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-this-guide-is-not"><i class="fa fa-check"></i><b>1.2</b> What this guide is not</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#how-to-use-this-guide"><i class="fa fa-check"></i><b>1.3</b> How to use this guide</a></li>
-<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.4</b> Get in touch</a></li>
-<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.5</b> Acknowledgements</a></li>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#ethos"><i class="fa fa-check"></i><b>1.1</b> Ethos</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-this-course-is"><i class="fa fa-check"></i><b>1.2</b> What this course is</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-course-is-not"><i class="fa fa-check"></i><b>1.3</b> What this course is not</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.4</b> How to use this book</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.5</b> Get in touch</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.6</b> Acknowledgements</a></li>
 </ul></li>
-<li class="chapter" data-level="2" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html"><i class="fa fa-check"></i><b>2</b> Metadata standardisation</a>
+<li class="chapter" data-level="2" data-path="prep.html"><a href="prep.html"><i class="fa fa-check"></i><b>2</b> Preparing for the course</a>
 <ul>
-<li class="chapter" data-level="2.1" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#the-wildco-lab-data-standard"><i class="fa fa-check"></i><b>2.1</b> The WildCo Lab data standard</a>
+<li class="chapter" data-level="2.1" data-path="prep.html"><a href="prep.html#install-r"><i class="fa fa-check"></i><b>2.1</b> Install R</a></li>
+<li class="chapter" data-level="2.2" data-path="prep.html"><a href="prep.html#install-rstudio"><i class="fa fa-check"></i><b>2.2</b> Install RStudio</a></li>
+<li class="chapter" data-level="2.3" data-path="prep.html"><a href="prep.html#install-the-required-packages"><i class="fa fa-check"></i><b>2.3</b> Install the required packages</a>
 <ul>
-<li class="chapter" data-level="2.1.1" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#project-data"><i class="fa fa-check"></i><b>2.1.1</b> Project data</a></li>
-<li class="chapter" data-level="2.1.2" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#detection-data"><i class="fa fa-check"></i><b>2.1.2</b> Detection data</a></li>
-<li class="chapter" data-level="2.1.3" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#deployment-data"><i class="fa fa-check"></i><b>2.1.3</b> Deployment data</a></li>
-<li class="chapter" data-level="2.1.4" data-path="metadata-standardisation.html"><a href="metadata-standardisation.html#station-covariates"><i class="fa fa-check"></i><b>2.1.4</b> Station covariates</a></li>
+<li class="chapter" data-level="2.3.1" data-path="prep.html"><a href="prep.html#cran-packages"><i class="fa fa-check"></i><b>2.3.1</b> CRAN packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="prep.html"><a href="prep.html#other-packages"><i class="fa fa-check"></i><b>2.3.2</b> Other packages</a></li>
 </ul></li>
-</ul></li>
-<li class="chapter" data-level="3" data-path="data-exploration.html"><a href="data-exploration.html"><i class="fa fa-check"></i><b>3</b> Data Exploration</a>
+<li class="chapter" data-level="2.4" data-path="prep.html"><a href="prep.html#create-an-r-project"><i class="fa fa-check"></i><b>2.4</b> Create an R project</a></li>
+<li class="chapter" data-level="2.5" data-path="prep.html"><a href="prep.html#download-the-data-files"><i class="fa fa-check"></i><b>2.5</b> Download the data files</a></li>
+<li class="chapter" data-level="2.6" data-path="prep.html"><a href="prep.html#the-example-datasets"><i class="fa fa-check"></i><b>2.6</b> The example datasets</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="data-exploration.html"><a href="data-exploration.html#standardised-exploration-script"><i class="fa fa-check"></i><b>3.1</b> Standardised exploration script</a>
+<li class="chapter" data-level="2.6.1" data-path="prep.html"><a href="prep.html#example_data"><i class="fa fa-check"></i><b>2.6.1</b> example_data</a></li>
+<li class="chapter" data-level="2.6.2" data-path="prep.html"><a href="prep.html#your_data"><i class="fa fa-check"></i><b>2.6.2</b> your_data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="prep.html"><a href="prep.html#a-bonus-non-essential-package"><i class="fa fa-check"></i><b>2.7</b> A bonus, non essential, package</a></li>
+<li class="chapter" data-level="2.8" data-path="prep.html"><a href="prep.html#practise-before-the-course"><i class="fa fa-check"></i><b>2.8</b> Practise before the course</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html"><i class="fa fa-check"></i><b>3</b> Preprocessing and labelling</a>
 <ul>
-<li class="chapter" data-level="3.1.1" data-path="data-exploration.html"><a href="data-exploration.html#camera-locations"><i class="fa fa-check"></i><b>3.1.1</b> Camera locations</a></li>
-<li class="chapter" data-level="3.1.2" data-path="data-exploration.html"><a href="data-exploration.html#camera-activity"><i class="fa fa-check"></i><b>3.1.2</b> Camera activity</a></li>
-<li class="chapter" data-level="3.1.3" data-path="data-exploration.html"><a href="data-exploration.html#detection-check"><i class="fa fa-check"></i><b>3.1.3</b> Detection check</a></li>
-<li class="chapter" data-level="3.1.4" data-path="data-exploration.html"><a href="data-exploration.html#species-metadata"><i class="fa fa-check"></i><b>3.1.4</b> Species metadata</a></li>
-<li class="chapter" data-level="3.1.5" data-path="data-exploration.html"><a href="data-exploration.html#independent-camera-detections"><i class="fa fa-check"></i><b>3.1.5</b> Independent camera detections</a></li>
-<li class="chapter" data-level="3.1.6" data-path="data-exploration.html"><a href="data-exploration.html#detection-rates"><i class="fa fa-check"></i><b>3.1.6</b> Detection rates</a></li>
-<li class="chapter" data-level="3.1.7" data-path="data-exploration.html"><a href="data-exploration.html#data-exporting-for-analysis"><i class="fa fa-check"></i><b>3.1.7</b> Data exporting for analysis</a></li>
-</ul></li>
-</ul></li>
-<li class="chapter" data-level="4" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html"><i class="fa fa-check"></i><b>4</b> Common analysis data formats</a>
+<li class="chapter" data-level="3.1" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#data-storage"><i class="fa fa-check"></i><b>3.1</b> Data storage</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#preprocessing"><i class="fa fa-check"></i><b>3.2</b> Preprocessing</a>
 <ul>
-<li class="chapter" data-level="4.1" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html#independent-detections"><i class="fa fa-check"></i><b>4.1</b> Independent detections</a></li>
-<li class="chapter" data-level="4.2" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html#effort-look-up"><i class="fa fa-check"></i><b>4.2</b> Effort look-up</a></li>
-<li class="chapter" data-level="4.3" data-path="common-analysis-data-formats.html"><a href="common-analysis-data-formats.html#countsdetections-by-time-interval"><i class="fa fa-check"></i><b>4.3</b> Counts/detections by time interval</a></li>
+<li class="chapter" data-level="3.2.1" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#renaming"><i class="fa fa-check"></i><b>3.2.1</b> Renaming</a></li>
+<li class="chapter" data-level="3.2.2" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#automated-labelers"><i class="fa fa-check"></i><b>3.2.2</b> Automated Labelers</a></li>
+<li class="chapter" data-level="3.2.3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#sensitive-images"><i class="fa fa-check"></i><b>3.2.3</b> Sensitive images</a></li>
+<li class="chapter" data-level="3.2.4" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#timelapse-extraction"><i class="fa fa-check"></i><b>3.2.4</b> Timelapse extraction</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="community-composition.html"><a href="community-composition.html"><i class="fa fa-check"></i><b>5</b> Community composition</a>
+<li class="chapter" data-level="3.3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#labelling"><i class="fa fa-check"></i><b>3.3</b> Labelling</a></li>
+<li class="chapter" data-level="3.4" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#end-dates-and-outages"><i class="fa fa-check"></i><b>3.4</b> End dates and outages</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="standard.html"><a href="standard.html"><i class="fa fa-check"></i><b>4</b> Metadata standardisation</a>
 <ul>
-<li class="chapter" data-level="5.1" data-path="community-composition.html"><a href="community-composition.html#observed-richness"><i class="fa fa-check"></i><b>5.1</b> Observed richness</a></li>
-<li class="chapter" data-level="5.2" data-path="community-composition.html"><a href="community-composition.html#estimated-richness"><i class="fa fa-check"></i><b>5.2</b> Estimated richness</a>
+<li class="chapter" data-level="4.1" data-path="standard.html"><a href="standard.html#the-wildlife-insights-minimum-metadata-standards"><i class="fa fa-check"></i><b>4.1</b> The Wildlife Insights Minimum Metadata Standards</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="community-composition.html"><a href="community-composition.html#inext-package"><i class="fa fa-check"></i><b>5.2.1</b> iNext package</a></li>
-<li class="chapter" data-level="5.2.2" data-path="community-composition.html"><a href="community-composition.html#multispecies-occupancy-model"><i class="fa fa-check"></i><b>5.2.2</b> Multispecies occupancy model</a></li>
+<li class="chapter" data-level="4.1.1" data-path="standard.html"><a href="standard.html#project-data"><i class="fa fa-check"></i><b>4.1.1</b> Project data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="standard.html"><a href="standard.html#image-data"><i class="fa fa-check"></i><b>4.1.2</b> Image data</a></li>
+<li class="chapter" data-level="4.1.3" data-path="standard.html"><a href="standard.html#deployment-data"><i class="fa fa-check"></i><b>4.1.3</b> Deployment data</a></li>
+<li class="chapter" data-level="4.1.4" data-path="standard.html"><a href="standard.html#camera-inventory"><i class="fa fa-check"></i><b>4.1.4</b> Camera inventory</a></li>
+<li class="chapter" data-level="4.1.5" data-path="standard.html"><a href="standard.html#important-note"><i class="fa fa-check"></i><b>4.1.5</b> Important note</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="community-composition.html"><a href="community-composition.html#diversity"><i class="fa fa-check"></i><b>5.3</b> Diversity</a></li>
-<li class="chapter" data-level="5.4" data-path="community-composition.html"><a href="community-composition.html#discussion"><i class="fa fa-check"></i><b>5.4</b> Discussion</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="habitat-use.html"><a href="habitat-use.html"><i class="fa fa-check"></i><b>6</b> Habitat use</a>
+<li class="chapter" data-level="5" data-path="error-checking.html"><a href="error-checking.html"><i class="fa fa-check"></i><b>5</b> Error checking</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="habitat-use.html"><a href="habitat-use.html#single-species-habitat-use-model"><i class="fa fa-check"></i><b>6.1</b> Single species habitat use model</a>
+<li class="chapter" data-level="5.1" data-path="error-checking.html"><a href="error-checking.html#standardised-exploration-script"><i class="fa fa-check"></i><b>5.1</b> Standardised exploration script</a></li>
+<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.2</b> Formatting dates</a>
 <ul>
-<li class="chapter" data-level="6.1.1" data-path="habitat-use.html"><a href="habitat-use.html#future-additions"><i class="fa fa-check"></i><b>6.1.1</b> Future additions</a></li>
-<li class="chapter" data-level="6.1.2" data-path="habitat-use.html"><a href="habitat-use.html#further-reading"><i class="fa fa-check"></i><b>6.1.2</b> Further reading</a></li>
+<li class="chapter" data-level="5.2.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.2.1</b> Skill check: <code>lubridate</code></a></li>
+<li class="chapter" data-level="5.2.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.2.2</b> Deployment dates</a></li>
+<li class="chapter" data-level="5.2.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.2.3</b> Image dates</a></li>
 </ul></li>
-<li class="chapter" data-level="6.2" data-path="habitat-use.html"><a href="habitat-use.html#example-multispecies-model"><i class="fa fa-check"></i><b>6.2</b> Example multispecies model</a></li>
-<li class="chapter" data-level="6.3" data-path="habitat-use.html"><a href="habitat-use.html#further-reading-1"><i class="fa fa-check"></i><b>6.3</b> Further reading</a></li>
-</ul></li>
-<li class="chapter" data-level="7" data-path="occupancy.html"><a href="occupancy.html"><i class="fa fa-check"></i><b>7</b> Occupancy</a>
+<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.3</b> Basic trapping summaries</a></li>
+<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.4</b> Error checks</a>
 <ul>
-<li class="chapter" data-level="7.1" data-path="occupancy.html"><a href="occupancy.html#single-species-occupancy-model"><i class="fa fa-check"></i><b>7.1</b> Single species occupancy model</a>
+<li class="chapter" data-level="5.4.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.4.1</b> Camera locations</a></li>
+<li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
+<li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
+<li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
+<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxise-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxise package</a></li>
+</ul></li>
+<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
+<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="data-creation.html"><a href="data-creation.html"><i class="fa fa-check"></i><b>6</b> Analysis data creation</a>
 <ul>
-<li class="chapter" data-level="7.1.1" data-path="occupancy.html"><a href="occupancy.html#unmarked-package"><i class="fa fa-check"></i><b>7.1.1</b> unmarked package</a></li>
-</ul></li>
-<li class="chapter" data-level="7.2" data-path="occupancy.html"><a href="occupancy.html#multispecies-occupancy-model-1"><i class="fa fa-check"></i><b>7.2</b> Multispecies occupancy model</a></li>
-<li class="chapter" data-level="7.3" data-path="occupancy.html"><a href="occupancy.html#further-reading-2"><i class="fa fa-check"></i><b>7.3</b> Further reading</a></li>
-</ul></li>
-<li class="chapter" data-level="8" data-path="density.html"><a href="density.html"><i class="fa fa-check"></i><b>8</b> Density</a></li>
-<li class="chapter" data-level="9" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>9</b> Activity</a>
+<li class="chapter" data-level="6.1" data-path="data-creation.html"><a href="data-creation.html#common-analysis-data-formats"><i class="fa fa-check"></i><b>6.1</b> Common analysis data formats</a></li>
+<li class="chapter" data-level="6.2" data-path="data-creation.html"><a href="data-creation.html#independent-detections"><i class="fa fa-check"></i><b>6.2</b> Independent detections</a></li>
+<li class="chapter" data-level="6.3" data-path="data-creation.html"><a href="data-creation.html#effort-look-up"><i class="fa fa-check"></i><b>6.3</b> Effort look-up</a></li>
+<li class="chapter" data-level="6.4" data-path="data-creation.html"><a href="data-creation.html#observations-by-time-interval"><i class="fa fa-check"></i><b>6.4</b> Observations by time interval</a></li>
+<li class="chapter" data-level="6.5" data-path="data-creation.html"><a href="data-creation.html#our-data"><i class="fa fa-check"></i><b>6.5</b> Our data</a>
 <ul>
-<li class="chapter" data-level="9.1" data-path="activity.html"><a href="activity.html#example"><i class="fa fa-check"></i><b>9.1</b> Example</a></li>
-<li class="chapter" data-level="9.2" data-path="activity.html"><a href="activity.html#further-reading-3"><i class="fa fa-check"></i><b>9.2</b> Further reading</a></li>
+<li class="chapter" data-level="6.5.1" data-path="data-creation.html"><a href="data-creation.html#filter-to-target-species"><i class="fa fa-check"></i><b>6.5.1</b> Filter to target species</a></li>
+<li class="chapter" data-level="6.5.2" data-path="data-creation.html"><a href="data-creation.html#create-a-daily-camera-activity-lookup"><i class="fa fa-check"></i><b>6.5.2</b> Create a daily camera activity lookup</a></li>
+<li class="chapter" data-level="6.5.3" data-path="data-creation.html"><a href="data-creation.html#determine-independent-camera-detections"><i class="fa fa-check"></i><b>6.5.3</b> Determine ‘independent’ camera detections</a></li>
+<li class="chapter" data-level="6.5.4" data-path="data-creation.html"><a href="data-creation.html#add-additional-data"><i class="fa fa-check"></i><b>6.5.4</b> Add additional data</a></li>
 </ul></li>
-<li class="chapter" data-level="10" data-path="phenology.html"><a href="phenology.html"><i class="fa fa-check"></i><b>10</b> Phenology</a>
+<li class="chapter" data-level="6.6" data-path="data-creation.html"><a href="data-creation.html#creating-analysis-dataframes"><i class="fa fa-check"></i><b>6.6</b> Creating analysis dataframes</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="covariates.html"><a href="covariates.html"><i class="fa fa-check"></i><b>7</b> Analysis covariates</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="phenology.html"><a href="phenology.html#worked-example"><i class="fa fa-check"></i><b>10.1</b> Worked example</a></li>
-<li class="chapter" data-level="10.2" data-path="phenology.html"><a href="phenology.html#further-reading-4"><i class="fa fa-check"></i><b>10.2</b> Further reading</a></li>
-</ul></li>
-<li class="chapter" data-level="11" data-path="behavior.html"><a href="behavior.html"><i class="fa fa-check"></i><b>11</b> Behavior</a>
+<li class="chapter" data-level="7.1" data-path="covariates.html"><a href="covariates.html#species-traits"><i class="fa fa-check"></i><b>7.1</b> Species traits</a></li>
+<li class="chapter" data-level="7.2" data-path="covariates.html"><a href="covariates.html#camera-station-covariates"><i class="fa fa-check"></i><b>7.2</b> Camera station covariates</a>
 <ul>
-<li class="chapter" data-level="11.1" data-path="behavior.html"><a href="behavior.html#further-reading-5"><i class="fa fa-check"></i><b>11.1</b> Further reading</a></li>
+<li class="chapter" data-level="7.2.1" data-path="covariates.html"><a href="covariates.html#locally-collected-covariates"><i class="fa fa-check"></i><b>7.2.1</b> Locally collected covariates</a></li>
+<li class="chapter" data-level="7.2.2" data-path="covariates.html"><a href="covariates.html#remotely-collected-covariates"><i class="fa fa-check"></i><b>7.2.2</b> Remotely collected covariates</a></li>
+<li class="chapter" data-level="7.2.3" data-path="covariates.html"><a href="covariates.html#extracting-data-from-local-rasters"><i class="fa fa-check"></i><b>7.2.3</b> Extracting data from local rasters</a></li>
+<li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
+<li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
+<li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#google-earth-engine"><i class="fa fa-check"></i><b>7.2.6</b> Google Earth Engine</a></li>
+<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#time-varying-covariates"><i class="fa fa-check"></i><b>7.2.7</b> Time-varying covariates</a></li>
+<li class="chapter" data-level="7.2.8" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.8</b> Digging deeper</a></li>
 </ul></li>
-<li class="chapter" data-level="12" data-path="interactions.html"><a href="interactions.html"><i class="fa fa-check"></i><b>12</b> Interactions</a>
+<li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
+<li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>8</b> Analysis data exploration</a>
 <ul>
-<li class="chapter" data-level="12.1" data-path="interactions.html"><a href="interactions.html#worked-example-1"><i class="fa fa-check"></i><b>12.1</b> Worked example</a></li>
-</ul></li>
-<li class="chapter" data-level="13" data-path="phenology-1.html"><a href="phenology-1.html"><i class="fa fa-check"></i><b>13</b> Phenology</a>
+<li class="chapter" data-level="8.1" data-path="exploration.html"><a href="exploration.html#final-locations-plot"><i class="fa fa-check"></i><b>8.1</b> Final locations plot</a></li>
+<li class="chapter" data-level="8.2" data-path="exploration.html"><a href="exploration.html#independent-detections-summary"><i class="fa fa-check"></i><b>8.2</b> Independent detections summary</a>
 <ul>
-<li class="chapter" data-level="13.1" data-path="phenology-1.html"><a href="phenology-1.html#worked-example-2"><i class="fa fa-check"></i><b>13.1</b> Worked example</a></li>
+<li class="chapter" data-level="8.2.1" data-path="exploration.html"><a href="exploration.html#total-number-of-captures"><i class="fa fa-check"></i><b>8.2.1</b> Total number of captures</a></li>
+<li class="chapter" data-level="8.2.2" data-path="exploration.html"><a href="exploration.html#raw-occupancy"><i class="fa fa-check"></i><b>8.2.2</b> Raw occupancy</a></li>
+<li class="chapter" data-level="8.2.3" data-path="exploration.html"><a href="exploration.html#comparison-plot"><i class="fa fa-check"></i><b>8.2.3</b> Comparison plot</a></li>
 </ul></li>
+<li class="chapter" data-level="8.3" data-path="exploration.html"><a href="exploration.html#temporal-patterns-in-capture-rates"><i class="fa fa-check"></i><b>8.3</b> Temporal patterns in capture rates</a></li>
+<li class="chapter" data-level="8.4" data-path="exploration.html"><a href="exploration.html#species-specific-capture-rates"><i class="fa fa-check"></i><b>8.4</b> Species-specific capture rates</a></li>
+<li class="chapter" data-level="8.5" data-path="exploration.html"><a href="exploration.html#spatial-patterns-in-capture-rates"><i class="fa fa-check"></i><b>8.5</b> Spatial patterns in capture rates</a></li>
+<li class="chapter" data-level="8.6" data-path="exploration.html"><a href="exploration.html#species-co-occurences"><i class="fa fa-check"></i><b>8.6</b> Species co-occurences</a></li>
+<li class="chapter" data-level="8.7" data-path="exploration.html"><a href="exploration.html#covariate-plots"><i class="fa fa-check"></i><b>8.7</b> Covariate plots</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="exploration.html"><a href="exploration.html#continuous-predictors"><i class="fa fa-check"></i><b>8.7.1</b> Continuous predictors</a></li>
+<li class="chapter" data-level="8.7.2" data-path="exploration.html"><a href="exploration.html#catagorical-predictors"><i class="fa fa-check"></i><b>8.7.2</b> Catagorical predictors</a></li>
+<li class="chapter" data-level="8.7.3" data-path="exploration.html"><a href="exploration.html#do-your-own-exploration"><i class="fa fa-check"></i><b>8.7.3</b> Do your own exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="composition.html"><a href="composition.html"><i class="fa fa-check"></i><b>9</b> Community composition</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="composition.html"><a href="composition.html#observed-richness"><i class="fa fa-check"></i><b>9.1</b> Observed richness</a></li>
+<li class="chapter" data-level="9.2" data-path="composition.html"><a href="composition.html#estimated-richness"><i class="fa fa-check"></i><b>9.2</b> Estimated richness</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="composition.html"><a href="composition.html#inext-package"><i class="fa fa-check"></i><b>9.2.1</b> iNext package</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="composition.html"><a href="composition.html#basic-results-plot"><i class="fa fa-check"></i><b>9.3</b> Basic results plot</a></li>
+<li class="chapter" data-level="9.4" data-path="composition.html"><a href="composition.html#sampling-unit-based-accumulation-curves"><i class="fa fa-check"></i><b>9.4</b> Sampling-unit-based accumulation curves</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="composition.html"><a href="composition.html#survey-station-example"><i class="fa fa-check"></i><b>9.4.1</b> Survey station example</a></li>
+<li class="chapter" data-level="9.4.2" data-path="composition.html"><a href="composition.html#sampling-duration-example"><i class="fa fa-check"></i><b>9.4.2</b> Sampling duration example</a></li>
+<li class="chapter" data-level="9.4.3" data-path="composition.html"><a href="composition.html#on-your-own"><i class="fa fa-check"></i><b>9.4.3</b> On your own</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="composition.html"><a href="composition.html#other-diversity-metrics"><i class="fa fa-check"></i><b>9.5</b> Other diversity metrics</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="composition.html"><a href="composition.html#simpson-and-shannon"><i class="fa fa-check"></i><b>9.5.1</b> Simpson and Shannon</a></li>
+<li class="chapter" data-level="9.5.2" data-path="composition.html"><a href="composition.html#more-examples-in-the-literature"><i class="fa fa-check"></i><b>9.5.2</b> More examples in the literature</a></li>
+<li class="chapter" data-level="9.5.3" data-path="composition.html"><a href="composition.html#multispecies-occupancy-model"><i class="fa fa-check"></i><b>9.5.3</b> Multispecies occupancy model</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="composition.html"><a href="composition.html#community-structure"><i class="fa fa-check"></i><b>9.6</b> Community structure</a>
+<ul>
+<li class="chapter" data-level="9.6.1" data-path="composition.html"><a href="composition.html#extracting-data-for-plotting"><i class="fa fa-check"></i><b>9.6.1</b> Extracting data for plotting</a></li>
+<li class="chapter" data-level="9.6.2" data-path="composition.html"><a href="composition.html#on-your-own-1"><i class="fa fa-check"></i><b>9.6.2</b> On your own</a></li>
+<li class="chapter" data-level="9.6.3" data-path="composition.html"><a href="composition.html#examples-in-the-literature"><i class="fa fa-check"></i><b>9.6.3</b> Examples in the literature</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="habitat-use.html"><a href="habitat-use.html"><i class="fa fa-check"></i><b>10</b> Habitat use</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="habitat-use.html"><a href="habitat-use.html#calculating-capture-rate"><i class="fa fa-check"></i><b>10.1</b> Calculating capture rate</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="habitat-use.html"><a href="habitat-use.html#examples-from-the-literature"><i class="fa fa-check"></i><b>10.1.1</b> Examples from the literature</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="habitat-use.html"><a href="habitat-use.html#single-species-models"><i class="fa fa-check"></i><b>10.2</b> Single-species models</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="habitat-use.html"><a href="habitat-use.html#simple-linear-model"><i class="fa fa-check"></i><b>10.2.1</b> Simple linear model</a></li>
+<li class="chapter" data-level="10.2.2" data-path="habitat-use.html"><a href="habitat-use.html#catagorical-predictor"><i class="fa fa-check"></i><b>10.2.2</b> Catagorical predictor</a></li>
+<li class="chapter" data-level="10.2.3" data-path="habitat-use.html"><a href="habitat-use.html#continuous-predictor"><i class="fa fa-check"></i><b>10.2.3</b> Continuous predictor</a></li>
+<li class="chapter" data-level="10.2.4" data-path="habitat-use.html"><a href="habitat-use.html#model-comparisons"><i class="fa fa-check"></i><b>10.2.4</b> Model comparisons</a></li>
+<li class="chapter" data-level="10.2.5" data-path="habitat-use.html"><a href="habitat-use.html#problems-with-these-models"><i class="fa fa-check"></i><b>10.2.5</b> Problems with these models</a></li>
+<li class="chapter" data-level="10.2.6" data-path="habitat-use.html"><a href="habitat-use.html#mixed-effects-models"><i class="fa fa-check"></i><b>10.2.6</b> Mixed-effects models</a></li>
+<li class="chapter" data-level="10.2.7" data-path="habitat-use.html"><a href="habitat-use.html#on-your-own-2"><i class="fa fa-check"></i><b>10.2.7</b> On your own</a></li>
+<li class="chapter" data-level="10.2.8" data-path="habitat-use.html"><a href="habitat-use.html#advanced-mixed-model-predictions"><i class="fa fa-check"></i><b>10.2.8</b> Advanced mixed-model predictions</a></li>
+<li class="chapter" data-level="10.2.9" data-path="habitat-use.html"><a href="habitat-use.html#examples-in-the-literature-1"><i class="fa fa-check"></i><b>10.2.9</b> Examples in the literature</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="habitat-use.html"><a href="habitat-use.html#multispecies-models"><i class="fa fa-check"></i><b>10.3</b> Multispecies models</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="habitat-use.html"><a href="habitat-use.html#potential-dangers"><i class="fa fa-check"></i><b>10.3.1</b> Potential dangers</a></li>
+<li class="chapter" data-level="10.3.2" data-path="habitat-use.html"><a href="habitat-use.html#further-reading"><i class="fa fa-check"></i><b>10.3.2</b> Further reading</a></li>
+<li class="chapter" data-level="10.3.3" data-path="habitat-use.html"><a href="habitat-use.html#examples-in-the-literature-2"><i class="fa fa-check"></i><b>10.3.3</b> Examples in the literature</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="occupancy.html"><a href="occupancy.html"><i class="fa fa-check"></i><b>11</b> Occupancy</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="occupancy.html"><a href="occupancy.html#single-species-occupancy-model"><i class="fa fa-check"></i><b>11.1</b> Single species occupancy model</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="occupancy.html"><a href="occupancy.html#unmarked-package"><i class="fa fa-check"></i><b>11.1.1</b> Unmarked package</a></li>
+<li class="chapter" data-level="11.1.2" data-path="occupancy.html"><a href="occupancy.html#plotting-predictions"><i class="fa fa-check"></i><b>11.1.2</b> Plotting predictions</a></li>
+<li class="chapter" data-level="11.1.3" data-path="occupancy.html"><a href="occupancy.html#on-your-own-3"><i class="fa fa-check"></i><b>11.1.3</b> On your own</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="occupancy.html"><a href="occupancy.html#spatial-occupancy-model-spoccupancy"><i class="fa fa-check"></i><b>11.2</b> Spatial occupancy model: spOccupancy</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="occupancy.html"><a href="occupancy.html#single-species-model"><i class="fa fa-check"></i><b>11.2.1</b> Single species model</a></li>
+<li class="chapter" data-level="11.2.2" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>11.2.2</b> Multi species model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>12</b> Activity</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="activity.html"><a href="activity.html#independent-detections-or-raw-data"><i class="fa fa-check"></i><b>12.1</b> Independent detections or raw data?</a></li>
+<li class="chapter" data-level="12.2" data-path="activity.html"><a href="activity.html#data-formatting"><i class="fa fa-check"></i><b>12.2</b> Data formatting</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
+<li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
+<li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="density.html"><a href="density.html"><i class="fa fa-check"></i><b>13</b> Density</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="density.html"><a href="density.html#individually-identifiable-individuals"><i class="fa fa-check"></i><b>13.1</b> Individually identifiable individuals</a></li>
+<li class="chapter" data-level="13.2" data-path="density.html"><a href="density.html#unmarked-animals"><i class="fa fa-check"></i><b>13.2</b> Unmarked animals</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="density.html"><a href="density.html#random-encounter-model"><i class="fa fa-check"></i><b>13.2.1</b> Random encounter model</a></li>
+<li class="chapter" data-level="13.2.2" data-path="density.html"><a href="density.html#time-to-event-space-to-event-density-estimates"><i class="fa fa-check"></i><b>13.2.2</b> Time to event/ Space to event density estimates</a></li>
+<li class="chapter" data-level="13.2.3" data-path="density.html"><a href="density.html#n-mixture-model-in-unmarked"><i class="fa fa-check"></i><b>13.2.3</b> N-mixture model in unmarked</a></li>
+<li class="chapter" data-level="13.2.4" data-path="density.html"><a href="density.html#abmi-method"><i class="fa fa-check"></i><b>13.2.4</b> ABMI Method</a></li>
+<li class="chapter" data-level="13.2.5" data-path="density.html"><a href="density.html#unmarked-spatial-capture-recapture-uscr"><i class="fa fa-check"></i><b>13.2.5</b> Unmarked spatial capture recapture (uSCR)</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="density.html"><a href="density.html#future-directions"><i class="fa fa-check"></i><b>13.3</b> Future directions</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="behavior.html"><a href="behavior.html"><i class="fa fa-check"></i><b>14</b> Behavior</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
+<li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
+<li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>14.4</b> Experimental manipulations</a></li>
+<li class="chapter" data-level="14.5" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.5</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="14.5.1" data-path="behavior.html"><a href="behavior.html#activity-overlap"><i class="fa fa-check"></i><b>14.5.1</b> Activity overlap</a></li>
+<li class="chapter" data-level="14.5.2" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.5.2</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.5.3" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.5.3</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.5.4" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.5.4</b> Attractance-Avoidance Ratios (AAR)</a></li>
+</ul></li>
+<li class="chapter" data-level="14.6" data-path="behavior.html"><a href="behavior.html#worked-examples"><i class="fa fa-check"></i><b>14.6</b> Worked examples</a></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="markdown-reports.html"><a href="markdown-reports.html"><i class="fa fa-check"></i><b>15</b> Markdown reports</a></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
 <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
@@ -261,374 +410,914 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="activity" class="section level1 hasAnchor" number="9">
-<h1><span class="header-section-number">Chapter 9</span> Activity<a href="activity.html#activity" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Given that camera traps record the time of the photo, they represent a powerful tool to explore and contrast the acivity pattterns of the species they detect. Such analyses can give insight into ompetition, predation and coexistance.</p>
+<div id="activity" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Activity<a href="activity.html#activity" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Given that camera traps operate 24 hours a day, 7 days a week, and can record animal motion down to second-level precision, they represent a powerful tool to explore and contrast the activity patterns of the species they detect! Such analyses can give insight into competition, predation and coexistence. Characterizing the “activity level” - the proportion of the day which animals are active - is also increasingly important for new estimators of animal density (<a href="density.html#density">see the density chapter for more info</a>). Consequently, understanding how to derive and use activity data is very important for people using camera traps.</p>
 <p><em>Must read</em> <a href="https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.60">Frey, Sandra, et al. “Investigating animal activity patterns and temporal niche partitioning using camera‐trap data: Challenges and opportunities.” Remote Sensing in Ecology and Conservation 3.3 (2017): 123-132.</a></p>
 <p>Two key packages</p>
 <ul>
 <li><code>overlap</code> <a href="https://cran.r-project.org/web/packages/overlap/index.html" class="uri">https://cran.r-project.org/web/packages/overlap/index.html</a></li>
 <li><code>activity</code> <a href="https://cran.r-project.org/web/packages/activity/index.html" class="uri">https://cran.r-project.org/web/packages/activity/index.html</a></li>
 </ul>
-<div id="example" class="section level2 hasAnchor" number="9.1">
-<h2><span class="header-section-number">9.1</span> Example<a href="activity.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>To demonstrate how we might investigate temporal niche partitioning, we will be working from the independent observations data frame.</p>
-<div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="activity.html#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the data</span></span>
-<span id="cb50-2"><a href="activity.html#cb50-2" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/Algar_30min_Independent.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<p>They each use the timestamps in camera trap detetions to derive activity indices which can be compared between different strata of interest (e.g. species, treatments etc.).</p>
+<p>Here we will use the <code>activity</code> package.</p>
+<div id="independent-detections-or-raw-data" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> Independent detections or raw data?<a href="activity.html#independent-detections-or-raw-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A recent paper has highlighted that we need to carefully consider our data source for activity analyses:</p>
+<p><a href="https://onlinelibrary.wiley.com/doi/10.1002/ece3.9408?af=R">Christopher Peral, Marietjie Landman, Graham I. H. Kerley The inappropriate use of time-to-independence biases estimates of activity patterns of free-ranging mammals derived from camera traps Ecology and Evolution</a></p>
+<p>Whilst we typically use “independent data” for most of our camera trap analysis, doing so may throw away useful data on activity. Both in terms of the number of data points (power) but also the activity patterns they generate. Peral et.al show that 70% of papers published to date use independent data to derive their indices. They actually state:<strong>“We conclude that the application of time-to-independence data filters in camera trap-based estimates of activity patterns is not valid and should not be used.”</strong></p>
+<p>So we will use the raw data to derive our indices!</p>
+<p><strong>Load your packages</strong></p>
+</div>
+<div id="data-formatting" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Data formatting<a href="activity.html#data-formatting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>First, lets import the processed raw data file.</p>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb289-1"><a href="activity.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the data</span></span>
+<span id="cb289-2"><a href="activity.html#cb289-2" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_raw_detections.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <p>Which looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Project.ID
+project_id
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Deployment.Location.ID
+deployment_id
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Species
+image_id
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Date_Time.Captured
+filename
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Age
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Sex
+location
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Number.of.Animals
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Minimum.Group.Size
+is_blank
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Behaviour
+identified_by
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Blank
+wi_taxon_id
 </th>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-Event.ID
+class
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+order
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+family
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+genus
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+species
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+uncertainty
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+timestamp
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Event.Duration
+number_of_objects
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+age
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sex
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+animal_recognizable
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+individual_id
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+individual_animal_notes
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+behavior
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+highlighted
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+markings
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+cv_confidence
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+license
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+placename
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Event.Groupsize
+group_size
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+temperature
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+sp
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+common_name
+</th>
+<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
+event_id
 </th>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-Event.Observations
+event_duration
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+event_groupsize
+</th>
+<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
+event_observations
 </th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td style="text-align:left;">
-Algar
+AlgarRestorationProject
 </td>
 <td style="text-align:left;">
-Algar08
+ALG027_2018-04-11
 </td>
 <td style="text-align:left;">
-Odocoileus virginianus
+Algar27__2018-04-13__13-51-01.JPG
 </td>
 <td style="text-align:left;">
-2018-12-18 20:54:56
+Algar27__2018-04-13__13-51-01.JPG
 </td>
 <td style="text-align:left;">
-Adult
+NA
+</td>
+<td style="text-align:right;">
+0
 </td>
 <td style="text-align:left;">
-Male
+ERT
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2018-04-13 13:51:01
 </td>
 <td style="text-align:right;">
 1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-Travelling
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:left;">
-E0
-</td>
-<td style="text-align:right;">
-15
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Algar
-</td>
-<td style="text-align:left;">
-Algar08
-</td>
-<td style="text-align:left;">
-Alces alces
-</td>
-<td style="text-align:left;">
-2019-04-20 14:37:51
 </td>
 <td style="text-align:left;">
 Adult
 </td>
 <td style="text-align:left;">
 </td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lynx canadensis
+</td>
+<td style="text-align:left;">
+Canada lynx
+</td>
+<td style="text-align:left;">
+E000001
+</td>
+<td style="text-align:right;">
+8
+</td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-Travelling
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:left;">
-E1
-</td>
-<td style="text-align:right;">
-57
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-10
+6
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Algar
+AlgarRestorationProject
 </td>
 <td style="text-align:left;">
-Algar08
+ALG027_2018-04-11
 </td>
 <td style="text-align:left;">
-Alces alces
+Algar27__2018-04-13__13-51-02.JPG
 </td>
 <td style="text-align:left;">
-2019-04-21 19:58:59
+Algar27__2018-04-13__13-51-02.JPG
 </td>
 <td style="text-align:left;">
-Unidentified
-</td>
-<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:right;">
-2
+0
+</td>
+<td style="text-align:left;">
+ERT
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2018-04-13 13:51:02
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:left;">
-E2
-</td>
-<td style="text-align:right;">
-58
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-11
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-Algar
-</td>
-<td style="text-align:left;">
-Algar08
-</td>
-<td style="text-align:left;">
-Odocoileus virginianus
-</td>
-<td style="text-align:left;">
-2019-05-07 09:43:59
+1
 </td>
 <td style="text-align:left;">
 Adult
 </td>
 <td style="text-align:left;">
 </td>
-<td style="text-align:right;">
-1
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+ALG027
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:left;">
-Travelling
+NA
 </td>
 <td style="text-align:left;">
-FALSE
+Lynx canadensis
 </td>
 <td style="text-align:left;">
-E3
+Canada lynx
+</td>
+<td style="text-align:left;">
+E000001
 </td>
 <td style="text-align:right;">
-5
+8
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-4
+6
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Algar
+AlgarRestorationProject
 </td>
 <td style="text-align:left;">
-Algar08
+ALG027_2018-04-11
 </td>
 <td style="text-align:left;">
-Rangifer tarandus
+Algar27__2018-04-13__13-51-03.JPG
 </td>
 <td style="text-align:left;">
-2019-05-23 08:31:29
+Algar27__2018-04-13__13-51-03.JPG
 </td>
 <td style="text-align:left;">
-Unidentified
+NA
+</td>
+<td style="text-align:right;">
+0
 </td>
 <td style="text-align:left;">
+ERT
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2018-04-13 13:51:03
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Adult
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lynx canadensis
+</td>
+<td style="text-align:left;">
+Canada lynx
+</td>
+<td style="text-align:left;">
+E000001
+</td>
+<td style="text-align:right;">
+8
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:left;">
-Travelling
-</td>
-<td style="text-align:left;">
-FALSE
-</td>
-<td style="text-align:left;">
-E4
-</td>
-<td style="text-align:right;">
-34
-</td>
-<td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-9
+6
 </td>
 </tr>
 <tr>
 <td style="text-align:left;">
-Algar
+AlgarRestorationProject
 </td>
 <td style="text-align:left;">
-Algar08
+ALG027_2018-04-11
 </td>
 <td style="text-align:left;">
-Alces alces
+Algar27__2018-04-13__13-51-06.JPG
 </td>
 <td style="text-align:left;">
-2019-08-04 05:31:51
+Algar27__2018-04-13__13-51-06.JPG
 </td>
 <td style="text-align:left;">
-Unidentified
+NA
+</td>
+<td style="text-align:right;">
+0
 </td>
 <td style="text-align:left;">
+ERT
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2018-04-13 13:51:06
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Adult
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lynx canadensis
+</td>
+<td style="text-align:left;">
+Canada lynx
+</td>
+<td style="text-align:left;">
+E000001
+</td>
+<td style="text-align:right;">
+8
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-2
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AlgarRestorationProject
 </td>
 <td style="text-align:left;">
-Travelling
+ALG027_2018-04-11
 </td>
 <td style="text-align:left;">
-FALSE
+Algar27__2018-04-13__13-51-07.JPG
 </td>
 <td style="text-align:left;">
-E5
+Algar27__2018-04-13__13-51-07.JPG
+</td>
+<td style="text-align:left;">
+NA
 </td>
 <td style="text-align:right;">
-4
+0
+</td>
+<td style="text-align:left;">
+ERT
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2018-04-13 13:51:07
 </td>
 <td style="text-align:right;">
-2
+1
+</td>
+<td style="text-align:left;">
+Adult
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+ALG027
 </td>
 <td style="text-align:right;">
-4
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lynx canadensis
+</td>
+<td style="text-align:left;">
+Canada lynx
+</td>
+<td style="text-align:left;">
+E000001
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+AlgarRestorationProject
+</td>
+<td style="text-align:left;">
+ALG027_2018-04-11
+</td>
+<td style="text-align:left;">
+Algar27__2018-04-13__13-51-09.JPG
+</td>
+<td style="text-align:left;">
+Algar27__2018-04-13__13-51-09.JPG
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:left;">
+ERT
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Mammalia
+</td>
+<td style="text-align:left;">
+Carnivora
+</td>
+<td style="text-align:left;">
+Felidae
+</td>
+<td style="text-align:left;">
+Lynx
+</td>
+<td style="text-align:left;">
+canadensis
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+2018-04-13 13:51:09
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+Adult
+</td>
+<td style="text-align:left;">
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+ALG027
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:left;">
+NA
+</td>
+<td style="text-align:left;">
+Lynx canadensis
+</td>
+<td style="text-align:left;">
+Canada lynx
+</td>
+<td style="text-align:left;">
+E000001
+</td>
+<td style="text-align:right;">
+8
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+6
 </td>
 </tr>
 </tbody>
 </table>
 </div>
-<p>Then load the activity package.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb51-1"><a href="activity.html#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
-<span id="cb51-2"><a href="activity.html#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(activity) </span></code></pre></div>
-<p>We first need to convert the “time” in our datasets into radian time (on the range [0,
-2*pi]) and proportion time (on the range 0-1):</p>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="activity.html#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Radian time</span></span>
-<span id="cb52-2"><a href="activity.html#cb52-2" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>rtime <span class="ot">&lt;-</span> <span class="fu">gettime</span>(dat<span class="sc">$</span>Date_Time.Captured, <span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span></code></pre></div>
-<p>Then fit the basic activity models available in the package. Note, more complex models are available, including accountting for the fact that the detection distance of camera traps varies from night to day. Here we will keep this simple!</p>
-<p><strong>White-tailed deer</strong></p>
-<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="activity.html#cb53-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(dat<span class="sc">$</span>rtime[dat<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span>])</span>
-<span id="cb53-2"><a href="activity.html#cb53-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-74-1.png" width="672" /></p>
-<p><strong>Caribou</strong></p>
-<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="activity.html#cb54-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(dat<span class="sc">$</span>rtime[dat<span class="sc">$</span>Species<span class="sc">==</span><span class="st">&quot;Rangifer tarandus&quot;</span>])</span>
-<span id="cb54-2"><a href="activity.html#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-75-1.png" width="672" /></p>
-<p>We can compare the activity plots of both species on the same axis visually:</p>
-<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="activity.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot both on the same axis</span></span>
-<span id="cb55-2"><a href="activity.html#cb55-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-3"><a href="activity.html#cb55-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.1</span>), <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb55-4"><a href="activity.html#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>))</span>
-<span id="cb55-5"><a href="activity.html#cb55-5" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;White tailed deer&quot;</span>, <span class="st">&quot;Caribou&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-76-1.png" width="672" /></p>
-<p>We can compare different activity patterns using coefficient of overlap (∆) - devleoped by Ridout and Linkie. The coefficient ranges from 0 (no overlap) to 1 (complete overlap). We can implement for a two species comparison as follows:</p>
-<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="activity.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time</span></span>
-<span id="cb56-2"><a href="activity.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">250</span>)</span></code></pre></div>
-<pre><code>##        obs       null     seNull      pNull 
-## 0.79074068 0.83820299 0.03918107 0.10800000</code></pre>
-<p>The output above represents: obs = observed overlap index; null = mean null overlap index; seNull = standard error of the null distribution; pNull = probability observed index arose by chance.</p>
-<p>Which suggets that there is no significant different between our two species, perhaps not surprising given that they spatially degregate not temporally.</p>
+<p>Then load the activity package:</p>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb290-1"><a href="activity.html#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
+<span id="cb290-2"><a href="activity.html#cb290-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(activity) </span></code></pre></div>
+<p>If your cameras correct for daylight savings use the correct code, if they do not, use UTC.</p>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb291-1"><a href="activity.html#cb291-1" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(img<span class="sc">$</span>timestamp, <span class="at">tz=</span><span class="st">&quot;UTC&quot;</span>)</span></code></pre></div>
+<p>Note - find your timezone code for the <code>tz=</code> call <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">here</a>.</p>
+<div id="accounting-for-sunrise-and-sunset" class="section level3 hasAnchor" number="12.2.1">
+<h3><span class="header-section-number">12.2.1</span> Accounting for sunrise and sunset<a href="activity.html#accounting-for-sunrise-and-sunset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<p>A recent paper highlighted the challenges in trying to understand animal activity patterns at high latitudes - as sunrise/sunset timings vary substantially through the calender year. See:</p>
+<p><a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13290">Vazquez, Carmen, et al. “Comparing diel activity patterns of wildlife across latitudes and seasons: Time transformations using day length.” Methods in Ecology and Evolution 10.12 (2019): 2057-2066.</a></p>
+<p>If we want to compare activity patterns between two different locations, or different seasons, the day length at the time the detection occurred can have a huge impact on our estimates of wildlife activity. For example, if we wanted to compare day/night activity between winter and summer periods, in winter animal activity is constrained to a much shorter day length.</p>
+<p>Fortunately, the authors have a solution!</p>
+<p><strong>The average anchoring method</strong></p>
+<p>Instead of using the ‘human’ 24h clock, we can instead express animal activity relative to an important anchor point in the day (e.g. sunrise).</p>
+<p>NOTE -the transformation is not necessary at latitudes below 20°, or in studies with a duration of less than a month (below 40° latitude), as day length doesn’t chnage substantially.</p>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb292-1"><a href="activity.html#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to add latitude and longitude to our observations</span></span>
+<span id="cb292-2"><a href="activity.html#cb292-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import our station locations (and other covariates)</span></span>
+<span id="cb292-3"><a href="activity.html#cb292-3" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
+<span id="cb292-4"><a href="activity.html#cb292-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-5"><a href="activity.html#cb292-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add them to our data frame</span></span>
+<span id="cb292-6"><a href="activity.html#cb292-6" aria-hidden="true" tabindex="-1"></a>img_locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(img, locs)</span></code></pre></div>
+<pre><code>## Joining, by = c(&quot;project_id&quot;, &quot;placename&quot;)</code></pre>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb294-1"><a href="activity.html#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate solar time </span></span>
+<span id="cb294-2"><a href="activity.html#cb294-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">solartime</span> ( img_locs<span class="sc">$</span>timestamp, <span class="co"># the date time column </span></span>
+<span id="cb294-3"><a href="activity.html#cb294-3" aria-hidden="true" tabindex="-1"></a>                   img_locs<span class="sc">$</span>latitude,  <span class="co"># Latitude</span></span>
+<span id="cb294-4"><a href="activity.html#cb294-4" aria-hidden="true" tabindex="-1"></a>                   img_locs<span class="sc">$</span>longitude, <span class="co"># Longitude</span></span>
+<span id="cb294-5"><a href="activity.html#cb294-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">tz=</span><span class="sc">-</span><span class="dv">6</span>,              <span class="co"># an offset in numeric hours to UTC (Alberta is 6 hours behind)</span></span>
+<span id="cb294-6"><a href="activity.html#cb294-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">format=</span><span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
+<span id="cb294-7"><a href="activity.html#cb294-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-8"><a href="activity.html#cb294-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Although we want to use solar time, let&#39;s add both incase you want to explore the implications</span></span>
+<span id="cb294-9"><a href="activity.html#cb294-9" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>solar <span class="ot">&lt;-</span> tmp<span class="sc">$</span>solar</span>
+<span id="cb294-10"><a href="activity.html#cb294-10" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>clock <span class="ot">&lt;-</span> tmp<span class="sc">$</span>clock</span></code></pre></div>
+<p>Let’s check out the relationship between these two indices:</p>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb295-1"><a href="activity.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(img_locs<span class="sc">$</span>solar, img_locs<span class="sc">$</span>clock)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/ch9_7-1.png" width="672" /></p>
+<p>We are now ready to fit some models!</p>
 </div>
-<div id="further-reading-3" class="section level2 hasAnchor" number="9.2">
-<h2><span class="header-section-number">9.2</span> Further reading<a href="activity.html#further-reading-3" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Houngbégnon, Fructueux GA, et al. “Daily Activity Patterns and Co-Occurrence of Duikers Revealed by an Intensive Camera Trap Survey across Central African Rainforests.” Animals 10.12 (2020): 2200. <a href="https://pubmed.ncbi.nlm.nih.gov/33255400/" class="uri">https://pubmed.ncbi.nlm.nih.gov/33255400/</a></p>
-<p>Ross J, Hearn AJ, Johnson PJ, Macdonald DW (2013). patterns and temporal avoidance
-by prey in response to Sunda clouded leopard predation risk.” Journal of Zoology, 290(2),
-96{106.</p>
-<p>Ramesh T, Kalle R, Sankar K, Qureshi Q (2012). -temporal partitioning among large
-carnivores in relation to major prey species in Western Ghats.” Journal of Zoology, 287(4),
-269{275.</p>
-<p>Azevedo FC, Lemos FG, Freitas-Junior MC, Rocha DG, Azevedo FCC (2018). activity
-patterns and temporal overlap with prey in a human-modied landscape at Southeastern
-Brazil.” Journal of Zoology,</p>
+</div>
+<div id="species-comparisons" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Species comparisons<a href="activity.html#species-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s start with a white-tailed deer and caribou example.</p>
+<p>Note we are reducing the number of replicates to 100 to speed up the process - typically people use 1000.</p>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb296-1"><a href="activity.html#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
+<span id="cb296-2"><a href="activity.html#cb296-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
+<span id="cb296-3"><a href="activity.html#cb296-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/ch9_8-1.png" width="672" /></p>
+<p>Take a look at the raw data if you want.</p>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb297-1"><a href="activity.html#cb297-1" aria-hidden="true" tabindex="-1"></a>m1</span></code></pre></div>
+<p>And repeat it for Caribou</p>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb298-1"><a href="activity.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
+<span id="cb298-2"><a href="activity.html#cb298-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Rangifer tarandus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
+<span id="cb298-3"><a href="activity.html#cb298-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/ch9_10-1.png" width="672" /></p>
+<p>We can plot both on the same axis as follows:</p>
+<div class="sourceCode" id="cb299"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb299-1"><a href="activity.html#cb299-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb299-2"><a href="activity.html#cb299-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
+<span id="cb299-3"><a href="activity.html#cb299-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
+<span id="cb299-4"><a href="activity.html#cb299-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb299-5"><a href="activity.html#cb299-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
+<span id="cb299-6"><a href="activity.html#cb299-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
+<span id="cb299-7"><a href="activity.html#cb299-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
+<span id="cb299-8"><a href="activity.html#cb299-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb299-9"><a href="activity.html#cb299-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Caribou&quot;</span>, <span class="st">&quot;Deer&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/ch9_11-1.png" width="672" /></p>
+<p>We can compare different activity patterns using coefficient of overlap (∆) - developed by Ridout and Linkie:</p>
+<p><a href="https://link.springer.com/article/10.1198/jabes.2009.08038">Ridout, Martin S., and Matthew Linkie. “Estimating overlap of daily activity patterns from camera trap data.” Journal of Agricultural, Biological, and Environmental Statistics 14.3 (2009): 322-337.</a></p>
+<p>The coefficient ranges from 0 (no overlap) to 1 (complete overlap). We can implement for a two species comparison as follows:</p>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb300-1"><a href="activity.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
+<span id="cb300-2"><a href="activity.html#cb300-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
+<pre><code>##         obs        null      seNull       pNull 
+## 0.784752483 0.954341390 0.008742393 0.000000000</code></pre>
+<p>The output above represents:</p>
+<p>0 = no overlap and 1 = high overlap!</p>
+<ul>
+<li><code>obs</code> = observed overlap index;</li>
+<li><code>null</code> = mean null overlap index;</li>
+<li><code>seNull</code> = standard error of the null distribution;</li>
+<li><code>pNull</code> = probability observed index arose by chance.</li>
+</ul>
+<p>Which suggests there is reasonably high overlap between the two species - and that it did not come about by chance.</p>
+</div>
+<div id="treatment-comparisons" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> Treatment comparisons<a href="activity.html#treatment-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can also compare patterns within a species across different strata of interest. For example, perhaps white-tailed deer change their activity patterns in response to the <code>feature_type</code> they are using - perhaps they will be more nocturnal on <code>HumanUse</code> lines relative to <code>Offline</code> strata. Lets try it:</p>
+<p><strong>White-tail deer on HumanUse feature</strong></p>
+<div class="sourceCode" id="cb302"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb302-1"><a href="activity.html#cb302-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit an activity model</span></span>
+<span id="cb302-2"><a href="activity.html#cb302-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb302-3"><a href="activity.html#cb302-3" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;HumanUse&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
+<p><strong>White-tail deer on Offline feature</strong></p>
+<div class="sourceCode" id="cb303"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb303-1"><a href="activity.html#cb303-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb303-2"><a href="activity.html#cb303-2" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;Offline&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb304"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb304-1"><a href="activity.html#cb304-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb304-2"><a href="activity.html#cb304-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
+<span id="cb304-3"><a href="activity.html#cb304-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
+<span id="cb304-4"><a href="activity.html#cb304-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb304-5"><a href="activity.html#cb304-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
+<span id="cb304-6"><a href="activity.html#cb304-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
+<span id="cb304-7"><a href="activity.html#cb304-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
+<span id="cb304-8"><a href="activity.html#cb304-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb304-9"><a href="activity.html#cb304-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/ch9_15-1.png" width="672" /></p>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb305-1"><a href="activity.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
+<span id="cb305-2"><a href="activity.html#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
+<pre><code>##       obs      null    seNull     pNull 
+## 0.8279407 0.9588944 0.0117458 0.0000000</code></pre>
+<p>There is very high overlap for these comparisons, and it is unlikely to have arisen by chance! So it seems the edidence for changes in temporal activity in response to feature_type is weak - at least for the white-tiled deer!</p>
+</div>
+<div id="on-your-own-4" class="section level2 hasAnchor" number="12.5">
+<h2><span class="header-section-number">12.5</span> On your own<a href="activity.html#on-your-own-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Try your own species comparisons. Remember we have the following species:</p>
+<pre><code>##  [1] &quot;Lynx canadensis&quot;         &quot;Canis lupus&quot;            
+##  [3] &quot;Ursus americanus&quot;        &quot;Alces alces&quot;            
+##  [5] &quot;Odocoileus virginianus&quot;  &quot;Canis latrans&quot;          
+##  [7] &quot;Cervus canadensis&quot;       &quot;Lontra canadensis&quot;      
+##  [9] &quot;Martes americana&quot;        &quot;Rangifer tarandus&quot;      
+## [11] &quot;Vulpes vulpes&quot;           &quot;Oryctolagus cuniculus&quot;  
+## [13] &quot;Lepus americanus&quot;        &quot;Tamiasciurus hudsonicus&quot;</code></pre>
+<p>You can also try other categorical strata comparisons, we have:</p>
+<p><code>feature_type</code></p>
+<pre><code>## 
+## HumanUse NatRegen  Offline 
+##       14       11       13</code></pre>
+</div>
+<div id="selected-further-reading" class="section level2 hasAnchor" number="12.6">
+<h2><span class="header-section-number">12.6</span> Selected further reading<a href="activity.html#selected-further-reading" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><a href="https://pubmed.ncbi.nlm.nih.gov/33255400/">Houngbégnon, Fructueux GA, et al. “Daily Activity Patterns and Co-Occurrence of Duikers Revealed by an Intensive Camera Trap Survey across Central African Rainforests.” Animals 10.12 (2020): 2200.</a></p>
+<p><a href="https://zslpublications.onlinelibrary.wiley.com/doi/10.1111/jzo.12018">Ross J, Hearn AJ, Johnson PJ, Macdonald DW (2013). Activity patterns and temporal avoidance
+by prey in response to Sunda clouded leopard predation risk. Journal of Zoology, 290(2),
+96,106.</a></p>
+<p><a href="https://zslpublications.onlinelibrary.wiley.com/doi/abs/10.1111/jzo.12558">Azevedo FC, Lemos FG, Freitas-Junior MC, Rocha DG, Azevedo FCC (2018). Puma activity
+patterns and temporal overlap with prey in a human-modifed landscape at Southeastern
+Brazil.” Journal of Zoology</a></p>
 
 </div>
 </div>
@@ -637,8 +1326,8 @@ Brazil.” Journal of Zoology,</p>
           </div>
         </div>
       </div>
-<a href="density.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-<a href="phenology.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+<a href="occupancy.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="density.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -669,7 +1358,7 @@ gitbook.start({
 "size": 2
 },
 "edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/08-activity.Rmd",
+"link": "https://github.com/rstudio/bookdown-demo/edit/master/09-activity.Rmd",
 "text": "Edit"
 },
 "history": {

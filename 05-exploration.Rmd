@@ -1,0 +1,468 @@
+# Analysis data exploration {#exploration}
+
+Now things start to get really interesting - we are getting closer to analyzing our data. Before we get into building any models however, we must thoroughly explore our data. We want to ask questions like?
+
+- How many species did we detect?
+- Which are the most common?
+- Where did we detect them?
+- When did we detect them?
+- How do species detections relate to our covariates?
+
+In the [error checking section](#error-checking) we focused our 'data exploration' on figures which would help us find issues with our data, now we want to shift gears and create plots which actually tell us about patterns in our data.
+
+To reflect the change from error check to patterns, all of the datasets we use will now be coming out of the `data/processed_data/` folder.
+
+**Create a new .R script**
+
+Call it `03_example_exploration.R`.
+
+**Load the required packages**
+
+```{r  ch5_1, echo=T, results='hide', message =F, warning=F, class.source="Rmain"}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "leaflet", "dplyr", "viridis", "corrplot", "lubridate", "plotly")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+```
+
+
+## Final locations plot
+So lets read in the `camera_locations.csv` and plot the final survey locations in `leaflet`. We repeat this as we may have filtered out some stations in the error checking section - for example if they failed to collect any useful data:
+
+```{r ch5_2, class.source="Rmain"}
+locs <- read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
+
+# If you want to color by a category do it here:
+category <- "feature_type"
+# First lets choose a category to color
+locs[,category] <- factor(locs[,category])
+col.cat <- turbo(length(levels(locs[,category])))
+# Add it to the dataframe
+locs$colours <- col.cat[locs[,category]]
+
+m <- leaflet() %>%
+  # Add a satellite image layer
+  addProviderTiles(providers$Esri.WorldImagery, group="Satellite") %>%  
+  addProviderTiles(providers$Esri.WorldTopoMap, group="Base") %>%     
+  addCircleMarkers(lng=locs$longitude, lat=locs$latitude,
+                   # Color the markers depending on the 'feature type'
+                   color=locs$colours,
+                   # Add a popup of the deployment code 
+                   popup=paste(locs$placename, locs[,category])) %>%
+  # Add a legend explaining what is going on
+  addLegend("bottomleft", colors = col.cat,  labels = levels(locs[,category]),
+    title = category,
+    labFormat = labelFormat(prefix = "$"),
+    opacity = 1
+  ) %>%
+  # add a layer control box to toggle between the layers
+  addLayersControl(
+    baseGroups = c("Satellite", "Base"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+m
+
+```
+
+## Independent detections summary
+
+When you are writing papers or reports based on camera data, it is useful to have a capture summary table in the main text or as an appendix. We will use the species list we created to append summary information to: 
+
+```{r ch5_3, class.source="Rmain"}
+# Also read in the species list
+sp_summary <- read.csv("data/processed_data/AlgarRestorationProject_species_list.csv", header=T)
+
+```
+
+### Total number of captures
+To summaries the wildlife detections in this project we can make use of the `...total_observations.csv` files:
+
+```{r ch5_4, class.source="Rmain"}
+total_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv", header=T)
+```
+
+The format of the output tables is what we would call 'wide' format - we have multiple species observation on the same row.
+
+```{r ch5_5, echo=F}
+total_obs %>% kbl() %>% scroll_box(height = "200px") %>%
+  kable_paper("striped", full_width = F) 
+```
+
+Sometimes, however, we might want a "longer" format where every row represents a unique `species_site` combination. 
+
+We can do this using the 'pivot_longer' function:
+
+```{r ch5_6, class.source="Rmain"}
+
+long_obs <- total_obs %>% 
+  pivot_longer(cols=sp_summary$sp,  # The columns we want to create into rows - species
+               names_to="sp",       # What we what the number column to be called
+               values_to = "count") # Takes the values in the species columns and calls them `count`
+
+```
+
+We now have a dataframe where each row is a unique species at a given location (e.g. `ALG027`) - a.k.a. long format!
+
+```{r ch5_7, echo=F}
+long_obs %>% kbl() %>% scroll_box(height = "200px") %>%
+  kable_paper("striped") 
+```
+
+It is often easier to use this long format to make summaries:
+
+```{r ch5_8, message=F, warning=F, class.source="Rmain"}
+# We can them summaries those using dplyr
+tmp <- long_obs %>%                   # Take the long observation data frame `long_obs` 
+          group_by(sp) %>%            # Group by species
+          summarise(count=sum(count)) # Sum all the independent observations
+
+# Add it to the sp_summary dataframe
+sp_summary <- left_join(sp_summary, tmp)
+
+```
+
+### Raw occupancy
+We can very quickly flip a count to a presence/absence using `as.logical` this converts all integers to 1 and keeps 0's as 0!  
+
+```{r ch5_9, class.source="Rmain"}
+# We use the mutate function to mutate the column
+total_binary <-  total_obs %>%    # The total obs dataframe              
+                    mutate(across(sp_summary$sp, ~+as.logical(.x)))  # across all of the species columns, make it binary
+
+# Flip the dataframe to longer - as before
+long_bin <- total_binary %>% 
+  pivot_longer(cols=sp_summary$sp, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
+
+```
+
+Now when we do the same calculations, as before, we can calculate the number of sites occupied:
+
+```{r ch5_10, message=F, warning=F, class.source="Rmain"}
+
+# We can now sum the presence/absences and divide by the number of survey locations
+tmp <- long_bin %>% 
+  group_by(sp) %>% 
+  summarise(occupancy=sum(count)/nrow(locs)) # divided the sum by the number of sites
+
+# add the results to the sp_summary
+sp_summary <- left_join(sp_summary, tmp)
+
+```
+
+### Comparison plot
+
+Then we can use the dataframe created above to summaries the detections and the occupancy patterns.
+
+Note - here we weave two plotly graphs together using the `subplot() function`!
+
+```{r ch5_11, class.source="Rmain"}
+# Lets put the dataframes in a sensible order
+sp_summary <- sp_summary[order(sp_summary$count),]
+
+yform <- list(categoryorder = "array",
+              categoryarray = sp_summary$common_name#,
+#             tickfont = list(size = 7),
+)
+xform <- list(title="Captures")
+
+# Capture rate
+fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
+ layout(yaxis = yform, xaxis=xform)
+
+yform <- list(categoryorder = "array",
+              categoryarray = sp_summary$common_name,
+              showticklabels=F)
+xform <- list(title="Occupancy")
+
+
+# Occupancy
+fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
+ layout(yaxis = yform, xaxis=xform)
+
+subplot(nrows=1,fig1, fig2, titleX = T) # We could stack them on top of one another using nrows=2
+
+```
+
+What does this output tell you about species-specific occurrences across the landscape?
+
+
+## Temporal patterns in capture rates
+
+Next lets summaries the temporal patterns in the number of sites (`placenames`) surveyed, and the total number of animals captured. We will use the monthly dataframes in order to do this, but you could do it at the weekly or daily scale if required!
+
+```{r ch5_12, class.source="Rmain"}
+mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
+
+```
+
+We will first count the number of survey nights each location was active, then in the second step add the number of species detections.
+
+```{r ch5_13, warning=F, message=F, class.source="Rmain"}
+# Count up the number of stations and the number of camera nights
+mon_summary <- mon_obs %>%                  # Use the monthly observations dataframe
+            group_by(date) %>%              # Group by the date
+            summarise(locs_active=n(),      # Count the number of active cameras
+                      cam_days=sum(days))   # And sum the active days 
+
+
+# Add in the species specific counts - and join it with the mon_summary dataframe
+mon_summary <- mon_obs %>% 
+                group_by(date) %>%  
+                summarise(across(sp_summary$sp, sum, na.rm=TRUE)) %>% # summarise across all of 
+                                                                      # the species columns 
+                left_join(x=mon_summary)   # Join with the mon_summary dataframe
+
+```
+
+Now lets use `lubridate` to convert the `timestamp` column to a date object and plot the output.
+
+Each black dot represents the number of survey nights or average capture rate, respectively. 
+
+```{r ch5_14, class.source="Rmain"}
+# We first need to convert the date column to a date object
+mon_summary$date <- ym(mon_summary$date)
+
+# Set up a two panel plot (side by side)
+par(mfrow=c(1,2))
+
+plot(mon_summary$date, mon_summary$locs_active,
+     type="o", 
+     pch=19,
+     ylim=c(0, max(mon_summary$locs_active)),
+     las=1, 
+     ylab="Number of cameras active", xlab="Date")
+
+
+# Sum all the captures rates for the species columns
+mon_summary$all.sp <- rowSums(mon_summary[, sp_summary$sp])
+
+# Plot them
+plot(mon_summary$date, mon_summary$all.sp/(mon_summary$cam_days/100),
+     type="o",
+     pch=19,
+     las=1, ylab="Detections per 100 cam days", xlab="Date")
+
+```
+
+As we saw in the error checking section, survey effort (number of cameras active) drops in early 2018 (left hand panel). The right hand panel shows the overall capture rate (for all species pooled), and you can see it is strongly seasonal - peaks in summers, and drops in the winter.
+
+
+## Species-specific capture rates
+
+We should now split up this overall capture rate, and explore temporal patterns in species-specific detections. We can do this by looping the code with a `for()` loop. 
+
+```{r ch5_15, class.source="Rmain"}
+par(mfrow=c(2,2))
+i <- 1
+for(i in 1:length(sp_summary$sp))
+{
+  plot(mon_summary$date, pull(mon_summary, sp_summary$sp[i])/(mon_summary$cam_days/100),  # The pull command allows you to grab a specific column in a dataframe and turn it into a vector!
+     type="o",
+     pch=19,
+     las=1, ylab="Detections per 100 cam days", xlab="Date",
+     main=sp_summary$common_name[i])
+}
+```
+
+Can you see any interesting patterns in here? What do black bears do in winter? What time of year do we get the most marten detections? 
+
+## Spatial patterns in capture rates
+We also often want to explore if there are any spatial patterns in capture rates, these can hint at any ecological relationships we might want to explore further. Here we do it for just a single species, the white-tailed deer (**Odocoileus virginianus**). 
+
+Here we make use of the 'total_obs' data frame we imported earlier. We also use the 'locs' dataframe.
+
+```{r ch5_16, warning=F, message=F, class.source="Rmain"}
+
+total_obs <- left_join(total_obs, locs)
+
+focal_species <- "Odocoileus.virginianus"
+
+focal_cr <- pull(total_obs, focal_species)/(total_obs$days/100)
+
+m <- leaflet() %>%
+  addProviderTiles(providers$Esri.WorldTopoMap, group="Base") %>%     
+  addCircleMarkers(lng=locs$longitude, lat=locs$latitude,
+                   # Add a popup of the deployment code 
+                   popup=paste(locs$placename),
+                   radius=(focal_cr/max(focal_cr)*10)+1, stroke=F,
+                   fillOpacity=0.6) 
+m
+
+```
+
+Try it for some different species. Can you see any different patterns?
+
+## Species co-occurences
+
+Camera trap data are being increasingly used to model multiple species communities. In the same way in which we used the `corrplot` package in the (analysis covariates section(#covariates), we can use it to explore the co-occurrence patterns of the species in the community. 
+
+The plot below uses the 'total_obs' dataframe, and performs pairwise correlations between the species on the left, and the species on the top row. 
+
+Blue colors = positive correlation ->  at locations where you have high counts of one species, you also have high counts of the paired species. 
+
+Red colors = negative correlation -> at locations where you have high counts of one species, then you are likely to have low counts of the species pair (or vice-versa).
+
+We implement a more nuanced form of this data analysis in the [interactions chapter](#interactions). To make this plot we use the `total_obs` dataframe.
+
+```{r ch5_17, class.source="Rmain"}
+# Reset the plot parameters
+par(mfrow=c(1,1))
+
+# Pull the data for each of the species from 
+tmp <- total_obs[, sp_summary$sp]
+M <- cor(tmp)
+
+corrplot(M, method="color", 
+         type="upper", 
+         order="hclust",
+         # addCoef.col = "black", # We suppress the coefs to make a cleaner plot
+         tl.col="black", tl.srt=45, #Text label color and rotation
+         diag=FALSE
+         )
+```
+
+What would you conclude?
+
+## Covariate plots
+
+So far we have explored temporal and spatial patterns in species counts - but what about the effects of the covariates we derived in the [analysis covariates section](#covariates)? Before embarking on an in depth analysis, it is always sensible to plot your response terms against predictors. 
+
+**Note** we are often paranoid about "data dredging" or shopping around for "significant" predictors, as this isn't good scientific practice. Here, we should only explore covariates for which we have a prior belief in there effects on the response term. We are not looking for significant relationships, rather trying to understand the structure of our data! You should know your data inside out before you start modelling. 
+
+**Final note** just because you do not see a strong effect in your raw data, doesn't mean that it will not have an effect in your final models, particularly if you plan to account for multiple confounding variables or use random effects!
+
+
+Lets have a quick look at what we have available to us in the `camera_locations_and_covariates` file:
+
+```{r ch5_18, class.source="Rinfo"}
+str(locs)
+```
+
+We have - `feature type`, `water_depth_m`, `line_of_sight_m`, `elevation`, `road_dist_m`, `water_dist_m`, `lcc_habitats` and `mean_ndvi` as potential covariates.  
+
+Before we proceed, it is good practice to convert categorical variables (like `feature_type` and `lcc_habitats`) to factors. There is a very easy way to do that using the `mutate_if()` function of dplyr: 
+
+```{r ch5_19, class.source="Rmain"}
+locs <- locs %>% 
+            mutate_if(is.character,as.factor) # If a column is a character string, make it a factor
+```
+
+Run `str(locs)` again to see what has changed!
+
+Before we explore patterns, we need to add the covariates to the response dataframes (e.g. total_obs). We will use `left_join()`.
+
+```{r ch5_20, warning=F, message=F, class.source="Rmain"}
+total_obs <- left_join(total_obs, locs)
+```
+
+Lets explore two different types of plot we can make for once particular species, then we will challenge you to explore some relationships of your own. 
+
+### Continuous predictors
+
+The best plot for two continuous predictors is a scatter plot.
+
+In base R:
+
+```{r ch5_21, class.source="Rinfo"}
+plot(data=total_obs, 
+       Alces.alces ~   # Y variable
+       line_of_sight_m, # X variable
+       pch=19,
+       las=1
+     ) 
+
+```
+
+We can make the same plot in `ggplot`:
+
+```{r ch5_22, class.source="Rinfo"}
+ggplot(data=total_obs, 
+       aes(x=line_of_sight_m, y=Alces.alces)) + 
+       geom_point() +                   # Specify a scatter plot
+       theme_classic()                  # A nice theme
+```
+
+The great thing about `ggplot` is that it is easy to add trend lines:
+
+```{r ch5_23, message=F, warning=F, class.source="Rinfo"}
+ggplot(data=total_obs, 
+       aes(x=line_of_sight_m, y=Alces.alces)) + 
+       geom_point() +                   # Specify a scatter plot
+       theme_classic() +  
+       geom_smooth(method=lm, se=T, fullrange=TRUE)   # A nice theme
+```
+
+What do you think?
+
+For more `ggplot` scatterplot examples (with code) see the [R graph gallery - Scatterplots](https://r-graph-gallery.com/scatterplot.html). 
+
+
+Let's checkout another predictor:
+
+```{r ch5_24, eval=F , class.source="Rinfo"}
+ggplot(data=total_obs, 
+       aes(x=mean_ndvi, y=Alces.alces)) + 
+       geom_point() +                   # Specify a scatter plot
+       theme_classic() +  
+       geom_smooth(method=lm, se=T, fullrange=TRUE)   # A nice theme
+```
+
+### Catagorical predictors
+
+For categorical predictors boxplots are very useful!
+
+Base R:
+
+```{r ch5_25, class.source="Rinfo"}
+boxplot(data=total_obs,
+          Alces.alces ~ feature_type)
+```
+
+Or if `ggplot` is your thing:
+
+```{r ch5_26, class.source="Rinfo"}
+ggplot(total_obs, aes(x=feature_type, y=Alces.alces)) +
+  geom_boxplot()+
+  theme_classic()
+```
+
+For more ggplot boxplot examples (with code) see [R Graph Galley - Boxplots](https://r-graph-gallery.com/boxplot.html). There is some cool stuff in there!
+
+### Do your own exploration
+
+We will now list some potential relationships in the data, you should decide the best way to explore each one:
+
+- Wolves (*Canis lupus*) select locations with longer line of sight
+- Caribou (*Rangifer tarandus*) select locations where the water table is on the surface
+- White-tailed deer (*Odocoileus virginianus*) select locations with higher vegetation productivity (e.g. higher NDVI)
+- Lynx (*Lynx canadensis*) select human use feature types over other feature types
+- Lynx (*Lynx canadensis*) select locations with higher snowshoe hare (*Lepus americanus*) activity
+
+Can you find any evidence to support these? Are there any other things that interest you?
+
+Remember we have the following species:
+
+```{r ch5_27, echo=F}
+sp_summary$sp
+```
+
+And the following covariates:
+
+```{r ch5_28, echo=F}
+colnames(locs)[colnames(locs) %in% c("feature_type","line_of_sight_m", "water_depth_m", "elevation", "road_dist_m", "water_dist_m",    "lcc_habitats", "mean_ndvi")]
+```
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -3,7 +3,7 @@ output:
   pdf_document: default
   html_document: default
 ---
-# Preparing for the course
+# Preparing for the course {#prep}
 
 In order reproduce the data management and analysis examples detailed in this book, you will need to take the following steps. 
 
@@ -96,7 +96,8 @@ lapply(list.of.packages, require, character.only = TRUE)
 Some packages must be compiled from sources other than CRAN. Copy and paste following code block into your R console and press enter.
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
-# We use the remotes package to access package repositories not on the CRAN interface (e.g. on github)
+# We use the remotes package to access package repositories not on the 
+# CRAN interface (e.g. on github)
 library(remotes)
 
 remotes::install_github("RS-eco/traitdata", build_vignettes = T, force=T)
@@ -218,7 +219,7 @@ All of the packages above work with R alone. However, the R Google Earth Engine 
 
 We have, however, provided some example code if you want to try it in your own time. The first step is to install the `rgee` package. 
 
-```{r, echo=T, eval=F, class.source="Rmain"}
+```{r, echo=T, eval=F, class.source="Rinfo"}
 install.packages("rgee")
 library("rgee")
 ```

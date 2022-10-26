@@ -1,0 +1,138 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# Behavior {#behavior}
+
+Camera traps are being used in increasingly creative ways to understand species behaviours, including: [activity patterns](#activity), foraging tactics, social interactions and predation. Here we will summarise some of the current approaches, and give a quick example using event duration in our example dataset.
+
+Camera traps are thought to have some advantages over studies which directly observing animals in the wild, including reduce presence in the field (hopefully leading to the capture of "more natural" behaviors), the ability to be deployed in high numbers are for long periods in time, and the potential to capture standardised observation of behaviour comparable across multiple studies. 
+
+See [Caravaggi, A., et al. "A review of factors to consider when using camera traps to study animal behavior to inform wildlife ecology and conservation. Conservat Sci and Prac. 2020; 2." (2020).](https://conbio.onlinelibrary.wiley.com/doi/10.1111/csp2.239) for  a balanced consideration of the benefits and potential pitfalls in using cameras for behaviour studies. 
+
+## Behavioural designations
+
+Vigilant vs. non-vigilant
+
+Example [Schuttler, Stephanie G., et al. "Deer on the lookout: how hunting, hiking and coyotes affect white‐tailed deer vigilance." Journal of Zoology 301.4 (2017): 320-327](https://www.researchgate.net/publication/310666089_Deer_on_the_lookout_How_hunting_hiking_and_coyotes_affect_white-tailed_deer_vigilance)
+
+## Event duration
+
+One behavior parameter which is simple to derive from existing camera datasets is the length of the event - which put simply is the interval between the start of a detection event and the end. For this value to be meaningful, it is important that the cameras are on 'motion' trigger (as opposed to time lapse) and that the quiet period between detections is very short - so that we have a good idea of when the animal arrived and departed from the frame. 
+
+What this 'event duration' means very much depends on the context of your study region. For example, if some of your cameras are located in rugged and dense terrain, whereas other are in wide open habitat, 'event duration' could simply represent the resistance to movement of the habitat. However, if your stations are situated in locations which are very similar in ruggedness or vegetation type, and simply differ in terms of some other experimental manipulation - then event duration could mean something very different. 
+
+Our Wildlife Coexistance Laboratory recently publish a paper on using 'event duration' to explore the responses of ungulates to predation risk.  
+
+[Burton, A. Cole, et al. "Behavioral “bycatch” from camera trap surveys yields insights on prey responses to human‐mediated predation risk." Ecology and evolution 12.7 (2022): e9108.](https://onlinelibrary.wiley.com/doi/pdf/10.1002/ece3.9108)
+
+Typically when we analyse camera trap data we analyse it in units of site_time - for example, the number of detections per week. However in this instance we will be analyzing the individual detection events. 
+
+**load the packages**
+
+```{r, echo=F, results='hide', message =F, warning=F, eval=T}
+# Check you have them and load them
+list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "phenopix", "plotly")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Let's read in the independent detection data for this project:
+
+```{r ch10_1}
+ind <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_detections.csv")
+```
+
+And the location information:
+
+```{r ch10_2}
+locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv")
+```
+
+ 
+When we created this dataset, we calculated a parameter called `event_duration` - this reflects the interval in seconds between the first detection in an independent event, and the last. 
+
+Lets look at the distribution of independent events across all of our species:
+
+```{r ch10_3}
+fig <- plot_ly(data=ind,y = ~event_duration, type = "box",split = ~sp)
+fig
+```
+
+Let's simpify things, and explore the data for a single species at two of the feature_types (treatment strata):
+
+```{r ch10_4}
+sub_locs <- locs$placename[locs$feature_type %in% c("HumanUse", "Offline")]
+
+sub_ind <- ind[ind$sp=="Odocoileus virginianus" & ind$placename %in% sub_locs,]
+```
+
+Let's check out that boxplot again!
+
+```{r ch10_5}
+fig <- plot_ly(data=sub_ind,y = ~event_duration, type = "box",split = ~sp)
+fig
+```
+
+## Animal speed and day range
+
+*Coming soon*
+
+[Palencia, Pablo, et al. "Innovations in movement and behavioural ecology from camera traps: day range as model parameter." Methods in Ecology and Evolution.](https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13609)
+
+## Experimental manipulations
+
+*Coming soon*
+
+
+## Interactions
+
+[Niedballa, Jürgen, et al. "Assessing analytical methods for detecting spatiotemporal interactions between species from camera trapping data." Remote Sensing in Ecology and Conservation 5.3 (2019): 272-285.](https://zslpublications.onlinelibrary.wiley.com/doi/pdf/10.1002/rse2.107)
+
+```{r}
+# 
+"One approach estimates spatiotemporal avoidance, that is,to what extent site visitation by species A (the ‘primary’species, hereafter) influences subsequent visitations by spe-cies B (the ‘secondary’ species, hereafter, e.g. Harmsenet al. 2009; Parsons et al. 2016; Karanth et al. 2017). Suchavoidance behaviour can be mediated by olfactory (Apfel-bach et al. 2005; Ferrero et al. 2011), visual (Blumsteinet al. 2000; Stankowich and Coss 2007) or acoustic cues(Hauser and Wrangham 1990). The second, more com-monly  used  approach  assesses  temporal  segregationbetween species. Here, the temporal overlap in activitybetween two species is estimated to assess whether dailyactivity patterns may have shifted in response to the pres-ence of the other species (Ridout and Linkie 2009; Linkieand Ridout 2011; Foster et al. 2013; Lynam et al. 2013;Ross et al. 2013; Farris et al. 2015; Sunarto et al. 2015).Often, camera trap stations are pooled for this analysis,thus omitting spatial information."
+
+
+# See file on desktop for code
+
+```
+
+### Activity overlap
+
+
+### One species as a predictor of another
+
+Tattersall, E. R., Burgar, J. M., Fisher, J. T. & Burton, A. C. Boreal predator co-occurrences reveal shared use of seismic lines in a working landscape. Ecol. Evol. 10, 1678–1691 (2020).
+
+
+### Residual co-occurence models
+See:
+
+Ovaskainen, O. et al. How to make more out of community data? A conceptual framework and its implementation as models and software. Ecol. Lett. 20, 561–576 (2017).
+
+Linear models: Tikhonov, G. et al. Joint species distribution modelling with the r-package Hmsc. Methods Ecol. Evol. 11, 442–447 (2020).
+
+Occupancy: Tobler, Mathias W., et al. "Joint species distribution models with species correlations and imperfect detection." Ecology 100.8 (2019): e02754.
+
+### Attractance-Avoidance Ratios (AAR)
+
+For a given species of interest (e.g. humans) we can record the period of time until the next detection of an animal species of interest, as well a the period of since it was last detected before the human detection. The ratio between these times is known as the attractace avoidance ratio.  
+
+See:
+[Parsons, A. W., et al. "The ecological impact of humans and dogs on wildlife in protected areas in eastern North America." Biological Conservation 203 (2016): 75-88.](https://www.sciencedirect.com/science/article/abs/pii/S0006320716303603)
+
+[Naidoo, R. & Burton, A. C. Relative effects of recreational activities on a temperate terrestrial wildlife assemblage. Conserv. Sci. Pract. (2020)](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/csp2.271)
+
+[Niedballa, Jürgen, et al. "Assessing analytical methods for detecting spatiotemporal interactions between species from camera trapping data." Remote Sensing in Ecology and Conservation 5.3 (2019): 272-285.](https://zslpublications.onlinelibrary.wiley.com/doi/pdf/10.1002/rse2.107)
+
+
+*Manipulative experiments* Measuring species feeding responses to anthropogenic and natural sounds. 
+
+##  Worked examples
+
+Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)
