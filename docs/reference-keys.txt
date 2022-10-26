@@ -65,6 +65,7 @@ create-a-daily-camera-activity-lookup
 determine-independent-camera-detections
 add-additional-data
 creating-analysis-dataframes
+final-data-check
 covariates
 species-traits
 camera-station-covariates

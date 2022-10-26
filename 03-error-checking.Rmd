@@ -1163,7 +1163,29 @@ For example, if your organism of interest is very abundant, for examples human h
 ```{r ch3_55, class.source="Rmain"}
 # Set the "independence" interval in minutes
 independent <- 30
+
 ```
+
+Finally we need to specify what a "count" means in this dataset. Some people do estimates of `group_size` in their footage - summing all of the individuals they are sure are different. Others only sum the animals they can see in each photo. Here is where you specify which to use:
+
+
+```{r ch3_55a, class.source="Rinfo"}
+# Check for a `group_size` variable? 
+table(img_sub$group_size)
+
+# Check for a 'number_ofobjects' variable
+table(img_sub$number_of_objects)
+
+```
+
+Make your selection:
+
+```{r ch3_55b, class.source="Rmain"}
+# If yes use that, if no use 'number_of_objects'
+img_sub$animal_count <- img_sub$group_size    
+
+```
+
 
 We will now break down the algorithm into subsections to make it clear what is occurring:
 
@@ -1235,7 +1257,7 @@ c)  how many images are in each event
   names(bot)[2] <- c("timestamp_end")
   
   img_num <- img_tmp %>% group_by(event_id) %>% summarise(event_observations=n()) # number of images in the event
-  event_grp <- img_tmp %>% group_by(event_id) %>% summarise(event_groupsize=max(number_of_objects))
+  event_grp <- img_tmp %>% group_by(event_id) %>% summarise(event_groupsize=max(animal_count))
 
   # calculate the duration and add the other elements
   diff <-  top %>% left_join(bot, by="event_id") %>%
@@ -1368,7 +1390,7 @@ write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_species_li
     {
       tmp <- ind_dat[ind_dat$placename==total_obs$placename[i],]
       
-      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(number_of_objects))
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
       
       total_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
       total_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
@@ -1411,7 +1433,7 @@ write.csv(total_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",
     {
       tmp <- ind_dat[ind_dat$placename==mon_obs$placename[i] & substr(ind_dat$timestamp,1,7)== mon_obs$date[i],]
       
-      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(number_of_objects))
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
       
       mon_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
       mon_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
@@ -1458,7 +1480,7 @@ write.csv(mon_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",in
     {
       tmp <- ind_dat[ind_dat$placename==week_obs$placename[i] & strftime(ind_dat$timestamp, format = "%Y-W%U")== week_obs$date[i],]
       
-      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(number_of_objects))
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
       
       week_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
       week_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
@@ -1492,7 +1514,7 @@ write.csv(week_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",i
     {
       tmp <- ind_dat[ind_dat$placename==day_obs$placename[i] & strftime(ind_dat$timestamp, format = "%Y-%m-%d")== day_obs$date[i],]
       
-      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(number_of_objects))
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
       
       day_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
       day_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
@@ -1505,7 +1527,7 @@ write.csv(day_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",in
 
 ```
 
-**Final data check**
+### Final data check
 
 Finally, as a last check that our code is creating robust analysis data frames, we check if the observations/counts are the same across each temporal scale (total/monthly/weekly/daily).
 Check this using the following tables.
@@ -1523,11 +1545,12 @@ colSums(day_obs[,3:ncol(day_obs)])  ))
 tmp %>%
   kbl() %>%
   kable_styling(full_width = T) %>%
-  column_spec(1, bold = T, border_right = T)
+  column_spec(1, bold = T, border_right = T)%>% 
+  kableExtra::scroll_box(width = "100%")
 
 ```
 
-\*\* Counts \*\*
+**Counts**
 
 ```{r ch3_71, echo=T, , class.source="Rinfo"}
 tmp <- cbind(data.frame("Time"=c("Total", "Monthly", "Weekly", "Daily")),
@@ -1539,6 +1562,7 @@ colSums(day_count[,3:ncol(day_count)])  ))
 tmp %>%
   kbl() %>%
   kable_styling(full_width = T) %>%
-  column_spec(1, bold = T, border_right = T)
+  column_spec(1, bold = T, border_right = T)%>% 
+  kableExtra::scroll_box(width = "100%")
 
 ```

@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-25" />
+<meta name="date" content="2022-10-26" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -243,7 +243,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6.5.3" data-path="data-creation.html"><a href="data-creation.html#determine-independent-camera-detections"><i class="fa fa-check"></i><b>6.5.3</b> Determine ‘independent’ camera detections</a></li>
 <li class="chapter" data-level="6.5.4" data-path="data-creation.html"><a href="data-creation.html#add-additional-data"><i class="fa fa-check"></i><b>6.5.4</b> Add additional data</a></li>
 </ul></li>
-<li class="chapter" data-level="6.6" data-path="data-creation.html"><a href="data-creation.html#creating-analysis-dataframes"><i class="fa fa-check"></i><b>6.6</b> Creating analysis dataframes</a></li>
+<li class="chapter" data-level="6.6" data-path="data-creation.html"><a href="data-creation.html#creating-analysis-dataframes"><i class="fa fa-check"></i><b>6.6</b> Creating analysis dataframes</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="data-creation.html"><a href="data-creation.html#final-data-check"><i class="fa fa-check"></i><b>6.6.1</b> Final data check</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="covariates.html"><a href="covariates.html"><i class="fa fa-check"></i><b>7</b> Analysis covariates</a>
 <ul>
@@ -424,17 +427,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12432">Burton, A. Cole, et al. “Wildlife camera trapping: a review and recommendations for linking surveys to ecological processes.” Journal of Applied Ecology 52.3 (2015): 675-685.</a></p>
 <p><a href="https://pubs.er.usgs.gov/publication/5200296">MacKenzie, Darryl I., et al. Occupancy estimation and modeling: inferring patterns and dynamics of species occurrence. Elsevier, 2017.</a></p>
 <p>Let’s focus our time on getting our data into the right formt, and applying some occupancy models!</p>
-<div class="sourceCode" id="cb265"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb265-1"><a href="occupancy.html#cb265-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check you have them and load them</span></span>
-<span id="cb265-2"><a href="occupancy.html#cb265-2" aria-hidden="true" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;unmarked&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;tibble&quot;</span>, <span class="st">&quot;sf&quot;</span>, <span class="st">&quot;gfcanalysis&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>, <span class="st">&quot;spOccupancy&quot;</span>)</span>
-<span id="cb265-3"><a href="occupancy.html#cb265-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb265-4"><a href="occupancy.html#cb265-4" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
-<span id="cb265-5"><a href="occupancy.html#cb265-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
-<span id="cb265-6"><a href="occupancy.html#cb265-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb271"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb271-1"><a href="occupancy.html#cb271-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check you have them and load them</span></span>
+<span id="cb271-2"><a href="occupancy.html#cb271-2" aria-hidden="true" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;unmarked&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;tibble&quot;</span>, <span class="st">&quot;sf&quot;</span>, <span class="st">&quot;gfcanalysis&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>, <span class="st">&quot;spOccupancy&quot;</span>)</span>
+<span id="cb271-3"><a href="occupancy.html#cb271-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb271-4"><a href="occupancy.html#cb271-4" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb271-5"><a href="occupancy.html#cb271-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb271-6"><a href="occupancy.html#cb271-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <div id="single-species-occupancy-model" class="section level2 hasAnchor" number="11.1">
 <h2><span class="header-section-number">11.1</span> Single species occupancy model<a href="occupancy.html#single-species-occupancy-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>In this example we will use the <code>...weekly_observations</code> dataframe we created in the <a href="data-creation.html#data-creation">data creation</a> section. We do this because 7 days is a time interval which occupancy models are often devided into for occupancy analyses.</p>
-<div class="sourceCode" id="cb266"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb266-1"><a href="occupancy.html#cb266-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the weekly observations data set</span></span>
-<span id="cb266-2"><a href="occupancy.html#cb266-2" aria-hidden="true" tabindex="-1"></a>week_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb272"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb272-1"><a href="occupancy.html#cb272-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the weekly observations data set</span></span>
+<span id="cb272-2"><a href="occupancy.html#cb272-2" aria-hidden="true" tabindex="-1"></a>week_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <p>Which, as a quick reminder, looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -158493,21 +158496,21 @@ ALG073
 <p>As with previous chapters, we will start by focusing on the white-tailed deer (<em>Odocoileus virginianus</em>).</p>
 <p>We first need to create a site by occasion matrix for our focal species, using a 7-day occasion length. This means we need to break our camera data into seven day bins.</p>
 <p>We can create the detection histories using the following code:</p>
-<div class="sourceCode" id="cb267"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb267-1"><a href="occupancy.html#cb267-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use white-tailed deer</span></span>
-<span id="cb267-2"><a href="occupancy.html#cb267-2" aria-hidden="true" tabindex="-1"></a>focal_sp<span class="ot">&lt;-</span> <span class="st">&quot;Odocoileus.virginianus&quot;</span></span>
-<span id="cb267-3"><a href="occupancy.html#cb267-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb267-4"><a href="occupancy.html#cb267-4" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to 2019</span></span>
-<span id="cb267-5"><a href="occupancy.html#cb267-5" aria-hidden="true" tabindex="-1"></a>tmp_week <span class="ot">&lt;-</span> week_obs[<span class="fu">substr</span>(week_obs<span class="sc">$</span>date,<span class="dv">1</span>,<span class="dv">4</span>)<span class="sc">==</span><span class="dv">2019</span>,]</span>
-<span id="cb267-6"><a href="occupancy.html#cb267-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb267-7"><a href="occupancy.html#cb267-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Y data  </span></span>
-<span id="cb267-8"><a href="occupancy.html#cb267-8" aria-hidden="true" tabindex="-1"></a>y_dat <span class="ot">&lt;-</span> tmp_week[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, focal_sp)] <span class="sc">%&gt;%</span> <span class="co"># Subset to just white-tailed deer</span></span>
-<span id="cb267-9"><a href="occupancy.html#cb267-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> date, <span class="at">values_from =</span> focal_sp) <span class="co"># Shift to wide format</span></span>
-<span id="cb267-10"><a href="occupancy.html#cb267-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb267-11"><a href="occupancy.html#cb267-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert it to a matrix - but only keep the date values</span></span>
-<span id="cb267-12"><a href="occupancy.html#cb267-12" aria-hidden="true" tabindex="-1"></a>y_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(y_dat[,<span class="fu">unique</span>(tmp_week<span class="sc">$</span>date)])</span>
-<span id="cb267-13"><a href="occupancy.html#cb267-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb267-14"><a href="occupancy.html#cb267-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the row names</span></span>
-<span id="cb267-15"><a href="occupancy.html#cb267-15" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(y_mat) <span class="ot">&lt;-</span> y_dat<span class="sc">$</span>placename</span></code></pre></div>
+<div class="sourceCode" id="cb273"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb273-1"><a href="occupancy.html#cb273-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Use white-tailed deer</span></span>
+<span id="cb273-2"><a href="occupancy.html#cb273-2" aria-hidden="true" tabindex="-1"></a>focal_sp<span class="ot">&lt;-</span> <span class="st">&quot;Odocoileus.virginianus&quot;</span></span>
+<span id="cb273-3"><a href="occupancy.html#cb273-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-4"><a href="occupancy.html#cb273-4" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to 2019</span></span>
+<span id="cb273-5"><a href="occupancy.html#cb273-5" aria-hidden="true" tabindex="-1"></a>tmp_week <span class="ot">&lt;-</span> week_obs[<span class="fu">substr</span>(week_obs<span class="sc">$</span>date,<span class="dv">1</span>,<span class="dv">4</span>)<span class="sc">==</span><span class="dv">2019</span>,]</span>
+<span id="cb273-6"><a href="occupancy.html#cb273-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-7"><a href="occupancy.html#cb273-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the Y data  </span></span>
+<span id="cb273-8"><a href="occupancy.html#cb273-8" aria-hidden="true" tabindex="-1"></a>y_dat <span class="ot">&lt;-</span> tmp_week[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, focal_sp)] <span class="sc">%&gt;%</span> <span class="co"># Subset to just white-tailed deer</span></span>
+<span id="cb273-9"><a href="occupancy.html#cb273-9" aria-hidden="true" tabindex="-1"></a>            <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> date, <span class="at">values_from =</span> focal_sp) <span class="co"># Shift to wide format</span></span>
+<span id="cb273-10"><a href="occupancy.html#cb273-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-11"><a href="occupancy.html#cb273-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert it to a matrix - but only keep the date values</span></span>
+<span id="cb273-12"><a href="occupancy.html#cb273-12" aria-hidden="true" tabindex="-1"></a>y_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(y_dat[,<span class="fu">unique</span>(tmp_week<span class="sc">$</span>date)])</span>
+<span id="cb273-13"><a href="occupancy.html#cb273-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb273-14"><a href="occupancy.html#cb273-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the row names</span></span>
+<span id="cb273-15"><a href="occupancy.html#cb273-15" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(y_mat) <span class="ot">&lt;-</span> y_dat<span class="sc">$</span>placename</span></code></pre></div>
 <p>The resulting data frame looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -164212,21 +164215,21 @@ ALG073
 </div>
 <p>It is a matrix of all the weeks the cameras were active, and whether the count of the independent detections in that interval. The <code>fill = NA</code> command puts a zero where there is data for a given day.</p>
 <p>You can see that in some columns we have values &gt; 1 - this is because we had more than one independent observation in that week. Occupancy analyses (typically) require this data to be in detection/non-dection (0 or 1) format. So lets change that here.</p>
-<div class="sourceCode" id="cb268"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb268-1"><a href="occupancy.html#cb268-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Where y_mat is &gt; 1, and where y_mat isn&#39;t NA - give it the value 1</span></span>
-<span id="cb268-2"><a href="occupancy.html#cb268-2" aria-hidden="true" tabindex="-1"></a>y_mat[y_mat<span class="sc">&gt;</span><span class="dv">1</span> <span class="sc">&amp;</span> <span class="fu">is.na</span>(y_mat)<span class="sc">==</span>F] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
+<div class="sourceCode" id="cb274"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb274-1"><a href="occupancy.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Where y_mat is &gt; 1, and where y_mat isn&#39;t NA - give it the value 1</span></span>
+<span id="cb274-2"><a href="occupancy.html#cb274-2" aria-hidden="true" tabindex="-1"></a>y_mat[y_mat<span class="sc">&gt;</span><span class="dv">1</span> <span class="sc">&amp;</span> <span class="fu">is.na</span>(y_mat)<span class="sc">==</span>F] <span class="ot">&lt;-</span> <span class="dv">1</span></span></code></pre></div>
 <p>However, we have lost our effort information - the number of days each camera was active in a given time period. So we need another data frame!</p>
 <p>To get that information we need to create an effort history <code>eff_mat</code>:</p>
-<div class="sourceCode" id="cb269"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb269-1"><a href="occupancy.html#cb269-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To create the effort matrix - inst of the Focal Species bring in the effort</span></span>
-<span id="cb269-2"><a href="occupancy.html#cb269-2" aria-hidden="true" tabindex="-1"></a>eff_mat <span class="ot">&lt;-</span> tmp_week[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>)]</span>
-<span id="cb269-3"><a href="occupancy.html#cb269-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-4"><a href="occupancy.html#cb269-4" aria-hidden="true" tabindex="-1"></a>eff_mat <span class="ot">&lt;-</span>  eff_mat <span class="sc">%&gt;%</span></span>
-<span id="cb269-5"><a href="occupancy.html#cb269-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a matrix based on dates and effort</span></span>
-<span id="cb269-6"><a href="occupancy.html#cb269-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(date,days, <span class="at">fill =</span> <span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb269-7"><a href="occupancy.html#cb269-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group by deloyment Location ID, then make that the row.namesd</span></span>
-<span id="cb269-8"><a href="occupancy.html#cb269-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(placename) <span class="sc">%&gt;%</span></span>
-<span id="cb269-9"><a href="occupancy.html#cb269-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>( <span class="at">var =</span> <span class="st">&quot;placename&quot;</span>) </span>
-<span id="cb269-10"><a href="occupancy.html#cb269-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb269-11"><a href="occupancy.html#cb269-11" aria-hidden="true" tabindex="-1"></a>eff_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(eff_mat)</span></code></pre></div>
+<div class="sourceCode" id="cb275"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb275-1"><a href="occupancy.html#cb275-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To create the effort matrix - inst of the Focal Species bring in the effort</span></span>
+<span id="cb275-2"><a href="occupancy.html#cb275-2" aria-hidden="true" tabindex="-1"></a>eff_mat <span class="ot">&lt;-</span> tmp_week[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>)]</span>
+<span id="cb275-3"><a href="occupancy.html#cb275-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb275-4"><a href="occupancy.html#cb275-4" aria-hidden="true" tabindex="-1"></a>eff_mat <span class="ot">&lt;-</span>  eff_mat <span class="sc">%&gt;%</span></span>
+<span id="cb275-5"><a href="occupancy.html#cb275-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a matrix based on dates and effort</span></span>
+<span id="cb275-6"><a href="occupancy.html#cb275-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread</span>(date,days, <span class="at">fill =</span> <span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb275-7"><a href="occupancy.html#cb275-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># group by deloyment Location ID, then make that the row.namesd</span></span>
+<span id="cb275-8"><a href="occupancy.html#cb275-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(placename) <span class="sc">%&gt;%</span></span>
+<span id="cb275-9"><a href="occupancy.html#cb275-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">column_to_rownames</span>( <span class="at">var =</span> <span class="st">&quot;placename&quot;</span>) </span>
+<span id="cb275-10"><a href="occupancy.html#cb275-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb275-11"><a href="occupancy.html#cb275-11" aria-hidden="true" tabindex="-1"></a>eff_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(eff_mat)</span></code></pre></div>
 <p>Check that it looks sensible:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -169930,36 +169933,36 @@ ALG073
 </table>
 </div>
 <p>We might want to remove all of the data from the weeks where we did not get a complete sample:</p>
-<div class="sourceCode" id="cb270"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb270-1"><a href="occupancy.html#cb270-1" aria-hidden="true" tabindex="-1"></a>y_mat[eff_mat<span class="sc">!=</span><span class="dv">7</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
+<div class="sourceCode" id="cb276"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb276-1"><a href="occupancy.html#cb276-1" aria-hidden="true" tabindex="-1"></a>y_mat[eff_mat<span class="sc">!=</span><span class="dv">7</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
 <p>Now we are ready to feed this into the <code>unmarked</code> package.</p>
 <div id="unmarked-package" class="section level3 hasAnchor" number="11.1.1">
 <h3><span class="header-section-number">11.1.1</span> Unmarked package<a href="occupancy.html#unmarked-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>One of the hurdles in using the <code>unmarked</code> package is it uses a different style of dataframe called an unmarked dataframe. It is essentially a compillation of the different dataframes we need for the analysis (y data and covariate data). We asemmbled the Y data above, so now lets make the covariates:</p>
-<div class="sourceCode" id="cb271"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb271-1"><a href="occupancy.html#cb271-1" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
-<span id="cb271-2"><a href="occupancy.html#cb271-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb271-3"><a href="occupancy.html#cb271-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Unmarked wants your detection history, effort data and site covariates as matrices. But the order is important!</span></span>
-<span id="cb271-4"><a href="occupancy.html#cb271-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the order of your matrices and covariates files matches... or you will get nonsense!</span></span>
-<span id="cb271-5"><a href="occupancy.html#cb271-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(locs<span class="sc">$</span>placename <span class="sc">==</span> <span class="fu">row.names</span>(y_mat))</span></code></pre></div>
+<div class="sourceCode" id="cb277"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb277-1"><a href="occupancy.html#cb277-1" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
+<span id="cb277-2"><a href="occupancy.html#cb277-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb277-3"><a href="occupancy.html#cb277-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Unmarked wants your detection history, effort data and site covariates as matrices. But the order is important!</span></span>
+<span id="cb277-4"><a href="occupancy.html#cb277-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Check the order of your matrices and covariates files matches... or you will get nonsense!</span></span>
+<span id="cb277-5"><a href="occupancy.html#cb277-5" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(locs<span class="sc">$</span>placename <span class="sc">==</span> <span class="fu">row.names</span>(y_mat))</span></code></pre></div>
 <pre><code>## 
 ## TRUE 
 ##   38</code></pre>
 <p><strong>Data standardization</strong></p>
 <p>Unmarked models benefit from standardizing your covariates - it helps the solving algorithms converge on an appropriate solution. To do this we use the <code>MuMIn</code> package.</p>
-<div class="sourceCode" id="cb273"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb273-1"><a href="occupancy.html#cb273-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
-<span id="cb273-2"><a href="occupancy.html#cb273-2" aria-hidden="true" tabindex="-1"></a>z_locs <span class="ot">&lt;-</span> <span class="fu">stdize</span>(locs)</span></code></pre></div>
+<div class="sourceCode" id="cb279"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb279-1"><a href="occupancy.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
+<span id="cb279-2"><a href="occupancy.html#cb279-2" aria-hidden="true" tabindex="-1"></a>z_locs <span class="ot">&lt;-</span> <span class="fu">stdize</span>(locs)</span></code></pre></div>
 <p>Take a look at it to see what it has done!</p>
 <p>We then need to build an ‘unmarked’ data frame. You don’t really need to know why they are different or how to use one (although it helps), knowing how to use one is sufficient.</p>
-<div class="sourceCode" id="cb274"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb274-1"><a href="occupancy.html#cb274-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build an unmarkedFramOccu</span></span>
-<span id="cb274-2"><a href="occupancy.html#cb274-2" aria-hidden="true" tabindex="-1"></a>un_dat <span class="ot">&lt;-</span> <span class="fu">unmarkedFrameOccu</span>(<span class="at">y =</span> y_mat, <span class="co"># your occupancy data</span></span>
-<span id="cb274-3"><a href="occupancy.html#cb274-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">siteCovs =</span> z_locs) <span class="co"># Your site covariates </span></span></code></pre></div>
+<div class="sourceCode" id="cb280"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb280-1"><a href="occupancy.html#cb280-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Build an unmarkedFramOccu</span></span>
+<span id="cb280-2"><a href="occupancy.html#cb280-2" aria-hidden="true" tabindex="-1"></a>un_dat <span class="ot">&lt;-</span> <span class="fu">unmarkedFrameOccu</span>(<span class="at">y =</span> y_mat, <span class="co"># your occupancy data</span></span>
+<span id="cb280-3"><a href="occupancy.html#cb280-3" aria-hidden="true" tabindex="-1"></a>                            <span class="at">siteCovs =</span> z_locs) <span class="co"># Your site covariates </span></span></code></pre></div>
 <pre><code>## Warning: siteCovs contains characters. Converting them to factors.</code></pre>
 <p>We can then fit the occupancy model, lets start with a “null” model with no predictors on detection or occupancy.</p>
-<div class="sourceCode" id="cb276"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb276-1"><a href="occupancy.html#cb276-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit general model all variables</span></span>
-<span id="cb276-2"><a href="occupancy.html#cb276-2" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">occu</span>(<span class="at">formula =</span> <span class="sc">~</span><span class="dv">1</span> <span class="co"># detection formula first</span></span>
-<span id="cb276-3"><a href="occupancy.html#cb276-3" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span><span class="dv">1</span>, <span class="co"># occupancy formula second,</span></span>
-<span id="cb276-4"><a href="occupancy.html#cb276-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> un_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb282-1"><a href="occupancy.html#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit general model all variables</span></span>
+<span id="cb282-2"><a href="occupancy.html#cb282-2" aria-hidden="true" tabindex="-1"></a>m0 <span class="ot">&lt;-</span> <span class="fu">occu</span>(<span class="at">formula =</span> <span class="sc">~</span><span class="dv">1</span> <span class="co"># detection formula first</span></span>
+<span id="cb282-3"><a href="occupancy.html#cb282-3" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span><span class="dv">1</span>, <span class="co"># occupancy formula second,</span></span>
+<span id="cb282-4"><a href="occupancy.html#cb282-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> un_dat)</span></code></pre></div>
 <p>Then view the results.</p>
-<div class="sourceCode" id="cb277"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb277-1"><a href="occupancy.html#cb277-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m0)</span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb283-1"><a href="occupancy.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m0)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## occu(formula = ~1 ~ 1, data = un_dat)
@@ -169978,7 +169981,7 @@ ALG073
 ## optim iterations: 26 
 ## Bootstrap iterations: 0</code></pre>
 <p>The estimate you see for both occupancy and detection probability is on the log-link scale. If we want to calculate the occupancy probability, we can use the <code>backTransform()</code> function:</p>
-<div class="sourceCode" id="cb279"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb279-1"><a href="occupancy.html#cb279-1" aria-hidden="true" tabindex="-1"></a><span class="fu">backTransform</span>(m0, <span class="at">type =</span> <span class="st">&quot;state&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb285-1"><a href="occupancy.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="fu">backTransform</span>(m0, <span class="at">type =</span> <span class="st">&quot;state&quot;</span>)</span></code></pre></div>
 <pre><code>## Backtransformed linear combination(s) of Occupancy estimate(s)
 ## 
 ##  Estimate     SE LinComb (Intercept)
@@ -169986,7 +169989,7 @@ ALG073
 ## 
 ## Transformation: logistic</code></pre>
 <p>So the probability that a white-tailed deer occupies one of the survey locations is ~0.66. For the detection probability we specify “det”:</p>
-<div class="sourceCode" id="cb281"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb281-1"><a href="occupancy.html#cb281-1" aria-hidden="true" tabindex="-1"></a><span class="fu">backTransform</span>(m0, <span class="at">type =</span> <span class="st">&quot;det&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb287-1"><a href="occupancy.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="fu">backTransform</span>(m0, <span class="at">type =</span> <span class="st">&quot;det&quot;</span>)</span></code></pre></div>
 <pre><code>## Backtransformed linear combination(s) of Detection estimate(s)
 ## 
 ##  Estimate     SE LinComb (Intercept)
@@ -169996,17 +169999,17 @@ ALG073
 <p>The probability that we detect a white-tailed deer in a given unit of time (7-days), given that it is there to be detected, is ~0.2.</p>
 <p>Let’s fit a couple of other models!</p>
 <p>First with a continuous covariate on the occupancy probability, then a categorical one too:</p>
-<div class="sourceCode" id="cb283"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb283-1"><a href="occupancy.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Occupancy is influence by line of sight</span></span>
-<span id="cb283-2"><a href="occupancy.html#cb283-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">occu</span>(<span class="at">formula =</span> <span class="sc">~</span><span class="dv">1</span> <span class="co"># detection formula first</span></span>
-<span id="cb283-3"><a href="occupancy.html#cb283-3" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span>z.line_of_sight_m, <span class="co"># occupancy formula second,</span></span>
-<span id="cb283-4"><a href="occupancy.html#cb283-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> un_dat)</span>
-<span id="cb283-5"><a href="occupancy.html#cb283-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb283-6"><a href="occupancy.html#cb283-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Occupancy is influenced by the feature_type a camera is deployed on</span></span>
-<span id="cb283-7"><a href="occupancy.html#cb283-7" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">occu</span>(<span class="at">formula =</span> <span class="sc">~</span><span class="dv">1</span> <span class="co"># detection formula first</span></span>
-<span id="cb283-8"><a href="occupancy.html#cb283-8" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span>feature_type, <span class="co"># occupancy formula second,</span></span>
-<span id="cb283-9"><a href="occupancy.html#cb283-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> un_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb289-1"><a href="occupancy.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Occupancy is influence by line of sight</span></span>
+<span id="cb289-2"><a href="occupancy.html#cb289-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">occu</span>(<span class="at">formula =</span> <span class="sc">~</span><span class="dv">1</span> <span class="co"># detection formula first</span></span>
+<span id="cb289-3"><a href="occupancy.html#cb289-3" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span>z.line_of_sight_m, <span class="co"># occupancy formula second,</span></span>
+<span id="cb289-4"><a href="occupancy.html#cb289-4" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> un_dat)</span>
+<span id="cb289-5"><a href="occupancy.html#cb289-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb289-6"><a href="occupancy.html#cb289-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Occupancy is influenced by the feature_type a camera is deployed on</span></span>
+<span id="cb289-7"><a href="occupancy.html#cb289-7" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">occu</span>(<span class="at">formula =</span> <span class="sc">~</span><span class="dv">1</span> <span class="co"># detection formula first</span></span>
+<span id="cb289-8"><a href="occupancy.html#cb289-8" aria-hidden="true" tabindex="-1"></a>                     <span class="sc">~</span>feature_type, <span class="co"># occupancy formula second,</span></span>
+<span id="cb289-9"><a href="occupancy.html#cb289-9" aria-hidden="true" tabindex="-1"></a>                <span class="at">data =</span> un_dat)</span></code></pre></div>
 <p>We can perform model selection on these different scenarios in the same way as in the <a href="habitat-use.html#habitat-use">habitat use chapter</a> - using the <code>MuMIn</code> package:</p>
-<div class="sourceCode" id="cb284"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb284-1"><a href="occupancy.html#cb284-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(m0,m1,m2)</span></code></pre></div>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb290-1"><a href="occupancy.html#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.sel</span>(m0,m1,m2)</span></code></pre></div>
 <pre><code>## Model selection table 
 ##    p(Int) psi(Int) psi(z.lin_of_sgh_m) psi(ftr_typ) df   logLik   AICc delta
 ## m1 -1.368  0.70530             -0.5664               3 -581.839 1170.4  0.00
@@ -170022,25 +170025,25 @@ ALG073
 <div id="plotting-predictions" class="section level3 hasAnchor" number="11.1.2">
 <h3><span class="header-section-number">11.1.2</span> Plotting predictions<a href="occupancy.html#plotting-predictions" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>We can observe the relationship between our covariates and our occupancy probabilities through the use of a dummy dataframes (which we will call <code>new_dat</code>). A dummy dataframe is essential just a dataframe built up of <code>dummy</code> data - which lies within the upper and lower limits of the covariates we already have. We wouldn’t want to extrapolate beyond our data! We can then plot the results:</p>
-<div class="sourceCode" id="cb286"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb286-1"><a href="occupancy.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate new data to predict from </span></span>
-<span id="cb286-2"><a href="occupancy.html#cb286-2" aria-hidden="true" tabindex="-1"></a>new_dat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">expand.grid</span>(</span>
-<span id="cb286-3"><a href="occupancy.html#cb286-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">z.line_of_sight_m=</span><span class="fu">seq</span>(<span class="fu">min</span>(z_locs<span class="sc">$</span>z.line_of_sight_m),<span class="fu">max</span>(z_locs<span class="sc">$</span>z.line_of_sight_m), <span class="co"># add more covariates here if the model is more complex</span></span>
-<span id="cb286-4"><a href="occupancy.html#cb286-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">length.out=</span><span class="dv">25</span>)))</span>
-<span id="cb286-5"><a href="occupancy.html#cb286-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb286-6"><a href="occupancy.html#cb286-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the predicted values for the data you supplied                 </span></span>
-<span id="cb286-7"><a href="occupancy.html#cb286-7" aria-hidden="true" tabindex="-1"></a>new_dat <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="at">type=</span><span class="st">&quot;state&quot;</span>, <span class="at">newdata =</span> new_dat, <span class="at">appendData=</span><span class="cn">TRUE</span>)</span>
-<span id="cb286-8"><a href="occupancy.html#cb286-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb286-9"><a href="occupancy.html#cb286-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb286-10"><a href="occupancy.html#cb286-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the results</span></span>
-<span id="cb286-11"><a href="occupancy.html#cb286-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb286-12"><a href="occupancy.html#cb286-12" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(new_dat, <span class="fu">aes</span>(<span class="at">x =</span> z.line_of_sight_m, <span class="at">y =</span> Predicted)) <span class="sc">+</span> <span class="co"># mean line</span></span>
-<span id="cb286-13"><a href="occupancy.html#cb286-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span> <span class="co">#Confidence intervals</span></span>
-<span id="cb286-14"><a href="occupancy.html#cb286-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
-<span id="cb286-15"><a href="occupancy.html#cb286-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Line of sight&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Occupancy probability&quot;</span>) <span class="sc">+</span> <span class="co"># axis labels</span></span>
-<span id="cb286-16"><a href="occupancy.html#cb286-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb286-17"><a href="occupancy.html#cb286-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
-<span id="cb286-18"><a href="occupancy.html#cb286-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb286-19"><a href="occupancy.html#cb286-19" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb292-1"><a href="occupancy.html#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Generate new data to predict from </span></span>
+<span id="cb292-2"><a href="occupancy.html#cb292-2" aria-hidden="true" tabindex="-1"></a>new_dat <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="fu">expand.grid</span>(</span>
+<span id="cb292-3"><a href="occupancy.html#cb292-3" aria-hidden="true" tabindex="-1"></a>                  <span class="at">z.line_of_sight_m=</span><span class="fu">seq</span>(<span class="fu">min</span>(z_locs<span class="sc">$</span>z.line_of_sight_m),<span class="fu">max</span>(z_locs<span class="sc">$</span>z.line_of_sight_m), <span class="co"># add more covariates here if the model is more complex</span></span>
+<span id="cb292-4"><a href="occupancy.html#cb292-4" aria-hidden="true" tabindex="-1"></a>                  <span class="at">length.out=</span><span class="dv">25</span>)))</span>
+<span id="cb292-5"><a href="occupancy.html#cb292-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-6"><a href="occupancy.html#cb292-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Make the predicted values for the data you supplied                 </span></span>
+<span id="cb292-7"><a href="occupancy.html#cb292-7" aria-hidden="true" tabindex="-1"></a>new_dat <span class="ot">&lt;-</span> <span class="fu">predict</span>(m1, <span class="at">type=</span><span class="st">&quot;state&quot;</span>, <span class="at">newdata =</span> new_dat, <span class="at">appendData=</span><span class="cn">TRUE</span>)</span>
+<span id="cb292-8"><a href="occupancy.html#cb292-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-9"><a href="occupancy.html#cb292-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-10"><a href="occupancy.html#cb292-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Plot the results</span></span>
+<span id="cb292-11"><a href="occupancy.html#cb292-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-12"><a href="occupancy.html#cb292-12" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(new_dat, <span class="fu">aes</span>(<span class="at">x =</span> z.line_of_sight_m, <span class="at">y =</span> Predicted)) <span class="sc">+</span> <span class="co"># mean line</span></span>
+<span id="cb292-13"><a href="occupancy.html#cb292-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span> <span class="co">#Confidence intervals</span></span>
+<span id="cb292-14"><a href="occupancy.html#cb292-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb292-15"><a href="occupancy.html#cb292-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Line of sight&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Occupancy probability&quot;</span>) <span class="sc">+</span> <span class="co"># axis labels</span></span>
+<span id="cb292-16"><a href="occupancy.html#cb292-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb292-17"><a href="occupancy.html#cb292-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
+<span id="cb292-18"><a href="occupancy.html#cb292-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-19"><a href="occupancy.html#cb292-19" aria-hidden="true" tabindex="-1"></a>p1</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch8_20-1.png" width="672" /></p>
 <p>As with our habitat use model, white-tailed deer (<strong>Odocoileus virginianus</strong>) occupancy appears to decrease with increasing line of sight.</p>
 </div>
@@ -170068,86 +170071,86 @@ ALG073
 <li>coordinates: rows are sites and columns are y and y coordinates</li>
 </ul>
 <p>For this example we will use the monthly data above - and use a single year</p>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb287-1"><a href="occupancy.html#cb287-1" aria-hidden="true" tabindex="-1"></a>monthly_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb287-2"><a href="occupancy.html#cb287-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-3"><a href="occupancy.html#cb287-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use white-tailed deer</span></span>
-<span id="cb287-4"><a href="occupancy.html#cb287-4" aria-hidden="true" tabindex="-1"></a>sp<span class="ot">&lt;-</span> <span class="st">&quot;Odocoileus.virginianus&quot;</span></span>
-<span id="cb287-5"><a href="occupancy.html#cb287-5" aria-hidden="true" tabindex="-1"></a>monthly_sub  <span class="ot">&lt;-</span> monthly_obs[, <span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>, sp)]</span>
-<span id="cb287-6"><a href="occupancy.html#cb287-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-7"><a href="occupancy.html#cb287-7" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to 2019</span></span>
-<span id="cb287-8"><a href="occupancy.html#cb287-8" aria-hidden="true" tabindex="-1"></a>monthly_sub <span class="ot">&lt;-</span> monthly_sub[<span class="fu">substr</span>(monthly_sub<span class="sc">$</span>date,<span class="dv">1</span>,<span class="dv">4</span>)<span class="sc">==</span><span class="dv">2019</span>,]</span>
-<span id="cb287-9"><a href="occupancy.html#cb287-9" aria-hidden="true" tabindex="-1"></a><span class="co">#monthly_sub$date &lt;- ym(monthly_sub$date) </span></span>
-<span id="cb287-10"><a href="occupancy.html#cb287-10" aria-hidden="true" tabindex="-1"></a><span class="co">#monthly_sub$month &lt;- month(monthly_sub$date) </span></span>
-<span id="cb287-11"><a href="occupancy.html#cb287-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-12"><a href="occupancy.html#cb287-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-13"><a href="occupancy.html#cb287-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Y data</span></span>
-<span id="cb287-14"><a href="occupancy.html#cb287-14" aria-hidden="true" tabindex="-1"></a>y_dat <span class="ot">&lt;-</span> monthly_sub[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, sp)] <span class="sc">%&gt;%</span></span>
-<span id="cb287-15"><a href="occupancy.html#cb287-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> date, <span class="at">values_from =</span> sp)</span>
-<span id="cb287-16"><a href="occupancy.html#cb287-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-17"><a href="occupancy.html#cb287-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-18"><a href="occupancy.html#cb287-18" aria-hidden="true" tabindex="-1"></a>y_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(y_dat[,<span class="fu">unique</span>(monthly_sub<span class="sc">$</span>date)])</span>
-<span id="cb287-19"><a href="occupancy.html#cb287-19" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(y_mat) <span class="ot">&lt;-</span> y_dat<span class="sc">$</span>placename</span>
-<span id="cb287-20"><a href="occupancy.html#cb287-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-21"><a href="occupancy.html#cb287-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-22"><a href="occupancy.html#cb287-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create occupancy covariates</span></span>
-<span id="cb287-23"><a href="occupancy.html#cb287-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-24"><a href="occupancy.html#cb287-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add covariates to the Y dat object</span></span>
-<span id="cb287-25"><a href="occupancy.html#cb287-25" aria-hidden="true" tabindex="-1"></a>y_cov <span class="ot">&lt;-</span> <span class="fu">left_join</span>(y_dat, z_locs)</span>
-<span id="cb287-26"><a href="occupancy.html#cb287-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-27"><a href="occupancy.html#cb287-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-28"><a href="occupancy.html#cb287-28" aria-hidden="true" tabindex="-1"></a>occ_covs_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">as.factor</span>(y_cov<span class="sc">$</span>feature_type),</span>
-<span id="cb287-29"><a href="occupancy.html#cb287-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">dimnames=</span><span class="fu">list</span>(<span class="fu">row.names</span>(y_mat), <span class="st">&quot;feature_type&quot;</span>))</span>
-<span id="cb287-30"><a href="occupancy.html#cb287-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-31"><a href="occupancy.html#cb287-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-32"><a href="occupancy.html#cb287-32" aria-hidden="true" tabindex="-1"></a>occ_covs_df <span class="ot">&lt;-</span> z_locs</span>
-<span id="cb287-33"><a href="occupancy.html#cb287-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-34"><a href="occupancy.html#cb287-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-35"><a href="occupancy.html#cb287-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-36"><a href="occupancy.html#cb287-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Create detection covariates</span></span>
-<span id="cb287-37"><a href="occupancy.html#cb287-37" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-38"><a href="occupancy.html#cb287-38" aria-hidden="true" tabindex="-1"></a>det_dat <span class="ot">&lt;-</span> monthly_sub[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>)] <span class="sc">%&gt;%</span></span>
-<span id="cb287-39"><a href="occupancy.html#cb287-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> date, <span class="at">values_from =</span> days)</span>
-<span id="cb287-40"><a href="occupancy.html#cb287-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-41"><a href="occupancy.html#cb287-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Effort slice </span></span>
-<span id="cb287-42"><a href="occupancy.html#cb287-42" aria-hidden="true" tabindex="-1"></a>days <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(det_dat[,<span class="fu">unique</span>(monthly_sub<span class="sc">$</span>date)])</span>
-<span id="cb287-43"><a href="occupancy.html#cb287-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">row.names</span>(days) <span class="ot">&lt;-</span> det_dat<span class="sc">$</span>placename</span>
-<span id="cb287-44"><a href="occupancy.html#cb287-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-45"><a href="occupancy.html#cb287-45" aria-hidden="true" tabindex="-1"></a>det_covs_mat <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">day=</span>days)</span>
-<span id="cb287-46"><a href="occupancy.html#cb287-46" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb287-47"><a href="occupancy.html#cb287-47" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb287-48"><a href="occupancy.html#cb287-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-49"><a href="occupancy.html#cb287-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create locations dataframe</span></span>
-<span id="cb287-50"><a href="occupancy.html#cb287-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-51"><a href="occupancy.html#cb287-51" aria-hidden="true" tabindex="-1"></a><span class="co"># We currently have covariates in lat long - but we need to have them in meters (UTM format or similar)</span></span>
-<span id="cb287-52"><a href="occupancy.html#cb287-52" aria-hidden="true" tabindex="-1"></a>loc_dat <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>)], <span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="at">crs=</span><span class="dv">4326</span>)</span>
-<span id="cb287-53"><a href="occupancy.html#cb287-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Automatic way</span></span>
-<span id="cb287-54"><a href="occupancy.html#cb287-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gfcanalysis)</span>
-<span id="cb287-55"><a href="occupancy.html#cb287-55" aria-hidden="true" tabindex="-1"></a>utm_code <span class="ot">&lt;-</span> <span class="fu">utm_zone</span>(<span class="fu">mean</span>(<span class="fu">st_coordinates</span>(loc_dat)[,<span class="dv">1</span>]), <span class="fu">mean</span>(<span class="fu">st_coordinates</span>(loc_dat)[,<span class="dv">2</span>]), <span class="at">proj4string=</span><span class="cn">TRUE</span>)</span>
-<span id="cb287-56"><a href="occupancy.html#cb287-56" aria-hidden="true" tabindex="-1"></a>loc_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(loc_dat, utm_code)</span>
-<span id="cb287-57"><a href="occupancy.html#cb287-57" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-58"><a href="occupancy.html#cb287-58" aria-hidden="true" tabindex="-1"></a>loc_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">st_coordinates</span>(loc_utm),</span>
-<span id="cb287-59"><a href="occupancy.html#cb287-59" aria-hidden="true" tabindex="-1"></a>          <span class="at">dimnames=</span><span class="fu">list</span>(loc_utm<span class="sc">$</span>placename, <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>))) </span>
-<span id="cb287-60"><a href="occupancy.html#cb287-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-61"><a href="occupancy.html#cb287-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Package all data into list object</span></span>
-<span id="cb287-62"><a href="occupancy.html#cb287-62" aria-hidden="true" tabindex="-1"></a>dat_single_sp <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> y_mat, </span>
-<span id="cb287-63"><a href="occupancy.html#cb287-63" aria-hidden="true" tabindex="-1"></a>                  <span class="at">occ.covs =</span> occ_covs_df, </span>
-<span id="cb287-64"><a href="occupancy.html#cb287-64" aria-hidden="true" tabindex="-1"></a>                  <span class="at">det.covs =</span> det_covs_mat, </span>
-<span id="cb287-65"><a href="occupancy.html#cb287-65" aria-hidden="true" tabindex="-1"></a>                  <span class="at">coords =</span> loc_mat)</span>
-<span id="cb287-66"><a href="occupancy.html#cb287-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-67"><a href="occupancy.html#cb287-67" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-68"><a href="occupancy.html#cb287-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-69"><a href="occupancy.html#cb287-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-70"><a href="occupancy.html#cb287-70" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-71"><a href="occupancy.html#cb287-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb287-72"><a href="occupancy.html#cb287-72" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">PGOcc</span>(<span class="at">occ.formula =</span> <span class="sc">~</span> z.line_of_sight_m, </span>
-<span id="cb287-73"><a href="occupancy.html#cb287-73" aria-hidden="true" tabindex="-1"></a>             <span class="at">det.formula =</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
-<span id="cb287-74"><a href="occupancy.html#cb287-74" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> dat_single_sp, </span>
-<span id="cb287-75"><a href="occupancy.html#cb287-75" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.samples =</span> <span class="dv">5000</span>, </span>
-<span id="cb287-76"><a href="occupancy.html#cb287-76" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.thin =</span> <span class="dv">4</span>, </span>
-<span id="cb287-77"><a href="occupancy.html#cb287-77" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.burn =</span> <span class="dv">3000</span>, </span>
-<span id="cb287-78"><a href="occupancy.html#cb287-78" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.chains =</span> <span class="dv">3</span>,</span>
-<span id="cb287-79"><a href="occupancy.html#cb287-79" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.report =</span> <span class="dv">500</span>)</span>
-<span id="cb287-80"><a href="occupancy.html#cb287-80" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(out)</span></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb293-1"><a href="occupancy.html#cb293-1" aria-hidden="true" tabindex="-1"></a>monthly_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb293-2"><a href="occupancy.html#cb293-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-3"><a href="occupancy.html#cb293-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use white-tailed deer</span></span>
+<span id="cb293-4"><a href="occupancy.html#cb293-4" aria-hidden="true" tabindex="-1"></a>sp<span class="ot">&lt;-</span> <span class="st">&quot;Odocoileus.virginianus&quot;</span></span>
+<span id="cb293-5"><a href="occupancy.html#cb293-5" aria-hidden="true" tabindex="-1"></a>monthly_sub  <span class="ot">&lt;-</span> monthly_obs[, <span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>, sp)]</span>
+<span id="cb293-6"><a href="occupancy.html#cb293-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-7"><a href="occupancy.html#cb293-7" aria-hidden="true" tabindex="-1"></a><span class="co"># subset to 2019</span></span>
+<span id="cb293-8"><a href="occupancy.html#cb293-8" aria-hidden="true" tabindex="-1"></a>monthly_sub <span class="ot">&lt;-</span> monthly_sub[<span class="fu">substr</span>(monthly_sub<span class="sc">$</span>date,<span class="dv">1</span>,<span class="dv">4</span>)<span class="sc">==</span><span class="dv">2019</span>,]</span>
+<span id="cb293-9"><a href="occupancy.html#cb293-9" aria-hidden="true" tabindex="-1"></a><span class="co">#monthly_sub$date &lt;- ym(monthly_sub$date) </span></span>
+<span id="cb293-10"><a href="occupancy.html#cb293-10" aria-hidden="true" tabindex="-1"></a><span class="co">#monthly_sub$month &lt;- month(monthly_sub$date) </span></span>
+<span id="cb293-11"><a href="occupancy.html#cb293-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-12"><a href="occupancy.html#cb293-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-13"><a href="occupancy.html#cb293-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Y data</span></span>
+<span id="cb293-14"><a href="occupancy.html#cb293-14" aria-hidden="true" tabindex="-1"></a>y_dat <span class="ot">&lt;-</span> monthly_sub[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, sp)] <span class="sc">%&gt;%</span></span>
+<span id="cb293-15"><a href="occupancy.html#cb293-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> date, <span class="at">values_from =</span> sp)</span>
+<span id="cb293-16"><a href="occupancy.html#cb293-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-17"><a href="occupancy.html#cb293-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-18"><a href="occupancy.html#cb293-18" aria-hidden="true" tabindex="-1"></a>y_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(y_dat[,<span class="fu">unique</span>(monthly_sub<span class="sc">$</span>date)])</span>
+<span id="cb293-19"><a href="occupancy.html#cb293-19" aria-hidden="true" tabindex="-1"></a><span class="fu">row.names</span>(y_mat) <span class="ot">&lt;-</span> y_dat<span class="sc">$</span>placename</span>
+<span id="cb293-20"><a href="occupancy.html#cb293-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-21"><a href="occupancy.html#cb293-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-22"><a href="occupancy.html#cb293-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Create occupancy covariates</span></span>
+<span id="cb293-23"><a href="occupancy.html#cb293-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-24"><a href="occupancy.html#cb293-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Add covariates to the Y dat object</span></span>
+<span id="cb293-25"><a href="occupancy.html#cb293-25" aria-hidden="true" tabindex="-1"></a>y_cov <span class="ot">&lt;-</span> <span class="fu">left_join</span>(y_dat, z_locs)</span>
+<span id="cb293-26"><a href="occupancy.html#cb293-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-27"><a href="occupancy.html#cb293-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-28"><a href="occupancy.html#cb293-28" aria-hidden="true" tabindex="-1"></a>occ_covs_mat <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">as.factor</span>(y_cov<span class="sc">$</span>feature_type),</span>
+<span id="cb293-29"><a href="occupancy.html#cb293-29" aria-hidden="true" tabindex="-1"></a>          <span class="at">dimnames=</span><span class="fu">list</span>(<span class="fu">row.names</span>(y_mat), <span class="st">&quot;feature_type&quot;</span>))</span>
+<span id="cb293-30"><a href="occupancy.html#cb293-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-31"><a href="occupancy.html#cb293-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-32"><a href="occupancy.html#cb293-32" aria-hidden="true" tabindex="-1"></a>occ_covs_df <span class="ot">&lt;-</span> z_locs</span>
+<span id="cb293-33"><a href="occupancy.html#cb293-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-34"><a href="occupancy.html#cb293-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-35"><a href="occupancy.html#cb293-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-36"><a href="occupancy.html#cb293-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Create detection covariates</span></span>
+<span id="cb293-37"><a href="occupancy.html#cb293-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-38"><a href="occupancy.html#cb293-38" aria-hidden="true" tabindex="-1"></a>det_dat <span class="ot">&lt;-</span> monthly_sub[,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>)] <span class="sc">%&gt;%</span></span>
+<span id="cb293-39"><a href="occupancy.html#cb293-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> date, <span class="at">values_from =</span> days)</span>
+<span id="cb293-40"><a href="occupancy.html#cb293-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-41"><a href="occupancy.html#cb293-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Effort slice </span></span>
+<span id="cb293-42"><a href="occupancy.html#cb293-42" aria-hidden="true" tabindex="-1"></a>days <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(det_dat[,<span class="fu">unique</span>(monthly_sub<span class="sc">$</span>date)])</span>
+<span id="cb293-43"><a href="occupancy.html#cb293-43" aria-hidden="true" tabindex="-1"></a>        <span class="fu">row.names</span>(days) <span class="ot">&lt;-</span> det_dat<span class="sc">$</span>placename</span>
+<span id="cb293-44"><a href="occupancy.html#cb293-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-45"><a href="occupancy.html#cb293-45" aria-hidden="true" tabindex="-1"></a>det_covs_mat <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">day=</span>days)</span>
+<span id="cb293-46"><a href="occupancy.html#cb293-46" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb293-47"><a href="occupancy.html#cb293-47" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb293-48"><a href="occupancy.html#cb293-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-49"><a href="occupancy.html#cb293-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Create locations dataframe</span></span>
+<span id="cb293-50"><a href="occupancy.html#cb293-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-51"><a href="occupancy.html#cb293-51" aria-hidden="true" tabindex="-1"></a><span class="co"># We currently have covariates in lat long - but we need to have them in meters (UTM format or similar)</span></span>
+<span id="cb293-52"><a href="occupancy.html#cb293-52" aria-hidden="true" tabindex="-1"></a>loc_dat <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>)], <span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="at">crs=</span><span class="dv">4326</span>)</span>
+<span id="cb293-53"><a href="occupancy.html#cb293-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Automatic way</span></span>
+<span id="cb293-54"><a href="occupancy.html#cb293-54" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gfcanalysis)</span>
+<span id="cb293-55"><a href="occupancy.html#cb293-55" aria-hidden="true" tabindex="-1"></a>utm_code <span class="ot">&lt;-</span> <span class="fu">utm_zone</span>(<span class="fu">mean</span>(<span class="fu">st_coordinates</span>(loc_dat)[,<span class="dv">1</span>]), <span class="fu">mean</span>(<span class="fu">st_coordinates</span>(loc_dat)[,<span class="dv">2</span>]), <span class="at">proj4string=</span><span class="cn">TRUE</span>)</span>
+<span id="cb293-56"><a href="occupancy.html#cb293-56" aria-hidden="true" tabindex="-1"></a>loc_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(loc_dat, utm_code)</span>
+<span id="cb293-57"><a href="occupancy.html#cb293-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-58"><a href="occupancy.html#cb293-58" aria-hidden="true" tabindex="-1"></a>loc_mat <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">st_coordinates</span>(loc_utm),</span>
+<span id="cb293-59"><a href="occupancy.html#cb293-59" aria-hidden="true" tabindex="-1"></a>          <span class="at">dimnames=</span><span class="fu">list</span>(loc_utm<span class="sc">$</span>placename, <span class="fu">c</span>(<span class="st">&quot;x&quot;</span>, <span class="st">&quot;y&quot;</span>))) </span>
+<span id="cb293-60"><a href="occupancy.html#cb293-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-61"><a href="occupancy.html#cb293-61" aria-hidden="true" tabindex="-1"></a><span class="co"># Package all data into list object</span></span>
+<span id="cb293-62"><a href="occupancy.html#cb293-62" aria-hidden="true" tabindex="-1"></a>dat_single_sp <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">y =</span> y_mat, </span>
+<span id="cb293-63"><a href="occupancy.html#cb293-63" aria-hidden="true" tabindex="-1"></a>                  <span class="at">occ.covs =</span> occ_covs_df, </span>
+<span id="cb293-64"><a href="occupancy.html#cb293-64" aria-hidden="true" tabindex="-1"></a>                  <span class="at">det.covs =</span> det_covs_mat, </span>
+<span id="cb293-65"><a href="occupancy.html#cb293-65" aria-hidden="true" tabindex="-1"></a>                  <span class="at">coords =</span> loc_mat)</span>
+<span id="cb293-66"><a href="occupancy.html#cb293-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-67"><a href="occupancy.html#cb293-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-68"><a href="occupancy.html#cb293-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-69"><a href="occupancy.html#cb293-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-70"><a href="occupancy.html#cb293-70" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-71"><a href="occupancy.html#cb293-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb293-72"><a href="occupancy.html#cb293-72" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">PGOcc</span>(<span class="at">occ.formula =</span> <span class="sc">~</span> z.line_of_sight_m, </span>
+<span id="cb293-73"><a href="occupancy.html#cb293-73" aria-hidden="true" tabindex="-1"></a>             <span class="at">det.formula =</span> <span class="sc">~</span> <span class="dv">1</span>, </span>
+<span id="cb293-74"><a href="occupancy.html#cb293-74" aria-hidden="true" tabindex="-1"></a>             <span class="at">data =</span> dat_single_sp, </span>
+<span id="cb293-75"><a href="occupancy.html#cb293-75" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.samples =</span> <span class="dv">5000</span>, </span>
+<span id="cb293-76"><a href="occupancy.html#cb293-76" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.thin =</span> <span class="dv">4</span>, </span>
+<span id="cb293-77"><a href="occupancy.html#cb293-77" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.burn =</span> <span class="dv">3000</span>, </span>
+<span id="cb293-78"><a href="occupancy.html#cb293-78" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.chains =</span> <span class="dv">3</span>,</span>
+<span id="cb293-79"><a href="occupancy.html#cb293-79" aria-hidden="true" tabindex="-1"></a>             <span class="at">n.report =</span> <span class="dv">500</span>)</span>
+<span id="cb293-80"><a href="occupancy.html#cb293-80" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(out)</span></code></pre></div>
 </div>
 </div>
 <div id="multi-species-model" class="section level3 hasAnchor" number="11.2.2">
@@ -170156,91 +170159,91 @@ ALG073
 <h4><span class="header-section-number">11.2.2.1</span> Data preparation<a href="occupancy.html#data-preparation-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>For the multi species model we have a different Y matric structure.</p>
 <p>Each slice of the matrix is species (y) by site (x), then each matrix slice is a visit.</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb288-1"><a href="occupancy.html#cb288-1" aria-hidden="true" tabindex="-1"></a>hb.dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">&quot;https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-hbr.178.3&amp;entityid=eecb146279aa290af2292d75d3ba0f8b&quot;</span>))</span>
-<span id="cb288-2"><a href="occupancy.html#cb288-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the data set</span></span>
-<span id="cb288-3"><a href="occupancy.html#cb288-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hb.dat)</span>
-<span id="cb288-4"><a href="occupancy.html#cb288-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-5"><a href="occupancy.html#cb288-5" aria-hidden="true" tabindex="-1"></a>hb.dat<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(hb.dat<span class="sc">$</span>Date)</span>
-<span id="cb288-6"><a href="occupancy.html#cb288-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hb.dat<span class="sc">$</span>Date)</span>
-<span id="cb288-7"><a href="occupancy.html#cb288-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-8"><a href="occupancy.html#cb288-8" aria-hidden="true" tabindex="-1"></a>hb.dat<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">year</span>(hb.dat<span class="sc">$</span>Date)</span>
-<span id="cb288-9"><a href="occupancy.html#cb288-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hb.dat)</span>
-<span id="cb288-10"><a href="occupancy.html#cb288-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-11"><a href="occupancy.html#cb288-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-12"><a href="occupancy.html#cb288-12" aria-hidden="true" tabindex="-1"></a>hb<span class="fl">.2014</span> <span class="ot">&lt;-</span> hb.dat <span class="sc">%&gt;%</span></span>
-<span id="cb288-13"><a href="occupancy.html#cb288-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="dv">2014</span>,  <span class="co"># Only use data from 2014</span></span>
-<span id="cb288-14"><a href="occupancy.html#cb288-14" aria-hidden="true" tabindex="-1"></a>         Replicate <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>), <span class="co"># Only use data from first 3 reps </span></span>
-<span id="cb288-15"><a href="occupancy.html#cb288-15" aria-hidden="true" tabindex="-1"></a>         Plot <span class="sc">!=</span> <span class="dv">277</span>) <span class="co"># Don&#39;t use data from plot 277</span></span>
-<span id="cb288-16"><a href="occupancy.html#cb288-16" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hb<span class="fl">.2014</span>)</span>
-<span id="cb288-17"><a href="occupancy.html#cb288-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-18"><a href="occupancy.html#cb288-18" aria-hidden="true" tabindex="-1"></a>y.long <span class="ot">&lt;-</span> hb<span class="fl">.2014</span> <span class="sc">%&gt;%</span></span>
-<span id="cb288-19"><a href="occupancy.html#cb288-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Plot, Date, Replicate, Species) <span class="sc">%&gt;%</span></span>
-<span id="cb288-20"><a href="occupancy.html#cb288-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb288-21"><a href="occupancy.html#cb288-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb288-22"><a href="occupancy.html#cb288-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span>
-<span id="cb288-23"><a href="occupancy.html#cb288-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-24"><a href="occupancy.html#cb288-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-25"><a href="occupancy.html#cb288-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-26"><a href="occupancy.html#cb288-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Species codes.</span></span>
-<span id="cb288-27"><a href="occupancy.html#cb288-27" aria-hidden="true" tabindex="-1"></a>sp.codes <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(y.long<span class="sc">$</span>Species))</span>
-<span id="cb288-28"><a href="occupancy.html#cb288-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot (site) codes.</span></span>
-<span id="cb288-29"><a href="occupancy.html#cb288-29" aria-hidden="true" tabindex="-1"></a>plot.codes <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(y.long<span class="sc">$</span>Plot))</span>
-<span id="cb288-30"><a href="occupancy.html#cb288-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of species</span></span>
-<span id="cb288-31"><a href="occupancy.html#cb288-31" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(sp.codes)</span>
-<span id="cb288-32"><a href="occupancy.html#cb288-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Maximum number of replicates at a site</span></span>
-<span id="cb288-33"><a href="occupancy.html#cb288-33" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb288-34"><a href="occupancy.html#cb288-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of sites</span></span>
-<span id="cb288-35"><a href="occupancy.html#cb288-35" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(y.long<span class="sc">$</span>Plot))</span>
-<span id="cb288-36"><a href="occupancy.html#cb288-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Array for detection-nondetection data. </span></span>
-<span id="cb288-37"><a href="occupancy.html#cb288-37" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>, <span class="at">dim =</span> <span class="fu">c</span>(N, J, K))</span>
-<span id="cb288-38"><a href="occupancy.html#cb288-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Label the dimensions of y (not necessary, but helpful)</span></span>
-<span id="cb288-39"><a href="occupancy.html#cb288-39" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> sp.codes</span>
-<span id="cb288-40"><a href="occupancy.html#cb288-40" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> plot.codes</span>
-<span id="cb288-41"><a href="occupancy.html#cb288-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the structure of our array y</span></span>
-<span id="cb288-42"><a href="occupancy.html#cb288-42" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(y)</span>
-<span id="cb288-43"><a href="occupancy.html#cb288-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-44"><a href="occupancy.html#cb288-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>J) { <span class="co"># Loop through sites.</span></span>
-<span id="cb288-45"><a href="occupancy.html#cb288-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) { <span class="co"># Loop through replicates at each site.</span></span>
-<span id="cb288-46"><a href="occupancy.html#cb288-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract data for current site/replicate combination.</span></span>
-<span id="cb288-47"><a href="occupancy.html#cb288-47" aria-hidden="true" tabindex="-1"></a>    curr.df <span class="ot">&lt;-</span> y.long <span class="sc">%&gt;%</span></span>
-<span id="cb288-48"><a href="occupancy.html#cb288-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Plot <span class="sc">==</span> plot.codes[j], Replicate <span class="sc">==</span> k)</span>
-<span id="cb288-49"><a href="occupancy.html#cb288-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if more than one date for a given replicate</span></span>
-<span id="cb288-50"><a href="occupancy.html#cb288-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">n_distinct</span>(curr.df<span class="sc">$</span>Date) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
-<span id="cb288-51"><a href="occupancy.html#cb288-51" aria-hidden="true" tabindex="-1"></a>      <span class="co"># If there is more than 1 date, only use the data</span></span>
-<span id="cb288-52"><a href="occupancy.html#cb288-52" aria-hidden="true" tabindex="-1"></a>      <span class="co"># from the first date.</span></span>
-<span id="cb288-53"><a href="occupancy.html#cb288-53" aria-hidden="true" tabindex="-1"></a>      curr.dates <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">sort</span>(curr.df<span class="sc">$</span>Date))</span>
-<span id="cb288-54"><a href="occupancy.html#cb288-54" aria-hidden="true" tabindex="-1"></a>      curr.df <span class="ot">&lt;-</span> curr.df <span class="sc">%&gt;%</span> </span>
-<span id="cb288-55"><a href="occupancy.html#cb288-55" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(Date <span class="sc">==</span> curr.dates[<span class="dv">1</span>])</span>
-<span id="cb288-56"><a href="occupancy.html#cb288-56" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb288-57"><a href="occupancy.html#cb288-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If plot j was sampled during replicate k, </span></span>
-<span id="cb288-58"><a href="occupancy.html#cb288-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># curr.df will have at least 1 row (i.e., at least </span></span>
-<span id="cb288-59"><a href="occupancy.html#cb288-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one species will be observed). If not, assume it </span></span>
-<span id="cb288-60"><a href="occupancy.html#cb288-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># was not sampled for that replicate.</span></span>
-<span id="cb288-61"><a href="occupancy.html#cb288-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(curr.df) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
-<span id="cb288-62"><a href="occupancy.html#cb288-62" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Extract the species that were observed during</span></span>
-<span id="cb288-63"><a href="occupancy.html#cb288-63" aria-hidden="true" tabindex="-1"></a>      <span class="co"># this site/replicate.</span></span>
-<span id="cb288-64"><a href="occupancy.html#cb288-64" aria-hidden="true" tabindex="-1"></a>      curr.sp <span class="ot">&lt;-</span> <span class="fu">which</span>(sp.codes <span class="sc">%in%</span> curr.df<span class="sc">$</span>Species)</span>
-<span id="cb288-65"><a href="occupancy.html#cb288-65" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Set value to 1 for species that were observed.</span></span>
-<span id="cb288-66"><a href="occupancy.html#cb288-66" aria-hidden="true" tabindex="-1"></a>      y[curr.sp, j, k] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb288-67"><a href="occupancy.html#cb288-67" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Set value to 0 for all other species.</span></span>
-<span id="cb288-68"><a href="occupancy.html#cb288-68" aria-hidden="true" tabindex="-1"></a>      y[<span class="sc">-</span>curr.sp, j, k] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
-<span id="cb288-69"><a href="occupancy.html#cb288-69" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb288-70"><a href="occupancy.html#cb288-70" aria-hidden="true" tabindex="-1"></a>  } <span class="co"># k (replicates)</span></span>
-<span id="cb288-71"><a href="occupancy.html#cb288-71" aria-hidden="true" tabindex="-1"></a>} <span class="co"># j (sites)</span></span>
-<span id="cb288-72"><a href="occupancy.html#cb288-72" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(y)</span>
-<span id="cb288-73"><a href="occupancy.html#cb288-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-74"><a href="occupancy.html#cb288-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-75"><a href="occupancy.html#cb288-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-76"><a href="occupancy.html#cb288-76" aria-hidden="true" tabindex="-1"></a>y</span>
-<span id="cb288-77"><a href="occupancy.html#cb288-77" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-78"><a href="occupancy.html#cb288-78" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-79"><a href="occupancy.html#cb288-79" aria-hidden="true" tabindex="-1"></a><span class="co"># HOT TAKE</span></span>
-<span id="cb288-80"><a href="occupancy.html#cb288-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-81"><a href="occupancy.html#cb288-81" aria-hidden="true" tabindex="-1"></a><span class="co"># EACH OCCASION IS A MATRIC slice</span></span>
-<span id="cb288-82"><a href="occupancy.html#cb288-82" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-83"><a href="occupancy.html#cb288-83" aria-hidden="true" tabindex="-1"></a><span class="co">#SPECIES AS ROWS </span></span>
-<span id="cb288-84"><a href="occupancy.html#cb288-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-85"><a href="occupancy.html#cb288-85" aria-hidden="true" tabindex="-1"></a><span class="co"># SITES A COLUMNS</span></span></code></pre></div>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb294-1"><a href="occupancy.html#cb294-1" aria-hidden="true" tabindex="-1"></a>hb.dat <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">url</span>(<span class="st">&quot;https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-hbr.178.3&amp;entityid=eecb146279aa290af2292d75d3ba0f8b&quot;</span>))</span>
+<span id="cb294-2"><a href="occupancy.html#cb294-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Take a look at the data set</span></span>
+<span id="cb294-3"><a href="occupancy.html#cb294-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hb.dat)</span>
+<span id="cb294-4"><a href="occupancy.html#cb294-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-5"><a href="occupancy.html#cb294-5" aria-hidden="true" tabindex="-1"></a>hb.dat<span class="sc">$</span>Date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(hb.dat<span class="sc">$</span>Date)</span>
+<span id="cb294-6"><a href="occupancy.html#cb294-6" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(hb.dat<span class="sc">$</span>Date)</span>
+<span id="cb294-7"><a href="occupancy.html#cb294-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-8"><a href="occupancy.html#cb294-8" aria-hidden="true" tabindex="-1"></a>hb.dat<span class="sc">$</span>Year <span class="ot">&lt;-</span> <span class="fu">year</span>(hb.dat<span class="sc">$</span>Date)</span>
+<span id="cb294-9"><a href="occupancy.html#cb294-9" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hb.dat)</span>
+<span id="cb294-10"><a href="occupancy.html#cb294-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-11"><a href="occupancy.html#cb294-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-12"><a href="occupancy.html#cb294-12" aria-hidden="true" tabindex="-1"></a>hb<span class="fl">.2014</span> <span class="ot">&lt;-</span> hb.dat <span class="sc">%&gt;%</span></span>
+<span id="cb294-13"><a href="occupancy.html#cb294-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Year <span class="sc">==</span> <span class="dv">2014</span>,  <span class="co"># Only use data from 2014</span></span>
+<span id="cb294-14"><a href="occupancy.html#cb294-14" aria-hidden="true" tabindex="-1"></a>         Replicate <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;1&quot;</span>, <span class="st">&quot;2&quot;</span>, <span class="st">&quot;3&quot;</span>), <span class="co"># Only use data from first 3 reps </span></span>
+<span id="cb294-15"><a href="occupancy.html#cb294-15" aria-hidden="true" tabindex="-1"></a>         Plot <span class="sc">!=</span> <span class="dv">277</span>) <span class="co"># Don&#39;t use data from plot 277</span></span>
+<span id="cb294-16"><a href="occupancy.html#cb294-16" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(hb<span class="fl">.2014</span>)</span>
+<span id="cb294-17"><a href="occupancy.html#cb294-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-18"><a href="occupancy.html#cb294-18" aria-hidden="true" tabindex="-1"></a>y.long <span class="ot">&lt;-</span> hb<span class="fl">.2014</span> <span class="sc">%&gt;%</span></span>
+<span id="cb294-19"><a href="occupancy.html#cb294-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Plot, Date, Replicate, Species) <span class="sc">%&gt;%</span></span>
+<span id="cb294-20"><a href="occupancy.html#cb294-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">count =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
+<span id="cb294-21"><a href="occupancy.html#cb294-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb294-22"><a href="occupancy.html#cb294-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">glimpse</span>()</span>
+<span id="cb294-23"><a href="occupancy.html#cb294-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-24"><a href="occupancy.html#cb294-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-25"><a href="occupancy.html#cb294-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-26"><a href="occupancy.html#cb294-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Species codes.</span></span>
+<span id="cb294-27"><a href="occupancy.html#cb294-27" aria-hidden="true" tabindex="-1"></a>sp.codes <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(y.long<span class="sc">$</span>Species))</span>
+<span id="cb294-28"><a href="occupancy.html#cb294-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot (site) codes.</span></span>
+<span id="cb294-29"><a href="occupancy.html#cb294-29" aria-hidden="true" tabindex="-1"></a>plot.codes <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">unique</span>(y.long<span class="sc">$</span>Plot))</span>
+<span id="cb294-30"><a href="occupancy.html#cb294-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of species</span></span>
+<span id="cb294-31"><a href="occupancy.html#cb294-31" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> <span class="fu">length</span>(sp.codes)</span>
+<span id="cb294-32"><a href="occupancy.html#cb294-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Maximum number of replicates at a site</span></span>
+<span id="cb294-33"><a href="occupancy.html#cb294-33" aria-hidden="true" tabindex="-1"></a>K <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb294-34"><a href="occupancy.html#cb294-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Number of sites</span></span>
+<span id="cb294-35"><a href="occupancy.html#cb294-35" aria-hidden="true" tabindex="-1"></a>J <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">unique</span>(y.long<span class="sc">$</span>Plot))</span>
+<span id="cb294-36"><a href="occupancy.html#cb294-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Array for detection-nondetection data. </span></span>
+<span id="cb294-37"><a href="occupancy.html#cb294-37" aria-hidden="true" tabindex="-1"></a>y <span class="ot">&lt;-</span> <span class="fu">array</span>(<span class="cn">NA</span>, <span class="at">dim =</span> <span class="fu">c</span>(N, J, K))</span>
+<span id="cb294-38"><a href="occupancy.html#cb294-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Label the dimensions of y (not necessary, but helpful)</span></span>
+<span id="cb294-39"><a href="occupancy.html#cb294-39" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> sp.codes</span>
+<span id="cb294-40"><a href="occupancy.html#cb294-40" aria-hidden="true" tabindex="-1"></a><span class="fu">dimnames</span>(y)[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> plot.codes</span>
+<span id="cb294-41"><a href="occupancy.html#cb294-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Look at the structure of our array y</span></span>
+<span id="cb294-42"><a href="occupancy.html#cb294-42" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(y)</span>
+<span id="cb294-43"><a href="occupancy.html#cb294-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-44"><a href="occupancy.html#cb294-44" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>J) { <span class="co"># Loop through sites.</span></span>
+<span id="cb294-45"><a href="occupancy.html#cb294-45" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (k <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>K) { <span class="co"># Loop through replicates at each site.</span></span>
+<span id="cb294-46"><a href="occupancy.html#cb294-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Extract data for current site/replicate combination.</span></span>
+<span id="cb294-47"><a href="occupancy.html#cb294-47" aria-hidden="true" tabindex="-1"></a>    curr.df <span class="ot">&lt;-</span> y.long <span class="sc">%&gt;%</span></span>
+<span id="cb294-48"><a href="occupancy.html#cb294-48" aria-hidden="true" tabindex="-1"></a>      <span class="fu">filter</span>(Plot <span class="sc">==</span> plot.codes[j], Replicate <span class="sc">==</span> k)</span>
+<span id="cb294-49"><a href="occupancy.html#cb294-49" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Check if more than one date for a given replicate</span></span>
+<span id="cb294-50"><a href="occupancy.html#cb294-50" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">n_distinct</span>(curr.df<span class="sc">$</span>Date) <span class="sc">&gt;</span> <span class="dv">1</span>) {</span>
+<span id="cb294-51"><a href="occupancy.html#cb294-51" aria-hidden="true" tabindex="-1"></a>      <span class="co"># If there is more than 1 date, only use the data</span></span>
+<span id="cb294-52"><a href="occupancy.html#cb294-52" aria-hidden="true" tabindex="-1"></a>      <span class="co"># from the first date.</span></span>
+<span id="cb294-53"><a href="occupancy.html#cb294-53" aria-hidden="true" tabindex="-1"></a>      curr.dates <span class="ot">&lt;-</span> <span class="fu">unique</span>(<span class="fu">sort</span>(curr.df<span class="sc">$</span>Date))</span>
+<span id="cb294-54"><a href="occupancy.html#cb294-54" aria-hidden="true" tabindex="-1"></a>      curr.df <span class="ot">&lt;-</span> curr.df <span class="sc">%&gt;%</span> </span>
+<span id="cb294-55"><a href="occupancy.html#cb294-55" aria-hidden="true" tabindex="-1"></a>        <span class="fu">filter</span>(Date <span class="sc">==</span> curr.dates[<span class="dv">1</span>])</span>
+<span id="cb294-56"><a href="occupancy.html#cb294-56" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb294-57"><a href="occupancy.html#cb294-57" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If plot j was sampled during replicate k, </span></span>
+<span id="cb294-58"><a href="occupancy.html#cb294-58" aria-hidden="true" tabindex="-1"></a>    <span class="co"># curr.df will have at least 1 row (i.e., at least </span></span>
+<span id="cb294-59"><a href="occupancy.html#cb294-59" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one species will be observed). If not, assume it </span></span>
+<span id="cb294-60"><a href="occupancy.html#cb294-60" aria-hidden="true" tabindex="-1"></a>    <span class="co"># was not sampled for that replicate.</span></span>
+<span id="cb294-61"><a href="occupancy.html#cb294-61" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">nrow</span>(curr.df) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb294-62"><a href="occupancy.html#cb294-62" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Extract the species that were observed during</span></span>
+<span id="cb294-63"><a href="occupancy.html#cb294-63" aria-hidden="true" tabindex="-1"></a>      <span class="co"># this site/replicate.</span></span>
+<span id="cb294-64"><a href="occupancy.html#cb294-64" aria-hidden="true" tabindex="-1"></a>      curr.sp <span class="ot">&lt;-</span> <span class="fu">which</span>(sp.codes <span class="sc">%in%</span> curr.df<span class="sc">$</span>Species)</span>
+<span id="cb294-65"><a href="occupancy.html#cb294-65" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Set value to 1 for species that were observed.</span></span>
+<span id="cb294-66"><a href="occupancy.html#cb294-66" aria-hidden="true" tabindex="-1"></a>      y[curr.sp, j, k] <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb294-67"><a href="occupancy.html#cb294-67" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Set value to 0 for all other species.</span></span>
+<span id="cb294-68"><a href="occupancy.html#cb294-68" aria-hidden="true" tabindex="-1"></a>      y[<span class="sc">-</span>curr.sp, j, k] <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb294-69"><a href="occupancy.html#cb294-69" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb294-70"><a href="occupancy.html#cb294-70" aria-hidden="true" tabindex="-1"></a>  } <span class="co"># k (replicates)</span></span>
+<span id="cb294-71"><a href="occupancy.html#cb294-71" aria-hidden="true" tabindex="-1"></a>} <span class="co"># j (sites)</span></span>
+<span id="cb294-72"><a href="occupancy.html#cb294-72" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(y)</span>
+<span id="cb294-73"><a href="occupancy.html#cb294-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-74"><a href="occupancy.html#cb294-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-75"><a href="occupancy.html#cb294-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-76"><a href="occupancy.html#cb294-76" aria-hidden="true" tabindex="-1"></a>y</span>
+<span id="cb294-77"><a href="occupancy.html#cb294-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-78"><a href="occupancy.html#cb294-78" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-79"><a href="occupancy.html#cb294-79" aria-hidden="true" tabindex="-1"></a><span class="co"># HOT TAKE</span></span>
+<span id="cb294-80"><a href="occupancy.html#cb294-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-81"><a href="occupancy.html#cb294-81" aria-hidden="true" tabindex="-1"></a><span class="co"># EACH OCCASION IS A MATRIC slice</span></span>
+<span id="cb294-82"><a href="occupancy.html#cb294-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-83"><a href="occupancy.html#cb294-83" aria-hidden="true" tabindex="-1"></a><span class="co">#SPECIES AS ROWS </span></span>
+<span id="cb294-84"><a href="occupancy.html#cb294-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb294-85"><a href="occupancy.html#cb294-85" aria-hidden="true" tabindex="-1"></a><span class="co"># SITES A COLUMNS</span></span></code></pre></div>
 
 </div>
 </div>

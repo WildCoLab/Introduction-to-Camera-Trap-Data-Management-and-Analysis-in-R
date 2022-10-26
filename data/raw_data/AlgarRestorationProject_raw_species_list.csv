@@ -14,7 +14,7 @@
 "13","Mammalia","Carnivora","Felidae","Lynx","canadensis","Canada lynx","Lynx canadensis",TRUE
 "14","Mammalia","Carnivora","Mustelidae","Lontra","canadensis","Northern American river otter","Lontra canadensis",TRUE
 "15","Mammalia","Carnivora","Mustelidae","Martes","americana","American marten","Martes americana",TRUE
-"16","Mammalia","Carnivora","Ursidae","Ursus","americanus","American black bear","Ursus americanus",TRUE
+"16","Mammalia","Carnivora","Ursidae","Ursus","americanus",NA,"Ursus americanus",TRUE
 "17","Mammalia","Lagomorpha","Leporidae","Lepus","americanus","snowshoe hare","Lepus americanus",TRUE
 "18","Mammalia","Lagomorpha","Leporidae","Oryctolagus","cuniculus","rabbit","Oryctolagus cuniculus",TRUE
 "19","Mammalia","Primates","Hominidae","Homo","sapiens","human","Homo sapiens",TRUE
