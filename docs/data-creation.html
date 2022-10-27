@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-26" />
+<meta name="date" content="2022-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -258,9 +258,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.3" data-path="covariates.html"><a href="covariates.html#extracting-data-from-local-rasters"><i class="fa fa-check"></i><b>7.2.3</b> Extracting data from local rasters</a></li>
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
-<li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#google-earth-engine"><i class="fa fa-check"></i><b>7.2.6</b> Google Earth Engine</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#time-varying-covariates"><i class="fa fa-check"></i><b>7.2.7</b> Time-varying covariates</a></li>
-<li class="chapter" data-level="7.2.8" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.8</b> Digging deeper</a></li>
+<li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
+<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
+<li class="chapter" data-level="7.2.8" data-path="covariates.html"><a href="covariates.html#google-earth-engine"><i class="fa fa-check"></i><b>7.2.8</b> Google Earth Engine</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -347,8 +347,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11.2" data-path="occupancy.html"><a href="occupancy.html#spatial-occupancy-model-spoccupancy"><i class="fa fa-check"></i><b>11.2</b> Spatial occupancy model: spOccupancy</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="occupancy.html"><a href="occupancy.html#single-species-model"><i class="fa fa-check"></i><b>11.2.1</b> Single species model</a></li>
-<li class="chapter" data-level="11.2.2" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>11.2.2</b> Multi species model</a></li>
+<li class="chapter" data-level="11.2.1" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>11.2.1</b> Multi species model</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>12</b> Activity</a>
@@ -477,20 +476,20 @@ You can use it to create detection rates, occupancy data frames and much more (s
 <pre><code>## # A tibble: 14 × 2
 ##    common_name                   `n()`
 ##    &lt;chr&gt;                         &lt;int&gt;
-##  1 American marten                  41
-##  2 American red squirrel            34
-##  3 Canada lynx                     140
-##  4 coyote                           21
-##  5 elk                               6
-##  6 Eurasian elk                   2038
-##  7 gray wolf                       352
-##  8 Northern American river otter     2
-##  9 rabbit                            9
-## 10 red fox                          39
-## 11 reindeer                        787
-## 12 snowshoe hare                   629
-## 13 white-tailed deer              4790
-## 14 &lt;NA&gt;                           1331</code></pre>
+##  1 american black bear            1331
+##  2 american marten                  41
+##  3 american red squirrel            34
+##  4 canada lynx                     140
+##  5 caribou                         787
+##  6 coyote                           21
+##  7 elk                               6
+##  8 gray wolf                       352
+##  9 moose                          2038
+## 10 northern american river otter     2
+## 11 rabbit                            9
+## 12 red fox                          39
+## 13 snowshoe hare                   629
+## 14 &lt;NA&gt;                           4790</code></pre>
 </div>
 <div id="create-a-daily-camera-activity-lookup" class="section level3 hasAnchor" number="6.5.2">
 <h3><span class="header-section-number">6.5.2</span> Create a daily camera activity lookup<a href="data-creation.html#create-a-daily-camera-activity-lookup" class="anchor-section" aria-label="Anchor link to header"></a></h3>

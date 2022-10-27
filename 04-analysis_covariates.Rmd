@@ -393,7 +393,142 @@ locs_sf$water_dist_m <- st_distance(locs_sf, water$osm_points[index,], by_elemen
 
 For more examples of using the `osmdata` package see: [the projects github page](https://github.com/ropensci/osmdata)
 
+### Vegetation productivity
+
+#### MODISTools 
+
+`MODIStools` is an R interface to the [MODIS Land Products Subsets](https://modis.ornl.gov/data/modis_webservice.html) web services. It allows for easy access to ‘MODIS’ time series directly to your computer! These are the data layers commonly used to extract normalized difference vegetation index (NDVI) and Enhanced Vegetation Index (EVI) information. When using `MODIStools` you should reference: 
+
+[Hufkens (2022). The MODISTools package: an interface to the MODIS Land Products Subsets Web Services](https://github.com/ropensci/MODISTools) 
+
+Also click that link for more details on how to use it. 
+
+Let's load the package:
+
+```{r ch4_46, class.source="Rmain"}
+library(MODISTools)
+```
+
+For `MODIStools` to work, we need to provide a dataframe with specific column names:
+
+- `site_name` - the placename
+- `lat'
+- 'long'
+
+```{r ch4_47, class.source="Rmain"}
+modis_locs <- locs %>% 
+  select("placename", "longitude", "latitude") %>% 
+  rename(site_name=placename, lat=latitude, lon=longitude)
+```
+
+We can then look at the available bands for different products. 
+
+Two commonly used ones are [MOD13Q1](https://lpdaac.usgs.gov/products/mod13q1v006/) for the derivation of NDVI/EVI, and [MOD15A2H](https://lpdaac.usgs.gov/products/mod15a2hv006/) for the derivation of leaf area index (LAI).
+
+```{r ch4_48, class.source="Rinfo"}
+# list available bands for a product
+bands <- mt_bands(product = "MOD13Q1") #MOD15A2H
+head(bands)
+```
+
+When we run `MODIStools` the underlying algorithm chooses the best available pixel value from all the acquisitions from the 16 day period. The criteria used is lowest cloud cover, lowest satellite view angle, and the highest NDVI/EVI value.
+
+```{r ch4_49, class.source="Rinfo"}
+# list available dates for a product at a location
+dates <- mt_dates(product = "MOD13Q1", lat = modis_locs$lat[1], lon = modis_locs$lon[1]) #MOD15A2H
+
+# Get the first and last date!
+first(dates$calendar_date); last(dates$calendar_date)
+```
+
+In the interest of processing time, lets not pull the NDVI scores for the full date range. Instead, we will focus on mid summer in 2019. 
+
+Be patient, this might take a while!
+
+```{r ch4_50, class.source="Rmain"}
+algar_ndvi <- mt_batch_subset(product = "MOD13Q1",
+                              df=modis_locs,
+                              band = "250m_16_days_NDVI",
+                              start = "2019-07-01",
+                              end = "2019-08-31",
+                              km_lr = 0,         # Use these options if you want to buffer the value (km left)
+                              km_ab = 0,         # Use these options if you want to buffer the value (km above)
+                              internal = TRUE)
+
+```
+
+The raw output is somewhat intimidating:
+
+```{r ch4_51, class.source="Rinfo"}
+algar_ndvi[1:10, ] %>% 
+  kbl() %>% 
+  scroll_box(height = "300px") %>%
+  kable_paper("striped", full_width = F)
+```
+
+So lets simplify it to the key elements of information and rename them to match our camera data where appropriate:
+
+```{r ch4_52, class.source="Rmain"}
+ndvi_simple <- algar_ndvi %>% 
+  select(	site, band, calendar_date, value) %>% 
+  rename(placename=site)
+
+ndvi_simple[1:10, ] %>% 
+  kbl() %>% 
+  scroll_box(height = "300px") %>%
+  kable_paper("striped", full_width = F)
+
+```
+
+So we have multiple observations per site. Lets take an average and add it to our `locs_sf` dataframe.
+
+```{r ch4_53, message=F, warning=F, class.source="Rmain"}
+tmp <- ndvi_simple %>%             #Take the NDVI layer
+  group_by(placename) %>%          # Group observations by the placename
+  summarize(mean_ndvi=mean(value)) # Take the mean of the values and call the new column `mean_ndvi`
+
+# Add the new data to our locations dataframe
+locs_sf <- left_join(locs_sf, tmp)
+
+```
+
+And check the output:
+```{r ch4_54, class.source="Rinfo"}
+boxplot(locs_sf$mean_ndvi,
+        ylab="Mean NDVI score",
+        las=1)
+```
+
+It is possible to generate an NDVI score for each month that each camera is active, however that would take too long to produce for this course! 
+
+
+### Digging deeper
+
+If you want to dig into estimating NDVI metrics from camera trap viewshed, rather than from satellite data, check out the `phenopix` R package. It allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover).
+
+[Alberton, B. et al. 2017. Introducing digital cameras to monitor plant phenology in the tropics: applications for conservation. Perspect. Ecol. Conserv](https://www.sciencedirect.com/science/article/pii/S2530064417300019)
+
+[Filippa, G. et al. 2017. phenopix: Process Digital Images of a Vegetation Cover. R package version 2.3.1.](https://rdrr.io/rforge/phenopix/)
+
+
+The Phenopix package has a five step process:
+
+1. a region of interest (ROI) is identified;
+2. the red, green, and blue digital numbers from each image in the time series is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
+3. the vegetation indices’ data points are filtered to remove inconsistencies; 
+4. a curve is fit to the data and phenophases are determined from the curve; 
+5. phenophase uncertainties are calculated.
+  
+
+To see an application and comparison of these metrics, we highly recommend that you check out Catherine Sun's (WildCo alumni) paper on the subject:
+
+[Sun, Catherine, et al. "Simultaneous monitoring of vegetation dynamics and wildlife activity with camera traps to assess habitat change." Remote Sensing in Ecology and Conservation 7.4 (2021): 666-684.](https://zslpublications.onlinelibrary.wiley.com/doi/10.1002/rse2.222)
+
+And the code associated with this publication on the [WildCo GitHub Page](https://github.com/WildCoLab/WildCo_Phenology)
+
 ### Google Earth Engine
+
+**BONUS CODE**
 
 Google Earth Engine is now available within the R environment using the incredible `rgee` package. Google Earth Engine is a game changer for accessing large freely available datasets, of the sort that might be used in data synthesis projects. The list of data sets you can access is here: [Google Earth Engine Catalogue](https://developers.google.com/earth-engine/datasets).
 
@@ -545,172 +680,6 @@ Map$addLayer(gpa, {}, "default display")
 ```
 
 As ever, these codes just scratch the surface of the power of Google Earth Engine. See the [rgee documentation](https://cran.r-project.org/web/packages/rgee/vignettes/rgee01.html) for more ideas!
-
-
-### Time-varying covariates
-
-#### MODISTools 
-
-`MODIStools` is an R interface to the [MODIS Land Products Subsets](https://modis.ornl.gov/data/modis_webservice.html) web services. It allows for easy access to ‘MODIS’ time series directly to your computer! When using `MODIStools` you should reference: 
-
-[Hufkens (2022). The MODISTools package: an interface to the MODIS Land Products Subsets Web Services](https://github.com/ropensci/MODISTools) 
-
-Also click that link for more details on how to use it. 
-
-Let's load the package:
-
-```{r ch4_46, class.source="Rmain"}
-library(MODISTools)
-```
-
-For `MODIStools` to work, we need to provide a dataframe with the following columns:
-- `site_name` - the placename
-- `lat'
-- 'long'
-
-```{r ch4_47, class.source="Rmain"}
-modis_locs <- locs %>% 
-  select("placename", "longitude", "latitude") %>% 
-  rename(site_name=placename, lat=latitude, lon=longitude)
-```
-
-We can then look at the available bands for different products. 
-
-Two commonly used ones are [MOD13Q1](https://lpdaac.usgs.gov/products/mod13q1v006/) for the derivation of NDVI/EVI, and [MOD15A2H](https://lpdaac.usgs.gov/products/mod15a2hv006/) for the derivation of leaf area index (LAI).
-
-```{r ch4_48, class.source="Rinfo"}
-# list available bands for a product
-bands <- mt_bands(product = "MOD13Q1") #MOD15A2H
-head(bands)
-```
-
-When we run `MODIStools` the underlying algorithm chooses the best available pixel value from all the acquisitions from the 16 day period. The criteria used is lowest cloud cover, lowest satellite view angle, and the highest NDVI/EVI value.
-
-```{r ch4_49, class.source="Rinfo"}
-# list available dates for a product at a location
-dates <- mt_dates(product = "MOD13Q1", lat = modis_locs$lat[1], lon = modis_locs$lon[1]) #MOD15A2H
-
-# Get the first and last date!
-first(dates$calendar_date); last(dates$calendar_date)
-```
-
-In the interest of processing time, lets not pull the NDVI scores for the full date range. Instead, we will focus on mid summer in 2019. 
-
-```{r ch4_50, class.source="Rmain"}
-algar_ndvi <- mt_batch_subset(product = "MOD13Q1",
-                              df=modis_locs,
-                              band = "250m_16_days_NDVI",
-                              start = "2019-07-01",
-                              end = "2019-08-31",
-                              km_lr = 0,         # Use these options if you want to buffer the value (km left)
-                              km_ab = 0,         # Use these options if you want to buffer the value (km above)
-                              internal = TRUE)
-
-```
-
-The raw output is somewhat intimidating:
-
-```{r ch4_51, class.source="Rmain"}
-algar_ndvi[1:10, ] %>% 
-  kbl() %>% 
-  scroll_box(height = "300px") %>%
-  kable_paper("striped", full_width = F)
-```
-
-So lets simplify it to the key elements of information and rename them to match our camera data where appropriate:
-
-```{r ch4_52, class.source="Rmain"}
-ndvi_simple <- algar_ndvi %>% 
-  select(	site, band, calendar_date, value) %>% 
-  rename(placename=site)
-
-ndvi_simple[1:10, ] %>% 
-  kbl() %>% 
-  scroll_box(height = "300px") %>%
-  kable_paper("striped", full_width = F)
-
-```
-
-So we have multiple observations per site. Lets take an average and add it to our `locs_sf` dataframe.
-
-```{r ch4_53, message=F, warning=F, class.source="Rmain"}
-tmp <- ndvi_simple %>%             #Take the NDVI layer
-  group_by(placename) %>%          # Group observations by the placename
-  summarize(mean_ndvi=mean(value)) # Take the mean of the values and call the new column `mean_ndvi`
-
-# Add the new data to our locations dataframe
-locs_sf <- left_join(locs_sf, tmp)
-
-```
-
-And check the output:
-```{r ch4_54, class.source="Rinfo"}
-boxplot(locs_sf$mean_ndvi,
-        ylab="Mean NDVI score",
-        las=1)
-```
-
-
-#### Following sites through time
-
-Whilst it is interesting to compare average NDVI score between different sites, we might also want to use NDVI to control for changes in plant productivity with the seasons. It would take too long to do for this for all sites during this course, however we can do it for two different sites across one whole year (2017):
-
-**NOTE - NOT CURRENTLY WORKING**
-
-```{r ch4_55, eval=F, class.source="Rinfo"}
-# Convert the dates
-library(lubridate)
-
-time_ndvi <- mt_batch_subset(product = "MOD13Q1",
-                              df=modis_locs[c(1, 66),],          #Just ALG001 and ALG066
-                              band = "250m_16_days_NDVI",
-                              start = "2017-01-01",         # The first observation in out dataset
-                              end = "2017-12-31",           # the last observation
-                              km_lr = 0,
-                              km_ab = 0,
-                              internal = TRUE)
-
-# Simplify the output
-
-time_simple <- time_ndvi %>% 
-  select(	site, band, calendar_date, value) %>% 
-  rename(placename=site)
-
-# Convert to date objects
-time_simple$calendar_date <- ymd(time_simple$calendar_date)
-
-```
-
-Lets plot the NDVI through time for each.
-
-```{r ch4_56, eval=F, class.source="Rinfo"}
-library(plotly)
-fig <- plot_ly(time_simple, x = ~calendar_date, y = ~value, name = time_simple$placename, type = 'scatter', mode = 'lines',split = ~placename) 
-fig
-```
-
-
-### Digging deeper
-
-If you want to dig into estimating NDVI metrics from camera trap viewshed, rather than from satellite data, check out the `phenopix` R package. It allows the user to extract visual information from time lapse images.  It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover).
-
-[Alberton, B. et al. 2017. Introducing digital cameras to monitor plant phenology in the tropics: applications for conservation. Perspect. Ecol. Conserv](https://www.sciencedirect.com/science/article/pii/S2530064417300019)
-
-[Filippa, G. et al. 2017. phenopix: Process Digital Images of a Vegetation Cover. R package version 2.3.1.](https://rdrr.io/rforge/phenopix/)
-
-
-The Phenopix package has a five step process:
-
-1. a region of interest (ROI) is identified;
-2. the red, green, and blue digital numbers from each image in the time series is extracted and an index of relative ‘greenness’ is computed and plotted from the digital numbers; 
-3. the vegetation indices’ data points are filtered to remove inconsistencies; 
-4. a curve is fit to the data and phenophases are determined from the curve; 
-5. phenophase uncertainties are calculated.
-  
-
-To see an application and comparison of these metrics, we highly recommend that you check out Catherine Sun's (WildCo alumni) paper on the subject:
-
-[Sun, Catherine, et al. "Simultaneous monitoring of vegetation dynamics and wildlife activity with camera traps to assess habitat change." Remote Sensing in Ecology and Conservation 7.4 (2021): 666-684.](https://zslpublications.onlinelibrary.wiley.com/doi/10.1002/rse2.222)
 
 
 ## Convert and save your covariates

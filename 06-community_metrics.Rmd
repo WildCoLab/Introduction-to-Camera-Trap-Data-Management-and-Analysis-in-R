@@ -347,7 +347,7 @@ The plot above shows that the differences between our two strata remain across i
 
 Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 1000 survey units:
 
-```{r ch6_23, class.source="Rmain"}
+```{r ch6_23, class.source="Rmain", message=F, warning=F}
 # To generate predictions for specific amounts of survey effort, we make use of the variable t
 # T specifies the values you want iNEXt to calculate diversity for
 out <- iNEXT(inc_time, q=c(0,1,2) ,datatype="incidence_freq", size=c(1000))
@@ -431,30 +431,35 @@ m_counts <-  as.matrix(counts)
 
 We are now ready to run our NMDS model:
 
-```{r ch6_24a}
+```{r ch6_24a, class.source="Rmain", message=F, warning=F}
 
 set.seed(123) # To make sure we all get the same result
 
 # run metaMDS on the count matrix using the " Bray-Curtis dissimilarity" note others are available
-nmds = metaMDS(m_counts, distance = "bray")
-nmds
-
+nmds = metaMDS(m_counts,          # The count matrix
+               distance = "bray", # The method of solving 
+               trace=0)           # Supress the output - trace=1 is more informative
 ```
 
+And check the output:
+
+```{r}
+nmds
+```
 
 ### Extracting data for plotting
 
 To make a nice plot of the NMDS data we need to learn how to extract the data from it:
 
-```{r ch6_24b}
+```{r ch6_24b, class.source="Rmain"}
 # Make a dataframe out of the x and Y scores
 site.scores <- as.data.frame(scores(nmds)$sites)
 species.scores <- as.data.frame(scores(nmds)$species)
 
 # Add in the covariate data
 #add covariate columns to data frame 
-site.scores$placename = dat$placename
-site.scores$feature_type = dat$feature_type
+site.scores$placename <- dat$placename
+site.scores$feature_type <- dat$feature_type
 
 # Assign colors to our feature_types using viridis
 # then use the turbo() function to assign each level a color
@@ -471,6 +476,9 @@ par(mfrow=c(1,1))
 # Make an empty plot type="n
 ordiplot(nmds,type="n", las=1,
          xlim=c(-1.5,1.2))
+# Add an elipse corresponding to each site
+ordiellipse(nmds, groups=dat$feature_type,
+            col=col.cat, lwd=2)
 # Add the species loadings
 orditorp(nmds,display="species",col="red",air=0.5)
 # Add the site loadings

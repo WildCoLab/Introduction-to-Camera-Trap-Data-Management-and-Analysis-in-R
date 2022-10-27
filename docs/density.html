@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-26" />
+<meta name="date" content="2022-10-27" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -258,9 +258,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.3" data-path="covariates.html"><a href="covariates.html#extracting-data-from-local-rasters"><i class="fa fa-check"></i><b>7.2.3</b> Extracting data from local rasters</a></li>
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
-<li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#google-earth-engine"><i class="fa fa-check"></i><b>7.2.6</b> Google Earth Engine</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#time-varying-covariates"><i class="fa fa-check"></i><b>7.2.7</b> Time-varying covariates</a></li>
-<li class="chapter" data-level="7.2.8" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.8</b> Digging deeper</a></li>
+<li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
+<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
+<li class="chapter" data-level="7.2.8" data-path="covariates.html"><a href="covariates.html#google-earth-engine"><i class="fa fa-check"></i><b>7.2.8</b> Google Earth Engine</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -347,8 +347,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="11.2" data-path="occupancy.html"><a href="occupancy.html#spatial-occupancy-model-spoccupancy"><i class="fa fa-check"></i><b>11.2</b> Spatial occupancy model: spOccupancy</a>
 <ul>
-<li class="chapter" data-level="11.2.1" data-path="occupancy.html"><a href="occupancy.html#single-species-model"><i class="fa fa-check"></i><b>11.2.1</b> Single species model</a></li>
-<li class="chapter" data-level="11.2.2" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>11.2.2</b> Multi species model</a></li>
+<li class="chapter" data-level="11.2.1" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>11.2.1</b> Multi species model</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="12" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>12</b> Activity</a>
@@ -439,8 +438,8 @@ r = radius of camera detection zone [Could use field trials - can vary station t
 theta = angle of camera detection zone [Could use field trials - can vary station to station]</p>
 <p>I have speed data for moose and wolf! Winter and summer : ) So let’s compare density estimates between winter (Oct-Mar) and summer (Apr-Sep) between these two species. In our project we didn’t empirically measure the detection zone, so we will assume that these remain constant through time time and space.</p>
 <p>First, install the remBoot package to help us fit the REM model.</p>
-<div class="sourceCode" id="cb315"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb315-1"><a href="density.html#cb315-1" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;arcaravaggi/remBoot&quot;)</span></span>
-<span id="cb315-2"><a href="density.html#cb315-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remBoot)</span></code></pre></div>
+<div class="sourceCode" id="cb305"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb305-1"><a href="density.html#cb305-1" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;arcaravaggi/remBoot&quot;)</span></span>
+<span id="cb305-2"><a href="density.html#cb305-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remBoot)</span></code></pre></div>
 <div id="formatting" class="section level4 hasAnchor" number="13.2.1.1">
 <h4><span class="header-section-number">13.2.1.1</span> Formatting<a href="density.html#formatting" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>The formulation of the REM included in the ‘remBoot’ package is fairly simple, a dataframe consisting of rows, there each row is an independent detection, and with columns reflecting the strata of interest (confusingly labeled <code>site</code>), <code>location_id</code> (labelled <code>cam</code>), the <code>group_size</code> (labelled <code>count</code>), the viewshed radius (in km) and the viewshed angle (width) in radians.</p>
@@ -448,76 +447,76 @@ theta = angle of camera detection zone [Could use field trials - can vary statio
 <p>We can easily derive this from our independent detections data frame.</p>
 <p>Moose first!</p>
 <p>From existing literature, we are expecting moose densities of ~0.2-0.5 individuals per km2.</p>
-<div class="sourceCode" id="cb316"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb316-1"><a href="density.html#cb316-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_detections.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb316-2"><a href="density.html#cb316-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb316-3"><a href="density.html#cb316-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup a winter and summer months variable</span></span>
-<span id="cb316-4"><a href="density.html#cb316-4" aria-hidden="true" tabindex="-1"></a>summer <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;04&quot;</span>, <span class="st">&quot;05&quot;</span>, <span class="st">&quot;06&quot;</span>, <span class="st">&quot;07&quot;</span>, <span class="st">&quot;08&quot;</span>, <span class="st">&quot;09&quot;</span>)</span>
-<span id="cb316-5"><a href="density.html#cb316-5" aria-hidden="true" tabindex="-1"></a>winter <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;01&quot;</span>, <span class="st">&quot;02&quot;</span>, <span class="st">&quot;03&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;11&quot;</span>, <span class="st">&quot;12&quot;</span>)</span>
-<span id="cb316-6"><a href="density.html#cb316-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to moose (alces alces) and the summer months</span></span>
-<span id="cb316-7"><a href="density.html#cb316-7" aria-hidden="true" tabindex="-1"></a>moose_summer <span class="ot">&lt;-</span> ind[ind<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Alces alces&quot;</span> <span class="sc">&amp;</span> <span class="fu">substr</span>(ind<span class="sc">$</span>timestamp,<span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> summer,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;event_groupsize&quot;</span>)]</span>
-<span id="cb316-8"><a href="density.html#cb316-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(moose_summer) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;cam&quot;</span>, <span class="st">&quot;count&quot;</span>)</span>
-<span id="cb316-9"><a href="density.html#cb316-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb316-10"><a href="density.html#cb316-10" aria-hidden="true" tabindex="-1"></a>moose_summer<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="fl">0.024</span></span>
-<span id="cb316-11"><a href="density.html#cb316-11" aria-hidden="true" tabindex="-1"></a>moose_summer<span class="sc">$</span>theta <span class="ot">&lt;-</span> <span class="fl">42.9</span><span class="sc">*</span>(pi<span class="sc">/</span><span class="dv">180</span>)</span>
-<span id="cb316-12"><a href="density.html#cb316-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb316-13"><a href="density.html#cb316-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to moose (alces alces) and the winter months</span></span>
-<span id="cb316-14"><a href="density.html#cb316-14" aria-hidden="true" tabindex="-1"></a>moose_winter <span class="ot">&lt;-</span> ind[ind<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Alces alces&quot;</span> <span class="sc">&amp;</span> <span class="fu">substr</span>(ind<span class="sc">$</span>timestamp,<span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> winter,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;event_groupsize&quot;</span>)] </span>
-<span id="cb316-15"><a href="density.html#cb316-15" aria-hidden="true" tabindex="-1"></a>moose_winter<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="fl">0.024</span></span>
-<span id="cb316-16"><a href="density.html#cb316-16" aria-hidden="true" tabindex="-1"></a>moose_winter<span class="sc">$</span>theta <span class="ot">&lt;-</span> <span class="fl">42.9</span><span class="sc">*</span>(pi<span class="sc">/</span><span class="dv">180</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb306"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb306-1"><a href="density.html#cb306-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_detections.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb306-2"><a href="density.html#cb306-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-3"><a href="density.html#cb306-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Setup a winter and summer months variable</span></span>
+<span id="cb306-4"><a href="density.html#cb306-4" aria-hidden="true" tabindex="-1"></a>summer <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;04&quot;</span>, <span class="st">&quot;05&quot;</span>, <span class="st">&quot;06&quot;</span>, <span class="st">&quot;07&quot;</span>, <span class="st">&quot;08&quot;</span>, <span class="st">&quot;09&quot;</span>)</span>
+<span id="cb306-5"><a href="density.html#cb306-5" aria-hidden="true" tabindex="-1"></a>winter <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;01&quot;</span>, <span class="st">&quot;02&quot;</span>, <span class="st">&quot;03&quot;</span>, <span class="st">&quot;10&quot;</span>, <span class="st">&quot;11&quot;</span>, <span class="st">&quot;12&quot;</span>)</span>
+<span id="cb306-6"><a href="density.html#cb306-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to moose (alces alces) and the summer months</span></span>
+<span id="cb306-7"><a href="density.html#cb306-7" aria-hidden="true" tabindex="-1"></a>moose_summer <span class="ot">&lt;-</span> ind[ind<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Alces alces&quot;</span> <span class="sc">&amp;</span> <span class="fu">substr</span>(ind<span class="sc">$</span>timestamp,<span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> summer,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;event_groupsize&quot;</span>)]</span>
+<span id="cb306-8"><a href="density.html#cb306-8" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(moose_summer) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;cam&quot;</span>, <span class="st">&quot;count&quot;</span>)</span>
+<span id="cb306-9"><a href="density.html#cb306-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-10"><a href="density.html#cb306-10" aria-hidden="true" tabindex="-1"></a>moose_summer<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="fl">0.024</span></span>
+<span id="cb306-11"><a href="density.html#cb306-11" aria-hidden="true" tabindex="-1"></a>moose_summer<span class="sc">$</span>theta <span class="ot">&lt;-</span> <span class="fl">42.9</span><span class="sc">*</span>(pi<span class="sc">/</span><span class="dv">180</span>)</span>
+<span id="cb306-12"><a href="density.html#cb306-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb306-13"><a href="density.html#cb306-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to moose (alces alces) and the winter months</span></span>
+<span id="cb306-14"><a href="density.html#cb306-14" aria-hidden="true" tabindex="-1"></a>moose_winter <span class="ot">&lt;-</span> ind[ind<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Alces alces&quot;</span> <span class="sc">&amp;</span> <span class="fu">substr</span>(ind<span class="sc">$</span>timestamp,<span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> winter,<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;event_groupsize&quot;</span>)] </span>
+<span id="cb306-15"><a href="density.html#cb306-15" aria-hidden="true" tabindex="-1"></a>moose_winter<span class="sc">$</span>dist <span class="ot">&lt;-</span> <span class="fl">0.024</span></span>
+<span id="cb306-16"><a href="density.html#cb306-16" aria-hidden="true" tabindex="-1"></a>moose_winter<span class="sc">$</span>theta <span class="ot">&lt;-</span> <span class="fl">42.9</span><span class="sc">*</span>(pi<span class="sc">/</span><span class="dv">180</span>)</span></code></pre></div>
 <p>To get the number of days per season, we can use the monthly_observations dataframe:</p>
-<div class="sourceCode" id="cb317"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb317-1"><a href="density.html#cb317-1" aria-hidden="true" tabindex="-1"></a>mon_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb317-2"><a href="density.html#cb317-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb317-3"><a href="density.html#cb317-3" aria-hidden="true" tabindex="-1"></a>summer_effort <span class="ot">&lt;-</span> <span class="fu">sum</span>(mon_obs<span class="sc">$</span>days[<span class="fu">substr</span>(mon_obs<span class="sc">$</span>date, <span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> summer])</span>
-<span id="cb317-4"><a href="density.html#cb317-4" aria-hidden="true" tabindex="-1"></a>winter_effort <span class="ot">&lt;-</span> <span class="fu">sum</span>(mon_obs<span class="sc">$</span>days[<span class="fu">substr</span>(mon_obs<span class="sc">$</span>date, <span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> winter])</span></code></pre></div>
+<div class="sourceCode" id="cb307"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb307-1"><a href="density.html#cb307-1" aria-hidden="true" tabindex="-1"></a>mon_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb307-2"><a href="density.html#cb307-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb307-3"><a href="density.html#cb307-3" aria-hidden="true" tabindex="-1"></a>summer_effort <span class="ot">&lt;-</span> <span class="fu">sum</span>(mon_obs<span class="sc">$</span>days[<span class="fu">substr</span>(mon_obs<span class="sc">$</span>date, <span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> summer])</span>
+<span id="cb307-4"><a href="density.html#cb307-4" aria-hidden="true" tabindex="-1"></a>winter_effort <span class="ot">&lt;-</span> <span class="fu">sum</span>(mon_obs<span class="sc">$</span>days[<span class="fu">substr</span>(mon_obs<span class="sc">$</span>date, <span class="dv">6</span>,<span class="dv">7</span>) <span class="sc">%in%</span> winter])</span></code></pre></div>
 <p>Finally we need two constants, the effort in each given strata of interest (days), and the average day range of the focal animal. Here I will use the average daily distance for summer and winter derived from telemetry datasets on Movebank from locations close to where this camera trap study was conducted:</p>
 <p>Moose winter = 1.07 km per day
 Moose summer = 1.15 km per day</p>
 <p>Wolf winter = 11.8 km per day
 Wolf summer = 11.9 km per day</p>
 <p>Fit the REM model.</p>
-<div class="sourceCode" id="cb318"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb318-1"><a href="density.html#cb318-1" aria-hidden="true" tabindex="-1"></a>nboots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb318-2"><a href="density.html#cb318-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb318-3"><a href="density.html#cb318-3" aria-hidden="true" tabindex="-1"></a>tm <span class="ot">&lt;-</span> <span class="dv">1880</span></span>
-<span id="cb318-4"><a href="density.html#cb318-4" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fl">0.89</span></span>
-<span id="cb318-5"><a href="density.html#cb318-5" aria-hidden="true" tabindex="-1"></a>summer_rem <span class="ot">&lt;-</span> <span class="fu">rem</span>(<span class="at">dat =</span> moose_summer, <span class="at">tm=</span>summer_effort, <span class="at">v=</span><span class="fl">1.15</span>)</span>
-<span id="cb318-6"><a href="density.html#cb318-6" aria-hidden="true" tabindex="-1"></a>winter_rem <span class="ot">&lt;-</span> <span class="fu">rem</span>(<span class="at">dat =</span> moose_winter, <span class="at">tm=</span>winter_effort, <span class="at">v=</span><span class="fl">1.07</span>) </span>
-<span id="cb318-7"><a href="density.html#cb318-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb318-8"><a href="density.html#cb318-8" aria-hidden="true" tabindex="-1"></a>moose_res <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">season=</span><span class="fu">c</span>(<span class="st">&quot;summer&quot;</span>, <span class="st">&quot;winter&quot;</span>), </span>
-<span id="cb318-9"><a href="density.html#cb318-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="st">&quot;moose&quot;</span>, </span>
-<span id="cb318-10"><a href="density.html#cb318-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">density=</span><span class="fu">c</span>(summer_rem,winter_rem), </span>
-<span id="cb318-11"><a href="density.html#cb318-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">sd=</span><span class="fu">c</span>(<span class="fu">sd</span>(<span class="fu">boot_sd</span>(moose_summer)), <span class="fu">sd</span>(<span class="fu">boot_sd</span>(moose_winter))))</span></code></pre></div>
+<div class="sourceCode" id="cb308"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb308-1"><a href="density.html#cb308-1" aria-hidden="true" tabindex="-1"></a>nboots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb308-2"><a href="density.html#cb308-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-3"><a href="density.html#cb308-3" aria-hidden="true" tabindex="-1"></a>tm <span class="ot">&lt;-</span> <span class="dv">1880</span></span>
+<span id="cb308-4"><a href="density.html#cb308-4" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fl">0.89</span></span>
+<span id="cb308-5"><a href="density.html#cb308-5" aria-hidden="true" tabindex="-1"></a>summer_rem <span class="ot">&lt;-</span> <span class="fu">rem</span>(<span class="at">dat =</span> moose_summer, <span class="at">tm=</span>summer_effort, <span class="at">v=</span><span class="fl">1.15</span>)</span>
+<span id="cb308-6"><a href="density.html#cb308-6" aria-hidden="true" tabindex="-1"></a>winter_rem <span class="ot">&lt;-</span> <span class="fu">rem</span>(<span class="at">dat =</span> moose_winter, <span class="at">tm=</span>winter_effort, <span class="at">v=</span><span class="fl">1.07</span>) </span>
+<span id="cb308-7"><a href="density.html#cb308-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb308-8"><a href="density.html#cb308-8" aria-hidden="true" tabindex="-1"></a>moose_res <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">season=</span><span class="fu">c</span>(<span class="st">&quot;summer&quot;</span>, <span class="st">&quot;winter&quot;</span>), </span>
+<span id="cb308-9"><a href="density.html#cb308-9" aria-hidden="true" tabindex="-1"></a>           <span class="at">species=</span><span class="st">&quot;moose&quot;</span>, </span>
+<span id="cb308-10"><a href="density.html#cb308-10" aria-hidden="true" tabindex="-1"></a>           <span class="at">density=</span><span class="fu">c</span>(summer_rem,winter_rem), </span>
+<span id="cb308-11"><a href="density.html#cb308-11" aria-hidden="true" tabindex="-1"></a>           <span class="at">sd=</span><span class="fu">c</span>(<span class="fu">sd</span>(<span class="fu">boot_sd</span>(moose_summer)), <span class="fu">sd</span>(<span class="fu">boot_sd</span>(moose_winter))))</span></code></pre></div>
 <p>The reference for the movement data use to calculate the movement speeds are:</p>
 <p>Wolves: <a href="https://www.doi.org/10.5441/001/1.7vr1k987">Latham ADM, Boutin S. 2019. Data from: Wolf ecology and caribou-primary prey-wolf spatial relationships in low productivity peatland complexes in northeastern Alberta. Movebank Data Repository.</a></p>
 <p>Moose: <a href="https://www.researchgate.net/publication/328319031_Wildlife_Habitat_Effectiveness_and_Connectivity_Final_Report_August_2015">Bohm H, Neilson E, de la Mare C, Boutin S (2014) Wildlife habitat effectiveness and connectivity: moose ecology project summary report 2010–2012: Final report. 41 p.</a></p>
-<div class="sourceCode" id="cb319"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb319-1"><a href="density.html#cb319-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOT IMPLEMENTED#</span></span>
-<span id="cb319-2"><a href="density.html#cb319-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb319-3"><a href="density.html#cb319-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to access similar data on movebank for your study area, you can sign up for a movebank account: at https://www.movebank.org/ </span></span>
-<span id="cb319-4"><a href="density.html#cb319-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the movebank R package</span></span>
-<span id="cb319-5"><a href="density.html#cb319-5" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&#39;move&#39;)</span></span>
-<span id="cb319-6"><a href="density.html#cb319-6" aria-hidden="true" tabindex="-1"></a><span class="co">#library(move)</span></span>
-<span id="cb319-7"><a href="density.html#cb319-7" aria-hidden="true" tabindex="-1"></a><span class="co">#input your username and password - replace &quot;YourUsername&quot; and &quot;yourPassword&quot;</span></span>
-<span id="cb319-8"><a href="density.html#cb319-8" aria-hidden="true" tabindex="-1"></a><span class="co">#loginStored &lt;- movebankLogin(username=&quot;yourUsername&quot;, password=&quot;yourPassword&quot;)</span></span>
-<span id="cb319-9"><a href="density.html#cb319-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Browse the movebank repositiory for a useful project: https://www.datarepository.movebank.org/</span></span>
-<span id="cb319-10"><a href="density.html#cb319-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Access a projects movement data using the projects ID</span></span>
-<span id="cb319-11"><a href="density.html#cb319-11" aria-hidden="true" tabindex="-1"></a><span class="co">#dat &lt;- getMovebankData(study=  178979729, login=loginStored,  removeDuplicatedTimestamps=TRUE)</span></span></code></pre></div>
-<div class="sourceCode" id="cb320"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb320-1"><a href="density.html#cb320-1" aria-hidden="true" tabindex="-1"></a><span class="co">#The REM requires that the user provide survey effort (i.e. camera hours; tm) and the distance travelled by #the focal species in 24 hours (given in km; v). Here, we assign values to tm and v.</span></span>
-<span id="cb320-2"><a href="density.html#cb320-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-3"><a href="density.html#cb320-3" aria-hidden="true" tabindex="-1"></a>tm <span class="ot">&lt;-</span> <span class="dv">1880</span></span>
-<span id="cb320-4"><a href="density.html#cb320-4" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fl">0.89</span></span>
-<span id="cb320-5"><a href="density.html#cb320-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-6"><a href="density.html#cb320-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We then use the REM function (rem) to calculate densities for each site. Change the grpDat value to specify a different site.</span></span>
-<span id="cb320-7"><a href="density.html#cb320-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-8"><a href="density.html#cb320-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rem</span>(<span class="at">dat =</span> grpDat[[<span class="dv">1</span>]], tm, v) </span>
-<span id="cb320-9"><a href="density.html#cb320-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-10"><a href="density.html#cb320-10" aria-hidden="true" tabindex="-1"></a><span class="co">#If tm and v differ for each survey site, we can specify them alongside the REM function, as below. Note that if the focal species is a constant, v should not change.</span></span>
-<span id="cb320-11"><a href="density.html#cb320-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-12"><a href="density.html#cb320-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rem</span>(<span class="at">dat =</span> grpDat[[<span class="dv">1</span>]], <span class="at">tm =</span> <span class="dv">3600</span>, <span class="at">v =</span> <span class="fl">1.4</span>) </span>
-<span id="cb320-13"><a href="density.html#cb320-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-14"><a href="density.html#cb320-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we’ll calculate variance for each study site. First, define the number of bootstrapping iterations:</span></span>
-<span id="cb320-15"><a href="density.html#cb320-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-16"><a href="density.html#cb320-16" aria-hidden="true" tabindex="-1"></a>nboots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
-<span id="cb320-17"><a href="density.html#cb320-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb320-18"><a href="density.html#cb320-18" aria-hidden="true" tabindex="-1"></a>remsD <span class="ot">&lt;-</span> <span class="fu">sd</span>(<span class="fu">lapply</span>(grpDat, boot_sd))</span></code></pre></div>
+<div class="sourceCode" id="cb309"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb309-1"><a href="density.html#cb309-1" aria-hidden="true" tabindex="-1"></a><span class="co">#NOT IMPLEMENTED#</span></span>
+<span id="cb309-2"><a href="density.html#cb309-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb309-3"><a href="density.html#cb309-3" aria-hidden="true" tabindex="-1"></a><span class="co"># If you want to access similar data on movebank for your study area, you can sign up for a movebank account: at https://www.movebank.org/ </span></span>
+<span id="cb309-4"><a href="density.html#cb309-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Install the movebank R package</span></span>
+<span id="cb309-5"><a href="density.html#cb309-5" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&#39;move&#39;)</span></span>
+<span id="cb309-6"><a href="density.html#cb309-6" aria-hidden="true" tabindex="-1"></a><span class="co">#library(move)</span></span>
+<span id="cb309-7"><a href="density.html#cb309-7" aria-hidden="true" tabindex="-1"></a><span class="co">#input your username and password - replace &quot;YourUsername&quot; and &quot;yourPassword&quot;</span></span>
+<span id="cb309-8"><a href="density.html#cb309-8" aria-hidden="true" tabindex="-1"></a><span class="co">#loginStored &lt;- movebankLogin(username=&quot;yourUsername&quot;, password=&quot;yourPassword&quot;)</span></span>
+<span id="cb309-9"><a href="density.html#cb309-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Browse the movebank repositiory for a useful project: https://www.datarepository.movebank.org/</span></span>
+<span id="cb309-10"><a href="density.html#cb309-10" aria-hidden="true" tabindex="-1"></a><span class="co">#Access a projects movement data using the projects ID</span></span>
+<span id="cb309-11"><a href="density.html#cb309-11" aria-hidden="true" tabindex="-1"></a><span class="co">#dat &lt;- getMovebankData(study=  178979729, login=loginStored,  removeDuplicatedTimestamps=TRUE)</span></span></code></pre></div>
+<div class="sourceCode" id="cb310"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb310-1"><a href="density.html#cb310-1" aria-hidden="true" tabindex="-1"></a><span class="co">#The REM requires that the user provide survey effort (i.e. camera hours; tm) and the distance travelled by #the focal species in 24 hours (given in km; v). Here, we assign values to tm and v.</span></span>
+<span id="cb310-2"><a href="density.html#cb310-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-3"><a href="density.html#cb310-3" aria-hidden="true" tabindex="-1"></a>tm <span class="ot">&lt;-</span> <span class="dv">1880</span></span>
+<span id="cb310-4"><a href="density.html#cb310-4" aria-hidden="true" tabindex="-1"></a>v <span class="ot">&lt;-</span> <span class="fl">0.89</span></span>
+<span id="cb310-5"><a href="density.html#cb310-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-6"><a href="density.html#cb310-6" aria-hidden="true" tabindex="-1"></a><span class="co"># We then use the REM function (rem) to calculate densities for each site. Change the grpDat value to specify a different site.</span></span>
+<span id="cb310-7"><a href="density.html#cb310-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-8"><a href="density.html#cb310-8" aria-hidden="true" tabindex="-1"></a><span class="fu">rem</span>(<span class="at">dat =</span> grpDat[[<span class="dv">1</span>]], tm, v) </span>
+<span id="cb310-9"><a href="density.html#cb310-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-10"><a href="density.html#cb310-10" aria-hidden="true" tabindex="-1"></a><span class="co">#If tm and v differ for each survey site, we can specify them alongside the REM function, as below. Note that if the focal species is a constant, v should not change.</span></span>
+<span id="cb310-11"><a href="density.html#cb310-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-12"><a href="density.html#cb310-12" aria-hidden="true" tabindex="-1"></a><span class="fu">rem</span>(<span class="at">dat =</span> grpDat[[<span class="dv">1</span>]], <span class="at">tm =</span> <span class="dv">3600</span>, <span class="at">v =</span> <span class="fl">1.4</span>) </span>
+<span id="cb310-13"><a href="density.html#cb310-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-14"><a href="density.html#cb310-14" aria-hidden="true" tabindex="-1"></a><span class="co">#Now we’ll calculate variance for each study site. First, define the number of bootstrapping iterations:</span></span>
+<span id="cb310-15"><a href="density.html#cb310-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-16"><a href="density.html#cb310-16" aria-hidden="true" tabindex="-1"></a>nboots <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb310-17"><a href="density.html#cb310-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb310-18"><a href="density.html#cb310-18" aria-hidden="true" tabindex="-1"></a>remsD <span class="ot">&lt;-</span> <span class="fu">sd</span>(<span class="fu">lapply</span>(grpDat, boot_sd))</span></code></pre></div>
 <p>USE TRACKING DATA FOR MOOSE IN YOUR DATASET!</p>
 <p><a href="https://www.researchgate.net/publication/361547983_Random_encounter_model_is_a_reliable_method_for_estimating_population_density_of_multiple_species_using_camera_traps">Palencia, Pablo, et al. “Random encounter model is a reliable method for estimating population density of multiple species using camera traps.” Remote Sensing in Ecology and Conservation (2022).</a></p>
 <p><a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13913">Palencia, Pablo, et al. “Assessing the camera trap methodologies used to estimate density of unmarked populations.” Journal of Applied Ecology 58.8 (2021): 1583-1592.</a></p>
@@ -538,23 +537,23 @@ Wolf summer = 11.9 km per day</p>
 <p>STE and TTE use camera data in a particularly unique way that may be unfamiliar to many users. Rather than using counts of individual animals or independent detection events, STE uses the amount of space sampled by cameras until an animal detection at a given time, while TTE uses the time elapsed from an arbitrary starting point to the first detection of the species of interest.</p>
 <div id="example" class="section level4 hasAnchor" number="13.2.2.1">
 <h4><span class="header-section-number">13.2.2.1</span> Example<a href="density.html#example" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb321"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb321-1"><a href="density.html#cb321-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
-<span id="cb321-2"><a href="density.html#cb321-2" aria-hidden="true" tabindex="-1"></a><span class="co">#remotes::install_github(&quot;annam21/spaceNtime&quot;, build_vignettes=TRUE)</span></span>
-<span id="cb321-3"><a href="density.html#cb321-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spaceNtime)</span>
-<span id="cb321-4"><a href="density.html#cb321-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb321-5"><a href="density.html#cb321-5" aria-hidden="true" tabindex="-1"></a><span class="co">#browseVignettes(&quot;spaceNtime&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb311"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb311-1"><a href="density.html#cb311-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
+<span id="cb311-2"><a href="density.html#cb311-2" aria-hidden="true" tabindex="-1"></a><span class="co">#remotes::install_github(&quot;annam21/spaceNtime&quot;, build_vignettes=TRUE)</span></span>
+<span id="cb311-3"><a href="density.html#cb311-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spaceNtime)</span>
+<span id="cb311-4"><a href="density.html#cb311-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb311-5"><a href="density.html#cb311-5" aria-hidden="true" tabindex="-1"></a><span class="co">#browseVignettes(&quot;spaceNtime&quot;)</span></span></code></pre></div>
 <p>To use <code>spaceNtime</code> we need a dataframe with the ‘placename’ labelled as ‘cam’ (assuming there is one camera in each location), <code>timestamp</code> renames to <code>datetime</code> and <code>event_groupsize</code> relabeled as ‘count’.</p>
-<div class="sourceCode" id="cb322"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb322-1"><a href="density.html#cb322-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_detections.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb322-2"><a href="density.html#cb322-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb322-3"><a href="density.html#cb322-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ind)</span>
-<span id="cb322-4"><a href="density.html#cb322-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb322-5"><a href="density.html#cb322-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb322-6"><a href="density.html#cb322-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb322-7"><a href="density.html#cb322-7" aria-hidden="true" tabindex="-1"></a>snt_all <span class="ot">&lt;-</span> ind <span class="sc">%&gt;%</span> </span>
-<span id="cb322-8"><a href="density.html#cb322-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(placename, timestamp, event_groupsize) <span class="sc">%&gt;%</span> </span>
-<span id="cb322-9"><a href="density.html#cb322-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">cam =</span> placename,</span>
-<span id="cb322-10"><a href="density.html#cb322-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">datetime =</span> timestamp,</span>
-<span id="cb322-11"><a href="density.html#cb322-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> event_groupsize)</span></code></pre></div>
+<div class="sourceCode" id="cb312"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb312-1"><a href="density.html#cb312-1" aria-hidden="true" tabindex="-1"></a>ind <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_detections.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb312-2"><a href="density.html#cb312-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb312-3"><a href="density.html#cb312-3" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(ind)</span>
+<span id="cb312-4"><a href="density.html#cb312-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb312-5"><a href="density.html#cb312-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb312-6"><a href="density.html#cb312-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb312-7"><a href="density.html#cb312-7" aria-hidden="true" tabindex="-1"></a>snt_all <span class="ot">&lt;-</span> ind <span class="sc">%&gt;%</span> </span>
+<span id="cb312-8"><a href="density.html#cb312-8" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(placename, timestamp, event_groupsize) <span class="sc">%&gt;%</span> </span>
+<span id="cb312-9"><a href="density.html#cb312-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">cam =</span> placename,</span>
+<span id="cb312-10"><a href="density.html#cb312-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">datetime =</span> timestamp,</span>
+<span id="cb312-11"><a href="density.html#cb312-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">count =</span> event_groupsize)</span></code></pre></div>
 <p><code>spaceNtime</code> also needs camera deployment data. Luckily, the deployment data it requires is identical to how we store deployment data - each row represents a block of continuous activity, and if the camera ever goes off then comes back online, that is represented as a new row.</p>
 <p>As with the image data, we need to relabel things!</p>
 <p>Lots of great examples in here:
@@ -563,12 +562,12 @@ Wolf summer = 11.9 km per day</p>
 <p><a href="https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.3933">Ausband, David E., et al. “Estimating wolf abundance from cameras.” Ecosphere 13.2 (2022): e3933.
 Ausband, D. E., Luk</a></p>
 <p>They didn’t estimate viewshed size either: <strong>“we did not estimate viewshed area during camera deployment; thus, we used a viewshed area based on expected performance of motion-triggered cameras. We assumed the cameras detected wolves within a 106-m2, pie-slice shape area in front of the camera derived from standard field protocols and that the motion trigger detected all wolves that passed through the viewshed.”</strong></p>
-<div class="sourceCode" id="cb323"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb323-1"><a href="density.html#cb323-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(devtools)</span></span>
-<span id="cb323-2"><a href="density.html#cb323-2" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;annam21/spaceNtime&quot;, build_vignettes=TRUE)</span></span>
-<span id="cb323-3"><a href="density.html#cb323-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spaceNtime)</span>
-<span id="cb323-4"><a href="density.html#cb323-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb323-5"><a href="density.html#cb323-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb323-6"><a href="density.html#cb323-6" aria-hidden="true" tabindex="-1"></a><span class="co">#library(rlang)</span></span></code></pre></div>
+<div class="sourceCode" id="cb313"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb313-1"><a href="density.html#cb313-1" aria-hidden="true" tabindex="-1"></a><span class="co">#library(devtools)</span></span>
+<span id="cb313-2"><a href="density.html#cb313-2" aria-hidden="true" tabindex="-1"></a><span class="co">#devtools::install_github(&quot;annam21/spaceNtime&quot;, build_vignettes=TRUE)</span></span>
+<span id="cb313-3"><a href="density.html#cb313-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spaceNtime)</span>
+<span id="cb313-4"><a href="density.html#cb313-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb313-5"><a href="density.html#cb313-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb313-6"><a href="density.html#cb313-6" aria-hidden="true" tabindex="-1"></a><span class="co">#library(rlang)</span></span></code></pre></div>
 </div>
 </div>
 <div id="n-mixture-model-in-unmarked" class="section level3 hasAnchor" number="13.2.3">

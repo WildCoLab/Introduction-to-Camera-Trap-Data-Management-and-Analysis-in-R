@@ -856,16 +856,19 @@ sp_list$sp <- paste(sp_list$genus, sp_list$species)
 
 # Add a column which states if it is in the databases
 sp_list$verified <- NA
-i<- 1
+i<-3
 # Check if it is in a bunch of different taxonomic databases
 for(i in 1:nrow(sp_list))
 {
   tmp <- gnr_resolve(sp_list$sp[i], data_source_ids= c(1,2,11,12, 163, 174)) # Note we restrict the databases to a few big ones, there are some weird ones in there. 
-  
-  if(nrow(tmp[tmp$score>0.9,])>0)
+  if(nrow(tmp)>1)
   {
-    sp_list$verified[i] <- TRUE
-  } else{sp_list$verified[i] <- FALSE}
+     if(nrow(tmp[tmp$score>0.9,])>0)
+     {
+        sp_list$verified[i] <- TRUE
+     } else{sp_list$verified[i] <- FALSE}  
+  }
+  
 }
 # Update the row names
 row.names(sp_list) <- 1:nrow(sp_list)
@@ -886,35 +889,35 @@ Lets run it through all of our data for common names:
 ```{r ch3_41, echo=T, eval=F, class.source="Rmain"}
 # First add a column to the species list with genus and species pasted together
 sp_list$sp <- paste(sp_list$genus, sp_list$species)
-
+i <- 8
 # Check if it is in a bunch of different taxonomic databases
 for(i in 1:nrow(sp_list))
 {
-  tmp <- sci2comm(sp_list$sp[i])
-  
+  tmp <- sci2comm(sp_list$sp[i], db = "ncbi", simplify=T)
+  Sys.sleep(4)
   if(length(tmp[[1]])>0)
   {
-    sp_list$common_name[i] <- tmp[[1]]
-  } 
+    sp_list$common_name[i] <- tolower(tmp[[1]][1]) # Take the first element and make it all lower case
+  }
+  print(paste(i, "species of", nrow(sp_list)))
 }
-
 ```
 
 ```{r ch3_42, echo=F, eval=T, include=F}
 # First add a column to the species list with genus and species pasted together
 sp_list$sp <- paste(sp_list$genus, sp_list$species)
-
+i <- 8
 # Check if it is in a bunch of different taxonomic databases
 for(i in 1:nrow(sp_list))
 {
-  tmp <- sci2comm(sp_list$sp[i])
-  
+  tmp <- sci2comm(sp_list$sp[i], db = "ncbi", simplify=T)
+  Sys.sleep(4)
   if(length(tmp[[1]])>0)
   {
-    sp_list$common_name[i] <- tmp[[1]]
-  } 
+    sp_list$common_name[i] <- tolower(tmp[[1]][1]) # Take the first element and make it all lower case
+  }
+  print(paste(i, "species of", nrow(sp_list)))
 }
-
 ```
 
 Let's take another look:
@@ -931,9 +934,10 @@ Not bad - let's manually update the remaining species.
 It is definitely far better than googling all of them!
 
 ```{r ch3_44, class.source="Rmain"}
-sp_list$common_name[sp_list$sp=="Perisoreus canadensis"] <- "Canada jay"
+sp_list$common_name[sp_list$sp=="Perisoreus canadensis"] <- "canada jay"
 sp_list$common_name[sp_list$sp=="Cervus canadensis"] <- "elk"
-
+sp_list$common_name[sp_list$sp=="Alces alces"] <- "moose"
+sp_list$common_name[sp_list$sp=="Rangifer tarandus"] <- "caribou"
 ```
 
 Lets export this list right now, we will return to it later to add other traits which we may use in analysis.

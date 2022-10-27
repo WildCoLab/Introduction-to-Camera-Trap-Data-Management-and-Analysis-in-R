@@ -126,7 +126,7 @@ Each location (`placename`) has a single row in the dataframe.
 
 We will now add our covariates to our capture rate dataframe: 
 
-```{r ch7_7, class.source="Rmain"}
+```{r ch7_7, class.source="Rmain", message=F, warning=F}
 mod_dat <- left_join(total_cr, locs) # from the dplyr package
 ```
 
@@ -277,7 +277,7 @@ monthly_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_indep
 
 Let's join this dataframe with the location data, as before:
 
-```{r ch7_21, class.source="Rmain"}
+```{r ch7_21, class.source="Rmain", message=F, warning=F}
 mod_dat <- left_join(monthly_obs, locs)
 ```
 
@@ -328,11 +328,12 @@ mod_dat <- mod_dat %>%
             mutate_if(is.character,as.factor)
 ```
 
-And re-run our model:
+And re-run our model - also this time with a negative binomial distribution to account for excess zeros:
 
 ```{r ch7_26, class.source="Rmain"}
-glmm_cat <- glmer(Odocoileus.virginianus ~ 
-                    feature_type + season + offset(log(days)) + (1|placename) , data=mod_dat, family="poisson")
+glmm_cat <- glmer.nb(Odocoileus.virginianus ~ 
+                    feature_type + season + offset(log(days)) + (1|placename) , data=mod_dat)
+
 ```
 
 We can view a summary of the model fit using:
@@ -448,7 +449,7 @@ kbl(head(Xdat))%>%
 
 With Bayesian approaches we need to set up our sampling conditions
 
-```{r ch7_37}
+```{r ch7_37, class.source="Rmain"}
 nChains   = 2       # How many total repeats to run
 thin      = 2       # How often to thin the samples
 samples   = 100     # How many samples to take  
@@ -468,24 +469,30 @@ Specify our model""
 
 ```{r ch7_39, message =F, warning=F, eval=T, class.source="Rmain"}
 # Model specification
-mod <- Hmsc(Y = Y, XData = Xdat[,c("line_of_sight_m", "water_depth_m", "days")], 
-         XFormula = ~line_of_sight_m + water_depth_m + log(days),
-         studyDesign = studyDesign, ranLevels = list(station = rL), 
-         distr="poisson")
+mod <- Hmsc(Y = Y, 
+            XData = Xdat[,c("line_of_sight_m", "water_depth_m", "days")], 
+            XFormula = ~line_of_sight_m + water_depth_m + log(days),
+            studyDesign = studyDesign, 
+            ranLevels = list(station = rL), 
+            distr="poisson")
 
 
+```
+
+And fit the model:
+
+```{r ch7_39a, eval=T,results="hide", class.source="Rmain"}
 out <-  sampleMcmc(mod, thin = thin, samples = samples, transient = transient,
                nChains = nChains, verbose = verbose)
 
 ```
-
 
 We can plot a basic summary of the modeled effects using the following code.
 
 ```{r ch7_40, class.source="Rmain"}
 postBeta = getPostEstimate(out, parName = "Beta")
 par(mar=c(8,12,1,1))
-plotBeta(out, post = postBeta, param = "Support", supportLevel = 0)
+plotBeta(out, post = postBeta, param = "Support", supportLevel = 0.95)
 ```
 
 We the colors denote the size and magnitude of the effect of proportion of lowland habitat. *NOTE* treat these results with caution as the number of model runs is very low (to increase speed) and the model assumptions have not been interrogated. 
@@ -493,7 +500,7 @@ We the colors denote the size and magnitude of the effect of proportion of lowla
 ```{r ch7_41, class.source="Rmain"}
 OmegaCor = computeAssociations(out)
 
-supportLevel = 0.95
+supportLevel = 0.0
 
 toPlot = ((OmegaCor[[1]]$support>supportLevel)
 + (OmegaCor[[1]]$support<(1-supportLevel))>0)*OmegaCor[[1]]$mean
@@ -501,6 +508,7 @@ toPlot = ((OmegaCor[[1]]$support>supportLevel)
 
 corrplot(toPlot, 
          method = "color",
+         type="upper",
          order = "FPC",
         col = colorRampPalette(c("blue","white","red"))(200),
         title = paste("random effect level:", 
@@ -535,8 +543,11 @@ These sampling chains will have to be much longer for these models to converge!
 The best place for examples of HMSC analyses right now are package vignettes:
 
 [Getting started with HMSC-R: univariate models](https://cran.r-project.org/web/packages/Hmsc/vignettes/vignette_1_univariate.pdf)
+
 [Getting started with HMSC-R: low-dimensional multivariate models](https://cran.r-project.org/web/packages/Hmsc/vignettes/vignette_2_multivariate_low.pdf)
+
 [Getting started with HMSC-R: high-dimensional multivariate models](https://cran.r-project.org/web/packages/Hmsc/vignettes/vignette_3_multivariate_high.pdf)
+
 [Getting started with HMSC-R: spatial models](https://cran.r-project.org/web/packages/Hmsc/vignettes/vignette_4_spatial.pdf)
 
 

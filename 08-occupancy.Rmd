@@ -497,26 +497,31 @@ https://rdrr.io/cran/unmarked/man/occuMulti.html
 
 ## Spatial occupancy model: spOccupancy
 
+*COMING SOON*
+
 Whilst unmarked has been the workhorse for implementing occupancy models in R, there is a new kid on the block - [spOccupancy](https://cloud.r-project.org/web/packages/spOccupancy/index.html).
 
 One of the benefits of `spOccupancy` is that they have a huge amount of resources to help you learn and fit models too: [the spOccupancy website](https://www.jeffdoser.com/files/spoccupancy-web/) 
 
-### Single species model
-As with any package, formatting raw data into the format it requires can be tricky. Here we walk through one way of preparing data for spOccupancy using camera data. 
+```{r ch8_22, class.source="Rmain", message=F, warning=F, eval=F, echo=F}
 
-#### Data preparation
+# ### Single species model
+# As with any package, formatting raw data into the format it requires can be tricky. Here we walk through one way of preparing data for spOccupancy using camera data. 
+# 
+# #### Data preparation
+# 
+# For the single species model we need to prepare 4 elements:
+# 
+# - Y matrix: a site x time matrix of detections and non-detections
+# - occupancy covariates : rows are sites and the columns are covariates [NOTE - currently time invariant]
+# - detection covariates : rows are sites and columns are covariate values, but each detection covariate has it s own matrix slice [allows for time varying covariates]
+# - coordinates: rows are sites and columns are y and y coordinates
+# 
+# For this example we will use the monthly data above - and use a single year
 
-For the single species model we need to prepare 4 elements:
-
-- Y matrix: a site x time matrix of detections and non-detections
-- occupancy covariates : rows are sites and the columns are covariates [NOTE - currently time invariant]
-- detection covariates : rows are sites and columns are covariate values, but each detection covariate has it s own matrix slice [allows for time varying covariates]
-- coordinates: rows are sites and columns are y and y coordinates
-
-For this example we will use the monthly data above - and use a single year
 
 
-```{r ch8_22, class.source="Rmain", message=F, warning=F, eval=F}
+
 monthly_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
 
 # Use white-tailed deer
@@ -806,13 +811,19 @@ plot_grid(psi.mean.plot, w.mean.plot,
 
 ### Multi species model
 
+*COMING SOON*
+
+
+
+```{r ch8_24, eval=F, echo=F}
+
 #### Data preparation
-For the multi species model we have a different Y matric structure.
+#For the multi species model we have a different Y matric structure.
 
-Each slice of the matrix is species (y) by site (x), then each matrix slice is a visit.
+#Each slice of the matrix is species (y) by site (x), then each matrix slice is a visit.
 
 
-```{r ch8_24, eval=F}
+
 
 hb.dat <- read.csv(url("https://portal.edirepository.org/nis/dataviewer?packageid=knb-lter-hbr.178.3&entityid=eecb146279aa290af2292d75d3ba0f8b"))
 # Take a look at the data set

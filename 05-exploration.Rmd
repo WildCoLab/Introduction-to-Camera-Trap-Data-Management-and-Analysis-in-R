@@ -162,23 +162,22 @@ Note - here we weave two plotly graphs together using the `subplot() function`!
 sp_summary <- sp_summary[order(sp_summary$count),]
 
 yform <- list(categoryorder = "array",
-              categoryarray = sp_summary$common_name#,
-#             tickfont = list(size = 7),
-)
+              categoryarray = sp_summary$sp)
+
 xform <- list(title="Captures")
 
 # Capture rate
-fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
+fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$sp, type = 'bar', orientation = 'h') %>% 
  layout(yaxis = yform, xaxis=xform)
 
 yform <- list(categoryorder = "array",
-              categoryarray = sp_summary$common_name,
+              categoryarray = sp_summary$sp,
               showticklabels=F)
 xform <- list(title="Occupancy")
 
 
 # Occupancy
-fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
+fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$sp, type = 'bar', orientation = 'h') %>% 
  layout(yaxis = yform, xaxis=xform)
 
 subplot(nrows=1,fig1, fig2, titleX = T) # We could stack them on top of one another using nrows=2
@@ -262,7 +261,7 @@ for(i in 1:length(sp_summary$sp))
      type="o",
      pch=19,
      las=1, ylab="Detections per 100 cam days", xlab="Date",
-     main=sp_summary$common_name[i])
+     main=sp_summary$sp[i])
 }
 ```
 
@@ -434,9 +433,9 @@ For more ggplot boxplot examples (with code) see [R Graph Galley - Boxplots](htt
 
 We will now list some potential relationships in the data, you should decide the best way to explore each one:
 
-- Wolves (*Canis lupus*) select locations with longer line of sight
-- Caribou (*Rangifer tarandus*) select locations where the water table is on the surface
-- White-tailed deer (*Odocoileus virginianus*) select locations with higher vegetation productivity (e.g. higher NDVI)
+- Wolves (*Canis lupus*) use locations with longer `line_of_sight_m` more frequently
+- Caribou (*Rangifer tarandus*) use locations where the water table is close to the surface (low `water_depth_m`)
+- White-tailed deer (*Odocoileus virginianus*) use locations with higher vegetation productivity (`mean_ndvi`)
 - Lynx (*Lynx canadensis*) select human use feature types over other feature types
 - Lynx (*Lynx canadensis*) select locations with higher snowshoe hare (*Lepus americanus*) activity
 
