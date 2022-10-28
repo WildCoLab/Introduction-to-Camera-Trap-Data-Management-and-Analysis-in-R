@@ -154,8 +154,11 @@ individually-identifiable-individuals
 unmarked-animals
 random-encounter-model
 formatting
+moose
+wolf
+further-reading-about-rem
 time-to-event-space-to-event-density-estimates
-example
+moose-1
 n-mixture-model-in-unmarked
 abmi-method
 unmarked-spatial-capture-recapture-uscr
@@ -171,4 +174,5 @@ one-species-as-a-predictor-of-another
 residual-co-occurence-models
 attractance-avoidance-ratios-aar
 worked-examples
-markdown-reports
+on-your-own-5
+the-new-dataset

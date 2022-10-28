@@ -30,27 +30,32 @@ There have been several great review papers published recently, and we recommend
 If you are dealing with a project with individually identifiable animals, you are in luck as there are some great resources created by Ian Durbach and David Borchers: [https://www.scr-cameratrap.com/](https://www.scr-cameratrap.com/) and [an amazing tool for helping you design your surveys](https://www.otago.ac.nz/density/secrdesign.html) called `secrdesign`. Spatial capture recapture is considered the gold standard in density estimation, you cannot get much better than this!
 
 ## Unmarked animals
-However, it is not possible to identify individual animals for the vast majority of species detected by camera traps. There are a growing number of analysis frameworks for unmarked animals, including:  
+Unfortunately, it is not possible to identify individual animals for the vast majority of species detected by camera traps. There are a growing number of analysis frameworks for unmarked animals, including:  
 
 ### Random encounter model
 
-Rowcliffe example - we might need movement data (which we have for Peru to be fair)
+The random encounter model is based on modelling the 'random encounters' between moving animals and stationary camera traps. It takes into account key variables that affect the encounter rate:
 
-Parameters required:
+  - the camera detection zone, defined by its radius and angle, 
+  - the daily distance travelled by an animal in the population (a.k.a. day range) 
 
-y = number of independent photo events
-t - total survey effort [Days]
-v = average speed of animal movement [Could use telemetry, could use cameras - could vary by strata of interest!]
-r = radius of camera detection zone [Could use field trials - can vary station to station]
-theta = angle of camera detection zone [Could use field trials - can vary station to station]
+Parameters required [*and how you might get them*]:
 
-I have speed data for moose and wolf! Winter and summer : ) So let's compare density estimates between winter (Oct-Mar) and summer (Apr-Sep) between these two species. In our project we didn't empirically measure the detection zone, so we will assume that these remain constant through time time and space. 
+y = number of independent photo events [*from our independent detections file*]
+t - total survey effort [*from our deployment data*]
+v = average speed of animal movement [*We could use telemetry, we could use speed derived from cameras*]
+r = radius of camera detection zone [*Could use field trials as these parameters can vary station to station*]
+theta = angle of camera detection zone [*Could use field trials as these parameters can vary station to station*]
+
+We have speed data for moose and wolf in both winter and summer (derived from telemetery studies which occured close to our region of interest). So let's compare density estimates between winter (Oct-Mar) and summer (Apr-Sep) between these two species. 
+
+In our project we didn't empirically measure the detection zone, so we will assume that these remain constant through time time and space. 
 
 First, install the remBoot package to help us fit the REM model. 
 
-```{r ch12_2}
+```{r ch12_2, class.source="Rmain", message=F, warning=F}
 #devtools::install_github("arcaravaggi/remBoot")
-library(remBoot)
+library(remBoot); library(dplyr); library(lubridate)
 ```
 
 #### Formatting
@@ -63,67 +68,179 @@ We can easily derive this from our independent detections data frame.
 
 Moose first!
 
-From existing literature, we are expecting moose densities of ~0.2-0.5 individuals per km2. 
+### Moose
 
-```{r ch12_3}
+From existing literature, we are expecting moose densities of roughly 0.2-0.5 individuals per km2. 
+
+```{r ch12_3, class.source="Rmain"}
 ind <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_detections.csv", header=T)
 
 # Setup a winter and summer months variable
 summer <- c("04", "05", "06", "07", "08", "09")
 winter <- c("01", "02", "03", "10", "11", "12")
+
+
 # Subset to moose (alces alces) and the summer months
 moose_summer <- ind[ind$sp=="Alces alces" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
-colnames(moose_summer) <- c("cam", "count")
+# rename the columns
+moose_summer <- moose_summer %>% 
+                   rename("cam"=placename,
+                   "count"=event_groupsize)
 
-moose_summer$dist <- 0.024
-moose_summer$theta <- 42.9*(pi/180)
+moose_summer$dist <- 0.024             # Our detection distance in km
+moose_summer$theta <- 42.9*(pi/180)    # Our viewshed angle
 
 # Subset to moose (alces alces) and the winter months
 moose_winter <- ind[ind$sp=="Alces alces" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
+
+# rename the columns
+moose_winter <- moose_winter %>% 
+                 rename("cam"=placename,
+                 "count"=event_groupsize)
+
+# Add the detection zone covariates
 moose_winter$dist <- 0.024
 moose_winter$theta <- 42.9*(pi/180)
 
 ```
 
+Finally we need two constants:
+
+1) the effort in each given strata of interest (days), and 2) the average day range of the focal animal.
+
 To get the number of days per season, we can use the monthly_observations dataframe:
 
-```{r ch12_4}
+```{r ch12_4, class.source="Rmain"}
 mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
 
 summer_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% summer])
 winter_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% winter])
 
-
 ```
 
-
-Finally we need two constants, the effort in each given strata of interest (days), and the average day range of the focal animal. Here I will use the average daily distance for summer and winter derived from telemetry datasets on Movebank from locations close to where this camera trap study was conducted:
+Here I will use the average daily distance for summer and winter derived from telemetry datasets on Movebank from locations close to where this camera trap study was conducted:
 
 Moose winter = 1.07 km per day
 Moose summer = 1.15 km per day
 
-Wolf winter = 11.8 km per day
-Wolf summer = 11.9 km per day
+Now lets fit the REM model.
 
-
-Fit the REM model.
-
-```{r ch12_5}
+```{r ch12_5, class.source="Rmain"}
 nboots <- 1000
 
-tm <- 1880
-v <- 0.89
 summer_rem <- rem(dat = moose_summer, tm=summer_effort, v=1.15)
 winter_rem <- rem(dat = moose_winter, tm=winter_effort, v=1.07) 
 
 moose_res <- data.frame(season=c("summer", "winter"), 
-           species="moose", 
-           density=c(summer_rem,winter_rem), 
-           sd=c(sd(boot_sd(moose_summer)), sd(boot_sd(moose_winter))))
+             species="moose", 
+             density=c(summer_rem,winter_rem), 
+             sd=NA)
+
+# Add the sd
+tm <- summer_effort
+v <- 1.15
+moose_res$sd[moose_res$season=="summer"] <- sd(boot_sd(moose_summer))
+
+tm <- winter_effort
+v <- 1.07
+moose_res$sd[moose_res$season=="winter"] <- sd(boot_sd(moose_winter))
+
+
 
 ```
 
+Take a look at your results:
 
+```{r ,class.source="Rmain"}
+moose_res
+```
+
+Remember, we were expecting a density of around 0.2 to 0.5 individuals per km^2^... not bad!
+
+Lets make a plot of the estimated densities and their standard deviations:
+
+```{r ,class.source="Rmain"}
+library(ggplot2)
+p<-ggplot(moose_res, aes(x=season, y=density)) + 
+  geom_point()+
+  geom_errorbar(aes(ymin=density-sd, ymax=density+sd), width=.2,
+                position=position_dodge(0.05)) +
+  theme_classic()
+  
+p
+```
+
+### Wolf
+
+From existing literature we would expect wolf densities of 0.001 - 0.025 individuals per km^2^.
+
+Lets repeat our analysis for wolves:
+
+```{r, class.source="Rmain"}
+# Subset to moose (alces alces) and the summer months
+wolf_summer <- ind[ind$sp=="Canis lupus" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
+# rename the columns
+wolf_summer <- wolf_summer %>% 
+  rename("cam"=placename,
+         "count"=event_groupsize)
+
+wolf_summer$dist <- 0.024             # Our detection distance in km
+wolf_summer$theta <- 42.9*(pi/180)    # Our viewshed angle
+
+# Subset to wolf (alces alces) and the winter months
+wolf_winter <- ind[ind$sp=="Alces alces" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
+
+# rename the columns
+wolf_winter <- wolf_winter %>% 
+  rename("cam"=placename,
+         "count"=event_groupsize)
+
+# Add the detection zone covariates
+wolf_winter$dist <- 0.024
+wolf_winter$theta <- 42.9*(pi/180)
+
+```
+
+We have the following values for wolf movement
+
+Wolf winter = 11.8 km per day
+Wolf summer = 11.9 km per day
+
+```{r, class.source="Rmain"}
+summer_rem <- rem(dat = wolf_summer, tm=summer_effort, v=11.9)
+winter_rem <- rem(dat = wolf_winter, tm=winter_effort, v=11.8) 
+
+wolf_res <- data.frame(season=c("summer", "winter"), 
+             species="wolf", 
+             density=c(summer_rem,winter_rem), 
+             sd=NA)
+
+# Add the sd
+tm <- summer_effort
+v <- 11.9
+wolf_res$sd[wolf_res$season=="summer"] <- sd(boot_sd(wolf_summer))
+
+tm <- winter_effort
+v <- 11.8
+wolf_res$sd[wolf_res$season=="winter"] <- sd(boot_sd(wolf_winter))
+
+
+```
+
+Which again, is fairly close to our expected densities, if a little on the high side. Again let's plot them:
+
+```{r ,class.source="Rmain"}
+library(ggplot2)
+p<-ggplot(wolf_res, aes(x=season, y=density)) + 
+  geom_point()+
+  geom_errorbar(aes(ymin=density-sd, ymax=density+sd), width=.2,
+                position=position_dodge(0.05)) +
+  theme_classic()
+  
+p
+```
+
+These estimates are in the right ball park - and suggesting that wolf densities are higher in winter. 
 
 
 The reference for the movement data use to calculate the movement speeds are:
@@ -133,7 +250,7 @@ Wolves: [Latham ADM, Boutin S. 2019. Data from: Wolf ecology and caribou-primary
 Moose: [Bohm H, Neilson E, de la Mare C, Boutin S (2014) Wildlife habitat effectiveness and connectivity: moose ecology project summary report 2010–2012: Final report. 41 p.](https://www.researchgate.net/publication/328319031_Wildlife_Habitat_Effectiveness_and_Connectivity_Final_Report_August_2015)
 
 
-```{r ch12_6}
+```{r ch12_6, include=F}
 #NOT IMPLEMENTED#
 
 # If you want to access similar data on movebank for your study area, you can sign up for a movebank account: at https://www.movebank.org/ 
@@ -226,82 +343,68 @@ mean(silly$dist[substr(silly$`substr(timestamp, 1, 10)`,6,7) %in% winter], na.rm
 
 ```
 
-
-```{r ch12_8, eval=F}
-
-#The REM requires that the user provide survey effort (i.e. camera hours; tm) and the distance travelled by #the focal species in 24 hours (given in km; v). Here, we assign values to tm and v.
-
-tm <- 1880
-v <- 0.89
-
-# We then use the REM function (rem) to calculate densities for each site. Change the grpDat value to specify a different site.
-
-rem(dat = grpDat[[1]], tm, v) 
-
-#If tm and v differ for each survey site, we can specify them alongside the REM function, as below. Note that if the focal species is a constant, v should not change.
-
-rem(dat = grpDat[[1]], tm = 3600, v = 1.4) 
-
-#Now we’ll calculate variance for each study site. First, define the number of bootstrapping iterations:
-
-nboots <- 1000
-
-remsD <- sd(lapply(grpDat, boot_sd))
-
-```
-
-
-USE TRACKING DATA FOR MOOSE IN YOUR DATASET!
+#### Further reading about REM
 
 [Palencia, Pablo, et al. "Random encounter model is a reliable method for estimating population density of multiple species using camera traps." Remote Sensing in Ecology and Conservation (2022).](https://www.researchgate.net/publication/361547983_Random_encounter_model_is_a_reliable_method_for_estimating_population_density_of_multiple_species_using_camera_traps)
            
 [Palencia, Pablo, et al. "Assessing the camera trap methodologies used to estimate density of unmarked populations." Journal of Applied Ecology 58.8 (2021): 1583-1592.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13913)
 
-### Time to event/ Space to event density estimates
 
-Details below represent an abridged form of the information in:
 
-[Moeller, Anna K., and Paul M. Lukacs. "spaceNtime: an R package for estimating abundance of unmarked animals using camera-trap photographs." Mammalian Biology (2021): 1-10.](https://link.springer.com/article/10.1007/s42991-021-00181-8)
+### Time to event / Space to event density estimates
 
-TTE and STE models use the mathematical relationship between the Poisson and exponential distributions to estimate animal density, and the IS estimator uses fixed-area point counts. Conceptually, TTE and STE rely on the basic idea that greater abundance in an area leads to greater detection rates at cameras. The first of these, TTE, estimates abundance from the amount of time that elapses before an animal enters the viewshed of a given camera.
+**NIT YET IMPLEMENTED ROBUSTLY - WILL BE UPDATED SOON**
+
+
+
+Whist the REM has been around for a while, there are a couple of new density formulations on the block! Time to event (TTE) and Space to event (STE).
+
+
+Both TTE and STE models use the mathematical relationship between the poisson and exponential distributions to estimate animal density. Conceptually, TTE and STE rely on the basic idea that greater abundance in an area leads to greater detection rates at cameras. The first of these, TTE, estimates abundance from the amount of time that elapses before an animal enters the viewshed of a given camera.
 
 - TTE requires an independent estimate of animal movement rate. TTE is the only method of the three that requires an estimate of mean animal movement rate, defined across all animal behaviors, including rest (Moeller et al. 2018)
 
-- conceptually, STE is similar to TTE with space substituted for time... In contrast to TTE, the STE model uses instantaneous sampling occasions, and therefore it does not depend on movement rate.
+- Conceptually, STE is similar to TTE with space substituted for time... In contrast to TTE, the STE model uses instantaneous sampling occasions, and therefore it does not depend on movement rate.
 
+For both methods, cameras should be randomly or systematically deployed across the sampling frame. Practices to increase detections, such as targeting high-use trails, should be avoided as they can bias the abundance estimate. Second, the authors note that animals should have no behavioral response to cameras or camera sites. This precludes the use of bait or lures to increase encounter rates. It also means that cameras should be unobtrusive and not repel animals with bright flashes or human scent. Finally, the area viewed by each camera should be known across time and measured accurately. If camera area is not measured accurately, abundance estimates will be biased.
 
-Cameras should be randomly or systematically deployed across the sampling frame. Practices to increase detections, such as targeting high-use trails, should be avoided as they can bias the abundance estimate. Second, the authors note that animals should have no behavioral response to cameras or camera sites. This precludes the use of bait or lures to increase encounter rates. It also means that cameras should be unobtrusive and not repel animals with bright flashes or human scent. Fourth, the area viewed by each camera should be known across time and measured accurately. If camera area is not measured accurately, abundance estimates will be biased.
-
-
-For STE and IS, motion-sensor detection probability is defined by four conditions: the animal is present in the camera’s viewshed, the motion sensor detects the animal, the camera takes a picture with the animal still in view, and the user correctly identifies the species. 
+For STE, motion-sensor detection probability is defined by four conditions: the animal is present in the camera’s viewshed, the motion sensor detects the animal, the camera takes a picture with the animal still in view, and the user correctly identifies the species. 
 
 Sampling effort is difficult to quantify from motion-sensor photography, as the outcome (no picture) is the same whether the camera stops working, the motion-sensor doesn’t detect the animal, or the animal is absent. Time-lapse photography can help define motion-sensor effort if the two are used in conjunction. For example, time-lapse photos throughout the day will show that the batteries are functioning, the lens is clear of snow and debris, and the camera is pointed in the intended direction, which can help give confidence that the motion sensor is working as intended.
 
 STE and TTE use camera data in a particularly unique way that may be unfamiliar to many users. Rather than using counts of individual animals or independent detection events, STE uses the amount of space sampled by cameras until an animal detection at a given time, while TTE uses the time elapsed from an arbitrary starting point to the first detection of the species of interest. 
 
 
-#### Example
+*Note* The details above represent an abridged form of the information in:
+
+[Moeller, Anna K., and Paul M. Lukacs. "spaceNtime: an R package for estimating abundance of unmarked animals using camera-trap photographs." Mammalian Biology (2021): 1-10.](https://link.springer.com/article/10.1007/s42991-021-00181-8)
 
 
-```{r ch12_9}
+Again, lets attempt to repeat these methods for moose and wolves.
+
+#### Moose
+
+```{r ch12_9, class.source="Rinfo"}
 #library(remotes)
 #remotes::install_github("annam21/spaceNtime", build_vignettes=TRUE)
 library(spaceNtime)
-
-#browseVignettes("spaceNtime")
 ```
 
+The first thing we need is a dataframe of all the detections of our focal species with three columns:
 
-To use `spaceNtime` we need a dataframe with the 'placename' labelled as 'cam' (assuming there is one camera in each location), `timestamp` renames to `datetime` and `event_groupsize` relabeled as 'count'.
-
-```{r ch12_10, eval=F}
-ind <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_detections.csv", header=T)
-
-colnames(ind)
+- cam: the `placename` (camera location) where surveys occured 
+- datetime: the 'timestamp'
+- count: the group count
 
 
+```{r ch12_10, eval=F, class.source="Rinfo"}
+img <- read.csv("data/processed_data/AlgarRestorationProject_raw_detections.csv", header=T)
 
-snt_all <- ind %>% 
+# Make ind timestamp a date object
+img$timestamp <- ymd_hms(img$timestamp)
+
+moose_dat <- img %>% 
+  filter(sp=="Alces alces") %>% 
   dplyr::select(placename, timestamp, event_groupsize) %>% 
   rename(cam = placename,
          datetime = timestamp,
@@ -312,28 +415,66 @@ snt_all <- ind %>%
 
 `spaceNtime` also needs camera deployment data. Luckily, the deployment data it requires is identical to how we store deployment data - each row represents a block of continuous activity, and if the camera ever goes off then comes back online, that is represented as a new row. 
 
-As with the image data, we need to relabel things!
+The deployment data needs the following columns:
+
+- cam: the `placename` (camera location) where surveys occured 
+- start: deployment start date 	
+- end: deployment end date 	
+- area: area in sq meters (we will use the same definition as in the REM ecample 24m depth and radius of 42.9 -> 196m2)
+
+```{r, class.source="Rinfo", eval=F}
+dep <-  read.csv("data/raw_data/example_data/dep.csv", header=T)
+
+dep$start_date <- ymd_hms(paste(dep$start_date, "12:00:00"))
+dep$end_date   <- ymd_hms(paste(dep$end_date, "11:59:00"))
+
+snt_dep <- dep %>% 
+  dplyr::select(placename, start_date, end_date) %>% 
+  rename(cam = placename,
+         start = start_date,
+         end   = end_date)
+
+snt_dep$area <- 196
+
+# Remove the NA
+snt_dep <- snt_dep[is.na(snt_dep$end)==F,]
+```
+
+After defining the detection dataframe and deployment data we need to specify the sampling occasions. This can be done manually or with the function build_occ(). The sampling occasions should be in a data.frame or tibble with the following structure:
 
 
+```{r, class.source="Rinfo", eval=F}
+summer_dates <- as.POSIXct(c("2018-04-07 00:00:00", "2018-09-30 23:59:59"), tz = "GMT")
+summer_occ <- build_occ(samp_freq = 30, # seconds between the start of each sampling occasion
+                 samp_length = 2, # duration of each sampling occasion (seconds)
+                 study_start = study_dates[1],
+                 study_end = study_dates[2])
 
-Lots of great examples in here:
-https://link.springer.com/article/10.1007/s42991-021-00181-8 
+# Then build our dataframe
+ste_summer <- ste_build_eh(moose_dat, snt_dep, summer_occ)
 
-Application here
+winter_dates <- as.POSIXct(c("2018-10-01 00:00:00", "2019-03-31 23:59:59"), tz = "GMT")
+winter_occ <- build_occ(samp_freq = 30, # seconds between the start of each sampling occasion
+                 samp_length = 2, # duration of each sampling occasion (seconds)
+                 study_start = study_dates[1],
+                 study_end = study_dates[2])
+
+# Then build our dataframe
+
+ste_winter <- ste_build_eh(moose_dat, snt_dep, winter_occ)
+
+# Run the models
+moose_summer_res <- ste_estN_fn(ste_summer, study_area = 1e6) # specify 1 sq kilometer
+moose_wnter_res  <- ste_estN_fn(ste_winter, study_area = 1e6) # specify 1 sq kilometer
+
+```
+
+An application of this method on wolves can be seen here:
 
 [Ausband, David E., et al. "Estimating wolf abundance from cameras." Ecosphere 13.2 (2022): e3933.
 Ausband, D. E., Luk](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.3933)
 
 They didn't estimate viewshed size either: **"we did not estimate viewshed area during camera deployment; thus, we used a viewshed area based on expected performance of motion-triggered cameras. We assumed the cameras detected wolves within a 106-m2, pie-slice shape area in front of the camera derived from standard field protocols and that the motion trigger detected all wolves that passed through the viewshed."**
-
-```{r ch12_11}
-#library(devtools)
-#devtools::install_github("annam21/spaceNtime", build_vignettes=TRUE)
-library(spaceNtime)
-
-
-#library(rlang)
-```
 
 ### N-mixture model in unmarked
 

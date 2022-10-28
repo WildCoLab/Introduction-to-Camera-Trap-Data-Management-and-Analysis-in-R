@@ -1,0 +1,287 @@
+# On your own
+
+Congratulations! You made it to the end of the planned content in one peice.
+
+You now have the opportunity to apply some of the skills you have learnt to a completely new database. Cut and paste your code from previous chapters to check the data, write the analysis date frames and explore the dataset.
+
+I will help you read in the data - and correct a mistake I made. Then you are on your own!
+
+## The new dataset
+
+
+```{r ch13_1, class.source="Rmain"}
+# Load your data 
+pro <- read.csv("data/raw_data/your_data/proj.csv", header=T)
+pro$project_id <- pro$project_name
+
+img <- read.csv("data/raw_data/your_data/img.csv", header=T)
+img$project_id <- pro$project_name
+
+dep <- read.csv("data/raw_data/your_data/dep.csv", header=T)
+dep$project_id <- pro$project_name
+
+cam <- read.csv("data/raw_data/your_data/cam.csv", header=T)
+cam$project_id <- pro$project_name
+
+```
+
+Load your packages:
+
+```{r ch13_2, class.source="Rmain", message=F, warning=F, results='hide'}
+# A list of the required packages
+list.of.packages <- c("activity", "corrplot", "cowplot", "dplyr",  "elevatr", "gfcanalysis",   "ggplot2", "gridExtra", "iNEXT", "kableExtra", "Hmsc", "leaflet", "lme4", "lubridate", "magrittr", "MCMCvis", "MODISTools", "osmdata", "pals", "plotly", "remotes", "rmarkdown", "sf", "spOccupancy", "stars", "stringr", "terra", "tibble", "tidyr",  "unmarked", "viridis", "jtools", "vegan", "MuMIn")
+
+# A check to see which ones you have and which are missing
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+
+# Code which tells R to install the missing packages
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+```
+
+Away you go!
+
+```{r, echo=F, eval=F}
+# start dates
+dep$start_date <- ymd(dep$start_date)
+
+# end dates
+dep$end_date   <- ymd(dep$end_date)
+
+dep$days <- interval(dep$start_date, dep$end_date)/ddays(1)
+
+
+img$timestamp <- ymd_hms(img$timestamp)
+
+
+# First, set a single categorical variable of interest from station covariates for summary graphs. If you do not have an appropriate category use "project_id".
+category <- "feature_type"
+
+# We first convert this category to a factor with discrete levels
+dep[,category] <- factor(dep[,category])
+# then use the turbo() function to assign each level a color
+col.cat <- turbo(length(levels(dep[,category])))
+# then we apply it to the dataframe
+dep$colours <- col.cat[dep[,category]]
+
+m <- leaflet() %>%
+  addProviderTiles(providers$Esri.WorldImagery, group="Satellite") %>%  
+  addTiles(group="Base") %>%     # Include a basemap option too
+  addCircleMarkers(lng=dep$longitude, lat=dep$latitude,
+                   # Co lour the markers depending on the 'feature type'
+                   color=dep$colours,
+                   # Add a popup of the placename and feature_type together 
+                   popup=paste(dep$placename, dep[,category])) %>%
+  
+  # Add a legend explaining what is going on
+  addLegend("bottomleft", colors = col.cat,  labels = levels(dep[,category]),
+                   title = category,
+                   labFormat = labelFormat(prefix = "$"),
+                   opacity = 1) %>%
+  
+  # add a layer control box to toggle between the layers
+  addLayersControl(
+                    baseGroups = c("Satellite", "Base"))
+
+m
+
+
+# Distance between traps
+camera_locs <- dep %>% 
+  dplyr::select(placename, latitude, longitude) %>% 
+  unique() %>% # remove duplicated rows (rows where the placename and coordinates match)
+  st_as_sf(coords = c("longitude", "latitude"), crs = "+proj=longlat") # Convert to `sf` format
+
+camera_dist <- st_distance(camera_locs) %>% 
+                  as.dist() %>% 
+                  usedist::dist_setNames(as.character(camera_locs$placename)) %>% 
+                  as.matrix()
+
+# convert to pairwise list
+camera_dist_list <- t(combn(colnames(camera_dist), 2))
+camera_dist_list <- data.frame(camera_dist_list, dist = camera_dist[camera_dist_list]) %>% 
+                          arrange(dist) # sort descending
+
+# keep just the closest camera for each location
+camera_dist_list <- camera_dist_list %>% 
+                  group_by(X1) %>% 
+                  slice(which.min(dist))
+
+
+summary(camera_dist_list$dist)
+
+
+table(unique(img$placename) %in% unique(dep$placename))
+
+table(unique(dep$placename)  %in% unique(img$placename))
+dep[!dep$placename %in% img$placename,]
+
+# One station - I will have to fix!
+
+
+# ACtivity check
+
+
+# Call the plot
+p <- plot_ly()
+
+# We want a separate row for each 'placename' - so lets turn it into a factor
+dep$placename <- as.factor(dep$placename)
+
+# loop through each place name
+for(i in seq_along(levels(dep$placename)))
+  {
+      #Subset the data to just that placename
+      tmp <- dep[dep$placename==levels(dep$placename)[i],]
+      # Order by date
+      tmp <- tmp[order(tmp$start_date),]
+      # Loop through each deployment at that placename
+      for(j in 1:nrow(tmp))
+      {
+        # Add a line to 'p'
+        p <- add_trace(p, 
+                       #Use the start and end date as x coordinates
+                       x = c(tmp$start_date[j], tmp$end_date[j]), 
+                       #Use the counter for the y coordinates
+                       y = c(i,i), 
+                       # State the type of chart
+                       type="scatter",
+                       # make a line that also has points
+                       mode = "lines+markers", 
+                       # Add the deployment ID as hover text
+                       hovertext=tmp$deployment_id[j], 
+                       # Color it all black
+                       color=I("black"), 
+                       # Suppress the legend
+                       showlegend = FALSE)
+      }
+      
+  }
+# Add a categorical y axis
+ p <- p %>%   layout(yaxis = list(
+
+      ticktext = as.list(levels(dep$placename)), 
+
+      tickvals = as.list(1:length(levels(dep$placename))),
+
+      tickmode = "array"))
+
+
+p
+
+
+
+### DETCTION CHECK
+
+
+
+#Camera activity plot
+# Make a separate plot for each 20 stations For each 20 stations
+# To do this make a plot dataframe
+tmp <- data.frame("deployment_id"=unique(dep$deployment_id), "plot_group"=ceiling(1:length(unique(dep$deployment_id))/20))
+
+dep_tmp <- left_join(dep,tmp, by="deployment_id")
+
+for(i in 1:max(dep_tmp$plot_group))
+{  
+  # Call the plot
+  p <- plot_ly() 
+  
+  #Subset the data to just that placename
+  tmp <- dep_tmp[dep_tmp$plot_group==i,]
+  # Order by placename 
+  tmp <- tmp[order(tmp$placename),]
+  
+ 
+ # Loop through each deployment at that placename
+  for(j in 1:nrow(tmp))
+    {
+        #Subset the image data
+        tmp_img <- img[img$deployment_id==tmp$deployment_id[j],]
+        
+        if(nrow(tmp_img)>0)
+        {
+         
+          p <- add_trace(p, 
+                       #Use the start and end date as x coordinates
+                       x = c(tmp_img$timestamp), 
+                       #Use the counter for the y coordinates
+                       y = rep(j, nrow(tmp_img)), 
+                       # State the type of chart
+                       type="scatter",
+                       # make a line that also has points
+                       mode = "markers", 
+                       # Add the deployment ID as hover text
+                       hovertext=paste(tmp_img$genus,tmp_img$species), 
+                       # Color it all black
+                       marker = list(color = "red"), 
+                       # Suppress the legend
+                       showlegend = FALSE)
+        }
+        
+       # Add a line to 'p'
+        p <- add_trace(p, 
+                       #Use the start and end date as x coordinates
+                       x = c(tmp$start_date[j], tmp$end_date[j]), 
+                       #Use the counter for the y coordinates
+                       y = c(j,j), 
+                       # State the type of chart
+                       type="scatter",
+                       # make a line that also has points
+                       mode = "lines", 
+                       # Add the deployment ID as hover text
+                       hovertext=tmp$deployment_id[j], 
+                       # Color it all black
+                       color=I("black"), 
+                       # Suppress the legend
+                       showlegend = FALSE)
+      }
+  # Add custom y axis labels  
+  p <- p %>%   layout(yaxis = list(
+
+      ticktext = as.list(tmp$deployment_id), 
+
+      tickvals = as.list(1:nrow(tmp)),
+
+      tickmode = "array"))
+  
+  print(p)
+      
+  
+} 
+
+##### Already got common names dont worry about that
+
+
+# First lets convert our timestamp to decimal hours
+img$hours <- hour(img$timestamp) + minute(img$timestamp)/60 + second(img$timestamp)/(60*60)
+
+# Count all of the captures
+tmp <- img %>% group_by(common_name) %>% summarize(count=n())
+
+yform <- list(categoryorder = "array",
+              categoryarray = tmp$common_name)
+
+fig <- plot_ly(x = img$hours, y = img$common_name,type="scatter",
+               height=1000, text=img$deployment_id, hoverinfo='text',
+               mode   = 'markers',
+               marker = list(size = 5,
+                             color = 'rgba(50, 100, 255, .2)',
+                             line = list(color = 'rgba(0, 0, 0, 0)',
+                                         width = 0))) %>% 
+              layout(yaxis = yform)
+fig
+
+# Remove the column
+img$hours <- NULL
+
+
+
+
+
+```
+
+
+
+
