@@ -82,7 +82,10 @@ list.of.packages <- c("activity",
                       "viridis",
                       "jtools",
                       "vegan",
-                      "MuMIn")
+                      "MuMIn",
+                      "rgdal",
+                      "usedist",
+                      "taxize")
 
 # A check to see which ones you have and which are missing
 new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
@@ -100,9 +103,9 @@ Some packages must be compiled from sources other than CRAN. Copy and paste foll
 # CRAN interface (e.g. on github)
 library(remotes)
 
-remotes::install_github("RS-eco/traitdata", build_vignettes = T, force=T)
+remotes::install_github("RS-eco/traitdata")
 remotes::install_github("arcaravaggi/remBoot")
-remotes::install_github("annam21/spaceNtime", build_vignettes=TRUE)
+remotes::install_github("annam21/spaceNtime")
 
 
 ```

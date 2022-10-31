@@ -128,7 +128,7 @@ Note we are reducing the number of replicates to 100 to speed up the process - t
 
 ```{r ch9_8, class.source="Rmain"}
 # Fit an activity model
-m1 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus virginianus"], sample="model", reps=100)
+m1 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus.virginianus"], sample="model", reps=100)
 plot(m1)
 ```
 
@@ -142,7 +142,7 @@ And repeat it for Caribou
 
 ```{r ch9_10, class.source="Rmain"}
 # Fit an activity model
-m2 <- fitact(img_locs$solar[img_locs$sp=="Rangifer tarandus"], sample="model", reps=100)
+m2 <- fitact(img_locs$solar[img_locs$sp=="Rangifer.tarandus"], sample="model", reps=100)
 plot(m2)
 ```
 
@@ -190,14 +190,14 @@ We can also compare patterns within a species across different strata of interes
 
 ```{r ch9_13, class.source="Rmain"}
 #Fit an activity model
-m1 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus virginianus" &
+m1 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus.virginianus" &
                               img_locs$feature_type=="HumanUse"], sample="model", reps=100)
 ```
 
 **White-tail deer on Offline feature**
 
 ```{r ch9_14, class.source="Rmain"}
-m2 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus virginianus" &
+m2 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus.virginianus" &
                               img_locs$feature_type=="Offline"], sample="model", reps=100)
 ```
 
@@ -220,6 +220,34 @@ compareCkern(m1, m2, reps = 100)
 ```
 
 There is very high overlap for these comparisons, and it is unlikely to have arisen by chance! So it seems the edidence for changes in temporal activity in response to feature_type is weak - at least for the white-tiled deer!
+
+### Seasonal comparison
+
+```{r}
+img_locs$month <- month(img_locs$timestamp, label=T)
+
+
+#Fit an activity model
+m1 <- fitact(img_locs$solar[img_locs$sp=="Rangifer.tarandus" &
+                              img_locs$month %in% c("Apr", "May", "Jun", "Jul", "Aug", "Sep")], sample="model", reps=100)
+
+
+m2 <- fitact(img_locs$solar[img_locs$sp=="Rangifer.tarandus" &
+                              img_locs$month %in% c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar")], sample="model", reps=100)
+```
+
+```{r}
+plot(m2, yunit="density", data="none", las=1, lwd=2,
+     tline=list(lwd=2), # Thick line 
+     cline=list(lty=0)) # Supress confidence intervals
+
+plot(m1, yunit="density", data="none", add=TRUE, 
+     tline=list(col="red", lwd=2),
+     cline=list(lty=0))
+
+legend("topright", c("Winter", "Summer"), col=1:2, lty=1, lwd=2)
+```
+
 
 ## On your own
 

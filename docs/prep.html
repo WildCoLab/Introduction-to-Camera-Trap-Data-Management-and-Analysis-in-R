@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -225,7 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
 <li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
 <li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
-<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxise-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxise package</a></li>
+<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxize package</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
 <li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
@@ -358,7 +358,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
 </ul></li>
 <li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
-<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="activity.html"><a href="activity.html#seasonal-comparison"><i class="fa fa-check"></i><b>12.4.1</b> Seasonal comparison</a></li>
+</ul></li>
 <li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
 <li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
 </ul></li>
@@ -483,14 +486,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-32"><a href="prep.html#cb4-32" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;viridis&quot;</span>,</span>
 <span id="cb4-33"><a href="prep.html#cb4-33" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;jtools&quot;</span>,</span>
 <span id="cb4-34"><a href="prep.html#cb4-34" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;vegan&quot;</span>,</span>
-<span id="cb4-35"><a href="prep.html#cb4-35" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;MuMIn&quot;</span>)</span>
-<span id="cb4-36"><a href="prep.html#cb4-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-37"><a href="prep.html#cb4-37" aria-hidden="true" tabindex="-1"></a><span class="co"># A check to see which ones you have and which are missing</span></span>
-<span id="cb4-38"><a href="prep.html#cb4-38" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb4-35"><a href="prep.html#cb4-35" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;MuMIn&quot;</span>,</span>
+<span id="cb4-36"><a href="prep.html#cb4-36" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;rgdal&quot;</span>,</span>
+<span id="cb4-37"><a href="prep.html#cb4-37" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;usedist&quot;</span>,</span>
+<span id="cb4-38"><a href="prep.html#cb4-38" aria-hidden="true" tabindex="-1"></a>                      <span class="st">&quot;taxize&quot;</span>)</span>
 <span id="cb4-39"><a href="prep.html#cb4-39" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-40"><a href="prep.html#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Code which tells R to install the missing packages</span></span>
-<span id="cb4-41"><a href="prep.html#cb4-41" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
-<span id="cb4-42"><a href="prep.html#cb4-42" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb4-40"><a href="prep.html#cb4-40" aria-hidden="true" tabindex="-1"></a><span class="co"># A check to see which ones you have and which are missing</span></span>
+<span id="cb4-41"><a href="prep.html#cb4-41" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb4-42"><a href="prep.html#cb4-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-43"><a href="prep.html#cb4-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Code which tells R to install the missing packages</span></span>
+<span id="cb4-44"><a href="prep.html#cb4-44" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb4-45"><a href="prep.html#cb4-45" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="other-packages" class="section level3 hasAnchor" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Other packages<a href="prep.html#other-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -499,9 +505,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-2"><a href="prep.html#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># CRAN interface (e.g. on github)</span></span>
 <span id="cb5-3"><a href="prep.html#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(remotes)</span>
 <span id="cb5-4"><a href="prep.html#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-5"><a href="prep.html#cb5-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;RS-eco/traitdata&quot;</span>, <span class="at">build_vignettes =</span> T, <span class="at">force=</span>T)</span>
+<span id="cb5-5"><a href="prep.html#cb5-5" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;RS-eco/traitdata&quot;</span>)</span>
 <span id="cb5-6"><a href="prep.html#cb5-6" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;arcaravaggi/remBoot&quot;</span>)</span>
-<span id="cb5-7"><a href="prep.html#cb5-7" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;annam21/spaceNtime&quot;</span>, <span class="at">build_vignettes=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb5-7"><a href="prep.html#cb5-7" aria-hidden="true" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;annam21/spaceNtime&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="create-an-r-project" class="section level2 hasAnchor" number="2.4">

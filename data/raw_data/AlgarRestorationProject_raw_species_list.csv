@@ -1,26 +1,26 @@
-"","class","order","family","genus","species","common_name","sp","verified"
-"1","Aves","Galliformes","Phasianidae","Tympanuchus","phasianellus","sharp-tailed grouse","Tympanuchus phasianellus",TRUE
-"2","Aves","Gruiformes","Gruidae","Grus","canadensis","sandhill crane","Grus canadensis",TRUE
-"3","Aves","Passeriformes","Corvidae","Corvus","corax","common raven","Corvus corax",TRUE
-"4","Aves","Passeriformes","Corvidae","Perisoreus","canadensis","canada jay","Perisoreus canadensis",TRUE
-"5","Aves","Strigiformes","Strigidae","Strix","nebulosa","great grey owl","Strix nebulosa",TRUE
-"6","Mammalia","Artiodactyla","Cervidae","Alces","alces","moose","Alces alces",TRUE
-"7","Mammalia","Artiodactyla","Cervidae","Cervus","canadensis","elk","Cervus canadensis",TRUE
-"8","Mammalia","Artiodactyla","Cervidae","Odocoileus","virginianus","white-tailed deer","Odocoileus virginianus",TRUE
-"9","Mammalia","Artiodactyla","Cervidae","Rangifer","tarandus","caribou","Rangifer tarandus",TRUE
-"10","Mammalia","Carnivora","Canidae","Canis","latrans","coyote","Canis latrans",TRUE
-"11","Mammalia","Carnivora","Canidae","Canis","lupus","gray wolf","Canis lupus",TRUE
-"12","Mammalia","Carnivora","Canidae","Vulpes","vulpes","red fox","Vulpes vulpes",TRUE
-"13","Mammalia","Carnivora","Felidae","Lynx","canadensis","canada lynx","Lynx canadensis",TRUE
-"14","Mammalia","Carnivora","Mustelidae","Lontra","canadensis","northern american river otter","Lontra canadensis",TRUE
-"15","Mammalia","Carnivora","Mustelidae","Martes","americana","american marten","Martes americana",TRUE
-"16","Mammalia","Carnivora","Ursidae","Ursus","americanus","american black bear","Ursus americanus",TRUE
-"17","Mammalia","Lagomorpha","Leporidae","Lepus","americanus","snowshoe hare","Lepus americanus",TRUE
-"18","Mammalia","Lagomorpha","Leporidae","Oryctolagus","cuniculus","rabbit","Oryctolagus cuniculus",TRUE
-"19","Mammalia","Primates","Hominidae","Homo","sapiens","human","Homo sapiens",TRUE
-"20","Mammalia","Rodentia","Sciuridae","Tamiasciurus","hudsonicus","american red squirrel","Tamiasciurus hudsonicus",TRUE
-"21",NA,NA,NA,"","blank",NA," blank",NA
-"22",NA,NA,NA,"","spp.",NA," spp.",NA
-"23",NA,NA,NA,"Canachites","canadensis",NA,"Canachites canadensis",TRUE
-"24",NA,NA,NA,"Unknown","unknown",NA,"Unknown unknown",NA
-"25",NA,NA,NA,"Weasel","spp.",NA,"Weasel spp.",NA
+"","class","order","family","genus","species","sp","common_name"
+"1","Aves","Galliformes","Phasianidae","Tympanuchus","phasianellus","Tympanuchus.phasianellus","sharp-tailed grouse"
+"2","Aves","Gruiformes","Gruidae","Grus","canadensis","Grus.canadensis","sandhill crane"
+"3","Aves","Passeriformes","Corvidae","Corvus","corax","Corvus.corax","common raven"
+"4","Aves","Passeriformes","Corvidae","Perisoreus","canadensis","Perisoreus.canadensis","canada jay"
+"5","Aves","Strigiformes","Strigidae","Strix","nebulosa","Strix.nebulosa","great grey owl"
+"6","Mammalia","Artiodactyla","Cervidae","Alces","alces","Alces.alces","moose"
+"7","Mammalia","Artiodactyla","Cervidae","Cervus","canadensis","Cervus.canadensis","elk"
+"8","Mammalia","Artiodactyla","Cervidae","Odocoileus","virginianus","Odocoileus.virginianus","white-tailed deer"
+"9","Mammalia","Artiodactyla","Cervidae","Rangifer","tarandus","Rangifer.tarandus","caribou"
+"10","Mammalia","Carnivora","Canidae","Canis","latrans","Canis.latrans","coyote"
+"11","Mammalia","Carnivora","Canidae","Canis","lupus","Canis.lupus","gray wolf"
+"12","Mammalia","Carnivora","Canidae","Vulpes","vulpes","Vulpes.vulpes","red fox"
+"13","Mammalia","Carnivora","Felidae","Lynx","canadensis","Lynx.canadensis","canada lynx"
+"14","Mammalia","Carnivora","Mustelidae","Lontra","canadensis","Lontra.canadensis","river otter"
+"15","Mammalia","Carnivora","Mustelidae","Martes","americana","Martes.americana","american marten"
+"16","Mammalia","Carnivora","Ursidae","Ursus","americanus","Ursus.americanus","black bear"
+"17","Mammalia","Lagomorpha","Leporidae","Lepus","americanus","Lepus.americanus","snowshoe hare"
+"18","Mammalia","Lagomorpha","Leporidae","Oryctolagus","cuniculus","Oryctolagus.cuniculus","rabbit"
+"19","Mammalia","Primates","Hominidae","Homo","sapiens","Homo.sapiens","human"
+"20","Mammalia","Rodentia","Sciuridae","Tamiasciurus","hudsonicus","Tamiasciurus.hudsonicus","red squirrel"
+"21",NA,NA,NA,"","blank",".blank",NA
+"22",NA,NA,NA,"","spp.",".spp.",NA
+"23",NA,NA,NA,"Canachites","canadensis","Canachites.canadensis","spruce grouse"
+"24",NA,NA,NA,"Unknown","unknown","Unknown.unknown",NA
+"25",NA,NA,NA,"Weasel","spp.","Weasel.spp.",NA

@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -225,7 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
 <li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
 <li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
-<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxise-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxise package</a></li>
+<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxize package</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
 <li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
@@ -358,7 +358,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
 </ul></li>
 <li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
-<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="activity.html"><a href="activity.html#seasonal-comparison"><i class="fa fa-check"></i><b>12.4.1</b> Seasonal comparison</a></li>
+</ul></li>
 <li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
 <li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
 </ul></li>
@@ -424,19 +427,19 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><em>Create a new .R script</em></p>
 <p>Call it <code>04_example_richness.R</code>.</p>
 <p><em>Load the required packages</em></p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb188-1"><a href="composition.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check you have them and load them</span></span>
-<span id="cb188-2"><a href="composition.html#cb188-2" aria-hidden="true" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;iNEXT&quot;</span>, <span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;viridis&quot;</span>)</span>
-<span id="cb188-3"><a href="composition.html#cb188-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb188-4"><a href="composition.html#cb188-4" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
-<span id="cb188-5"><a href="composition.html#cb188-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
-<span id="cb188-6"><a href="composition.html#cb188-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb185-1"><a href="composition.html#cb185-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Check you have them and load them</span></span>
+<span id="cb185-2"><a href="composition.html#cb185-2" aria-hidden="true" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;iNEXT&quot;</span>, <span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;viridis&quot;</span>)</span>
+<span id="cb185-3"><a href="composition.html#cb185-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb185-4"><a href="composition.html#cb185-4" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb185-5"><a href="composition.html#cb185-5" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb185-6"><a href="composition.html#cb185-6" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <div id="observed-richness" class="section level2 hasAnchor" number="9.1">
 <h2><span class="header-section-number">9.1</span> Observed richness<a href="composition.html#observed-richness" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The simplest way to quantify species richness is counting the number of species you detect on your camera traps - ‘observed richness’. This is very easy to determine using our species list:</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb189-1"><a href="composition.html#cb189-1" aria-hidden="true" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb189-2"><a href="composition.html#cb189-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb189-3"><a href="composition.html#cb189-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use nrow() to count the number of species</span></span>
-<span id="cb189-4"><a href="composition.html#cb189-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(sp_summary)</span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb186-1"><a href="composition.html#cb186-1" aria-hidden="true" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb186-2"><a href="composition.html#cb186-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb186-3"><a href="composition.html#cb186-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Use nrow() to count the number of species</span></span>
+<span id="cb186-4"><a href="composition.html#cb186-4" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(sp_summary)</span></code></pre></div>
 <pre><code>## [1] 14</code></pre>
 <p>In the case of the example data set, this represents 14 mammal species.</p>
 <table class="table" style="width: auto !important; margin-left: auto; margin-right: auto;">
@@ -458,10 +461,10 @@ genus
 species
 </th>
 <th style="text-align:left;">
-common_name
+sp
 </th>
 <th style="text-align:left;">
-sp
+common_name
 </th>
 <th style="text-align:right;">
 mass_g
@@ -495,10 +498,10 @@ Alces
 alces
 </td>
 <td style="text-align:left;">
-moose
+Alces.alces
 </td>
 <td style="text-align:left;">
-Alces.alces
+moose
 </td>
 <td style="text-align:right;">
 356998.16
@@ -530,10 +533,10 @@ Cervus
 canadensis
 </td>
 <td style="text-align:left;">
-elk
+Cervus.canadensis
 </td>
 <td style="text-align:left;">
-Cervus.canadensis
+elk
 </td>
 <td style="text-align:right;">
 165015.85
@@ -565,10 +568,10 @@ Odocoileus
 virginianus
 </td>
 <td style="text-align:left;">
-white-tailed deer
+Odocoileus.virginianus
 </td>
 <td style="text-align:left;">
-Odocoileus.virginianus
+white-tailed deer
 </td>
 <td style="text-align:right;">
 55508.56
@@ -600,10 +603,10 @@ Rangifer
 tarandus
 </td>
 <td style="text-align:left;">
-caribou
+Rangifer.tarandus
 </td>
 <td style="text-align:left;">
-Rangifer.tarandus
+caribou
 </td>
 <td style="text-align:right;">
 86033.98
@@ -635,10 +638,10 @@ Canis
 latrans
 </td>
 <td style="text-align:left;">
-coyote
+Canis.latrans
 </td>
 <td style="text-align:left;">
-Canis.latrans
+coyote
 </td>
 <td style="text-align:right;">
 13406.33
@@ -670,10 +673,10 @@ Canis
 lupus
 </td>
 <td style="text-align:left;">
-gray wolf
+Canis.lupus
 </td>
 <td style="text-align:left;">
-Canis.lupus
+gray wolf
 </td>
 <td style="text-align:right;">
 32183.33
@@ -705,10 +708,10 @@ Vulpes
 vulpes
 </td>
 <td style="text-align:left;">
-red fox
+Vulpes.vulpes
 </td>
 <td style="text-align:left;">
-Vulpes.vulpes
+red fox
 </td>
 <td style="text-align:right;">
 5476.17
@@ -740,10 +743,10 @@ Lynx
 canadensis
 </td>
 <td style="text-align:left;">
-canada lynx
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
-Lynx.canadensis
+canada lynx
 </td>
 <td style="text-align:right;">
 9373.25
@@ -775,10 +778,10 @@ Lontra
 canadensis
 </td>
 <td style="text-align:left;">
-northern american river otter
+Lontra.canadensis
 </td>
 <td style="text-align:left;">
-Lontra.canadensis
+river otter
 </td>
 <td style="text-align:right;">
 8087.42
@@ -810,10 +813,10 @@ Martes
 americana
 </td>
 <td style="text-align:left;">
-american marten
+Martes.americana
 </td>
 <td style="text-align:left;">
-Martes.americana
+american marten
 </td>
 <td style="text-align:right;">
 1250.00
@@ -845,10 +848,10 @@ Ursus
 americanus
 </td>
 <td style="text-align:left;">
-american black bear
+Ursus.americanus
 </td>
 <td style="text-align:left;">
-Ursus.americanus
+black bear
 </td>
 <td style="text-align:right;">
 99949.36
@@ -880,10 +883,10 @@ Lepus
 americanus
 </td>
 <td style="text-align:left;">
-snowshoe hare
+Lepus.americanus
 </td>
 <td style="text-align:left;">
-Lepus.americanus
+snowshoe hare
 </td>
 <td style="text-align:right;">
 1710.02
@@ -915,10 +918,10 @@ Oryctolagus
 cuniculus
 </td>
 <td style="text-align:left;">
-rabbit
+Oryctolagus.cuniculus
 </td>
 <td style="text-align:left;">
-Oryctolagus.cuniculus
+rabbit
 </td>
 <td style="text-align:right;">
 1832.22
@@ -950,10 +953,10 @@ Tamiasciurus
 hudsonicus
 </td>
 <td style="text-align:left;">
-american red squirrel
+Tamiasciurus.hudsonicus
 </td>
 <td style="text-align:left;">
-Tamiasciurus.hudsonicus
+red squirrel
 </td>
 <td style="text-align:right;">
 201.17
@@ -985,22 +988,22 @@ Tamiasciurus.hudsonicus
 <p>The <a href="https://cran.r-project.org/web/packages/iNEXT/">iNext package</a> (INterpolation and EXTrapolation of species richness) - is both easy to use and rapid to compute. It also comes with a wealth of plotting functions - see the <a href="https://cran.r-project.org/web/packages/iNEXT/vignettes/Introduction.pdf">iNext Quick Introduction</a> for a great walk through tutorial. Its core functionality is based on:</p>
 <p><a href="https://esajournals.onlinelibrary.wiley.com/doi/10.1890/13-0133.1">Chao, Anne, et al. “Rarefaction and extrapolation with Hill numbers: a framework for sampling and estimation in species diversity studies.” Ecological monographs 84.1 (2014): 45-67.</a> Which has, to date, been cited &gt;2000 times!</p>
 <p>To run this example code you will need to load the <code>iNEXT</code> , <code>ggplot2</code>, and <code>gridExtra</code> packages.</p>
-<div class="sourceCode" id="cb191"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb191-1"><a href="composition.html#cb191-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(iNEXT); <span class="fu">library</span>(ggplot2); <span class="fu">library</span>(gridExtra)</span></code></pre></div>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb188-1"><a href="composition.html#cb188-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(iNEXT); <span class="fu">library</span>(ggplot2); <span class="fu">library</span>(gridExtra)</span></code></pre></div>
 <p><strong>Single strata</strong></p>
 <p>You may want to see if your camera project has sufficient survey effort to capture the species within the area of interest. To do this we can compute a species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add individuals or survey units. If the curve plateaus (flattens), then that suggests you have sampled the majority of the species in your survey area.</p>
 <p><em>Data formatting</em></p>
 <p>Applying the iNEXT functions to camera trap data is perhaps simplest using ‘abundance’ function, this represents the frequency with which each species is detected. The abundance data model requires a string of abundance frequencies contained within a list.</p>
 <p><img src="images/community_metrics/data_format.PNG" width="75%" /></p>
 <p>We can create this format from the <code>...total_observations</code> dataset:</p>
-<div class="sourceCode" id="cb192"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb192-1"><a href="composition.html#cb192-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the total observations dataset</span></span>
-<span id="cb192-2"><a href="composition.html#cb192-2" aria-hidden="true" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb192-3"><a href="composition.html#cb192-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb192-4"><a href="composition.html#cb192-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an empty list to store our data</span></span>
-<span id="cb192-5"><a href="composition.html#cb192-5" aria-hidden="true" tabindex="-1"></a>project_level <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb192-6"><a href="composition.html#cb192-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum all of the observations of each species (colSums), and then make it an element within the project_level list</span></span>
-<span id="cb192-7"><a href="composition.html#cb192-7" aria-hidden="true" tabindex="-1"></a>project_level[[<span class="dv">1</span>]]<span class="ot">&lt;-</span> <span class="fu">colSums</span>(total_obs[, sp_summary<span class="sc">$</span>sp])</span>
-<span id="cb192-8"><a href="composition.html#cb192-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Give it a name</span></span>
-<span id="cb192-9"><a href="composition.html#cb192-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(project_level) <span class="ot">&lt;-</span> <span class="st">&quot;project_level&quot;</span></span></code></pre></div>
+<div class="sourceCode" id="cb189"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb189-1"><a href="composition.html#cb189-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the total observations dataset</span></span>
+<span id="cb189-2"><a href="composition.html#cb189-2" aria-hidden="true" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb189-3"><a href="composition.html#cb189-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb189-4"><a href="composition.html#cb189-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an empty list to store our data</span></span>
+<span id="cb189-5"><a href="composition.html#cb189-5" aria-hidden="true" tabindex="-1"></a>project_level <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb189-6"><a href="composition.html#cb189-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Sum all of the observations of each species (colSums), and then make it an element within the project_level list</span></span>
+<span id="cb189-7"><a href="composition.html#cb189-7" aria-hidden="true" tabindex="-1"></a>project_level[[<span class="dv">1</span>]]<span class="ot">&lt;-</span> <span class="fu">colSums</span>(total_obs[, sp_summary<span class="sc">$</span>sp])</span>
+<span id="cb189-8"><a href="composition.html#cb189-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Give it a name</span></span>
+<span id="cb189-9"><a href="composition.html#cb189-9" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(project_level) <span class="ot">&lt;-</span> <span class="st">&quot;project_level&quot;</span></span></code></pre></div>
 <p>This produces a list object which looks like this:</p>
 <pre><code>## $project_level
 ##             Alces.alces       Cervus.canadensis  Odocoileus.virginianus 
@@ -1015,13 +1018,13 @@ Tamiasciurus.hudsonicus
 ##                       2                      26</code></pre>
 <p><strong>Analysis</strong></p>
 <p>Once you have created your list, we can run a basic <code>iNEXT</code> analysis and create a graphs of the results. Below we show a basic <code>iNEXT</code> call with some of its default arguments.</p>
-<div class="sourceCode" id="cb194"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb194-1"><a href="composition.html#cb194-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(project_level,          <span class="co"># The data frame</span></span>
-<span id="cb194-2"><a href="composition.html#cb194-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">q=</span><span class="dv">0</span>,                    <span class="co"># The type of diversity estimator (see discussion of the options below)</span></span>
-<span id="cb194-3"><a href="composition.html#cb194-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>,   <span class="co"># The type of analysis</span></span>
-<span id="cb194-4"><a href="composition.html#cb194-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">knots=</span><span class="dv">40</span>,               <span class="co"># The number of data points in your line (more = smoother)</span></span>
-<span id="cb194-5"><a href="composition.html#cb194-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">se=</span><span class="cn">TRUE</span>,                <span class="co"># Logical statement if you want confidence intervals</span></span>
-<span id="cb194-6"><a href="composition.html#cb194-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">conf=</span><span class="fl">0.95</span>,              <span class="co"># The level of confidence intervals</span></span>
-<span id="cb194-7"><a href="composition.html#cb194-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">nboot=</span><span class="dv">50</span>)               <span class="co"># The number of replications to perform - this generates your confidence interval - the bigger the number the longer the run time</span></span></code></pre></div>
+<div class="sourceCode" id="cb191"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb191-1"><a href="composition.html#cb191-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(project_level,          <span class="co"># The data frame</span></span>
+<span id="cb191-2"><a href="composition.html#cb191-2" aria-hidden="true" tabindex="-1"></a>             <span class="at">q=</span><span class="dv">0</span>,                    <span class="co"># The type of diversity estimator (see discussion of the options below)</span></span>
+<span id="cb191-3"><a href="composition.html#cb191-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>,   <span class="co"># The type of analysis</span></span>
+<span id="cb191-4"><a href="composition.html#cb191-4" aria-hidden="true" tabindex="-1"></a>             <span class="at">knots=</span><span class="dv">40</span>,               <span class="co"># The number of data points in your line (more = smoother)</span></span>
+<span id="cb191-5"><a href="composition.html#cb191-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">se=</span><span class="cn">TRUE</span>,                <span class="co"># Logical statement if you want confidence intervals</span></span>
+<span id="cb191-6"><a href="composition.html#cb191-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">conf=</span><span class="fl">0.95</span>,              <span class="co"># The level of confidence intervals</span></span>
+<span id="cb191-7"><a href="composition.html#cb191-7" aria-hidden="true" tabindex="-1"></a>             <span class="at">nboot=</span><span class="dv">50</span>)               <span class="co"># The number of replications to perform - this generates your confidence interval - the bigger the number the longer the run time</span></span></code></pre></div>
 <p><strong>a note on q values</strong></p>
 <p>The iNEXT package uses the concept of hill numbers to calculate its community indices. The q values reflect traditional diversity estimators:</p>
 <ul>
@@ -1038,7 +1041,7 @@ Tamiasciurus.hudsonicus
 - <code>$iNextEst</code> for showing size- and coverage-based diversity estimates along with related
 statistics for a series of rarefied and extrapolated samples
 - <code>$AsyEst</code> for showing asymptotic diversity estimates along with related statistics.</p>
-<div class="sourceCode" id="cb195"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb195-1"><a href="composition.html#cb195-1" aria-hidden="true" tabindex="-1"></a>out</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb192-1"><a href="composition.html#cb192-1" aria-hidden="true" tabindex="-1"></a>out</span></code></pre></div>
 <p>Lets check out each one in turn:</p>
 <p><code>$DataInfo</code> is shown below, returns summary data such as the reference sample size (n), observed species richness (S.obs - which is hopefully the same as what we calculated above), sample coverage estimate for the reference sample (SC), and the first ten frequency counts (f1‐f10).</p>
 <p><img src="images/community_metrics/data_info.PNG" width="100%" /></p>
@@ -1054,40 +1057,40 @@ statistics for a series of rarefied and extrapolated samples
 </div>
 <div id="basic-results-plot" class="section level2 hasAnchor" number="9.3">
 <h2><span class="header-section-number">9.3</span> Basic results plot<a href="composition.html#basic-results-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb196"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb196-1"><a href="composition.html#cb196-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>()    <span class="co">#  type 1 = the diversity estimator</span></span>
-<span id="cb196-2"><a href="composition.html#cb196-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>()    <span class="co">#  type 2 = the survey coverage</span></span>
-<span id="cb196-3"><a href="composition.html#cb196-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb193-1"><a href="composition.html#cb193-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>()    <span class="co">#  type 1 = the diversity estimator</span></span>
+<span id="cb193-2"><a href="composition.html#cb193-2" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>()    <span class="co">#  type 2 = the survey coverage</span></span>
+<span id="cb193-3"><a href="composition.html#cb193-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_14-1.png" width="672" /></p>
 <p>At this end of this section we will demonstrate how to create your own plots using the iNEXT output.</p>
 <p><strong>Multiple strata</strong></p>
 <p>The iNEXT package gets really interesting when we start to compare multiple different strata. e.g. different treatment types or species groupings.</p>
 <p>The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories.</p>
 <p>We will compare the different categories using the <code>feature_type</code> column in the covariate file. We match the ‘placenames’ in our locations dataframe with the corresponding capture data in <code>total_obs</code> using the <code>%in%</code> command.</p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb197-1"><a href="composition.html#cb197-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the locations data frame</span></span>
-<span id="cb197-2"><a href="composition.html#cb197-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-3"><a href="composition.html#cb197-3" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
-<span id="cb197-4"><a href="composition.html#cb197-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-5"><a href="composition.html#cb197-5" aria-hidden="true" tabindex="-1"></a><span class="co"># We first want to create a data subset for each of the strata we are interested in:</span></span>
-<span id="cb197-6"><a href="composition.html#cb197-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-7"><a href="composition.html#cb197-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The treatment types for each Deployment.Location.ID are in the sta file</span></span>
-<span id="cb197-8"><a href="composition.html#cb197-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an object containing all of the site ID&#39;s for the &quot;Offline&quot; cameras</span></span>
-<span id="cb197-9"><a href="composition.html#cb197-9" aria-hidden="true" tabindex="-1"></a>off <span class="ot">&lt;-</span> locs<span class="sc">$</span>placename[locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;Offline&quot;</span>]</span>
-<span id="cb197-10"><a href="composition.html#cb197-10" aria-hidden="true" tabindex="-1"></a><span class="co"># And &quot;HumanUse&quot; cameras</span></span>
-<span id="cb197-11"><a href="composition.html#cb197-11" aria-hidden="true" tabindex="-1"></a>hum <span class="ot">&lt;-</span> locs<span class="sc">$</span>placename[locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;HumanUse&quot;</span>]</span>
-<span id="cb197-12"><a href="composition.html#cb197-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-13"><a href="composition.html#cb197-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
-<span id="cb197-14"><a href="composition.html#cb197-14" aria-hidden="true" tabindex="-1"></a>strata <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb197-15"><a href="composition.html#cb197-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb197-16"><a href="composition.html#cb197-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relvent strata</span></span>
-<span id="cb197-17"><a href="composition.html#cb197-17" aria-hidden="true" tabindex="-1"></a>strata[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">colSums</span>(total_obs[total_obs<span class="sc">$</span>placename <span class="sc">%in%</span> off, sp_summary<span class="sc">$</span>sp])</span>
-<span id="cb197-18"><a href="composition.html#cb197-18" aria-hidden="true" tabindex="-1"></a>strata[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">colSums</span>(total_obs[total_obs<span class="sc">$</span>placename <span class="sc">%in%</span> hum, sp_summary<span class="sc">$</span>sp])</span>
-<span id="cb197-19"><a href="composition.html#cb197-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
-<span id="cb197-20"><a href="composition.html#cb197-20" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(strata) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb194-1"><a href="composition.html#cb194-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the locations data frame</span></span>
+<span id="cb194-2"><a href="composition.html#cb194-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-3"><a href="composition.html#cb194-3" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
+<span id="cb194-4"><a href="composition.html#cb194-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-5"><a href="composition.html#cb194-5" aria-hidden="true" tabindex="-1"></a><span class="co"># We first want to create a data subset for each of the strata we are interested in:</span></span>
+<span id="cb194-6"><a href="composition.html#cb194-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-7"><a href="composition.html#cb194-7" aria-hidden="true" tabindex="-1"></a><span class="co"># The treatment types for each Deployment.Location.ID are in the sta file</span></span>
+<span id="cb194-8"><a href="composition.html#cb194-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an object containing all of the site ID&#39;s for the &quot;Offline&quot; cameras</span></span>
+<span id="cb194-9"><a href="composition.html#cb194-9" aria-hidden="true" tabindex="-1"></a>off <span class="ot">&lt;-</span> locs<span class="sc">$</span>placename[locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;Offline&quot;</span>]</span>
+<span id="cb194-10"><a href="composition.html#cb194-10" aria-hidden="true" tabindex="-1"></a><span class="co"># And &quot;HumanUse&quot; cameras</span></span>
+<span id="cb194-11"><a href="composition.html#cb194-11" aria-hidden="true" tabindex="-1"></a>hum <span class="ot">&lt;-</span> locs<span class="sc">$</span>placename[locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;HumanUse&quot;</span>]</span>
+<span id="cb194-12"><a href="composition.html#cb194-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-13"><a href="composition.html#cb194-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
+<span id="cb194-14"><a href="composition.html#cb194-14" aria-hidden="true" tabindex="-1"></a>strata <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb194-15"><a href="composition.html#cb194-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb194-16"><a href="composition.html#cb194-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relvent strata</span></span>
+<span id="cb194-17"><a href="composition.html#cb194-17" aria-hidden="true" tabindex="-1"></a>strata[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">colSums</span>(total_obs[total_obs<span class="sc">$</span>placename <span class="sc">%in%</span> off, sp_summary<span class="sc">$</span>sp])</span>
+<span id="cb194-18"><a href="composition.html#cb194-18" aria-hidden="true" tabindex="-1"></a>strata[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">colSums</span>(total_obs[total_obs<span class="sc">$</span>placename <span class="sc">%in%</span> hum, sp_summary<span class="sc">$</span>sp])</span>
+<span id="cb194-19"><a href="composition.html#cb194-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
+<span id="cb194-20"><a href="composition.html#cb194-20" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(strata) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
 <p>Then, as before, run your iNEXT model and examine the output:</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb198-1"><a href="composition.html#cb198-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(strata, <span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>)</span>
-<span id="cb198-2"><a href="composition.html#cb198-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span>
-<span id="cb198-3"><a href="composition.html#cb198-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span>
-<span id="cb198-4"><a href="composition.html#cb198-4" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb195-1"><a href="composition.html#cb195-1" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(strata, <span class="at">datatype=</span><span class="st">&quot;abundance&quot;</span>)</span>
+<span id="cb195-2"><a href="composition.html#cb195-2" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span>
+<span id="cb195-3"><a href="composition.html#cb195-3" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> <span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">2</span>)<span class="sc">+</span> <span class="fu">theme_classic</span>() </span>
+<span id="cb195-4"><a href="composition.html#cb195-4" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_16-1.png" width="672" /></p>
 <p>From the plot on the left you can see that the ‘HumanUse’ strata detected more species than the ‘Offline’ strata. The plot on the right suggests that we have likely sampled all of the species that will be detected within these habitats (samples are ‘complete’).</p>
 </div>
@@ -1102,68 +1105,68 @@ statistics for a series of rarefied and extrapolated samples
 <div id="survey-station-example" class="section level3 hasAnchor" number="9.4.1">
 <h3><span class="header-section-number">9.4.1</span> Survey station example<a href="composition.html#survey-station-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Lets build this example for survey stations using our data:</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb199-1"><a href="composition.html#cb199-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As before we can use out total_obs dataframe.</span></span>
-<span id="cb199-2"><a href="composition.html#cb199-2" aria-hidden="true" tabindex="-1"></a>inc_dat <span class="ot">&lt;-</span> total_obs <span class="sc">%&gt;%</span> </span>
-<span id="cb199-3"><a href="composition.html#cb199-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(sp_summary<span class="sc">$</span>sp, <span class="sc">~+</span><span class="fu">as.logical</span>(.x)))  <span class="co"># Turn species counts into 0&#39;s and 1&#39;s</span></span>
-<span id="cb199-4"><a href="composition.html#cb199-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb199-5"><a href="composition.html#cb199-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
-<span id="cb199-6"><a href="composition.html#cb199-6" aria-hidden="true" tabindex="-1"></a>inc_locations <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb199-7"><a href="composition.html#cb199-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb199-8"><a href="composition.html#cb199-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relvent locations</span></span>
-<span id="cb199-9"><a href="composition.html#cb199-9" aria-hidden="true" tabindex="-1"></a>inc_locations[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">length</span>(off),  <span class="co"># First count the number of stations</span></span>
-<span id="cb199-10"><a href="composition.html#cb199-10" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
-<span id="cb199-11"><a href="composition.html#cb199-11" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> off, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
-<span id="cb199-12"><a href="composition.html#cb199-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb199-13"><a href="composition.html#cb199-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb199-14"><a href="composition.html#cb199-14" aria-hidden="true" tabindex="-1"></a>inc_locations[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">length</span>(hum),  <span class="co"># Count the number of stations</span></span>
-<span id="cb199-15"><a href="composition.html#cb199-15" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
-<span id="cb199-16"><a href="composition.html#cb199-16" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> hum, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
-<span id="cb199-17"><a href="composition.html#cb199-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb199-18"><a href="composition.html#cb199-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
-<span id="cb199-19"><a href="composition.html#cb199-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(inc_locations) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb196-1"><a href="composition.html#cb196-1" aria-hidden="true" tabindex="-1"></a><span class="co"># As before we can use out total_obs dataframe.</span></span>
+<span id="cb196-2"><a href="composition.html#cb196-2" aria-hidden="true" tabindex="-1"></a>inc_dat <span class="ot">&lt;-</span> total_obs <span class="sc">%&gt;%</span> </span>
+<span id="cb196-3"><a href="composition.html#cb196-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="fu">across</span>(sp_summary<span class="sc">$</span>sp, <span class="sc">~+</span><span class="fu">as.logical</span>(.x)))  <span class="co"># Turn species counts into 0&#39;s and 1&#39;s</span></span>
+<span id="cb196-4"><a href="composition.html#cb196-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-5"><a href="composition.html#cb196-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
+<span id="cb196-6"><a href="composition.html#cb196-6" aria-hidden="true" tabindex="-1"></a>inc_locations <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb196-7"><a href="composition.html#cb196-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-8"><a href="composition.html#cb196-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relvent locations</span></span>
+<span id="cb196-9"><a href="composition.html#cb196-9" aria-hidden="true" tabindex="-1"></a>inc_locations[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">length</span>(off),  <span class="co"># First count the number of stations</span></span>
+<span id="cb196-10"><a href="composition.html#cb196-10" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
+<span id="cb196-11"><a href="composition.html#cb196-11" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> off, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
+<span id="cb196-12"><a href="composition.html#cb196-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-13"><a href="composition.html#cb196-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-14"><a href="composition.html#cb196-14" aria-hidden="true" tabindex="-1"></a>inc_locations[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">length</span>(hum),  <span class="co"># Count the number of stations</span></span>
+<span id="cb196-15"><a href="composition.html#cb196-15" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
+<span id="cb196-16"><a href="composition.html#cb196-16" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> hum, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
+<span id="cb196-17"><a href="composition.html#cb196-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb196-18"><a href="composition.html#cb196-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
+<span id="cb196-19"><a href="composition.html#cb196-19" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(inc_locations) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
 <p>And let’s run our <code>iNext</code> model:</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb200-1"><a href="composition.html#cb200-1" aria-hidden="true" tabindex="-1"></a>out.inc <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_locations, <span class="at">q=</span><span class="dv">0</span>, <span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span>)</span>
-<span id="cb200-2"><a href="composition.html#cb200-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample‐size‐based R/E curves</span></span>
-<span id="cb200-3"><a href="composition.html#cb200-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
-<span id="cb200-4"><a href="composition.html#cb200-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Locations surveyed&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb200-5"><a href="composition.html#cb200-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb197-1"><a href="composition.html#cb197-1" aria-hidden="true" tabindex="-1"></a>out.inc <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_locations, <span class="at">q=</span><span class="dv">0</span>, <span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span>)</span>
+<span id="cb197-2"><a href="composition.html#cb197-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample‐size‐based R/E curves</span></span>
+<span id="cb197-3"><a href="composition.html#cb197-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
+<span id="cb197-4"><a href="composition.html#cb197-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Locations surveyed&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb197-5"><a href="composition.html#cb197-5" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_19-1.png" width="672" /></p>
 <p>So it looks like the human use features are more diverse than the offline features.</p>
 </div>
 <div id="sampling-duration-example" class="section level3 hasAnchor" number="9.4.2">
 <h3><span class="header-section-number">9.4.2</span> Sampling duration example<a href="composition.html#sampling-duration-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>If we want to explore the species accumulation patterns as a function of the number of survey nights, we can make use of the <code>...weekly_observations</code> dataframes.</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb201-1"><a href="composition.html#cb201-1" aria-hidden="true" tabindex="-1"></a>week_obs<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb201-2"><a href="composition.html#cb201-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-3"><a href="composition.html#cb201-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn it into binary incidents</span></span>
-<span id="cb201-4"><a href="composition.html#cb201-4" aria-hidden="true" tabindex="-1"></a>inc_dat <span class="ot">&lt;-</span> week_obs <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(sp_summary<span class="sc">$</span>sp, <span class="sc">~+</span><span class="fu">as.logical</span>(.x))) </span>
-<span id="cb201-5"><a href="composition.html#cb201-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-6"><a href="composition.html#cb201-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
-<span id="cb201-7"><a href="composition.html#cb201-7" aria-hidden="true" tabindex="-1"></a>inc_time <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb201-8"><a href="composition.html#cb201-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-9"><a href="composition.html#cb201-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relevent strata</span></span>
-<span id="cb201-10"><a href="composition.html#cb201-10" aria-hidden="true" tabindex="-1"></a>inc_time[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> off,]),  <span class="co"># Count the number of weeks we have data for in each strata</span></span>
-<span id="cb201-11"><a href="composition.html#cb201-11" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
-<span id="cb201-12"><a href="composition.html#cb201-12" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> off, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
-<span id="cb201-13"><a href="composition.html#cb201-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-14"><a href="composition.html#cb201-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-15"><a href="composition.html#cb201-15" aria-hidden="true" tabindex="-1"></a>inc_time[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> hum,]),  <span class="co"># Count the number of stations</span></span>
-<span id="cb201-16"><a href="composition.html#cb201-16" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
-<span id="cb201-17"><a href="composition.html#cb201-17" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> hum, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
-<span id="cb201-18"><a href="composition.html#cb201-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb201-19"><a href="composition.html#cb201-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
-<span id="cb201-20"><a href="composition.html#cb201-20" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(inc_time) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb198-1"><a href="composition.html#cb198-1" aria-hidden="true" tabindex="-1"></a>week_obs<span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb198-2"><a href="composition.html#cb198-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-3"><a href="composition.html#cb198-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Turn it into binary incidents</span></span>
+<span id="cb198-4"><a href="composition.html#cb198-4" aria-hidden="true" tabindex="-1"></a>inc_dat <span class="ot">&lt;-</span> week_obs <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="fu">across</span>(sp_summary<span class="sc">$</span>sp, <span class="sc">~+</span><span class="fu">as.logical</span>(.x))) </span>
+<span id="cb198-5"><a href="composition.html#cb198-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-6"><a href="composition.html#cb198-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a new empty list</span></span>
+<span id="cb198-7"><a href="composition.html#cb198-7" aria-hidden="true" tabindex="-1"></a>inc_time <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb198-8"><a href="composition.html#cb198-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-9"><a href="composition.html#cb198-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Only sum the data for each relevent strata</span></span>
+<span id="cb198-10"><a href="composition.html#cb198-10" aria-hidden="true" tabindex="-1"></a>inc_time[[<span class="dv">1</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> off,]),  <span class="co"># Count the number of weeks we have data for in each strata</span></span>
+<span id="cb198-11"><a href="composition.html#cb198-11" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
+<span id="cb198-12"><a href="composition.html#cb198-12" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> off, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
+<span id="cb198-13"><a href="composition.html#cb198-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-14"><a href="composition.html#cb198-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-15"><a href="composition.html#cb198-15" aria-hidden="true" tabindex="-1"></a>inc_time[[<span class="dv">2</span>]] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fu">nrow</span>(inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> hum,]),  <span class="co"># Count the number of stations</span></span>
+<span id="cb198-16"><a href="composition.html#cb198-16" aria-hidden="true" tabindex="-1"></a>                     <span class="co"># Then subset the detections to those stations, sum the columns, and sort the incidents</span></span>
+<span id="cb198-17"><a href="composition.html#cb198-17" aria-hidden="true" tabindex="-1"></a>                     inc_dat[inc_dat<span class="sc">$</span>placename <span class="sc">%in%</span> hum, sp_summary<span class="sc">$</span>sp] <span class="sc">%&gt;%</span>  <span class="fu">colSums</span>() <span class="sc">%&gt;%</span> <span class="fu">sort</span>(<span class="at">decreasing=</span>T))</span>
+<span id="cb198-18"><a href="composition.html#cb198-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb198-19"><a href="composition.html#cb198-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Give them names</span></span>
+<span id="cb198-20"><a href="composition.html#cb198-20" aria-hidden="true" tabindex="-1"></a><span class="fu">names</span>(inc_time) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>)</span></code></pre></div>
 <p>And run the model:</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb202-1"><a href="composition.html#cb202-1" aria-hidden="true" tabindex="-1"></a>out.inc <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="dv">0</span>, <span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb199"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb199-1"><a href="composition.html#cb199-1" aria-hidden="true" tabindex="-1"></a>out.inc <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="dv">0</span>, <span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span>)</span></code></pre></div>
 <pre><code>## Warning in Fun(x[[i]], q, names(x)[i]): Insufficient data to provide reliable
 ## estimators and associated s.e.
 
 ## Warning in Fun(x[[i]], q, names(x)[i]): Insufficient data to provide reliable
 ## estimators and associated s.e.</code></pre>
-<div class="sourceCode" id="cb204"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb204-1"><a href="composition.html#cb204-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample‐size‐based R/E curves</span></span>
-<span id="cb204-2"><a href="composition.html#cb204-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
-<span id="cb204-3"><a href="composition.html#cb204-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Camera days&quot;</span>) <span class="sc">+</span></span>
-<span id="cb204-4"><a href="composition.html#cb204-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb201-1"><a href="composition.html#cb201-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Sample‐size‐based R/E curves</span></span>
+<span id="cb201-2"><a href="composition.html#cb201-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
+<span id="cb201-3"><a href="composition.html#cb201-3" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Camera days&quot;</span>) <span class="sc">+</span></span>
+<span id="cb201-4"><a href="composition.html#cb201-4" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_21-1.png" width="672" /></p>
 <p>Which suggests the same pattern!</p>
 </div>
@@ -1180,42 +1183,42 @@ statistics for a series of rarefied and extrapolated samples
 <p>One issue with species richness assessments is that they weight all species equally, thus a community with 12 species all present in equal abundances will give you the same richness value as a high skewed community with one highly abundant species, and 11 very rare ones. Consequently, you might want to estimate species diversity.</p>
 <p>Luckily, the iNEXT package is well suited for comparisons of diversity indices through the use of hill numbers - of which the ‘q’ value represents the traditional Shannon (q=1) and Simpson (q=2) diversity indices (species richness: q = 0). <em>Note</em> Increasing values of q reduces the influence of rare species on your estimate of community diversity.</p>
 <p>For example, we might want to compare the species diversity across our two focal strata:</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb205-1"><a href="composition.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We also introduce the object t -&gt; which reflects the range of values over which you want to predict species richness</span></span>
-<span id="cb205-2"><a href="composition.html#cb205-2" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>) ,<span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span> )</span>
-<span id="cb205-3"><a href="composition.html#cb205-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb205-4"><a href="composition.html#cb205-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>, <span class="at">facet.var=</span><span class="st">&quot;Order.q&quot;</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() </span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb202-1"><a href="composition.html#cb202-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We also introduce the object t -&gt; which reflects the range of values over which you want to predict species richness</span></span>
+<span id="cb202-2"><a href="composition.html#cb202-2" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>) ,<span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span> )</span>
+<span id="cb202-3"><a href="composition.html#cb202-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb202-4"><a href="composition.html#cb202-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>, <span class="at">facet.var=</span><span class="st">&quot;Order.q&quot;</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() </span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_22-1.png" width="672" /></p>
 <p>The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the different inst just driven by several rarely encountered species).</p>
 <p>Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 1000 survey units:</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb206-1"><a href="composition.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To generate predictions for specific amounts of survey effort, we make use of the variable t</span></span>
-<span id="cb206-2"><a href="composition.html#cb206-2" aria-hidden="true" tabindex="-1"></a><span class="co"># T specifies the values you want iNEXt to calculate diversity for</span></span>
-<span id="cb206-3"><a href="composition.html#cb206-3" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>) ,<span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span>, <span class="at">size=</span><span class="fu">c</span>(<span class="dv">1000</span>))</span>
-<span id="cb206-4"><a href="composition.html#cb206-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb206-5"><a href="composition.html#cb206-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The lapply function applies the same logic across elements in a list</span></span>
-<span id="cb206-6"><a href="composition.html#cb206-6" aria-hidden="true" tabindex="-1"></a>point_estimate <span class="ot">&lt;-</span> out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based[out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based<span class="sc">$</span>t<span class="sc">==</span><span class="dv">1000</span>,] </span>
-<span id="cb206-7"><a href="composition.html#cb206-7" aria-hidden="true" tabindex="-1"></a>point_estimate</span></code></pre></div>
+<div class="sourceCode" id="cb203"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb203-1"><a href="composition.html#cb203-1" aria-hidden="true" tabindex="-1"></a><span class="co"># To generate predictions for specific amounts of survey effort, we make use of the variable t</span></span>
+<span id="cb203-2"><a href="composition.html#cb203-2" aria-hidden="true" tabindex="-1"></a><span class="co"># T specifies the values you want iNEXt to calculate diversity for</span></span>
+<span id="cb203-3"><a href="composition.html#cb203-3" aria-hidden="true" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>) ,<span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span>, <span class="at">size=</span><span class="fu">c</span>(<span class="dv">1000</span>))</span>
+<span id="cb203-4"><a href="composition.html#cb203-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb203-5"><a href="composition.html#cb203-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The lapply function applies the same logic across elements in a list</span></span>
+<span id="cb203-6"><a href="composition.html#cb203-6" aria-hidden="true" tabindex="-1"></a>point_estimate <span class="ot">&lt;-</span> out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based[out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based<span class="sc">$</span>t<span class="sc">==</span><span class="dv">1000</span>,] </span>
+<span id="cb203-7"><a href="composition.html#cb203-7" aria-hidden="true" tabindex="-1"></a>point_estimate</span></code></pre></div>
 <pre><code>##    Assemblage    t      Method Order.q        qD    qD.LCL    qD.UCL        SC
-## 1     Offline 1000 Rarefaction       0  9.908397  9.171271 10.645523 0.9941691
-## 5     Offline 1000 Rarefaction       1  5.203867  4.703759  5.703975 0.9941691
-## 9     Offline 1000 Rarefaction       2  3.772972  3.288743  4.257200 0.9941691
-## 13   HumanUse 1000 Rarefaction       0 13.700080 11.835773 15.564388 0.9925555
-## 17   HumanUse 1000 Rarefaction       1  8.529924  7.931943  9.127905 0.9925555
-## 21   HumanUse 1000 Rarefaction       2  7.451187  6.920853  7.981521 0.9925555
+## 1     Offline 1000 Rarefaction       0  9.908397  9.310635 10.506159 0.9941691
+## 5     Offline 1000 Rarefaction       1  5.203867  4.741554  5.666180 0.9941691
+## 9     Offline 1000 Rarefaction       2  3.772972  3.304110  4.241833 0.9941691
+## 13   HumanUse 1000 Rarefaction       0 13.700080 11.579095 15.821066 0.9925555
+## 17   HumanUse 1000 Rarefaction       1  8.529924  7.923574  9.136275 0.9925555
+## 21   HumanUse 1000 Rarefaction       2  7.451187  6.912189  7.990185 0.9925555
 ##       SC.LCL    SC.UCL
-## 1  0.9911385 0.9971997
-## 5  0.9911385 0.9971997
-## 9  0.9911385 0.9971997
-## 13 0.9879630 0.9971480
-## 17 0.9879630 0.9971480
-## 21 0.9879630 0.9971480</code></pre>
-<div class="sourceCode" id="cb208"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb208-1"><a href="composition.html#cb208-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a nice ggplot!</span></span>
-<span id="cb208-2"><a href="composition.html#cb208-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(point_estimate, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="fl">0.9</span>, <span class="fl">1.9</span>,</span>
-<span id="cb208-3"><a href="composition.html#cb208-3" aria-hidden="true" tabindex="-1"></a>                                <span class="fl">0.1</span>, <span class="fl">1.1</span>, <span class="fl">2.1</span>), <span class="at">y=</span>qD, <span class="at">colour=</span>Assemblage)) <span class="sc">+</span> </span>
-<span id="cb208-4"><a href="composition.html#cb208-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
-<span id="cb208-5"><a href="composition.html#cb208-5" aria-hidden="true" tabindex="-1"></a>       <span class="co">#scale_x_discrete(breaks=c(&quot;1&quot;,&quot;2&quot;),labels= c(&quot;1&quot;,&quot;2&quot;)) +</span></span>
-<span id="cb208-6"><a href="composition.html#cb208-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>qD.LCL, <span class="at">ymax=</span>qD.UCL), <span class="at">width=</span>.<span class="dv">01</span>) <span class="sc">+</span></span>
-<span id="cb208-7"><a href="composition.html#cb208-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Diversity&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Diversity at 1000 survey days&quot;</span>) <span class="sc">+</span></span>
-<span id="cb208-8"><a href="composition.html#cb208-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_point</span>() </span></code></pre></div>
+## 1  0.9911212 0.9972170
+## 5  0.9911212 0.9972170
+## 9  0.9911212 0.9972170
+## 13 0.9872792 0.9978317
+## 17 0.9872792 0.9978317
+## 21 0.9872792 0.9978317</code></pre>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb205-1"><a href="composition.html#cb205-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a nice ggplot!</span></span>
+<span id="cb205-2"><a href="composition.html#cb205-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(point_estimate, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.1</span>,<span class="fl">0.9</span>, <span class="fl">1.9</span>,</span>
+<span id="cb205-3"><a href="composition.html#cb205-3" aria-hidden="true" tabindex="-1"></a>                                <span class="fl">0.1</span>, <span class="fl">1.1</span>, <span class="fl">2.1</span>), <span class="at">y=</span>qD, <span class="at">colour=</span>Assemblage)) <span class="sc">+</span> </span>
+<span id="cb205-4"><a href="composition.html#cb205-4" aria-hidden="true" tabindex="-1"></a>       <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
+<span id="cb205-5"><a href="composition.html#cb205-5" aria-hidden="true" tabindex="-1"></a>       <span class="co">#scale_x_discrete(breaks=c(&quot;1&quot;,&quot;2&quot;),labels= c(&quot;1&quot;,&quot;2&quot;)) +</span></span>
+<span id="cb205-6"><a href="composition.html#cb205-6" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>qD.LCL, <span class="at">ymax=</span>qD.UCL), <span class="at">width=</span>.<span class="dv">01</span>) <span class="sc">+</span></span>
+<span id="cb205-7"><a href="composition.html#cb205-7" aria-hidden="true" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Diversity&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Diversity at 1000 survey days&quot;</span>) <span class="sc">+</span></span>
+<span id="cb205-8"><a href="composition.html#cb205-8" aria-hidden="true" tabindex="-1"></a>       <span class="fu">geom_point</span>() </span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_23-1.png" width="672" /></p>
 </div>
 <div id="more-examples-in-the-literature" class="section level3 hasAnchor" number="9.5.2">
@@ -1242,38 +1245,38 @@ following methodology paper (Chao et al. 2014) and the application paper (Hsieh
 scaling or NMDS).</p>
 <p>For a fantastic (although now somewhat dated) blog on NMDS methods see: <a href="https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/">Sample(ecology)’s NMDS tutorial in R</a>.</p>
 <p>Luckily a basic NMDS is very easy to run from our <code>...total_observations</code> dataframe:</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb209-1"><a href="composition.html#cb209-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;vegan&quot;)</span></span>
-<span id="cb209-2"><a href="composition.html#cb209-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
-<span id="cb209-3"><a href="composition.html#cb209-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import your count data</span></span>
-<span id="cb209-4"><a href="composition.html#cb209-4" aria-hidden="true" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb209-5"><a href="composition.html#cb209-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-6"><a href="composition.html#cb209-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Import the location and covariate data</span></span>
-<span id="cb209-7"><a href="composition.html#cb209-7" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
-<span id="cb209-8"><a href="composition.html#cb209-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-9"><a href="composition.html#cb209-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the covariates to your total_obs dataframe</span></span>
-<span id="cb209-10"><a href="composition.html#cb209-10" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(total_obs, locs)</span>
-<span id="cb209-11"><a href="composition.html#cb209-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-12"><a href="composition.html#cb209-12" aria-hidden="true" tabindex="-1"></a><span class="co"># To keep things simple, we will subset to HumanUse and Offline (as above)</span></span>
-<span id="cb209-13"><a href="composition.html#cb209-13" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>feature_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;HumanUse&quot;</span>, <span class="st">&quot;Offline&quot;</span>),]</span>
-<span id="cb209-14"><a href="composition.html#cb209-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-15"><a href="composition.html#cb209-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to categorical factors</span></span>
-<span id="cb209-16"><a href="composition.html#cb209-16" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
-<span id="cb209-17"><a href="composition.html#cb209-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor)</span>
-<span id="cb209-18"><a href="composition.html#cb209-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-19"><a href="composition.html#cb209-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to just the count columns</span></span>
-<span id="cb209-20"><a href="composition.html#cb209-20" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> dat[,sp_summary<span class="sc">$</span>sp]</span>
-<span id="cb209-21"><a href="composition.html#cb209-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb209-22"><a href="composition.html#cb209-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Covert it into a matrix</span></span>
-<span id="cb209-23"><a href="composition.html#cb209-23" aria-hidden="true" tabindex="-1"></a>m_counts <span class="ot">&lt;-</span>  <span class="fu">as.matrix</span>(counts)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb206-1"><a href="composition.html#cb206-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(&quot;vegan&quot;)</span></span>
+<span id="cb206-2"><a href="composition.html#cb206-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(vegan)</span>
+<span id="cb206-3"><a href="composition.html#cb206-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Import your count data</span></span>
+<span id="cb206-4"><a href="composition.html#cb206-4" aria-hidden="true" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb206-5"><a href="composition.html#cb206-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-6"><a href="composition.html#cb206-6" aria-hidden="true" tabindex="-1"></a><span class="co">#Import the location and covariate data</span></span>
+<span id="cb206-7"><a href="composition.html#cb206-7" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
+<span id="cb206-8"><a href="composition.html#cb206-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-9"><a href="composition.html#cb206-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the covariates to your total_obs dataframe</span></span>
+<span id="cb206-10"><a href="composition.html#cb206-10" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(total_obs, locs)</span>
+<span id="cb206-11"><a href="composition.html#cb206-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-12"><a href="composition.html#cb206-12" aria-hidden="true" tabindex="-1"></a><span class="co"># To keep things simple, we will subset to HumanUse and Offline (as above)</span></span>
+<span id="cb206-13"><a href="composition.html#cb206-13" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat[dat<span class="sc">$</span>feature_type <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;HumanUse&quot;</span>, <span class="st">&quot;Offline&quot;</span>),]</span>
+<span id="cb206-14"><a href="composition.html#cb206-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-15"><a href="composition.html#cb206-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert to categorical factors</span></span>
+<span id="cb206-16"><a href="composition.html#cb206-16" aria-hidden="true" tabindex="-1"></a>dat <span class="ot">&lt;-</span> dat <span class="sc">%&gt;%</span> </span>
+<span id="cb206-17"><a href="composition.html#cb206-17" aria-hidden="true" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor)</span>
+<span id="cb206-18"><a href="composition.html#cb206-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-19"><a href="composition.html#cb206-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset to just the count columns</span></span>
+<span id="cb206-20"><a href="composition.html#cb206-20" aria-hidden="true" tabindex="-1"></a>counts <span class="ot">&lt;-</span> dat[,sp_summary<span class="sc">$</span>sp]</span>
+<span id="cb206-21"><a href="composition.html#cb206-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb206-22"><a href="composition.html#cb206-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Covert it into a matrix</span></span>
+<span id="cb206-23"><a href="composition.html#cb206-23" aria-hidden="true" tabindex="-1"></a>m_counts <span class="ot">&lt;-</span>  <span class="fu">as.matrix</span>(counts)</span></code></pre></div>
 <p>We are now ready to run our NMDS model:</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb210-1"><a href="composition.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># To make sure we all get the same result</span></span>
-<span id="cb210-2"><a href="composition.html#cb210-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb210-3"><a href="composition.html#cb210-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run metaMDS on the count matrix using the &quot; Bray-Curtis dissimilarity&quot; note others are available</span></span>
-<span id="cb210-4"><a href="composition.html#cb210-4" aria-hidden="true" tabindex="-1"></a>nmds <span class="ot">=</span> <span class="fu">metaMDS</span>(m_counts,          <span class="co"># The count matrix</span></span>
-<span id="cb210-5"><a href="composition.html#cb210-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">distance =</span> <span class="st">&quot;bray&quot;</span>, <span class="co"># The method of solving </span></span>
-<span id="cb210-6"><a href="composition.html#cb210-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">trace=</span><span class="dv">0</span>)           <span class="co"># Supress the output - trace=1 is more informative</span></span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb207-1"><a href="composition.html#cb207-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>) <span class="co"># To make sure we all get the same result</span></span>
+<span id="cb207-2"><a href="composition.html#cb207-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb207-3"><a href="composition.html#cb207-3" aria-hidden="true" tabindex="-1"></a><span class="co"># run metaMDS on the count matrix using the &quot; Bray-Curtis dissimilarity&quot; note others are available</span></span>
+<span id="cb207-4"><a href="composition.html#cb207-4" aria-hidden="true" tabindex="-1"></a>nmds <span class="ot">=</span> <span class="fu">metaMDS</span>(m_counts,          <span class="co"># The count matrix</span></span>
+<span id="cb207-5"><a href="composition.html#cb207-5" aria-hidden="true" tabindex="-1"></a>               <span class="at">distance =</span> <span class="st">&quot;bray&quot;</span>, <span class="co"># The method of solving </span></span>
+<span id="cb207-6"><a href="composition.html#cb207-6" aria-hidden="true" tabindex="-1"></a>               <span class="at">trace=</span><span class="dv">0</span>)           <span class="co"># Supress the output - trace=1 is more informative</span></span></code></pre></div>
 <p>And check the output:</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb211-1"><a href="composition.html#cb211-1" aria-hidden="true" tabindex="-1"></a>nmds</span></code></pre></div>
+<div class="sourceCode" id="cb208"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb208-1"><a href="composition.html#cb208-1" aria-hidden="true" tabindex="-1"></a>nmds</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## metaMDS(comm = m_counts, distance = &quot;bray&quot;, trace = 0) 
@@ -1293,34 +1296,34 @@ scaling or NMDS).</p>
 <div id="extracting-data-for-plotting" class="section level3 hasAnchor" number="9.6.1">
 <h3><span class="header-section-number">9.6.1</span> Extracting data for plotting<a href="composition.html#extracting-data-for-plotting" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To make a nice plot of the NMDS data we need to learn how to extract the data from it:</p>
-<div class="sourceCode" id="cb213"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb213-1"><a href="composition.html#cb213-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a dataframe out of the x and Y scores</span></span>
-<span id="cb213-2"><a href="composition.html#cb213-2" aria-hidden="true" tabindex="-1"></a>site.scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scores</span>(nmds)<span class="sc">$</span>sites)</span>
-<span id="cb213-3"><a href="composition.html#cb213-3" aria-hidden="true" tabindex="-1"></a>species.scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scores</span>(nmds)<span class="sc">$</span>species)</span>
-<span id="cb213-4"><a href="composition.html#cb213-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb213-5"><a href="composition.html#cb213-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add in the covariate data</span></span>
-<span id="cb213-6"><a href="composition.html#cb213-6" aria-hidden="true" tabindex="-1"></a><span class="co">#add covariate columns to data frame </span></span>
-<span id="cb213-7"><a href="composition.html#cb213-7" aria-hidden="true" tabindex="-1"></a>site.scores<span class="sc">$</span>placename <span class="ot">&lt;-</span> dat<span class="sc">$</span>placename</span>
-<span id="cb213-8"><a href="composition.html#cb213-8" aria-hidden="true" tabindex="-1"></a>site.scores<span class="sc">$</span>feature_type <span class="ot">&lt;-</span> dat<span class="sc">$</span>feature_type</span>
-<span id="cb213-9"><a href="composition.html#cb213-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb213-10"><a href="composition.html#cb213-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign colors to our feature_types using viridis</span></span>
-<span id="cb213-11"><a href="composition.html#cb213-11" aria-hidden="true" tabindex="-1"></a><span class="co"># then use the turbo() function to assign each level a color</span></span>
-<span id="cb213-12"><a href="composition.html#cb213-12" aria-hidden="true" tabindex="-1"></a>col.cat <span class="ot">&lt;-</span> <span class="fu">cividis</span>(<span class="fu">length</span>(<span class="fu">levels</span>(dat<span class="sc">$</span>feature_type)))</span>
-<span id="cb213-13"><a href="composition.html#cb213-13" aria-hidden="true" tabindex="-1"></a><span class="co"># then we apply it to the dataframe</span></span>
-<span id="cb213-14"><a href="composition.html#cb213-14" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>colours <span class="ot">&lt;-</span> col.cat[dat<span class="sc">$</span>feature_type]</span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb210-1"><a href="composition.html#cb210-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a dataframe out of the x and Y scores</span></span>
+<span id="cb210-2"><a href="composition.html#cb210-2" aria-hidden="true" tabindex="-1"></a>site.scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scores</span>(nmds)<span class="sc">$</span>sites)</span>
+<span id="cb210-3"><a href="composition.html#cb210-3" aria-hidden="true" tabindex="-1"></a>species.scores <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scores</span>(nmds)<span class="sc">$</span>species)</span>
+<span id="cb210-4"><a href="composition.html#cb210-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb210-5"><a href="composition.html#cb210-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add in the covariate data</span></span>
+<span id="cb210-6"><a href="composition.html#cb210-6" aria-hidden="true" tabindex="-1"></a><span class="co">#add covariate columns to data frame </span></span>
+<span id="cb210-7"><a href="composition.html#cb210-7" aria-hidden="true" tabindex="-1"></a>site.scores<span class="sc">$</span>placename <span class="ot">&lt;-</span> dat<span class="sc">$</span>placename</span>
+<span id="cb210-8"><a href="composition.html#cb210-8" aria-hidden="true" tabindex="-1"></a>site.scores<span class="sc">$</span>feature_type <span class="ot">&lt;-</span> dat<span class="sc">$</span>feature_type</span>
+<span id="cb210-9"><a href="composition.html#cb210-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb210-10"><a href="composition.html#cb210-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Assign colors to our feature_types using viridis</span></span>
+<span id="cb210-11"><a href="composition.html#cb210-11" aria-hidden="true" tabindex="-1"></a><span class="co"># then use the turbo() function to assign each level a color</span></span>
+<span id="cb210-12"><a href="composition.html#cb210-12" aria-hidden="true" tabindex="-1"></a>col.cat <span class="ot">&lt;-</span> <span class="fu">cividis</span>(<span class="fu">length</span>(<span class="fu">levels</span>(dat<span class="sc">$</span>feature_type)))</span>
+<span id="cb210-13"><a href="composition.html#cb210-13" aria-hidden="true" tabindex="-1"></a><span class="co"># then we apply it to the dataframe</span></span>
+<span id="cb210-14"><a href="composition.html#cb210-14" aria-hidden="true" tabindex="-1"></a>dat<span class="sc">$</span>colours <span class="ot">&lt;-</span> col.cat[dat<span class="sc">$</span>feature_type]</span></code></pre></div>
 <p>Lets make a plot in base R using the default plotting functions:</p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb214-1"><a href="composition.html#cb214-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb214-2"><a href="composition.html#cb214-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an empty plot type=&quot;n</span></span>
-<span id="cb214-3"><a href="composition.html#cb214-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ordiplot</span>(nmds,<span class="at">type=</span><span class="st">&quot;n&quot;</span>, <span class="at">las=</span><span class="dv">1</span>,</span>
-<span id="cb214-4"><a href="composition.html#cb214-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>,<span class="fl">1.2</span>))</span>
-<span id="cb214-5"><a href="composition.html#cb214-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add an elipse corresponding to each site</span></span>
-<span id="cb214-6"><a href="composition.html#cb214-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ordiellipse</span>(nmds, <span class="at">groups=</span>dat<span class="sc">$</span>feature_type,</span>
-<span id="cb214-7"><a href="composition.html#cb214-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">col=</span>col.cat, <span class="at">lwd=</span><span class="dv">2</span>)</span>
-<span id="cb214-8"><a href="composition.html#cb214-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the species loadings</span></span>
-<span id="cb214-9"><a href="composition.html#cb214-9" aria-hidden="true" tabindex="-1"></a><span class="fu">orditorp</span>(nmds,<span class="at">display=</span><span class="st">&quot;species&quot;</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">air=</span><span class="fl">0.5</span>)</span>
-<span id="cb214-10"><a href="composition.html#cb214-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the site loadings</span></span>
-<span id="cb214-11"><a href="composition.html#cb214-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(site.scores<span class="sc">$</span>NMDS1, site.scores<span class="sc">$</span>NMDS2, <span class="at">col=</span>dat<span class="sc">$</span>colours, <span class="at">pch=</span><span class="dv">19</span>)</span>
-<span id="cb214-12"><a href="composition.html#cb214-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a legend</span></span>
-<span id="cb214-13"><a href="composition.html#cb214-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="fu">levels</span>(dat<span class="sc">$</span>feature_type), <span class="at">col=</span>col.cat, <span class="at">pch=</span><span class="dv">19</span> )</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb211-1"><a href="composition.html#cb211-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb211-2"><a href="composition.html#cb211-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Make an empty plot type=&quot;n</span></span>
+<span id="cb211-3"><a href="composition.html#cb211-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ordiplot</span>(nmds,<span class="at">type=</span><span class="st">&quot;n&quot;</span>, <span class="at">las=</span><span class="dv">1</span>,</span>
+<span id="cb211-4"><a href="composition.html#cb211-4" aria-hidden="true" tabindex="-1"></a>         <span class="at">xlim=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">1.5</span>,<span class="fl">1.2</span>))</span>
+<span id="cb211-5"><a href="composition.html#cb211-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add an elipse corresponding to each site</span></span>
+<span id="cb211-6"><a href="composition.html#cb211-6" aria-hidden="true" tabindex="-1"></a><span class="fu">ordiellipse</span>(nmds, <span class="at">groups=</span>dat<span class="sc">$</span>feature_type,</span>
+<span id="cb211-7"><a href="composition.html#cb211-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">col=</span>col.cat, <span class="at">lwd=</span><span class="dv">2</span>)</span>
+<span id="cb211-8"><a href="composition.html#cb211-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the species loadings</span></span>
+<span id="cb211-9"><a href="composition.html#cb211-9" aria-hidden="true" tabindex="-1"></a><span class="fu">orditorp</span>(nmds,<span class="at">display=</span><span class="st">&quot;species&quot;</span>,<span class="at">col=</span><span class="st">&quot;red&quot;</span>,<span class="at">air=</span><span class="fl">0.5</span>)</span>
+<span id="cb211-10"><a href="composition.html#cb211-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Add the site loadings</span></span>
+<span id="cb211-11"><a href="composition.html#cb211-11" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(site.scores<span class="sc">$</span>NMDS1, site.scores<span class="sc">$</span>NMDS2, <span class="at">col=</span>dat<span class="sc">$</span>colours, <span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb211-12"><a href="composition.html#cb211-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a legend</span></span>
+<span id="cb211-13"><a href="composition.html#cb211-13" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="fu">levels</span>(dat<span class="sc">$</span>feature_type), <span class="at">col=</span>col.cat, <span class="at">pch=</span><span class="dv">19</span> )</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch6_25-1.png" width="672" /></p>
 <p>The different <code>feature_types</code> to not differ majorly in their species compositions - there is a huge degree of overlap between sites.</p>
 <p>The NMDS framework is flexible - we can also add environmental covariates using <code>envfit</code> to explain differences we might find. Checkout <a href="https://jkzorz.github.io/2020/04/04/NMDS-extras.html">a great blog on this by Jackie Zorz</a> for more information!</p>

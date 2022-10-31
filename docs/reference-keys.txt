@@ -44,14 +44,16 @@ basic-trapping-summaries
 error-checks
 camera-locations
 skill-check-leaflet-maps
+making-corrections
 the-ultimate-leaflet-map
 do-all-images-have-a-deployment-associated-with-them
 camera-activity-checks
 skill-check-plotly
 the-ultimate-plotly-camera-activity-figure
+corrections
 detection-check
 taxonomy-check
-skill-check-taxise-package
+skill-check-taxize-package
 diel-activity-check
 conclusion
 data-creation
@@ -147,6 +149,7 @@ data-formatting
 accounting-for-sunrise-and-sunset
 species-comparisons
 treatment-comparisons
+seasonal-comparison
 on-your-own-4
 selected-further-reading
 density

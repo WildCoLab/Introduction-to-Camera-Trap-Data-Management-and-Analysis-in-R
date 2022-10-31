@@ -42,7 +42,11 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 Away you go!
 
-```{r, echo=F, eval=F}
+
+Emergency code if you get stuck!
+
+
+```{r, echo=T, eval=F}
 # start dates
 dep$start_date <- ymd(dep$start_date)
 
@@ -115,12 +119,13 @@ summary(camera_dist_list$dist)
 table(unique(img$placename) %in% unique(dep$placename))
 
 table(unique(dep$placename)  %in% unique(img$placename))
-dep[!dep$placename %in% img$placename,]
-
-# One station - I will have to fix!
 
 
-# ACtivity check
+
+
+# Activity check
+# Correct the brken deploymenrt
+#dep[dep$deployment_id=="LAC065_C187_030222", ]$end_date <- "2022-05-22"
 
 
 # Call the plot
@@ -171,7 +176,25 @@ for(i in seq_along(levels(dep$placename)))
 p
 
 
+#################
 
+# add an sp column to the img dataframe - remember the genus and species columns are not pasted together yet
+img$sp <- paste(img$genus, img$species, sep=".")
+
+
+### Species lists
+
+# First define vector of the headings you want to see (we will use this trick a lot later on)
+taxonomy_headings <- c("class", "order", "family", "genus", "species", "common_name")
+
+# Subset the image data to just those columns
+tmp<- img[,colnames(img)%in% taxonomy_headings]
+# Remove duplicates
+tmp <- tmp[duplicated(tmp)==F,]
+
+# Create an ordered species list
+sp_list  <- tmp[order(tmp$class, tmp$order, tmp$family, tmp$genus, tmp$species),]
+sp_list$sp <- paste(sp_list$genus, sp_list$species)
 ### DETCTION CHECK
 
 
@@ -277,8 +300,236 @@ fig
 img$hours <- NULL
 
 
+#####################################
+#####################################
+
+# Create dataframes
+
+dir.create("data/processed_data")
+
+# Remove observations without animals detected, where we don't know the species, and non-mammals
+ img_sub <- img %>% filter(is_blank==0,                # Remove the blanks
+                          is.na(img$species)==FALSE, # Remove classifications which don't have species 
+                          class=="Mammalia",          # Subset to mammals
+                          species!="sapiens")         # Subset to anything that isn't human
+
+table(img_sub$sp)
+
+##########################################
+# Create lookup
+
+# Remove any deployments without end dates
+tmp <- dep[is.na(dep$end_date)==F,]
+
+# Create an empty list to store our days
+daily_lookup <- list()
+
+# Loop through the deployment dataframe and create a row for every day the camera is active
+for(i in 1:nrow(tmp))
+{
+  if(ymd(tmp$start_date[i])!=ymd(tmp$end_date[i]))
+  {
+    daily_lookup[[i]] <- data.frame("date"=seq(ymd(tmp$start_date[i]), ymd(tmp$end_date[i]), by="days"), "placename"=tmp$placename[i])
+  }
+}
+
+# Merge the lists into a dataframe
+row_lookup <- bind_rows(daily_lookup)
+
+# Remove duplicates - when start and end days are the same for successive deployments
+row_lookup <- row_lookup[duplicated(row_lookup)==F,]
+
+independent <- 30
+
+# Check for a `group_size` variable? 
+table(img_sub$group_size)
+
+# Check for a 'number_ofobjects' variable
+table(img_sub$number_of_objects)
+
+img_sub$animal_count <- img_sub$number_of_objects
 
 
+
+# Events
+
+
+img_tmp <- img_sub %>%
+              arrange(deployment_id) %>%        # Order by deployment_id
+              group_by(deployment_id, sp) %>%   # Group species together
+              mutate(duration = int_length(timestamp %--% lag(timestamp))) # Calculate the gap bet
+
+
+
+library(stringr)
+# Give a random value to all cells
+img_tmp$event_id <- 9999
+
+# Create a counter
+counter <- 1
+
+# Make a unique code that has one more zero than rows in your dataframe  
+num_code <- as.numeric(paste0(nrow(img_sub),0))
+
+# Loop through img_tmp - if gap is greater than the threshold -> give it a new event ID
+for (i in 2:nrow(img_tmp)) {
+  img_tmp$event_id[i-1]  <- paste0("E", str_pad(counter, nchar(num_code), pad = "0"))
+  
+  if(is.na(img_tmp$duration[i]) | abs(img_tmp$duration[i]) > (independent * 60))
+    {
+      counter <- counter + 1
+    }
+}
+
+# Update the information for the last row - the loop above always updates the previous row... leaving the last row unchanged
+   
+ # group ID  for the last row
+ if(img_tmp$duration[nrow(img_tmp)] < (independent * 60)|
+    is.na(img_tmp$duration[nrow(img_tmp)])){
+   img_tmp$event_id[nrow(img_tmp)] <- img_tmp$event_id[nrow(img_tmp)-1]
+ } else{
+   counter <- counter + 1
+   img_tmp$event_id[nrow(img_tmp)] <- paste0("E", str_pad(counter, nchar(num_code), pad = "0"))
+ }
+
+# remove the duration column
+img_tmp$duration <- NULL
+ 
+
+
+ # find out the last and the first of the time in the group
+  top <- img_tmp %>% group_by(event_id) %>% top_n(1,timestamp) %>% dplyr::select(event_id, timestamp)
+  bot <- img_tmp %>% group_by(event_id) %>% top_n(-1,timestamp) %>% dplyr::select(event_id, timestamp)
+  names(bot)[2] <- c("timestamp_end")
+  
+  img_num <- img_tmp %>% group_by(event_id) %>% summarise(event_observations=n()) # number of images in the event
+  event_grp <- img_tmp %>% group_by(event_id) %>% summarise(event_groupsize=max(animal_count))
+
+  # calculate the duration and add the other elements
+  diff <-  top %>% left_join(bot, by="event_id") %>%
+      mutate(event_duration=abs(int_length(timestamp %--% timestamp_end))) %>%
+      left_join(event_grp, by="event_id")%>%
+      left_join(img_num, by="event_id")
+
+  # Remove columns you don't need
+  diff$timestamp   <-NULL
+  diff$timestamp_end <-NULL
+
+    # Merge the img_tmp with the event data
+  img_tmp <-  img_tmp %>%
+   left_join(diff,by="event_id")
+  
+  
+  # Remove duplicates
+ind_dat <- img_tmp[duplicated(img_tmp$event_id)==F,]
+
+# Make a  unique code for ever day and deployment where cameras were functioning
+tmp <- paste(row_lookup$date, row_lookup$placename)
+
+#Subset ind_dat to data that matches the unique codes
+ind_dat <- ind_dat[paste(substr(ind_dat$timestamp,1,10), ind_dat$placename) %in% tmp, ]
+
+ind_dat$sp <- as.factor(ind_dat$sp)
+
+
+
+write.csv(ind_dat, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_detections.csv"), row.names = F)
+
+# also write the cleaned all detections file (some activity analyses require it)
+#write.csv(img_tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_raw_detections.csv"), row.names = F)
+
+write.csv(row_lookup, paste0("data/processed_data/",ind_dat$project_id[1], "_daily_lookup.csv"), row.names = F)
+
+#Subset the columns
+tmp <- dep[, c("project_id", "placename", "longitude", "latitude", "feature_type")]
+# Remove duplicated rows
+tmp<- tmp[duplicated(tmp)==F,]
+# write the file
+write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_camera_locations.csv"), row.names = F)
+
+
+tmp <- sp_list[sp_list$sp %in% ind_dat$sp,]
+
+# Remove the 'verified' column
+tmp$verified <- NULL
+
+# We will replace the spaces in the species names with dots, this will make things easier for us later (as column headings with spaces in are annoying).
+library(stringr)
+tmp$sp <- str_replace(tmp$sp, " ", ".")
+
+
+write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_species_list.csv"), row.names = F)
+
+
+
+# Total counts
+  # Station / Month / deport / Species      
+  tmp <- row_lookup
+  
+  # Calculate the number of days at each site  
+  total_obs <- tmp %>% 
+      group_by(placename) %>%
+      summarise(days = n())
+  
+  # Convert to a data frame
+  total_obs <- as.data.frame(total_obs)
+  
+  # Add columns for each species  
+  total_obs[, levels(ind_dat$sp)] <- NA
+  # Duplicate for counts
+  total_count <- total_obs
+  # Test counter
+  i <-1
+  # For each station, count the number of individuals/observations
+  for(i in 1:nrow(total_obs))
+    {
+      tmp <- ind_dat[ind_dat$placename==total_obs$placename[i],]
+      
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
+      
+      total_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
+      total_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
+    }
+
+  
+# Save them
+    
+write.csv(total_obs, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_total_observations.csv"), row.names = F) 
+
+write.csv(total_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_total_counts.csv"), row.names = F) 
+
+
+# Monthly counts
+  # Station / Month / days / Covariates / Species      
+  tmp <- row_lookup
+  # Simplify the date to monthly
+  tmp$date <- substr(tmp$date,1,7)
+  
+  # Calculate the number of days in each month  
+  mon_obs <- tmp %>% 
+      group_by(placename,date ) %>%
+      summarise(days = n())
+  # Convert to a data frame
+  mon_obs <- as.data.frame(mon_obs)
+    
+  mon_obs[, levels(ind_dat$sp)] <- NA
+  mon_count <- mon_obs
+  # For each month, count the number of individuals/observations
+  for(i in 1:nrow(mon_obs))
+    {
+      tmp <- ind_dat[ind_dat$placename==mon_obs$placename[i] & substr(ind_dat$timestamp,1,7)== mon_obs$date[i],]
+      
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
+      
+      mon_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
+      mon_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
+      
+    }
+
+  
+write.csv(mon_obs, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_monthly_observations.csv"), row.names = F) 
+
+write.csv(mon_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_monthly_counts.csv"), row.names = F) 
 
 ```
 

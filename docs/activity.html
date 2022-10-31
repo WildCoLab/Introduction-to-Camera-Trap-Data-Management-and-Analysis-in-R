@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-28" />
+<meta name="date" content="2022-10-31" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -225,7 +225,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
 <li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
 <li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
-<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxise-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxise package</a></li>
+<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxize package</a></li>
 </ul></li>
 <li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
 <li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
@@ -358,7 +358,10 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
 </ul></li>
 <li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
-<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a>
+<ul>
+<li class="chapter" data-level="12.4.1" data-path="activity.html"><a href="activity.html#seasonal-comparison"><i class="fa fa-check"></i><b>12.4.1</b> Seasonal comparison</a></li>
+</ul></li>
 <li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
 <li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
 </ul></li>
@@ -439,8 +442,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="data-formatting" class="section level2 hasAnchor" number="12.2">
 <h2><span class="header-section-number">12.2</span> Data formatting<a href="activity.html#data-formatting" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>First, lets import the processed raw data file.</p>
-<div class="sourceCode" id="cb285"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb285-1"><a href="activity.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the data</span></span>
-<span id="cb285-2"><a href="activity.html#cb285-2" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_raw_detections.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb282"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb282-1"><a href="activity.html#cb282-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Import the data</span></span>
+<span id="cb282-2"><a href="activity.html#cb282-2" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_raw_detections.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <p>Which looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -645,7 +648,7 @@ ALG027
 NA
 </td>
 <td style="text-align:left;">
-Lynx canadensis
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
 canada lynx
@@ -754,7 +757,7 @@ ALG027
 NA
 </td>
 <td style="text-align:left;">
-Lynx canadensis
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
 canada lynx
@@ -863,7 +866,7 @@ ALG027
 NA
 </td>
 <td style="text-align:left;">
-Lynx canadensis
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
 canada lynx
@@ -972,7 +975,7 @@ ALG027
 NA
 </td>
 <td style="text-align:left;">
-Lynx canadensis
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
 canada lynx
@@ -1081,7 +1084,7 @@ ALG027
 NA
 </td>
 <td style="text-align:left;">
-Lynx canadensis
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
 canada lynx
@@ -1190,7 +1193,7 @@ ALG027
 NA
 </td>
 <td style="text-align:left;">
-Lynx canadensis
+Lynx.canadensis
 </td>
 <td style="text-align:left;">
 canada lynx
@@ -1215,10 +1218,10 @@ E000001
 </table>
 </div>
 <p>Then load the activity package:</p>
-<div class="sourceCode" id="cb286"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb286-1"><a href="activity.html#cb286-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
-<span id="cb286-2"><a href="activity.html#cb286-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(activity) </span></code></pre></div>
+<div class="sourceCode" id="cb283"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb283-1"><a href="activity.html#cb283-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the package</span></span>
+<span id="cb283-2"><a href="activity.html#cb283-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(activity) </span></code></pre></div>
 <p>If your cameras correct for daylight savings use the correct code, if they do not, use UTC.</p>
-<div class="sourceCode" id="cb287"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb287-1"><a href="activity.html#cb287-1" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(img<span class="sc">$</span>timestamp, <span class="at">tz=</span><span class="st">&quot;UTC&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb284"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb284-1"><a href="activity.html#cb284-1" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(img<span class="sc">$</span>timestamp, <span class="at">tz=</span><span class="st">&quot;UTC&quot;</span>)</span></code></pre></div>
 <p>Note - find your timezone code for the <code>tz=</code> call <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones">here</a>.</p>
 <div id="accounting-for-sunrise-and-sunset" class="section level3 hasAnchor" number="12.2.1">
 <h3><span class="header-section-number">12.2.1</span> Accounting for sunrise and sunset<a href="activity.html#accounting-for-sunrise-and-sunset" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1229,25 +1232,25 @@ E000001
 <p><strong>The average anchoring method</strong></p>
 <p>Instead of using the ‘human’ 24h clock, we can instead express animal activity relative to an important anchor point in the day (e.g. sunrise).</p>
 <p>NOTE -the transformation is not necessary at latitudes below 20°, or in studies with a duration of less than a month (below 40° latitude), as day length doesn’t chnage substantially.</p>
-<div class="sourceCode" id="cb288"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb288-1"><a href="activity.html#cb288-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to add latitude and longitude to our observations</span></span>
-<span id="cb288-2"><a href="activity.html#cb288-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import our station locations (and other covariates)</span></span>
-<span id="cb288-3"><a href="activity.html#cb288-3" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
-<span id="cb288-4"><a href="activity.html#cb288-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb288-5"><a href="activity.html#cb288-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add them to our data frame</span></span>
-<span id="cb288-6"><a href="activity.html#cb288-6" aria-hidden="true" tabindex="-1"></a>img_locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(img, locs)</span></code></pre></div>
+<div class="sourceCode" id="cb285"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb285-1"><a href="activity.html#cb285-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We need to add latitude and longitude to our observations</span></span>
+<span id="cb285-2"><a href="activity.html#cb285-2" aria-hidden="true" tabindex="-1"></a><span class="co"># import our station locations (and other covariates)</span></span>
+<span id="cb285-3"><a href="activity.html#cb285-3" aria-hidden="true" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
+<span id="cb285-4"><a href="activity.html#cb285-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb285-5"><a href="activity.html#cb285-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Add them to our data frame</span></span>
+<span id="cb285-6"><a href="activity.html#cb285-6" aria-hidden="true" tabindex="-1"></a>img_locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(img, locs)</span></code></pre></div>
 <pre><code>## Joining, by = c(&quot;project_id&quot;, &quot;placename&quot;)</code></pre>
-<div class="sourceCode" id="cb290"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb290-1"><a href="activity.html#cb290-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate solar time </span></span>
-<span id="cb290-2"><a href="activity.html#cb290-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">solartime</span> ( img_locs<span class="sc">$</span>timestamp, <span class="co"># the date time column </span></span>
-<span id="cb290-3"><a href="activity.html#cb290-3" aria-hidden="true" tabindex="-1"></a>                   img_locs<span class="sc">$</span>latitude,  <span class="co"># Latitude</span></span>
-<span id="cb290-4"><a href="activity.html#cb290-4" aria-hidden="true" tabindex="-1"></a>                   img_locs<span class="sc">$</span>longitude, <span class="co"># Longitude</span></span>
-<span id="cb290-5"><a href="activity.html#cb290-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">tz=</span><span class="sc">-</span><span class="dv">6</span>,              <span class="co"># an offset in numeric hours to UTC (Alberta is 6 hours behind)</span></span>
-<span id="cb290-6"><a href="activity.html#cb290-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">format=</span><span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
-<span id="cb290-7"><a href="activity.html#cb290-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb290-8"><a href="activity.html#cb290-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Although we want to use solar time, let&#39;s add both incase you want to explore the implications</span></span>
-<span id="cb290-9"><a href="activity.html#cb290-9" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>solar <span class="ot">&lt;-</span> tmp<span class="sc">$</span>solar</span>
-<span id="cb290-10"><a href="activity.html#cb290-10" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>clock <span class="ot">&lt;-</span> tmp<span class="sc">$</span>clock</span></code></pre></div>
+<div class="sourceCode" id="cb287"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb287-1"><a href="activity.html#cb287-1" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate solar time </span></span>
+<span id="cb287-2"><a href="activity.html#cb287-2" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">solartime</span> ( img_locs<span class="sc">$</span>timestamp, <span class="co"># the date time column </span></span>
+<span id="cb287-3"><a href="activity.html#cb287-3" aria-hidden="true" tabindex="-1"></a>                   img_locs<span class="sc">$</span>latitude,  <span class="co"># Latitude</span></span>
+<span id="cb287-4"><a href="activity.html#cb287-4" aria-hidden="true" tabindex="-1"></a>                   img_locs<span class="sc">$</span>longitude, <span class="co"># Longitude</span></span>
+<span id="cb287-5"><a href="activity.html#cb287-5" aria-hidden="true" tabindex="-1"></a>                   <span class="at">tz=</span><span class="sc">-</span><span class="dv">6</span>,              <span class="co"># an offset in numeric hours to UTC (Alberta is 6 hours behind)</span></span>
+<span id="cb287-6"><a href="activity.html#cb287-6" aria-hidden="true" tabindex="-1"></a>                   <span class="at">format=</span><span class="st">&quot;%Y-%m-%d %H:%M:%S&quot;</span>)</span>
+<span id="cb287-7"><a href="activity.html#cb287-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb287-8"><a href="activity.html#cb287-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Although we want to use solar time, let&#39;s add both incase you want to explore the implications</span></span>
+<span id="cb287-9"><a href="activity.html#cb287-9" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>solar <span class="ot">&lt;-</span> tmp<span class="sc">$</span>solar</span>
+<span id="cb287-10"><a href="activity.html#cb287-10" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>clock <span class="ot">&lt;-</span> tmp<span class="sc">$</span>clock</span></code></pre></div>
 <p>Let’s check out the relationship between these two indices:</p>
-<div class="sourceCode" id="cb291"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb291-1"><a href="activity.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(img_locs<span class="sc">$</span>solar, img_locs<span class="sc">$</span>clock)</span></code></pre></div>
+<div class="sourceCode" id="cb288"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb288-1"><a href="activity.html#cb288-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(img_locs<span class="sc">$</span>solar, img_locs<span class="sc">$</span>clock)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch9_7-1.png" width="672" /></p>
 <p>We are now ready to fit some models!</p>
 </div>
@@ -1256,35 +1259,35 @@ E000001
 <h2><span class="header-section-number">12.3</span> Species comparisons<a href="activity.html#species-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s start with a white-tailed deer and caribou example.</p>
 <p>Note we are reducing the number of replicates to 100 to speed up the process - typically people use 1000.</p>
-<div class="sourceCode" id="cb292"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb292-1"><a href="activity.html#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
-<span id="cb292-2"><a href="activity.html#cb292-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
-<span id="cb292-3"><a href="activity.html#cb292-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1)</span></code></pre></div>
+<div class="sourceCode" id="cb289"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb289-1"><a href="activity.html#cb289-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
+<span id="cb289-2"><a href="activity.html#cb289-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus.virginianus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
+<span id="cb289-3"><a href="activity.html#cb289-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch9_8-1.png" width="672" /></p>
 <p>Take a look at the raw data if you want.</p>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb293-1"><a href="activity.html#cb293-1" aria-hidden="true" tabindex="-1"></a>m1</span></code></pre></div>
+<div class="sourceCode" id="cb290"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb290-1"><a href="activity.html#cb290-1" aria-hidden="true" tabindex="-1"></a>m1</span></code></pre></div>
 <p>And repeat it for Caribou</p>
-<div class="sourceCode" id="cb294"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb294-1"><a href="activity.html#cb294-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
-<span id="cb294-2"><a href="activity.html#cb294-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Rangifer tarandus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
-<span id="cb294-3"><a href="activity.html#cb294-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
+<div class="sourceCode" id="cb291"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb291-1"><a href="activity.html#cb291-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
+<span id="cb291-2"><a href="activity.html#cb291-2" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Rangifer.tarandus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
+<span id="cb291-3"><a href="activity.html#cb291-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch9_10-1.png" width="672" /></p>
 <p>We can plot both on the same axis as follows:</p>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb295-1"><a href="activity.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
-<span id="cb295-2"><a href="activity.html#cb295-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
-<span id="cb295-3"><a href="activity.html#cb295-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
-<span id="cb295-4"><a href="activity.html#cb295-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb295-5"><a href="activity.html#cb295-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
-<span id="cb295-6"><a href="activity.html#cb295-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
-<span id="cb295-7"><a href="activity.html#cb295-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
-<span id="cb295-8"><a href="activity.html#cb295-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb295-9"><a href="activity.html#cb295-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Caribou&quot;</span>, <span class="st">&quot;Deer&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb292"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb292-1"><a href="activity.html#cb292-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb292-2"><a href="activity.html#cb292-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
+<span id="cb292-3"><a href="activity.html#cb292-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
+<span id="cb292-4"><a href="activity.html#cb292-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-5"><a href="activity.html#cb292-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
+<span id="cb292-6"><a href="activity.html#cb292-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
+<span id="cb292-7"><a href="activity.html#cb292-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
+<span id="cb292-8"><a href="activity.html#cb292-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb292-9"><a href="activity.html#cb292-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Caribou&quot;</span>, <span class="st">&quot;Deer&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch9_11-1.png" width="672" /></p>
 <p>We can compare different activity patterns using coefficient of overlap (∆) - developed by Ridout and Linkie:</p>
 <p><a href="https://link.springer.com/article/10.1198/jabes.2009.08038">Ridout, Martin S., and Matthew Linkie. “Estimating overlap of daily activity patterns from camera trap data.” Journal of Agricultural, Biological, and Environmental Statistics 14.3 (2009): 322-337.</a></p>
 <p>The coefficient ranges from 0 (no overlap) to 1 (complete overlap). We can implement for a two species comparison as follows:</p>
-<div class="sourceCode" id="cb296"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb296-1"><a href="activity.html#cb296-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
-<span id="cb296-2"><a href="activity.html#cb296-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb293-1"><a href="activity.html#cb293-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
+<span id="cb293-2"><a href="activity.html#cb293-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
 <pre><code>##         obs        null      seNull       pNull 
-## 0.784752483 0.953585905 0.009729158 0.000000000</code></pre>
+## 0.784752483 0.954638896 0.009357106 0.000000000</code></pre>
 <p>The output above represents:</p>
 <p>0 = no overlap and 1 = high overlap!</p>
 <ul>
@@ -1299,38 +1302,61 @@ E000001
 <h2><span class="header-section-number">12.4</span> Treatment comparisons<a href="activity.html#treatment-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We can also compare patterns within a species across different strata of interest. For example, perhaps white-tailed deer change their activity patterns in response to the <code>feature_type</code> they are using - perhaps they will be more nocturnal on <code>HumanUse</code> lines relative to <code>Offline</code> strata. Lets try it:</p>
 <p><strong>White-tail deer on HumanUse feature</strong></p>
-<div class="sourceCode" id="cb298"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb298-1"><a href="activity.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit an activity model</span></span>
-<span id="cb298-2"><a href="activity.html#cb298-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span> <span class="sc">&amp;</span></span>
-<span id="cb298-3"><a href="activity.html#cb298-3" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;HumanUse&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb295-1"><a href="activity.html#cb295-1" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit an activity model</span></span>
+<span id="cb295-2"><a href="activity.html#cb295-2" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus.virginianus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb295-3"><a href="activity.html#cb295-3" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;HumanUse&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
 <p><strong>White-tail deer on Offline feature</strong></p>
-<div class="sourceCode" id="cb299"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb299-1"><a href="activity.html#cb299-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus virginianus&quot;</span> <span class="sc">&amp;</span></span>
-<span id="cb299-2"><a href="activity.html#cb299-2" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;Offline&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb300"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb300-1"><a href="activity.html#cb300-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
-<span id="cb300-2"><a href="activity.html#cb300-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
-<span id="cb300-3"><a href="activity.html#cb300-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
-<span id="cb300-4"><a href="activity.html#cb300-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb300-5"><a href="activity.html#cb300-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
-<span id="cb300-6"><a href="activity.html#cb300-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
-<span id="cb300-7"><a href="activity.html#cb300-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
-<span id="cb300-8"><a href="activity.html#cb300-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb300-9"><a href="activity.html#cb300-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb296-1"><a href="activity.html#cb296-1" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus.virginianus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb296-2"><a href="activity.html#cb296-2" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>feature_type<span class="sc">==</span><span class="st">&quot;Offline&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb297"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb297-1"><a href="activity.html#cb297-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb297-2"><a href="activity.html#cb297-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
+<span id="cb297-3"><a href="activity.html#cb297-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
+<span id="cb297-4"><a href="activity.html#cb297-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb297-5"><a href="activity.html#cb297-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
+<span id="cb297-6"><a href="activity.html#cb297-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
+<span id="cb297-7"><a href="activity.html#cb297-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
+<span id="cb297-8"><a href="activity.html#cb297-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb297-9"><a href="activity.html#cb297-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
 <p><img src="Intro-to-data-analysis_files/figure-html/ch9_15-1.png" width="672" /></p>
-<div class="sourceCode" id="cb301"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb301-1"><a href="activity.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
-<span id="cb301-2"><a href="activity.html#cb301-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb298"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb298-1"><a href="activity.html#cb298-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
+<span id="cb298-2"><a href="activity.html#cb298-2" aria-hidden="true" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
 <pre><code>##        obs       null     seNull      pNull 
-## 0.82794071 0.95858875 0.01130218 0.00000000</code></pre>
+## 0.82794071 0.95779205 0.01191685 0.00000000</code></pre>
 <p>There is very high overlap for these comparisons, and it is unlikely to have arisen by chance! So it seems the edidence for changes in temporal activity in response to feature_type is weak - at least for the white-tiled deer!</p>
+<div id="seasonal-comparison" class="section level3 hasAnchor" number="12.4.1">
+<h3><span class="header-section-number">12.4.1</span> Seasonal comparison<a href="activity.html#seasonal-comparison" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb300"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb300-1"><a href="activity.html#cb300-1" aria-hidden="true" tabindex="-1"></a>img_locs<span class="sc">$</span>month <span class="ot">&lt;-</span> <span class="fu">month</span>(img_locs<span class="sc">$</span>timestamp, <span class="at">label=</span>T)</span>
+<span id="cb300-2"><a href="activity.html#cb300-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb300-3"><a href="activity.html#cb300-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb300-4"><a href="activity.html#cb300-4" aria-hidden="true" tabindex="-1"></a><span class="co">#Fit an activity model</span></span>
+<span id="cb300-5"><a href="activity.html#cb300-5" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Rangifer.tarandus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb300-6"><a href="activity.html#cb300-6" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Apr&quot;</span>, <span class="st">&quot;May&quot;</span>, <span class="st">&quot;Jun&quot;</span>, <span class="st">&quot;Jul&quot;</span>, <span class="st">&quot;Aug&quot;</span>, <span class="st">&quot;Sep&quot;</span>)], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
+<span id="cb300-7"><a href="activity.html#cb300-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb300-8"><a href="activity.html#cb300-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb300-9"><a href="activity.html#cb300-9" aria-hidden="true" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Rangifer.tarandus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb300-10"><a href="activity.html#cb300-10" aria-hidden="true" tabindex="-1"></a>                              img_locs<span class="sc">$</span>month <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">&quot;Oct&quot;</span>, <span class="st">&quot;Nov&quot;</span>, <span class="st">&quot;Dec&quot;</span>, <span class="st">&quot;Jan&quot;</span>, <span class="st">&quot;Feb&quot;</span>, <span class="st">&quot;Mar&quot;</span>)], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb301"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb301-1"><a href="activity.html#cb301-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
+<span id="cb301-2"><a href="activity.html#cb301-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
+<span id="cb301-3"><a href="activity.html#cb301-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>)) <span class="co"># Supress confidence intervals</span></span>
+<span id="cb301-4"><a href="activity.html#cb301-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb301-5"><a href="activity.html#cb301-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(m1, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">add=</span><span class="cn">TRUE</span>, </span>
+<span id="cb301-6"><a href="activity.html#cb301-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">lwd=</span><span class="dv">2</span>),</span>
+<span id="cb301-7"><a href="activity.html#cb301-7" aria-hidden="true" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
+<span id="cb301-8"><a href="activity.html#cb301-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb301-9"><a href="activity.html#cb301-9" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Winter&quot;</span>, <span class="st">&quot;Summer&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
+<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-19-1.png" width="672" /></p>
+</div>
 </div>
 <div id="on-your-own-4" class="section level2 hasAnchor" number="12.5">
 <h2><span class="header-section-number">12.5</span> On your own<a href="activity.html#on-your-own-4" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Try your own species comparisons. Remember we have the following species:</p>
-<pre><code>##  [1] &quot;Lynx canadensis&quot;         &quot;Canis lupus&quot;            
-##  [3] &quot;Ursus americanus&quot;        &quot;Alces alces&quot;            
-##  [5] &quot;Odocoileus virginianus&quot;  &quot;Canis latrans&quot;          
-##  [7] &quot;Cervus canadensis&quot;       &quot;Lontra canadensis&quot;      
-##  [9] &quot;Martes americana&quot;        &quot;Rangifer tarandus&quot;      
-## [11] &quot;Vulpes vulpes&quot;           &quot;Oryctolagus cuniculus&quot;  
-## [13] &quot;Lepus americanus&quot;        &quot;Tamiasciurus hudsonicus&quot;</code></pre>
+<pre><code>##  [1] &quot;Lynx.canadensis&quot;         &quot;Canis.lupus&quot;            
+##  [3] &quot;Ursus.americanus&quot;        &quot;Alces.alces&quot;            
+##  [5] &quot;Odocoileus.virginianus&quot;  &quot;Canis.latrans&quot;          
+##  [7] &quot;Cervus.canadensis&quot;       &quot;Lontra.canadensis&quot;      
+##  [9] &quot;Martes.americana&quot;        &quot;Rangifer.tarandus&quot;      
+## [11] &quot;Vulpes.vulpes&quot;           &quot;Oryctolagus.cuniculus&quot;  
+## [13] &quot;Lepus.americanus&quot;        &quot;Tamiasciurus.hudsonicus&quot;</code></pre>
 <p>You can also try other categorical strata comparisons, we have:</p>
 <p><code>feature_type</code></p>
 <pre><code>## 

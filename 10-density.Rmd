@@ -81,7 +81,7 @@ winter <- c("01", "02", "03", "10", "11", "12")
 
 
 # Subset to moose (alces alces) and the summer months
-moose_summer <- ind[ind$sp=="Alces alces" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
+moose_summer <- ind[ind$sp=="Alces.alces" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
 # rename the columns
 moose_summer <- moose_summer %>% 
                    rename("cam"=placename,
@@ -91,7 +91,7 @@ moose_summer$dist <- 0.024             # Our detection distance in km
 moose_summer$theta <- 42.9*(pi/180)    # Our viewshed angle
 
 # Subset to moose (alces alces) and the winter months
-moose_winter <- ind[ind$sp=="Alces alces" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
+moose_winter <- ind[ind$sp=="Alces.alces" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
 
 # rename the columns
 moose_winter <- moose_winter %>% 
@@ -178,7 +178,7 @@ Lets repeat our analysis for wolves:
 
 ```{r, class.source="Rmain"}
 # Subset to moose (alces alces) and the summer months
-wolf_summer <- ind[ind$sp=="Canis lupus" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
+wolf_summer <- ind[ind$sp=="Canis.lupus" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
 # rename the columns
 wolf_summer <- wolf_summer %>% 
   rename("cam"=placename,
@@ -188,7 +188,7 @@ wolf_summer$dist <- 0.024             # Our detection distance in km
 wolf_summer$theta <- 42.9*(pi/180)    # Our viewshed angle
 
 # Subset to wolf (alces alces) and the winter months
-wolf_winter <- ind[ind$sp=="Alces alces" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
+wolf_winter <- ind[ind$sp=="Canis.lupus" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
 
 # rename the columns
 wolf_winter <- wolf_winter %>% 
@@ -404,7 +404,7 @@ img <- read.csv("data/processed_data/AlgarRestorationProject_raw_detections.csv"
 img$timestamp <- ymd_hms(img$timestamp)
 
 moose_dat <- img %>% 
-  filter(sp=="Alces alces") %>% 
+  filter(sp=="Alces.alces") %>% 
   dplyr::select(placename, timestamp, event_groupsize) %>% 
   rename(cam = placename,
          datetime = timestamp,

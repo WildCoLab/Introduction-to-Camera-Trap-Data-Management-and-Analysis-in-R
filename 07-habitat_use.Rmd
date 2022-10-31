@@ -112,12 +112,16 @@ locs <- read.csv("data/processed_data/AlgarRestorationProject_camera_locations_a
 locs <- locs %>% 
             mutate_if(is.character,as.factor)
 
+# You should also standardize your covariates - it helps models coverage an facillitates comparison of effects sizes
+
+library(MuMIn)
+z_locs <- stdize(locs)
 ```
 
-And let's see what it looks like:
+Take a look at it to see what it has done!
 
 ```{r ch7_6a, echo=F}
-kbl(head(locs))%>%
+kbl(head(z_locs))%>%
   kable_paper() %>%
   scroll_box(width = "750px", height = "200px")
 ```
@@ -127,7 +131,7 @@ Each location (`placename`) has a single row in the dataframe.
 We will now add our covariates to our capture rate dataframe: 
 
 ```{r ch7_7, class.source="Rmain", message=F, warning=F}
-mod_dat <- left_join(total_cr, locs) # from the dplyr package
+mod_dat <- left_join(total_cr, z_locs) # from the dplyr package
 ```
 
 ### Catagorical predictor
@@ -137,7 +141,7 @@ So we start by exploring the influence of 'feature_type' on our response term.
 What are the categories we have in our feature type variable?
 
 ```{r ch7_8, class.source="Rinfo"}
-table(locs$feature_type)
+table(z_locs$feature_type)
 ```
 
 `feature_type` is a a categorical variable which reflects strata where the camera trap was deployed: 
@@ -188,7 +192,7 @@ effect_plot(lm_cat,                  # The model object
 Let's also explore a continuous predictor `line_of_sight_m':
 
 ```{r ch7_13, class.source="Rinfo"}
-plot(mod_dat$Odocoileus.virginianus~mod_dat$line_of_sight_m,
+plot(mod_dat$Odocoileus.virginianus~mod_dat$z.line_of_sight_m,
         las=1,
         xlab="line_of_sight_m",
         ylab="Habitat use")
@@ -198,7 +202,7 @@ Next we will fit a simple linear model using the `lm()' function in base R.
 
 ```{r ch7_14, class.source="Rmain"}
 # model results <- lm( Y data ~ x Data, data= dataframe source)
-lm_con <- lm(Odocoileus.virginianus ~ line_of_sight_m, data = mod_dat)
+lm_con <- lm(Odocoileus.virginianus ~ z.line_of_sight_m, data = mod_dat)
 ```
 
 Lets looks at the model summary:
@@ -213,7 +217,7 @@ It will make more sense if we plot it - again using `jtools`
 
 ```{r ch7_16, class.source="Rmain"}
 effect_plot(lm_con,                  # The model object
-            pred = line_of_sight_m,  # The variable you want to predict
+            pred = z.line_of_sight_m,  # The variable you want to predict
             interval = TRUE,         # Whether you want confidence intervals (default = 0.95)
             partial.residuals = T,   # Show the residual variation -after accounting for fixed effects  
             y.label = "Habitat use") # Change the y axis label
@@ -278,7 +282,7 @@ monthly_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_indep
 Let's join this dataframe with the location data, as before:
 
 ```{r ch7_21, class.source="Rmain", message=F, warning=F}
-mod_dat <- left_join(monthly_obs, locs)
+mod_dat <- left_join(monthly_obs, z_locs)
 ```
 
 And let's do another raw data check:
@@ -375,7 +379,7 @@ sp_summary$sp
 And the following covariates:
 
 ```{r ch7_31, echo=F}
-colnames(locs)[colnames(locs) %in% c("feature_type","line_of_sight_m", "water_depth_m", "elevation", "road_dist_m", "water_dist_m",    "lcc_habitats", "mean_ndvi")]
+colnames(z_locs)[colnames(z_locs) %in% c("feature_type","z.line_of_sight_m", "z.water_depth_m", "z.elevation", "z.road_dist_m", "z.water_dist_m", "z.mean_ndvi")]
 ```
 
 **A note of caution**
@@ -434,7 +438,7 @@ kbl(head(Y))%>%
 We then create the XData in a similar way to before, but this time dropping the species information:
 
 ```{r ch7_35, class.source="Rmain", message=F, warning=F}
-Xdat <- left_join(monthly_obs[c("placename", "date", "days")], locs)
+Xdat <- left_join(monthly_obs[c("placename", "date", "days")], z_locs)
 # All XData must be numeric or factors, so lets check what we have
 
 ```
@@ -451,9 +455,9 @@ With Bayesian approaches we need to set up our sampling conditions
 
 ```{r ch7_37, class.source="Rmain"}
 nChains   = 2       # How many total repeats to run
-thin      = 5       # How often to thin the samples
+thin      = 2       # How often to thin the samples
 samples   = 100     # How many samples to take  
-transient = 10000 # How long should the "warm up" be
+transient = 1000 # How long should the "warm up" be
 verbose   = T       # Give reports on model progress
 ```
 
@@ -470,8 +474,8 @@ Specify our model""
 ```{r ch7_39, message =F, warning=F, eval=T, class.source="Rmain"}
 # Model specification
 mod <- Hmsc(Y = Y, 
-            XData = Xdat[,c("line_of_sight_m", "water_depth_m", "days")], 
-            XFormula = ~line_of_sight_m + water_depth_m + log(days),
+            XData = Xdat[,c("z.line_of_sight_m", "z.water_depth_m", "days")], 
+            XFormula = ~z.line_of_sight_m + z.water_depth_m + log(days),
             studyDesign = studyDesign, 
             ranLevels = list(station = rL), 
             distr="poisson")

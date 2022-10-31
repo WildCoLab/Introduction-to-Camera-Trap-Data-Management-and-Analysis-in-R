@@ -115,7 +115,7 @@ start <- ymd("2021-10-13")
 end <- ymd("2021-12-11")
 ```
 
-```{r ch3_6, eval=F}
+```{r ch3_6, eval=F, class.source="Rinfo"}
 # Specify the interval, and put it in days
 interval(start, end)/ddays(1)
 
@@ -228,30 +228,11 @@ No NA's - great!
 Now that our camera trap data are loaded into R, we can very quickly find out summary information about the dataset.
 These can feed directly into the methods section of your report/paper.
 
-First lest count the number of unique locations:
+First let's count the number of unique locations:
 
 ```{r ch3_17, echo=T, class.source="Rinfo"}
 # Count the number of camera locations
-length(unique(dep$placename))
-```
-
-The total number of identifications in your images (note - images with multiple species in with have multiple rows):
-
-```{r ch3_18, echo=T, class.source="Rinfo"}
-# Number of records in your image database (note - these may include blanks)
-nrow(img)
-```
-
-```{r ch3_19, class.source="Rinfo"}
-# Number of non blank images
-nrow(img[img$is_blank == FALSE,])
-```
-
-The deployment date ranges - do they image the range of image data above?
-
-```{r ch3_20, class.source="Rinfo"}
-# The start and end dates of the camera deployments
-range(c(dep$start_date, dep$end_date), na.rm=T)
+paste(length(unique(dep$placename)), "locations"); paste(length(unique(dep$deployment_id)), "deployments");paste(nrow(img), "image labels"); paste(nrow(img[img$is_blank == TRUE,]), "blanks")
 ```
 
 ## Error checks
@@ -330,9 +311,23 @@ Can you spot any differences between the stations?
 
 These lines are linear features related to oil and gas exploration, some cameras are deployed on them, others away from them.
 
-Lets color them based on their `dep$feature_type`, include them in the legend, and have their names show up when we click on them too.
+#### Making corrections
+
+As you can see, we have one deployment location that is a long way from the others. It almost looks like it belongs to another project?! Let's take a look at all of the deployments from that location (`ALG069`):
+
+```{r corrections, echo=T, class.source="Rinfo"}
+dep[dep$placename=="ALG069",c("deployment_id", "placename", "longitude", "latitude")]
+```
+
+It looks like there is a typo in one of the coordinates: -112.5075 -> -113.5075. Let's correct it:
+
+```{r corrections2, echo=T, class.source="Rmain"}
+dep$longitude[dep$placename=="ALG069"] <- -112.5075
+```
 
 #### The ultimate leaflet map
+
+We will need to check our correction has worked. Let's also color camera locations based on their `dep$feature_type`, include them in the legend, and have their names show up when we click on them too!
 
 ```{r map4, echo=T, class.source="Rmain"}
 # First, set a single categorical variable of interest from station covariates for summary graphs. If you do not have an appropriate category use "project_id".
@@ -370,7 +365,7 @@ m
 
 If you click on a point you will see it's corresponding `placename` and `feature_type` - so you can find the problem data.
 You can also check your treatment categories using the key.
-If you zoom in, all the "offline" locations should be \>100m away from a linear features, the other on top of them.
+If you zoom in, all the "offline" locations should be >100m away from a linear features, the other on top of them.
 
 For more examples of leaflet in R, see [RStudio's leaflet tutorial](https://rstudio.github.io/leaflet/).
 
@@ -404,8 +399,8 @@ camera_locs[duplicated(camera_locs$placename)==T,]
 
 If it returns a list of \<0 rows\>, we don't have duplicates with different coordinates.
 Phew!
-Now let's crunch the numbers.
-Paste and run the following:
+
+Now let's crunch the numbers.Paste and run the following:
 
 ```{r ch3_24, class.source="Rmain"}
 # distance matrix for all cameras
@@ -418,6 +413,9 @@ camera_dist <- st_distance(camera_locs) %>%
 camera_dist_list <- t(combn(colnames(camera_dist), 2))
 camera_dist_list <- data.frame(camera_dist_list, dist = camera_dist[camera_dist_list]) %>% 
                           arrange(dist) # sort descending
+
+# Duplicate and flip the stations so each one is represented on the left hand side
+camera_dist_list <- rbind(camera_dist_list, camera_dist_list[,c(2,1,3)])
 
 # keep just the closest camera for each location
 camera_dist_list <- camera_dist_list %>% 
@@ -562,8 +560,18 @@ p
 **What do the gaps signify?** The breaks in the line signify periods when the camera at a location was not active.
 You can see there was a point in 2018 when 9 out of 38 cameras had stopped working.
 
-**Can you see any issues?** No.
-Sometimes you will see a deployment a long way to the left or right of the plot, this is usually a date error.
+**Can you see any issues?** Yes!
+
+Sometimes you will see a deployment a long way to the left or right of the plot, this is usually a date error (e.g. `ALG036`).
+
+#### Corrections
+
+We checked the original datasheets for `ALG036` and found out that the deployment end date for `ALG036_2019-04-04` was incorrectly entered. It was written as 2020 not 2019. Let's correct it: 
+
+```{r ch3_31a, eval=T, class.source="Rmain"}
+dep$end_date[dep$deployment_id=="ALG036_2019-04-04"] <- ymd("2019-11-21") 
+                                    #remember to format it as a date object
+```
 
 ### Detection check
 
@@ -734,10 +742,9 @@ p
 
 **What would a problem look like?**
 
-If you have images (red dots) occurring outside a period of camera activity - that would indicate a miss-match between the deployment data and the image data.
-You would need to revisit your datasheets to see where this mismatch occurred.
+If you have images (red dots) occurring outside a period of camera activity - that would indicate a miss-match between the deployment data and the image data. You would need to revisit your datasheets to see where this mismatch occurred.
 
-If the error is in the deployment dates - correct them!
+If the error is in the deployment dates - correct them as above!
 
 If the error is in the image metadata (i.e. camera was set to the wrong date), you have several options:
 
@@ -745,25 +752,26 @@ If the error is in the image metadata (i.e. camera was set to the wrong date), y
 
 -   You can correct the underlying exif data of the images using [EXIF date changer](https://www.mammalweb.org/index.php/en/news/951-doh-correcting-date-and-time-problems-for-camera-trap-images)
 
--   Finally, you could change the dates in R using `lubridate`:
+-   Finally, you could change the dates in R using `lubridate`. If you look at the deployment `ALG029_2019-04-02` you will see that has what has happened here. We checked the datasheets and realised that the camera's timestamp was set to the incorrect month when the deployment began (2019-05-02 instead of 2019-04-02).
 
-```{r ch3_33, eval=F, class.source="Rinfo"}
-# Imagine we set the wrong date for the camera collecting images in deployment 
-#":"ALG029_2018-04-07"
+```{r ch3_33, eval=T, class.source="Rmain"}
+# We set the wrong date for the camera collecting images in deployment 
+#":"ALG029_2019-04-02"
 
-# We establish that they are 31 days out, we can simply add 31 days to all of the timestamps
-img$timestamp[img$deployment_id=="ALG029_2018-04-07"][1]
-
-img$timestamp[img$deployment_id=="ALG029_2018-04-07"][1] + ddays(31)
+# We established that the deployment was 30 days out (as there are 30 days in April)
+# So we add 30 days to all of the images in that deployment.
+img[img$deployment_id=="ALG029_2019-04-02",]$timestamp <-
+                   img[img$deployment_id=="ALG029_2019-04-02",]$timestamp - days(30)
 # Easy!
-
 ```
+
+You should repeat the plot above to check it has worked!
 
 ### Taxonomy check
 
-Dealing with taxonomy in camera trap data sets can be a nightmare, particularly if your data labeling software does not give standardized lists of species (e.g. you are manually sorting images into folders).
-A species list is also something which is often produced for the appendix of a report or paper.
-Let us start with looking through the taxonomic classifications manually:
+Dealing with taxonomy in camera trap data sets can be a nightmare, particularly if your data labeling software does not give standardized lists of species (e.g. you are manually sorting images into folders). A species list is also something which is often produced for the appendix of a report or paper.
+
+Let us start with building a list of our taxonomic classifications:
 
 ```{r ch3_34, class.source="Rmain"}
 # First define vector of the headings you want to see (we will use this trick a lot later on)
@@ -777,6 +785,9 @@ tmp <- tmp[duplicated(tmp)==F,]
 # Create an ordered species list
 sp_list  <- tmp[order(tmp$class, tmp$order, tmp$family, tmp$genus, tmp$species),]
 
+# Create a column to the species list with genus and species pasted together
+sp_list$sp <- paste(sp_list$genus, sp_list$species, sep=".")
+
 # View the species list using kableExtra
 sp_list %>%
   kbl(row.names=F) %>%
@@ -784,20 +795,15 @@ sp_list %>%
   kableExtra::scroll_box(width = "100%", height = "250px")
 ```
 
-That is a lot of species classifications - are they all correct?
-There is definitely some weird stuff going on down the bottom there.
-Annoyingly, we don't have the common names either.
-We could Google every species....
-but that takes time.
+That is a lot of species classifications - are they all correct? If you are familiar with the species you may be able to know by eye, however if you are unfamiliar with them. You can also use a package called `taxize`. 
 
-Luckily, there is a package called `taxise` which can interrogate online taxonomic databases for us!
+### Skill Check: Taxize package
 
-### Skill Check: Taxise package
-
-Lets start by seeing what `taxise` can do with a single species.
+Lets start by seeing what `taxize` can do with a single species.
 Run the following:
 
 ```{r ch3_35, eval=F, class.source="Rinfo"}
+library(taxize)
 gnr_resolve("Lynx canadensis")
 ```
 
@@ -812,24 +818,26 @@ gnr_resolve("Lynx cramadensis")
 Cool!
 We can even recover incorrectly spelled names!
 
-What about common names.
+What about common names?
+
 Well there is a way we can get those too using `sci2comm()`"
 
 ```{r ch3_37, eval=F, class.source="Rinfo"}
 sci2comm("Lynx canadensis")
 ```
 
-For more information [see the `Taxise` documentation](https://docs.ropensci.org/taxize/).
+For more information [see the `Taxize` documentation](https://docs.ropensci.org/taxize/).
 
-Let us turn this code into a useful workflow.
-We will use a confidence threshold of \>90% as a validation threshold for our species designations.
+```{r ch3_38, message=F, warning=F, echo=F, eval=F,include=F, class.source="Rmain"}
+# REMOVED AS TAXIZE IS UNRELIABLE
 
-We make use of a loop to iterate through our species lists.
-if you want a tutorial on loops for R see: [Data Carpentry:loops](https://swcarpentry.github.io/r-novice-inflammation/15-supp-loops-in-depth/)
+#Let us turn this code into a useful workflow.
+#We will use a confidence threshold of \>90% as a validation threshold for our species designations.
 
-```{r ch3_38, message=F, warning=F, echo=T, eval=F, class.source="Rmain"}
-# First add a column to the species list with genus and species pasted together
-sp_list$sp <- paste(sp_list$genus, sp_list$species)
+#We make use of a loop to iterate through our species lists.
+#if you want a tutorial on loops for R see: [Data #Carpentry:loops](https://swcarpentry.github.io/r-novice-inflammation/15-supp-loops-in-depth/)
+
+
 
 # Add a column which states if it is in the databases
 sp_list$verified <- NA
@@ -848,45 +856,6 @@ for(i in 1:nrow(sp_list))
 row.names(sp_list) <- 1:nrow(sp_list)
 
 
-```
-
-```{r ch3_39, message=F, warning=F, echo=F, eval=T}
-# First add a column to the species list with genus and species pasted together
-sp_list$sp <- paste(sp_list$genus, sp_list$species)
-
-# Add a column which states if it is in the databases
-sp_list$verified <- NA
-i<-3
-# Check if it is in a bunch of different taxonomic databases
-for(i in 1:nrow(sp_list))
-{
-  tmp <- gnr_resolve(sp_list$sp[i], data_source_ids= c(1,2,11,12, 163, 174)) # Note we restrict the databases to a few big ones, there are some weird ones in there. 
-  if(nrow(tmp)>1)
-  {
-     if(nrow(tmp[tmp$score>0.9,])>0)
-     {
-        sp_list$verified[i] <- TRUE
-     } else{sp_list$verified[i] <- FALSE}  
-  }
-  
-}
-# Update the row names
-row.names(sp_list) <- 1:nrow(sp_list)
-```
-
-Lets take another look at that list:
-
-```{r ch3_40, class.source="Rinfo"}
-sp_list %>%
-  kbl(row.names=F) %>%
-  kable_styling(full_width = T) %>% 
-  kableExtra::scroll_box(width = "100%", height = "250px")
-
-```
-
-Lets run it through all of our data for common names:
-
-```{r ch3_41, echo=T, eval=F, class.source="Rmain"}
 # First add a column to the species list with genus and species pasted together
 sp_list$sp <- paste(sp_list$genus, sp_list$species)
 i <- 8
@@ -901,70 +870,43 @@ for(i in 1:nrow(sp_list))
   }
   print(paste(i, "species of", nrow(sp_list)))
 }
-```
-
-```{r ch3_42, echo=F, eval=T, include=F}
-# First add a column to the species list with genus and species pasted together
-sp_list$sp <- paste(sp_list$genus, sp_list$species)
-i <- 8
-# Check if it is in a bunch of different taxonomic databases
-for(i in 1:nrow(sp_list))
-{
-  tmp <- sci2comm(sp_list$sp[i], db = "ncbi", simplify=T)
-  Sys.sleep(4)
-  if(length(tmp[[1]])>0)
-  {
-    sp_list$common_name[i] <- tolower(tmp[[1]][1]) # Take the first element and make it all lower case
-  }
-  print(paste(i, "species of", nrow(sp_list)))
-}
-```
-
-Let's take another look:
-
-```{r ch3_43}
-sp_list %>%
-  kbl(row.names=F) %>%
-  kable_styling(full_width = T) %>% 
-  kableExtra::scroll_box(width = "100%", height = "250px")
 
 ```
 
-Not bad - let's manually update the remaining species.
-It is definitely far better than googling all of them!
+In this instance, we have an external list of common names which we will use to update our `img` file.
 
-```{r ch3_44, class.source="Rmain"}
-sp_list$common_name[sp_list$sp=="Perisoreus canadensis"] <- "canada jay"
-sp_list$common_name[sp_list$sp=="Cervus canadensis"] <- "elk"
-sp_list$common_name[sp_list$sp=="Alces alces"] <- "moose"
-sp_list$common_name[sp_list$sp=="Rangifer tarandus"] <- "caribou"
+```{r ch3_44, class.source="Rmain", message=F, warning=F}
+# Import the dataframe
+tmp <- read.csv("data/raw_data/example_data/common_names.csv")
+
+# Join it with the existing species list
+sp_list$common_name <- NULL
+sp_list <- left_join(sp_list, tmp)
+
 ```
 
-Lets export this list right now, we will return to it later to add other traits which we may use in analysis.
-
-Then let's write our species list into it:
+Then let's write our species list into our raw data folder:
 
 ```{r ch3_45, class.source="Rmain"}
 # Note we use the project_id from from project data frame to name the file - that was we wont overwrite it if we run things with a different project. 
 write.csv(sp_list, paste0("data/raw_data/",pro$project_id[1],"_raw_species_list.csv"))
 ```
 
-Then lets update the `common_name` column in our `img` dataframe to reflect the common names.
+Then lets update the `common_name` column in our `img` dataframe to reflect the updated common names.
 
 We will do this using a `left_join()`, an operation which is invaluable when programming in R.
+
 It uses a specified "key" variable to merge two dataframes in this case we will use the 'sp' column.
-Check it out:
 
 ```{r ch3_46, class.source="Rmain"}
 # first remove the common_name column
 img$common_name <- NULL
 
 # add an sp column to the img dataframe - remember the genus and species columns are not pasted together yet
-img$sp <- paste(img$genus, img$species)
+img$sp <- paste(img$genus, img$species, sep=".")
 
 # Next we do the 'left_join'
 img <- left_join(img, sp_list[, c("sp", "common_name")], by="sp")
-
 ```
 
 Lets move on!
@@ -1009,8 +951,7 @@ img$hours <- NULL
 
 **Can you see any exclusively diurnal species?**
 
-Sandhill crane would be a good candidate.
-They are very rarely detected at night.
+Sandhill crane would be a good candidate. They are very rarely detected at night.
 
 **Can you see any exclusively nocturnal species?**
 
@@ -1032,6 +973,7 @@ We may find more errors in the [data exploration chapter](#data-exploration), so
 ###########################################################
 
 ```
+
 
 # Analysis data creation {#data-creation}
 
@@ -1570,3 +1512,4 @@ tmp %>%
   kableExtra::scroll_box(width = "100%")
 
 ```
+
