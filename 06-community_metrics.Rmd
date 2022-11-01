@@ -68,27 +68,41 @@ library(iNEXT); library(ggplot2); library(gridExtra)
 
 **Single strata**
 
-You may want to see if your camera project has sufficient survey effort to capture the species within the area of interest. To do this we can compute a species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add individuals or survey units. If the curve plateaus (flattens), then that suggests you have sampled the majority of the species in your survey area.
+You may want to see if your camera project has sufficient survey effort to capture the species within the area of interest. To do this we can compute a species accumulation curves across the site as a whole. Species accumulation curves plot the increase in species richness as we add survey units. If the curve plateaus (flattens), then that suggests you have sampled the majority of the species in your survey area.
+
+## Sampling-unit-based accumulation curves
+
+In camera trap projects we typically do not think about our survey effort in terms of the number of camera stations we deploy on the landscape or the units of time they are active (e.g. camera days). 
+
+Performing our species accumulation curves using survey location allows us to determine if we have enough survey locations in a given strata to detect all of the species present. Repeating the analyses using camera days would also give insight into whether we need for survey effort in a given location. 
 
 *Data formatting*
 
-Applying the iNEXT functions to camera trap data is perhaps simplest using 'abundance' function, this represents the frequency with which each species is detected. The abundance data model requires a string of abundance frequencies contained within a list. 
+The data formatting for a sampling-unit based accumulation curve is dis follows: we need a list of strata then the elements in that list first represent the number of sampling units surveyed, then the number of those units where each given species was detected following it.
 
-```{r ch6_5, echo=F, message=F, warning=F, out.width="75%"}
-knitr::include_graphics("images/community_metrics/data_format.PNG")
+The example that comes with the `iNext` package looks like this.
+
+```{r ch6_5, echo=F, message=F, warning=F,  out.width="100%"}
+knitr::include_graphics("images/community_metrics/unit_based.PNG")
 ```
 
-We can create this format from the `...total_observations` dataset:
+The yellow number is the total number of survey units in each location, the red numbers are the number of sites in which each species occurs. 
+
+We can create this format from the total observations file:
 
 ```{r ch6_6, class.source="Rmain"}
-# Import the total observations dataset
 total_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv", header=T)
+
+inc_dat <- total_obs %>% 
+      mutate(across(sp_summary$sp, ~+as.logical(.x)))  # Turn species counts into 0's and 1's
 
 # Make an empty list to store our data
 project_level <- list()
-# Sum all of the observations of each species (colSums), and then make it an element within the project_level list
-project_level[[1]]<- colSums(total_obs[, sp_summary$sp])
-# Give it a name
+# # Sum all of the observations of each species (colSums), and then make it an element within the project_level list
+ project_level[[1]] <-  c(nrow(inc_dat),  # First count the number of stations
+                     # Then subset the detections to those stations, sum the columns, and sort the incidents
+                     inc_dat[, sp_summary$sp] %>%  colSums() %>% sort(decreasing=T))
+# # Give it a name
 names(project_level) <- "project_level"
 ```
 
@@ -98,20 +112,18 @@ This produces a list object which looks like this:
 project_level
 ```
 
-**Analysis**
 
-Once you have created your list, we can run a basic `iNEXT` analysis and create a graphs of the results. Below we show a basic `iNEXT` call with some of its default arguments.
+And let's run our `iNext` model:
 
 ```{r ch6_8, class.source="Rmain"}
 out <- iNEXT(project_level,          # The data frame
              q=0,                    # The type of diversity estimator (see discussion of the options below)
-             datatype="abundance",   # The type of analysis
-             knots=40,               # The number of data points in your line (more = smoother)
-             se=TRUE,                # Logical statement if you want confidence intervals
-             conf=0.95,              # The level of confidence intervals
-             nboot=50)               # The number of replications to perform - this generates your confidence interval - the bigger the number the longer the run time
-
-
+             datatype="incidence_freq",   # The type of analysis
+             knots=40,                    # The number of data points in your line (more = smoother)
+             se=TRUE,                     # Logical statement if you want confidence intervals
+             conf=0.95,                   # The level of confidence intervals
+             nboot=50)                    # The number of replications to perform - this generates your confidence interval - the bigger the number the longer the run time
+ 
 ```
 
 **a note on q values**
@@ -170,16 +182,18 @@ knitr::include_graphics("images/community_metrics/AsyEst.PNG")
 
 One of the powerful elements of iNEXT is that it can extrapolate beyond your data, this is very useful when you do not have equal sample sizes. 
 
-
 ## Basic results plot
 
 ```{r ch6_14, warning=F, class.source="Rmain"}
-p1 <- ggiNEXT(out, type=1)+ theme_classic()    #  type 1 = the diversity estimator
-p2 <- ggiNEXT(out, type=2)+ theme_classic()    #  type 2 = the survey coverage
-grid.arrange(p1, p2, nrow = 1)
+p1 <- ggiNEXT(out, type=1)+ theme_classic() +   #  type 1 = the diversity estimator
+        labs(x = "Survey sites", y = "Richness")
+  
+  p2 <- ggiNEXT(out, type=2)+ theme_classic() +    #  type 2 = the survey coverage
+        labs(x = "Survey sites")
+    
+    grid.arrange(p1, p2, nrow = 1)
 ```
 
-At this end of this section we will demonstrate how to create your own plots using the iNEXT output. 
 
 **Multiple strata**
 
@@ -188,6 +202,7 @@ The iNEXT package gets really interesting when we start to compare multiple diff
 The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories. 
 
 We will compare the different categories using the `feature_type` column in the covariate file. We match the 'placenames' in our locations dataframe with the corresponding capture data in `total_obs`  using the `%in%` command.
+
 
 ```{r ch6_15, class.source="Rmain"}
 # Read in the locations data frame
@@ -202,52 +217,6 @@ off <- locs$placename[locs$feature_type=="Offline"]
 # And "HumanUse" cameras
 hum <- locs$placename[locs$feature_type=="HumanUse"]
 
-# Create a new empty list
-strata <- list()
-
-# Only sum the data for each relvent strata
-strata[[1]] <- colSums(total_obs[total_obs$placename %in% off, sp_summary$sp])
-strata[[2]] <- colSums(total_obs[total_obs$placename %in% hum, sp_summary$sp])
-# Give them names
-names(strata) <- c("Offline", "HumanUse")
-```
-
-Then, as before, run your iNEXT model and examine the output:
-
-```{r ch6_16, class.source="Rmain"}
-out <- iNEXT(strata, datatype="abundance")
-p1 <- ggiNEXT(out, type=1)+ theme_classic() 
-p2 <- ggiNEXT(out, type=2)+ theme_classic() 
-grid.arrange(p1, p2, nrow = 1)
-```
-
-From the plot on the left you can see that the 'HumanUse' strata detected more species than the 'Offline' strata. The plot on the right suggests that we have likely sampled all of the species that will be detected within these habitats (samples are 'complete').
-
-
-## Sampling-unit-based accumulation curves
-
-The example above is useful, but in camera trap projects we typically do not think about our survey effort in terms of the number of individuals we catch, rather the number of camera stations we deploy on the landscape or the units of time they are active (e.g. camera days). 
-
-Performing our species accumulation curves using survey location, rather than individuals encountered, allows us to determine if we have enough survey locations in a given strata to detect all of the species present. Repeating the analyses using camera days would also give insight into whether we need for survey effort in a given location. 
-
-The data formatting for a sampling-unit based accumulation curve is different to that of an individual-based curve. As before we need a list of strata. However, now we need the elements in the list to represent the number of sampling units first, then the number of those units where each given species was detected following it.
-
-The example that comes with the `iNext` package looks like this.
-
-```{r ch6_17, echo=F, message=F, warning=F,  out.width="100%"}
-knitr::include_graphics("images/community_metrics/unit_based.PNG")
-```
-
-The yellow number is the total number of survey units in each location, the red numbers are the number of sites in which each species occurs. 
-
-### Survey station example
-
-Lets build this example for survey stations using our data:
-
-```{r ch6_18, class.source="Rmain"}
-# As before we can use out total_obs dataframe.
-inc_dat <- total_obs %>% 
-      mutate(across(sp_summary$sp, ~+as.logical(.x)))  # Turn species counts into 0's and 1's
 
 # Create a new empty list
 inc_locations <- list()

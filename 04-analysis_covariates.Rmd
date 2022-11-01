@@ -235,7 +235,7 @@ Great! Now lets buffer our camera locations by 250 meters, and take the average 
 locs_terra <- buffer(locs_terra,250)
 
 # Extract the values to a temporary object - tmp 
-tmp <- extract(ras, locs_terra, fun=mean)
+tmp <- raster::extract(ras, locs_terra, fun=mean)
 
 # Make a new column in locs_sf called water_depth_m
 # They are ordered the same way so no need for a fancy join

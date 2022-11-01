@@ -106,9 +106,8 @@ composition
 observed-richness
 estimated-richness
 inext-package
-basic-results-plot
 sampling-unit-based-accumulation-curves
-survey-station-example
+basic-results-plot
 sampling-duration-example
 on-your-own
 other-diversity-metrics

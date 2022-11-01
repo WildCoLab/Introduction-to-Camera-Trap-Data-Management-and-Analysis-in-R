@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-10-31" />
+<meta name="date" content="2022-11-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -292,12 +292,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="9.2.1" data-path="composition.html"><a href="composition.html#inext-package"><i class="fa fa-check"></i><b>9.2.1</b> iNext package</a></li>
 </ul></li>
-<li class="chapter" data-level="9.3" data-path="composition.html"><a href="composition.html#basic-results-plot"><i class="fa fa-check"></i><b>9.3</b> Basic results plot</a></li>
-<li class="chapter" data-level="9.4" data-path="composition.html"><a href="composition.html#sampling-unit-based-accumulation-curves"><i class="fa fa-check"></i><b>9.4</b> Sampling-unit-based accumulation curves</a>
+<li class="chapter" data-level="9.3" data-path="composition.html"><a href="composition.html#sampling-unit-based-accumulation-curves"><i class="fa fa-check"></i><b>9.3</b> Sampling-unit-based accumulation curves</a></li>
+<li class="chapter" data-level="9.4" data-path="composition.html"><a href="composition.html#basic-results-plot"><i class="fa fa-check"></i><b>9.4</b> Basic results plot</a>
 <ul>
-<li class="chapter" data-level="9.4.1" data-path="composition.html"><a href="composition.html#survey-station-example"><i class="fa fa-check"></i><b>9.4.1</b> Survey station example</a></li>
-<li class="chapter" data-level="9.4.2" data-path="composition.html"><a href="composition.html#sampling-duration-example"><i class="fa fa-check"></i><b>9.4.2</b> Sampling duration example</a></li>
-<li class="chapter" data-level="9.4.3" data-path="composition.html"><a href="composition.html#on-your-own"><i class="fa fa-check"></i><b>9.4.3</b> On your own</a></li>
+<li class="chapter" data-level="9.4.1" data-path="composition.html"><a href="composition.html#sampling-duration-example"><i class="fa fa-check"></i><b>9.4.1</b> Sampling duration example</a></li>
+<li class="chapter" data-level="9.4.2" data-path="composition.html"><a href="composition.html#on-your-own"><i class="fa fa-check"></i><b>9.4.2</b> On your own</a></li>
 </ul></li>
 <li class="chapter" data-level="9.5" data-path="composition.html"><a href="composition.html#other-diversity-metrics"><i class="fa fa-check"></i><b>9.5</b> Other diversity metrics</a>
 <ul>
@@ -427,513 +426,513 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>I will help you read in the data - and correct a mistake I made. Then you are on your own!</p>
 <div id="the-new-dataset" class="section level2 hasAnchor" number="15.1">
 <h2><span class="header-section-number">15.1</span> The new dataset<a href="on-your-own-5.html#the-new-dataset" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb326"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb326-1"><a href="on-your-own-5.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your data </span></span>
-<span id="cb326-2"><a href="on-your-own-5.html#cb326-2" aria-hidden="true" tabindex="-1"></a>pro <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/proj.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb326-3"><a href="on-your-own-5.html#cb326-3" aria-hidden="true" tabindex="-1"></a>pro<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span>
-<span id="cb326-4"><a href="on-your-own-5.html#cb326-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb326-5"><a href="on-your-own-5.html#cb326-5" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/img.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb326-6"><a href="on-your-own-5.html#cb326-6" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span>
-<span id="cb326-7"><a href="on-your-own-5.html#cb326-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb326-8"><a href="on-your-own-5.html#cb326-8" aria-hidden="true" tabindex="-1"></a>dep <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/dep.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb326-9"><a href="on-your-own-5.html#cb326-9" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span>
-<span id="cb326-10"><a href="on-your-own-5.html#cb326-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb326-11"><a href="on-your-own-5.html#cb326-11" aria-hidden="true" tabindex="-1"></a>cam <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/cam.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb326-12"><a href="on-your-own-5.html#cb326-12" aria-hidden="true" tabindex="-1"></a>cam<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span></code></pre></div>
+<div class="sourceCode" id="cb324"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb324-1"><a href="on-your-own-5.html#cb324-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load your data </span></span>
+<span id="cb324-2"><a href="on-your-own-5.html#cb324-2" aria-hidden="true" tabindex="-1"></a>pro <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/proj.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb324-3"><a href="on-your-own-5.html#cb324-3" aria-hidden="true" tabindex="-1"></a>pro<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span>
+<span id="cb324-4"><a href="on-your-own-5.html#cb324-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb324-5"><a href="on-your-own-5.html#cb324-5" aria-hidden="true" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/img.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb324-6"><a href="on-your-own-5.html#cb324-6" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span>
+<span id="cb324-7"><a href="on-your-own-5.html#cb324-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb324-8"><a href="on-your-own-5.html#cb324-8" aria-hidden="true" tabindex="-1"></a>dep <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/dep.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb324-9"><a href="on-your-own-5.html#cb324-9" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span>
+<span id="cb324-10"><a href="on-your-own-5.html#cb324-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb324-11"><a href="on-your-own-5.html#cb324-11" aria-hidden="true" tabindex="-1"></a>cam <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/your_data/cam.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb324-12"><a href="on-your-own-5.html#cb324-12" aria-hidden="true" tabindex="-1"></a>cam<span class="sc">$</span>project_id <span class="ot">&lt;-</span> pro<span class="sc">$</span>project_name</span></code></pre></div>
 <p>Load your packages:</p>
-<div class="sourceCode" id="cb327"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb327-1"><a href="on-your-own-5.html#cb327-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A list of the required packages</span></span>
-<span id="cb327-2"><a href="on-your-own-5.html#cb327-2" aria-hidden="true" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;activity&quot;</span>, <span class="st">&quot;corrplot&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;dplyr&quot;</span>,  <span class="st">&quot;elevatr&quot;</span>, <span class="st">&quot;gfcanalysis&quot;</span>,   <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;iNEXT&quot;</span>, <span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;Hmsc&quot;</span>, <span class="st">&quot;leaflet&quot;</span>, <span class="st">&quot;lme4&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;magrittr&quot;</span>, <span class="st">&quot;MCMCvis&quot;</span>, <span class="st">&quot;MODISTools&quot;</span>, <span class="st">&quot;osmdata&quot;</span>, <span class="st">&quot;pals&quot;</span>, <span class="st">&quot;plotly&quot;</span>, <span class="st">&quot;remotes&quot;</span>, <span class="st">&quot;rmarkdown&quot;</span>, <span class="st">&quot;sf&quot;</span>, <span class="st">&quot;spOccupancy&quot;</span>, <span class="st">&quot;stars&quot;</span>, <span class="st">&quot;stringr&quot;</span>, <span class="st">&quot;terra&quot;</span>, <span class="st">&quot;tibble&quot;</span>, <span class="st">&quot;tidyr&quot;</span>,  <span class="st">&quot;unmarked&quot;</span>, <span class="st">&quot;viridis&quot;</span>, <span class="st">&quot;jtools&quot;</span>, <span class="st">&quot;vegan&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>)</span>
-<span id="cb327-3"><a href="on-your-own-5.html#cb327-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb327-4"><a href="on-your-own-5.html#cb327-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A check to see which ones you have and which are missing</span></span>
-<span id="cb327-5"><a href="on-your-own-5.html#cb327-5" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
-<span id="cb327-6"><a href="on-your-own-5.html#cb327-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb327-7"><a href="on-your-own-5.html#cb327-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Code which tells R to install the missing packages</span></span>
-<span id="cb327-8"><a href="on-your-own-5.html#cb327-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
-<span id="cb327-9"><a href="on-your-own-5.html#cb327-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb325"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb325-1"><a href="on-your-own-5.html#cb325-1" aria-hidden="true" tabindex="-1"></a><span class="co"># A list of the required packages</span></span>
+<span id="cb325-2"><a href="on-your-own-5.html#cb325-2" aria-hidden="true" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;activity&quot;</span>, <span class="st">&quot;corrplot&quot;</span>, <span class="st">&quot;cowplot&quot;</span>, <span class="st">&quot;dplyr&quot;</span>,  <span class="st">&quot;elevatr&quot;</span>, <span class="st">&quot;gfcanalysis&quot;</span>,   <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;iNEXT&quot;</span>, <span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;Hmsc&quot;</span>, <span class="st">&quot;leaflet&quot;</span>, <span class="st">&quot;lme4&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;magrittr&quot;</span>, <span class="st">&quot;MCMCvis&quot;</span>, <span class="st">&quot;MODISTools&quot;</span>, <span class="st">&quot;osmdata&quot;</span>, <span class="st">&quot;pals&quot;</span>, <span class="st">&quot;plotly&quot;</span>, <span class="st">&quot;remotes&quot;</span>, <span class="st">&quot;rmarkdown&quot;</span>, <span class="st">&quot;sf&quot;</span>, <span class="st">&quot;spOccupancy&quot;</span>, <span class="st">&quot;stars&quot;</span>, <span class="st">&quot;stringr&quot;</span>, <span class="st">&quot;terra&quot;</span>, <span class="st">&quot;tibble&quot;</span>, <span class="st">&quot;tidyr&quot;</span>,  <span class="st">&quot;unmarked&quot;</span>, <span class="st">&quot;viridis&quot;</span>, <span class="st">&quot;jtools&quot;</span>, <span class="st">&quot;vegan&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>)</span>
+<span id="cb325-3"><a href="on-your-own-5.html#cb325-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb325-4"><a href="on-your-own-5.html#cb325-4" aria-hidden="true" tabindex="-1"></a><span class="co"># A check to see which ones you have and which are missing</span></span>
+<span id="cb325-5"><a href="on-your-own-5.html#cb325-5" aria-hidden="true" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb325-6"><a href="on-your-own-5.html#cb325-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb325-7"><a href="on-your-own-5.html#cb325-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Code which tells R to install the missing packages</span></span>
+<span id="cb325-8"><a href="on-your-own-5.html#cb325-8" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb325-9"><a href="on-your-own-5.html#cb325-9" aria-hidden="true" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <p>Away you go!</p>
 <p>Emergency code if you get stuck!</p>
-<div class="sourceCode" id="cb328"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb328-1"><a href="on-your-own-5.html#cb328-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start dates</span></span>
-<span id="cb328-2"><a href="on-your-own-5.html#cb328-2" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>start_date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(dep<span class="sc">$</span>start_date)</span>
-<span id="cb328-3"><a href="on-your-own-5.html#cb328-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-4"><a href="on-your-own-5.html#cb328-4" aria-hidden="true" tabindex="-1"></a><span class="co"># end dates</span></span>
-<span id="cb328-5"><a href="on-your-own-5.html#cb328-5" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>end_date   <span class="ot">&lt;-</span> <span class="fu">ymd</span>(dep<span class="sc">$</span>end_date)</span>
-<span id="cb328-6"><a href="on-your-own-5.html#cb328-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-7"><a href="on-your-own-5.html#cb328-7" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>days <span class="ot">&lt;-</span> <span class="fu">interval</span>(dep<span class="sc">$</span>start_date, dep<span class="sc">$</span>end_date)<span class="sc">/</span><span class="fu">ddays</span>(<span class="dv">1</span>)</span>
-<span id="cb328-8"><a href="on-your-own-5.html#cb328-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-9"><a href="on-your-own-5.html#cb328-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-10"><a href="on-your-own-5.html#cb328-10" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(img<span class="sc">$</span>timestamp)</span>
-<span id="cb328-11"><a href="on-your-own-5.html#cb328-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-12"><a href="on-your-own-5.html#cb328-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-13"><a href="on-your-own-5.html#cb328-13" aria-hidden="true" tabindex="-1"></a><span class="co"># First, set a single categorical variable of interest from station covariates for summary graphs. If you do not have an appropriate category use &quot;project_id&quot;.</span></span>
-<span id="cb328-14"><a href="on-your-own-5.html#cb328-14" aria-hidden="true" tabindex="-1"></a>category <span class="ot">&lt;-</span> <span class="st">&quot;feature_type&quot;</span></span>
-<span id="cb328-15"><a href="on-your-own-5.html#cb328-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-16"><a href="on-your-own-5.html#cb328-16" aria-hidden="true" tabindex="-1"></a><span class="co"># We first convert this category to a factor with discrete levels</span></span>
-<span id="cb328-17"><a href="on-your-own-5.html#cb328-17" aria-hidden="true" tabindex="-1"></a>dep[,category] <span class="ot">&lt;-</span> <span class="fu">factor</span>(dep[,category])</span>
-<span id="cb328-18"><a href="on-your-own-5.html#cb328-18" aria-hidden="true" tabindex="-1"></a><span class="co"># then use the turbo() function to assign each level a color</span></span>
-<span id="cb328-19"><a href="on-your-own-5.html#cb328-19" aria-hidden="true" tabindex="-1"></a>col.cat <span class="ot">&lt;-</span> <span class="fu">turbo</span>(<span class="fu">length</span>(<span class="fu">levels</span>(dep[,category])))</span>
-<span id="cb328-20"><a href="on-your-own-5.html#cb328-20" aria-hidden="true" tabindex="-1"></a><span class="co"># then we apply it to the dataframe</span></span>
-<span id="cb328-21"><a href="on-your-own-5.html#cb328-21" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>colours <span class="ot">&lt;-</span> col.cat[dep[,category]]</span>
-<span id="cb328-22"><a href="on-your-own-5.html#cb328-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-23"><a href="on-your-own-5.html#cb328-23" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
-<span id="cb328-24"><a href="on-your-own-5.html#cb328-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldImagery, <span class="at">group=</span><span class="st">&quot;Satellite&quot;</span>) <span class="sc">%&gt;%</span>  </span>
-<span id="cb328-25"><a href="on-your-own-5.html#cb328-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>(<span class="at">group=</span><span class="st">&quot;Base&quot;</span>) <span class="sc">%&gt;%</span>     <span class="co"># Include a basemap option too</span></span>
-<span id="cb328-26"><a href="on-your-own-5.html#cb328-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">lng=</span>dep<span class="sc">$</span>longitude, <span class="at">lat=</span>dep<span class="sc">$</span>latitude,</span>
-<span id="cb328-27"><a href="on-your-own-5.html#cb328-27" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># Co lour the markers depending on the &#39;feature type&#39;</span></span>
-<span id="cb328-28"><a href="on-your-own-5.html#cb328-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span>dep<span class="sc">$</span>colours,</span>
-<span id="cb328-29"><a href="on-your-own-5.html#cb328-29" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># Add a popup of the placename and feature_type together </span></span>
-<span id="cb328-30"><a href="on-your-own-5.html#cb328-30" aria-hidden="true" tabindex="-1"></a>                   <span class="at">popup=</span><span class="fu">paste</span>(dep<span class="sc">$</span>placename, dep[,category])) <span class="sc">%&gt;%</span></span>
-<span id="cb328-31"><a href="on-your-own-5.html#cb328-31" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-32"><a href="on-your-own-5.html#cb328-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a legend explaining what is going on</span></span>
-<span id="cb328-33"><a href="on-your-own-5.html#cb328-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(<span class="st">&quot;bottomleft&quot;</span>, <span class="at">colors =</span> col.cat,  <span class="at">labels =</span> <span class="fu">levels</span>(dep[,category]),</span>
-<span id="cb328-34"><a href="on-your-own-5.html#cb328-34" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> category,</span>
-<span id="cb328-35"><a href="on-your-own-5.html#cb328-35" aria-hidden="true" tabindex="-1"></a>                   <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>),</span>
-<span id="cb328-36"><a href="on-your-own-5.html#cb328-36" aria-hidden="true" tabindex="-1"></a>                   <span class="at">opacity =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb328-37"><a href="on-your-own-5.html#cb328-37" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-38"><a href="on-your-own-5.html#cb328-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add a layer control box to toggle between the layers</span></span>
-<span id="cb328-39"><a href="on-your-own-5.html#cb328-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLayersControl</span>(</span>
-<span id="cb328-40"><a href="on-your-own-5.html#cb328-40" aria-hidden="true" tabindex="-1"></a>                    <span class="at">baseGroups =</span> <span class="fu">c</span>(<span class="st">&quot;Satellite&quot;</span>, <span class="st">&quot;Base&quot;</span>))</span>
-<span id="cb328-41"><a href="on-your-own-5.html#cb328-41" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-42"><a href="on-your-own-5.html#cb328-42" aria-hidden="true" tabindex="-1"></a>m</span>
-<span id="cb328-43"><a href="on-your-own-5.html#cb328-43" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-44"><a href="on-your-own-5.html#cb328-44" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-45"><a href="on-your-own-5.html#cb328-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Distance between traps</span></span>
-<span id="cb328-46"><a href="on-your-own-5.html#cb328-46" aria-hidden="true" tabindex="-1"></a>camera_locs <span class="ot">&lt;-</span> dep <span class="sc">%&gt;%</span> </span>
-<span id="cb328-47"><a href="on-your-own-5.html#cb328-47" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(placename, latitude, longitude) <span class="sc">%&gt;%</span> </span>
-<span id="cb328-48"><a href="on-your-own-5.html#cb328-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span> <span class="co"># remove duplicated rows (rows where the placename and coordinates match)</span></span>
-<span id="cb328-49"><a href="on-your-own-5.html#cb328-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="at">crs =</span> <span class="st">&quot;+proj=longlat&quot;</span>) <span class="co"># Convert to `sf` format</span></span>
-<span id="cb328-50"><a href="on-your-own-5.html#cb328-50" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-51"><a href="on-your-own-5.html#cb328-51" aria-hidden="true" tabindex="-1"></a>camera_dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(camera_locs) <span class="sc">%&gt;%</span> </span>
-<span id="cb328-52"><a href="on-your-own-5.html#cb328-52" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">as.dist</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb328-53"><a href="on-your-own-5.html#cb328-53" aria-hidden="true" tabindex="-1"></a>                  usedist<span class="sc">::</span><span class="fu">dist_setNames</span>(<span class="fu">as.character</span>(camera_locs<span class="sc">$</span>placename)) <span class="sc">%&gt;%</span> </span>
-<span id="cb328-54"><a href="on-your-own-5.html#cb328-54" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">as.matrix</span>()</span>
-<span id="cb328-55"><a href="on-your-own-5.html#cb328-55" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-56"><a href="on-your-own-5.html#cb328-56" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to pairwise list</span></span>
-<span id="cb328-57"><a href="on-your-own-5.html#cb328-57" aria-hidden="true" tabindex="-1"></a>camera_dist_list <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">combn</span>(<span class="fu">colnames</span>(camera_dist), <span class="dv">2</span>))</span>
-<span id="cb328-58"><a href="on-your-own-5.html#cb328-58" aria-hidden="true" tabindex="-1"></a>camera_dist_list <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(camera_dist_list, <span class="at">dist =</span> camera_dist[camera_dist_list]) <span class="sc">%&gt;%</span> </span>
-<span id="cb328-59"><a href="on-your-own-5.html#cb328-59" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">arrange</span>(dist) <span class="co"># sort descending</span></span>
-<span id="cb328-60"><a href="on-your-own-5.html#cb328-60" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-61"><a href="on-your-own-5.html#cb328-61" aria-hidden="true" tabindex="-1"></a><span class="co"># keep just the closest camera for each location</span></span>
-<span id="cb328-62"><a href="on-your-own-5.html#cb328-62" aria-hidden="true" tabindex="-1"></a>camera_dist_list <span class="ot">&lt;-</span> camera_dist_list <span class="sc">%&gt;%</span> </span>
-<span id="cb328-63"><a href="on-your-own-5.html#cb328-63" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">group_by</span>(X1) <span class="sc">%&gt;%</span> </span>
-<span id="cb328-64"><a href="on-your-own-5.html#cb328-64" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">slice</span>(<span class="fu">which.min</span>(dist))</span>
-<span id="cb328-65"><a href="on-your-own-5.html#cb328-65" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-66"><a href="on-your-own-5.html#cb328-66" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-67"><a href="on-your-own-5.html#cb328-67" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(camera_dist_list<span class="sc">$</span>dist)</span>
-<span id="cb328-68"><a href="on-your-own-5.html#cb328-68" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-69"><a href="on-your-own-5.html#cb328-69" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-70"><a href="on-your-own-5.html#cb328-70" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">unique</span>(img<span class="sc">$</span>placename) <span class="sc">%in%</span> <span class="fu">unique</span>(dep<span class="sc">$</span>placename))</span>
-<span id="cb328-71"><a href="on-your-own-5.html#cb328-71" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-72"><a href="on-your-own-5.html#cb328-72" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">unique</span>(dep<span class="sc">$</span>placename)  <span class="sc">%in%</span> <span class="fu">unique</span>(img<span class="sc">$</span>placename))</span>
-<span id="cb328-73"><a href="on-your-own-5.html#cb328-73" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-74"><a href="on-your-own-5.html#cb328-74" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-75"><a href="on-your-own-5.html#cb328-75" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-76"><a href="on-your-own-5.html#cb328-76" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-77"><a href="on-your-own-5.html#cb328-77" aria-hidden="true" tabindex="-1"></a><span class="co"># Activity check</span></span>
-<span id="cb328-78"><a href="on-your-own-5.html#cb328-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct the brken deploymenrt</span></span>
-<span id="cb328-79"><a href="on-your-own-5.html#cb328-79" aria-hidden="true" tabindex="-1"></a><span class="co">#dep[dep$deployment_id==&quot;LAC065_C187_030222&quot;, ]$end_date &lt;- &quot;2022-05-22&quot;</span></span>
-<span id="cb328-80"><a href="on-your-own-5.html#cb328-80" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-81"><a href="on-your-own-5.html#cb328-81" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-82"><a href="on-your-own-5.html#cb328-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the plot</span></span>
-<span id="cb328-83"><a href="on-your-own-5.html#cb328-83" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>()</span>
-<span id="cb328-84"><a href="on-your-own-5.html#cb328-84" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-85"><a href="on-your-own-5.html#cb328-85" aria-hidden="true" tabindex="-1"></a><span class="co"># We want a separate row for each &#39;placename&#39; - so lets turn it into a factor</span></span>
-<span id="cb328-86"><a href="on-your-own-5.html#cb328-86" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>placename <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dep<span class="sc">$</span>placename)</span>
-<span id="cb328-87"><a href="on-your-own-5.html#cb328-87" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-88"><a href="on-your-own-5.html#cb328-88" aria-hidden="true" tabindex="-1"></a><span class="co"># loop through each place name</span></span>
-<span id="cb328-89"><a href="on-your-own-5.html#cb328-89" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(<span class="fu">levels</span>(dep<span class="sc">$</span>placename)))</span>
-<span id="cb328-90"><a href="on-your-own-5.html#cb328-90" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb328-91"><a href="on-your-own-5.html#cb328-91" aria-hidden="true" tabindex="-1"></a>      <span class="co">#Subset the data to just that placename</span></span>
-<span id="cb328-92"><a href="on-your-own-5.html#cb328-92" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> dep[dep<span class="sc">$</span>placename<span class="sc">==</span><span class="fu">levels</span>(dep<span class="sc">$</span>placename)[i],]</span>
-<span id="cb328-93"><a href="on-your-own-5.html#cb328-93" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Order by date</span></span>
-<span id="cb328-94"><a href="on-your-own-5.html#cb328-94" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> tmp[<span class="fu">order</span>(tmp<span class="sc">$</span>start_date),]</span>
-<span id="cb328-95"><a href="on-your-own-5.html#cb328-95" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Loop through each deployment at that placename</span></span>
-<span id="cb328-96"><a href="on-your-own-5.html#cb328-96" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp))</span>
-<span id="cb328-97"><a href="on-your-own-5.html#cb328-97" aria-hidden="true" tabindex="-1"></a>      {</span>
-<span id="cb328-98"><a href="on-your-own-5.html#cb328-98" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Add a line to &#39;p&#39;</span></span>
-<span id="cb328-99"><a href="on-your-own-5.html#cb328-99" aria-hidden="true" tabindex="-1"></a>        p <span class="ot">&lt;-</span> <span class="fu">add_trace</span>(p, </span>
-<span id="cb328-100"><a href="on-your-own-5.html#cb328-100" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the start and end date as x coordinates</span></span>
-<span id="cb328-101"><a href="on-your-own-5.html#cb328-101" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">c</span>(tmp<span class="sc">$</span>start_date[j], tmp<span class="sc">$</span>end_date[j]), </span>
-<span id="cb328-102"><a href="on-your-own-5.html#cb328-102" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the counter for the y coordinates</span></span>
-<span id="cb328-103"><a href="on-your-own-5.html#cb328-103" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="fu">c</span>(i,i), </span>
-<span id="cb328-104"><a href="on-your-own-5.html#cb328-104" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># State the type of chart</span></span>
-<span id="cb328-105"><a href="on-your-own-5.html#cb328-105" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
-<span id="cb328-106"><a href="on-your-own-5.html#cb328-106" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># make a line that also has points</span></span>
-<span id="cb328-107"><a href="on-your-own-5.html#cb328-107" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mode =</span> <span class="st">&quot;lines+markers&quot;</span>, </span>
-<span id="cb328-108"><a href="on-your-own-5.html#cb328-108" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Add the deployment ID as hover text</span></span>
-<span id="cb328-109"><a href="on-your-own-5.html#cb328-109" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hovertext=</span>tmp<span class="sc">$</span>deployment_id[j], </span>
-<span id="cb328-110"><a href="on-your-own-5.html#cb328-110" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Color it all black</span></span>
-<span id="cb328-111"><a href="on-your-own-5.html#cb328-111" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color=</span><span class="fu">I</span>(<span class="st">&quot;black&quot;</span>), </span>
-<span id="cb328-112"><a href="on-your-own-5.html#cb328-112" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Suppress the legend</span></span>
-<span id="cb328-113"><a href="on-your-own-5.html#cb328-113" aria-hidden="true" tabindex="-1"></a>                       <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb328-114"><a href="on-your-own-5.html#cb328-114" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb328-115"><a href="on-your-own-5.html#cb328-115" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-116"><a href="on-your-own-5.html#cb328-116" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb328-117"><a href="on-your-own-5.html#cb328-117" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a categorical y axis</span></span>
-<span id="cb328-118"><a href="on-your-own-5.html#cb328-118" aria-hidden="true" tabindex="-1"></a> p <span class="ot">&lt;-</span> p <span class="sc">%&gt;%</span>   <span class="fu">layout</span>(<span class="at">yaxis =</span> <span class="fu">list</span>(</span>
-<span id="cb328-119"><a href="on-your-own-5.html#cb328-119" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-120"><a href="on-your-own-5.html#cb328-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">ticktext =</span> <span class="fu">as.list</span>(<span class="fu">levels</span>(dep<span class="sc">$</span>placename)), </span>
-<span id="cb328-121"><a href="on-your-own-5.html#cb328-121" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-122"><a href="on-your-own-5.html#cb328-122" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickvals =</span> <span class="fu">as.list</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">levels</span>(dep<span class="sc">$</span>placename))),</span>
-<span id="cb328-123"><a href="on-your-own-5.html#cb328-123" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-124"><a href="on-your-own-5.html#cb328-124" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickmode =</span> <span class="st">&quot;array&quot;</span>))</span>
-<span id="cb328-125"><a href="on-your-own-5.html#cb328-125" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-126"><a href="on-your-own-5.html#cb328-126" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-127"><a href="on-your-own-5.html#cb328-127" aria-hidden="true" tabindex="-1"></a>p</span>
-<span id="cb328-128"><a href="on-your-own-5.html#cb328-128" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-129"><a href="on-your-own-5.html#cb328-129" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-130"><a href="on-your-own-5.html#cb328-130" aria-hidden="true" tabindex="-1"></a><span class="do">#################</span></span>
-<span id="cb328-131"><a href="on-your-own-5.html#cb328-131" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-132"><a href="on-your-own-5.html#cb328-132" aria-hidden="true" tabindex="-1"></a><span class="co"># add an sp column to the img dataframe - remember the genus and species columns are not pasted together yet</span></span>
-<span id="cb328-133"><a href="on-your-own-5.html#cb328-133" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste</span>(img<span class="sc">$</span>genus, img<span class="sc">$</span>species, <span class="at">sep=</span><span class="st">&quot;.&quot;</span>)</span>
-<span id="cb328-134"><a href="on-your-own-5.html#cb328-134" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-135"><a href="on-your-own-5.html#cb328-135" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-136"><a href="on-your-own-5.html#cb328-136" aria-hidden="true" tabindex="-1"></a><span class="do">### Species lists</span></span>
-<span id="cb328-137"><a href="on-your-own-5.html#cb328-137" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-138"><a href="on-your-own-5.html#cb328-138" aria-hidden="true" tabindex="-1"></a><span class="co"># First define vector of the headings you want to see (we will use this trick a lot later on)</span></span>
-<span id="cb328-139"><a href="on-your-own-5.html#cb328-139" aria-hidden="true" tabindex="-1"></a>taxonomy_headings <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;class&quot;</span>, <span class="st">&quot;order&quot;</span>, <span class="st">&quot;family&quot;</span>, <span class="st">&quot;genus&quot;</span>, <span class="st">&quot;species&quot;</span>, <span class="st">&quot;common_name&quot;</span>)</span>
-<span id="cb328-140"><a href="on-your-own-5.html#cb328-140" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-141"><a href="on-your-own-5.html#cb328-141" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the image data to just those columns</span></span>
-<span id="cb328-142"><a href="on-your-own-5.html#cb328-142" aria-hidden="true" tabindex="-1"></a>tmp<span class="ot">&lt;-</span> img[,<span class="fu">colnames</span>(img)<span class="sc">%in%</span> taxonomy_headings]</span>
-<span id="cb328-143"><a href="on-your-own-5.html#cb328-143" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates</span></span>
-<span id="cb328-144"><a href="on-your-own-5.html#cb328-144" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp[<span class="fu">duplicated</span>(tmp)<span class="sc">==</span>F,]</span>
-<span id="cb328-145"><a href="on-your-own-5.html#cb328-145" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-146"><a href="on-your-own-5.html#cb328-146" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an ordered species list</span></span>
-<span id="cb328-147"><a href="on-your-own-5.html#cb328-147" aria-hidden="true" tabindex="-1"></a>sp_list  <span class="ot">&lt;-</span> tmp[<span class="fu">order</span>(tmp<span class="sc">$</span>class, tmp<span class="sc">$</span>order, tmp<span class="sc">$</span>family, tmp<span class="sc">$</span>genus, tmp<span class="sc">$</span>species),]</span>
-<span id="cb328-148"><a href="on-your-own-5.html#cb328-148" aria-hidden="true" tabindex="-1"></a>sp_list<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste</span>(sp_list<span class="sc">$</span>genus, sp_list<span class="sc">$</span>species)</span>
-<span id="cb328-149"><a href="on-your-own-5.html#cb328-149" aria-hidden="true" tabindex="-1"></a><span class="do">### DETCTION CHECK</span></span>
-<span id="cb328-150"><a href="on-your-own-5.html#cb328-150" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-151"><a href="on-your-own-5.html#cb328-151" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-152"><a href="on-your-own-5.html#cb328-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-153"><a href="on-your-own-5.html#cb328-153" aria-hidden="true" tabindex="-1"></a><span class="co">#Camera activity plot</span></span>
-<span id="cb328-154"><a href="on-your-own-5.html#cb328-154" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a separate plot for each 20 stations For each 20 stations</span></span>
-<span id="cb328-155"><a href="on-your-own-5.html#cb328-155" aria-hidden="true" tabindex="-1"></a><span class="co"># To do this make a plot dataframe</span></span>
-<span id="cb328-156"><a href="on-your-own-5.html#cb328-156" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deployment_id&quot;</span><span class="ot">=</span><span class="fu">unique</span>(dep<span class="sc">$</span>deployment_id), <span class="st">&quot;plot_group&quot;</span><span class="ot">=</span><span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(dep<span class="sc">$</span>deployment_id))<span class="sc">/</span><span class="dv">20</span>))</span>
-<span id="cb328-157"><a href="on-your-own-5.html#cb328-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-158"><a href="on-your-own-5.html#cb328-158" aria-hidden="true" tabindex="-1"></a>dep_tmp <span class="ot">&lt;-</span> <span class="fu">left_join</span>(dep,tmp, <span class="at">by=</span><span class="st">&quot;deployment_id&quot;</span>)</span>
-<span id="cb328-159"><a href="on-your-own-5.html#cb328-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-160"><a href="on-your-own-5.html#cb328-160" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">max</span>(dep_tmp<span class="sc">$</span>plot_group))</span>
-<span id="cb328-161"><a href="on-your-own-5.html#cb328-161" aria-hidden="true" tabindex="-1"></a>{  </span>
-<span id="cb328-162"><a href="on-your-own-5.html#cb328-162" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Call the plot</span></span>
-<span id="cb328-163"><a href="on-your-own-5.html#cb328-163" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>() </span>
-<span id="cb328-164"><a href="on-your-own-5.html#cb328-164" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-165"><a href="on-your-own-5.html#cb328-165" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Subset the data to just that placename</span></span>
-<span id="cb328-166"><a href="on-your-own-5.html#cb328-166" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> dep_tmp[dep_tmp<span class="sc">$</span>plot_group<span class="sc">==</span>i,]</span>
-<span id="cb328-167"><a href="on-your-own-5.html#cb328-167" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Order by placename </span></span>
-<span id="cb328-168"><a href="on-your-own-5.html#cb328-168" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> tmp[<span class="fu">order</span>(tmp<span class="sc">$</span>placename),]</span>
-<span id="cb328-169"><a href="on-your-own-5.html#cb328-169" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-170"><a href="on-your-own-5.html#cb328-170" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb328-171"><a href="on-your-own-5.html#cb328-171" aria-hidden="true" tabindex="-1"></a> <span class="co"># Loop through each deployment at that placename</span></span>
-<span id="cb328-172"><a href="on-your-own-5.html#cb328-172" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp))</span>
-<span id="cb328-173"><a href="on-your-own-5.html#cb328-173" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb328-174"><a href="on-your-own-5.html#cb328-174" aria-hidden="true" tabindex="-1"></a>        <span class="co">#Subset the image data</span></span>
-<span id="cb328-175"><a href="on-your-own-5.html#cb328-175" aria-hidden="true" tabindex="-1"></a>        tmp_img <span class="ot">&lt;-</span> img[img<span class="sc">$</span>deployment_id<span class="sc">==</span>tmp<span class="sc">$</span>deployment_id[j],]</span>
-<span id="cb328-176"><a href="on-your-own-5.html#cb328-176" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb328-177"><a href="on-your-own-5.html#cb328-177" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">nrow</span>(tmp_img)<span class="sc">&gt;</span><span class="dv">0</span>)</span>
-<span id="cb328-178"><a href="on-your-own-5.html#cb328-178" aria-hidden="true" tabindex="-1"></a>        {</span>
-<span id="cb328-179"><a href="on-your-own-5.html#cb328-179" aria-hidden="true" tabindex="-1"></a>         </span>
-<span id="cb328-180"><a href="on-your-own-5.html#cb328-180" aria-hidden="true" tabindex="-1"></a>          p <span class="ot">&lt;-</span> <span class="fu">add_trace</span>(p, </span>
-<span id="cb328-181"><a href="on-your-own-5.html#cb328-181" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the start and end date as x coordinates</span></span>
-<span id="cb328-182"><a href="on-your-own-5.html#cb328-182" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">c</span>(tmp_img<span class="sc">$</span>timestamp), </span>
-<span id="cb328-183"><a href="on-your-own-5.html#cb328-183" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the counter for the y coordinates</span></span>
-<span id="cb328-184"><a href="on-your-own-5.html#cb328-184" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="fu">rep</span>(j, <span class="fu">nrow</span>(tmp_img)), </span>
-<span id="cb328-185"><a href="on-your-own-5.html#cb328-185" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># State the type of chart</span></span>
-<span id="cb328-186"><a href="on-your-own-5.html#cb328-186" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
-<span id="cb328-187"><a href="on-your-own-5.html#cb328-187" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># make a line that also has points</span></span>
-<span id="cb328-188"><a href="on-your-own-5.html#cb328-188" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mode =</span> <span class="st">&quot;markers&quot;</span>, </span>
-<span id="cb328-189"><a href="on-your-own-5.html#cb328-189" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Add the deployment ID as hover text</span></span>
-<span id="cb328-190"><a href="on-your-own-5.html#cb328-190" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hovertext=</span><span class="fu">paste</span>(tmp_img<span class="sc">$</span>genus,tmp_img<span class="sc">$</span>species), </span>
-<span id="cb328-191"><a href="on-your-own-5.html#cb328-191" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Color it all black</span></span>
-<span id="cb328-192"><a href="on-your-own-5.html#cb328-192" aria-hidden="true" tabindex="-1"></a>                       <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>), </span>
-<span id="cb328-193"><a href="on-your-own-5.html#cb328-193" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Suppress the legend</span></span>
-<span id="cb328-194"><a href="on-your-own-5.html#cb328-194" aria-hidden="true" tabindex="-1"></a>                       <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb328-195"><a href="on-your-own-5.html#cb328-195" aria-hidden="true" tabindex="-1"></a>        }</span>
-<span id="cb328-196"><a href="on-your-own-5.html#cb328-196" aria-hidden="true" tabindex="-1"></a>        </span>
-<span id="cb328-197"><a href="on-your-own-5.html#cb328-197" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Add a line to &#39;p&#39;</span></span>
-<span id="cb328-198"><a href="on-your-own-5.html#cb328-198" aria-hidden="true" tabindex="-1"></a>        p <span class="ot">&lt;-</span> <span class="fu">add_trace</span>(p, </span>
-<span id="cb328-199"><a href="on-your-own-5.html#cb328-199" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the start and end date as x coordinates</span></span>
-<span id="cb328-200"><a href="on-your-own-5.html#cb328-200" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">c</span>(tmp<span class="sc">$</span>start_date[j], tmp<span class="sc">$</span>end_date[j]), </span>
-<span id="cb328-201"><a href="on-your-own-5.html#cb328-201" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the counter for the y coordinates</span></span>
-<span id="cb328-202"><a href="on-your-own-5.html#cb328-202" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="fu">c</span>(j,j), </span>
-<span id="cb328-203"><a href="on-your-own-5.html#cb328-203" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># State the type of chart</span></span>
-<span id="cb328-204"><a href="on-your-own-5.html#cb328-204" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
-<span id="cb328-205"><a href="on-your-own-5.html#cb328-205" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># make a line that also has points</span></span>
-<span id="cb328-206"><a href="on-your-own-5.html#cb328-206" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mode =</span> <span class="st">&quot;lines&quot;</span>, </span>
-<span id="cb328-207"><a href="on-your-own-5.html#cb328-207" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Add the deployment ID as hover text</span></span>
-<span id="cb328-208"><a href="on-your-own-5.html#cb328-208" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hovertext=</span>tmp<span class="sc">$</span>deployment_id[j], </span>
-<span id="cb328-209"><a href="on-your-own-5.html#cb328-209" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Color it all black</span></span>
-<span id="cb328-210"><a href="on-your-own-5.html#cb328-210" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color=</span><span class="fu">I</span>(<span class="st">&quot;black&quot;</span>), </span>
-<span id="cb328-211"><a href="on-your-own-5.html#cb328-211" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Suppress the legend</span></span>
-<span id="cb328-212"><a href="on-your-own-5.html#cb328-212" aria-hidden="true" tabindex="-1"></a>                       <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
-<span id="cb328-213"><a href="on-your-own-5.html#cb328-213" aria-hidden="true" tabindex="-1"></a>      }</span>
-<span id="cb328-214"><a href="on-your-own-5.html#cb328-214" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add custom y axis labels  </span></span>
-<span id="cb328-215"><a href="on-your-own-5.html#cb328-215" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> p <span class="sc">%&gt;%</span>   <span class="fu">layout</span>(<span class="at">yaxis =</span> <span class="fu">list</span>(</span>
-<span id="cb328-216"><a href="on-your-own-5.html#cb328-216" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-217"><a href="on-your-own-5.html#cb328-217" aria-hidden="true" tabindex="-1"></a>      <span class="at">ticktext =</span> <span class="fu">as.list</span>(tmp<span class="sc">$</span>deployment_id), </span>
-<span id="cb328-218"><a href="on-your-own-5.html#cb328-218" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-219"><a href="on-your-own-5.html#cb328-219" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickvals =</span> <span class="fu">as.list</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp)),</span>
-<span id="cb328-220"><a href="on-your-own-5.html#cb328-220" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-221"><a href="on-your-own-5.html#cb328-221" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickmode =</span> <span class="st">&quot;array&quot;</span>))</span>
-<span id="cb328-222"><a href="on-your-own-5.html#cb328-222" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-223"><a href="on-your-own-5.html#cb328-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(p)</span>
-<span id="cb328-224"><a href="on-your-own-5.html#cb328-224" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-225"><a href="on-your-own-5.html#cb328-225" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-226"><a href="on-your-own-5.html#cb328-226" aria-hidden="true" tabindex="-1"></a>} </span>
-<span id="cb328-227"><a href="on-your-own-5.html#cb328-227" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-228"><a href="on-your-own-5.html#cb328-228" aria-hidden="true" tabindex="-1"></a><span class="do">##### Already got common names dont worry about that</span></span>
-<span id="cb328-229"><a href="on-your-own-5.html#cb328-229" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-230"><a href="on-your-own-5.html#cb328-230" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-231"><a href="on-your-own-5.html#cb328-231" aria-hidden="true" tabindex="-1"></a><span class="co"># First lets convert our timestamp to decimal hours</span></span>
-<span id="cb328-232"><a href="on-your-own-5.html#cb328-232" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>hours <span class="ot">&lt;-</span> <span class="fu">hour</span>(img<span class="sc">$</span>timestamp) <span class="sc">+</span> <span class="fu">minute</span>(img<span class="sc">$</span>timestamp)<span class="sc">/</span><span class="dv">60</span> <span class="sc">+</span> <span class="fu">second</span>(img<span class="sc">$</span>timestamp)<span class="sc">/</span>(<span class="dv">60</span><span class="sc">*</span><span class="dv">60</span>)</span>
-<span id="cb328-233"><a href="on-your-own-5.html#cb328-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-234"><a href="on-your-own-5.html#cb328-234" aria-hidden="true" tabindex="-1"></a><span class="co"># Count all of the captures</span></span>
-<span id="cb328-235"><a href="on-your-own-5.html#cb328-235" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> img <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(common_name) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count=</span><span class="fu">n</span>())</span>
-<span id="cb328-236"><a href="on-your-own-5.html#cb328-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-237"><a href="on-your-own-5.html#cb328-237" aria-hidden="true" tabindex="-1"></a>yform <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">categoryorder =</span> <span class="st">&quot;array&quot;</span>,</span>
-<span id="cb328-238"><a href="on-your-own-5.html#cb328-238" aria-hidden="true" tabindex="-1"></a>              <span class="at">categoryarray =</span> tmp<span class="sc">$</span>common_name)</span>
-<span id="cb328-239"><a href="on-your-own-5.html#cb328-239" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-240"><a href="on-your-own-5.html#cb328-240" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x =</span> img<span class="sc">$</span>hours, <span class="at">y =</span> img<span class="sc">$</span>common_name,<span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
-<span id="cb328-241"><a href="on-your-own-5.html#cb328-241" aria-hidden="true" tabindex="-1"></a>               <span class="at">height=</span><span class="dv">1000</span>, <span class="at">text=</span>img<span class="sc">$</span>deployment_id, <span class="at">hoverinfo=</span><span class="st">&#39;text&#39;</span>,</span>
-<span id="cb328-242"><a href="on-your-own-5.html#cb328-242" aria-hidden="true" tabindex="-1"></a>               <span class="at">mode   =</span> <span class="st">&#39;markers&#39;</span>,</span>
-<span id="cb328-243"><a href="on-your-own-5.html#cb328-243" aria-hidden="true" tabindex="-1"></a>               <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">5</span>,</span>
-<span id="cb328-244"><a href="on-your-own-5.html#cb328-244" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> <span class="st">&#39;rgba(50, 100, 255, .2)&#39;</span>,</span>
-<span id="cb328-245"><a href="on-your-own-5.html#cb328-245" aria-hidden="true" tabindex="-1"></a>                             <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&#39;rgba(0, 0, 0, 0)&#39;</span>,</span>
-<span id="cb328-246"><a href="on-your-own-5.html#cb328-246" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">width =</span> <span class="dv">0</span>))) <span class="sc">%&gt;%</span> </span>
-<span id="cb328-247"><a href="on-your-own-5.html#cb328-247" aria-hidden="true" tabindex="-1"></a>              <span class="fu">layout</span>(<span class="at">yaxis =</span> yform)</span>
-<span id="cb328-248"><a href="on-your-own-5.html#cb328-248" aria-hidden="true" tabindex="-1"></a>fig</span>
-<span id="cb328-249"><a href="on-your-own-5.html#cb328-249" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-250"><a href="on-your-own-5.html#cb328-250" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the column</span></span>
-<span id="cb328-251"><a href="on-your-own-5.html#cb328-251" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>hours <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb328-252"><a href="on-your-own-5.html#cb328-252" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-253"><a href="on-your-own-5.html#cb328-253" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-254"><a href="on-your-own-5.html#cb328-254" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################</span></span>
-<span id="cb328-255"><a href="on-your-own-5.html#cb328-255" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################</span></span>
-<span id="cb328-256"><a href="on-your-own-5.html#cb328-256" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-257"><a href="on-your-own-5.html#cb328-257" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dataframes</span></span>
-<span id="cb328-258"><a href="on-your-own-5.html#cb328-258" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-259"><a href="on-your-own-5.html#cb328-259" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;data/processed_data&quot;</span>)</span>
-<span id="cb328-260"><a href="on-your-own-5.html#cb328-260" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-261"><a href="on-your-own-5.html#cb328-261" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove observations without animals detected, where we don&#39;t know the species, and non-mammals</span></span>
-<span id="cb328-262"><a href="on-your-own-5.html#cb328-262" aria-hidden="true" tabindex="-1"></a> img_sub <span class="ot">&lt;-</span> img <span class="sc">%&gt;%</span> <span class="fu">filter</span>(is_blank<span class="sc">==</span><span class="dv">0</span>,                <span class="co"># Remove the blanks</span></span>
-<span id="cb328-263"><a href="on-your-own-5.html#cb328-263" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">is.na</span>(img<span class="sc">$</span>species)<span class="sc">==</span><span class="cn">FALSE</span>, <span class="co"># Remove classifications which don&#39;t have species </span></span>
-<span id="cb328-264"><a href="on-your-own-5.html#cb328-264" aria-hidden="true" tabindex="-1"></a>                          class<span class="sc">==</span><span class="st">&quot;Mammalia&quot;</span>,          <span class="co"># Subset to mammals</span></span>
-<span id="cb328-265"><a href="on-your-own-5.html#cb328-265" aria-hidden="true" tabindex="-1"></a>                          species<span class="sc">!=</span><span class="st">&quot;sapiens&quot;</span>)         <span class="co"># Subset to anything that isn&#39;t human</span></span>
-<span id="cb328-266"><a href="on-your-own-5.html#cb328-266" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-267"><a href="on-your-own-5.html#cb328-267" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(img_sub<span class="sc">$</span>sp)</span>
-<span id="cb328-268"><a href="on-your-own-5.html#cb328-268" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-269"><a href="on-your-own-5.html#cb328-269" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################</span></span>
-<span id="cb328-270"><a href="on-your-own-5.html#cb328-270" aria-hidden="true" tabindex="-1"></a><span class="co"># Create lookup</span></span>
-<span id="cb328-271"><a href="on-your-own-5.html#cb328-271" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-272"><a href="on-your-own-5.html#cb328-272" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove any deployments without end dates</span></span>
-<span id="cb328-273"><a href="on-your-own-5.html#cb328-273" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> dep[<span class="fu">is.na</span>(dep<span class="sc">$</span>end_date)<span class="sc">==</span>F,]</span>
-<span id="cb328-274"><a href="on-your-own-5.html#cb328-274" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-275"><a href="on-your-own-5.html#cb328-275" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty list to store our days</span></span>
-<span id="cb328-276"><a href="on-your-own-5.html#cb328-276" aria-hidden="true" tabindex="-1"></a>daily_lookup <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
-<span id="cb328-277"><a href="on-your-own-5.html#cb328-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-278"><a href="on-your-own-5.html#cb328-278" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through the deployment dataframe and create a row for every day the camera is active</span></span>
-<span id="cb328-279"><a href="on-your-own-5.html#cb328-279" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp))</span>
-<span id="cb328-280"><a href="on-your-own-5.html#cb328-280" aria-hidden="true" tabindex="-1"></a>{</span>
-<span id="cb328-281"><a href="on-your-own-5.html#cb328-281" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">ymd</span>(tmp<span class="sc">$</span>start_date[i])<span class="sc">!=</span><span class="fu">ymd</span>(tmp<span class="sc">$</span>end_date[i]))</span>
-<span id="cb328-282"><a href="on-your-own-5.html#cb328-282" aria-hidden="true" tabindex="-1"></a>  {</span>
-<span id="cb328-283"><a href="on-your-own-5.html#cb328-283" aria-hidden="true" tabindex="-1"></a>    daily_lookup[[i]] <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;date&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="fu">ymd</span>(tmp<span class="sc">$</span>start_date[i]), <span class="fu">ymd</span>(tmp<span class="sc">$</span>end_date[i]), <span class="at">by=</span><span class="st">&quot;days&quot;</span>), <span class="st">&quot;placename&quot;</span><span class="ot">=</span>tmp<span class="sc">$</span>placename[i])</span>
-<span id="cb328-284"><a href="on-your-own-5.html#cb328-284" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb328-285"><a href="on-your-own-5.html#cb328-285" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb328-286"><a href="on-your-own-5.html#cb328-286" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-287"><a href="on-your-own-5.html#cb328-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the lists into a dataframe</span></span>
-<span id="cb328-288"><a href="on-your-own-5.html#cb328-288" aria-hidden="true" tabindex="-1"></a>row_lookup <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(daily_lookup)</span>
-<span id="cb328-289"><a href="on-your-own-5.html#cb328-289" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-290"><a href="on-your-own-5.html#cb328-290" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates - when start and end days are the same for successive deployments</span></span>
-<span id="cb328-291"><a href="on-your-own-5.html#cb328-291" aria-hidden="true" tabindex="-1"></a>row_lookup <span class="ot">&lt;-</span> row_lookup[<span class="fu">duplicated</span>(row_lookup)<span class="sc">==</span>F,]</span>
-<span id="cb328-292"><a href="on-your-own-5.html#cb328-292" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-293"><a href="on-your-own-5.html#cb328-293" aria-hidden="true" tabindex="-1"></a>independent <span class="ot">&lt;-</span> <span class="dv">30</span></span>
-<span id="cb328-294"><a href="on-your-own-5.html#cb328-294" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-295"><a href="on-your-own-5.html#cb328-295" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for a `group_size` variable? </span></span>
-<span id="cb328-296"><a href="on-your-own-5.html#cb328-296" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(img_sub<span class="sc">$</span>group_size)</span>
-<span id="cb328-297"><a href="on-your-own-5.html#cb328-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-298"><a href="on-your-own-5.html#cb328-298" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for a &#39;number_ofobjects&#39; variable</span></span>
-<span id="cb328-299"><a href="on-your-own-5.html#cb328-299" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(img_sub<span class="sc">$</span>number_of_objects)</span>
-<span id="cb328-300"><a href="on-your-own-5.html#cb328-300" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-301"><a href="on-your-own-5.html#cb328-301" aria-hidden="true" tabindex="-1"></a>img_sub<span class="sc">$</span>animal_count <span class="ot">&lt;-</span> img_sub<span class="sc">$</span>number_of_objects</span>
-<span id="cb328-302"><a href="on-your-own-5.html#cb328-302" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-303"><a href="on-your-own-5.html#cb328-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-304"><a href="on-your-own-5.html#cb328-304" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-305"><a href="on-your-own-5.html#cb328-305" aria-hidden="true" tabindex="-1"></a><span class="co"># Events</span></span>
-<span id="cb328-306"><a href="on-your-own-5.html#cb328-306" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-307"><a href="on-your-own-5.html#cb328-307" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-308"><a href="on-your-own-5.html#cb328-308" aria-hidden="true" tabindex="-1"></a>img_tmp <span class="ot">&lt;-</span> img_sub <span class="sc">%&gt;%</span></span>
-<span id="cb328-309"><a href="on-your-own-5.html#cb328-309" aria-hidden="true" tabindex="-1"></a>              <span class="fu">arrange</span>(deployment_id) <span class="sc">%&gt;%</span>        <span class="co"># Order by deployment_id</span></span>
-<span id="cb328-310"><a href="on-your-own-5.html#cb328-310" aria-hidden="true" tabindex="-1"></a>              <span class="fu">group_by</span>(deployment_id, sp) <span class="sc">%&gt;%</span>   <span class="co"># Group species together</span></span>
-<span id="cb328-311"><a href="on-your-own-5.html#cb328-311" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">duration =</span> <span class="fu">int_length</span>(timestamp <span class="sc">%--%</span> <span class="fu">lag</span>(timestamp))) <span class="co"># Calculate the gap bet</span></span>
-<span id="cb328-312"><a href="on-your-own-5.html#cb328-312" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-313"><a href="on-your-own-5.html#cb328-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-314"><a href="on-your-own-5.html#cb328-314" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-315"><a href="on-your-own-5.html#cb328-315" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb328-316"><a href="on-your-own-5.html#cb328-316" aria-hidden="true" tabindex="-1"></a><span class="co"># Give a random value to all cells</span></span>
-<span id="cb328-317"><a href="on-your-own-5.html#cb328-317" aria-hidden="true" tabindex="-1"></a>img_tmp<span class="sc">$</span>event_id <span class="ot">&lt;-</span> <span class="dv">9999</span></span>
-<span id="cb328-318"><a href="on-your-own-5.html#cb328-318" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-319"><a href="on-your-own-5.html#cb328-319" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a counter</span></span>
-<span id="cb328-320"><a href="on-your-own-5.html#cb328-320" aria-hidden="true" tabindex="-1"></a>counter <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb328-321"><a href="on-your-own-5.html#cb328-321" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-322"><a href="on-your-own-5.html#cb328-322" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a unique code that has one more zero than rows in your dataframe  </span></span>
-<span id="cb328-323"><a href="on-your-own-5.html#cb328-323" aria-hidden="true" tabindex="-1"></a>num_code <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">paste0</span>(<span class="fu">nrow</span>(img_sub),<span class="dv">0</span>))</span>
-<span id="cb328-324"><a href="on-your-own-5.html#cb328-324" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-325"><a href="on-your-own-5.html#cb328-325" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through img_tmp - if gap is greater than the threshold -&gt; give it a new event ID</span></span>
-<span id="cb328-326"><a href="on-your-own-5.html#cb328-326" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(img_tmp)) {</span>
-<span id="cb328-327"><a href="on-your-own-5.html#cb328-327" aria-hidden="true" tabindex="-1"></a>  img_tmp<span class="sc">$</span>event_id[i<span class="dv">-1</span>]  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(counter, <span class="fu">nchar</span>(num_code), <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
-<span id="cb328-328"><a href="on-your-own-5.html#cb328-328" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-329"><a href="on-your-own-5.html#cb328-329" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration[i]) <span class="sc">|</span> <span class="fu">abs</span>(img_tmp<span class="sc">$</span>duration[i]) <span class="sc">&gt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>))</span>
-<span id="cb328-330"><a href="on-your-own-5.html#cb328-330" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb328-331"><a href="on-your-own-5.html#cb328-331" aria-hidden="true" tabindex="-1"></a>      counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb328-332"><a href="on-your-own-5.html#cb328-332" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb328-333"><a href="on-your-own-5.html#cb328-333" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb328-334"><a href="on-your-own-5.html#cb328-334" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-335"><a href="on-your-own-5.html#cb328-335" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the information for the last row - the loop above always updates the previous row... leaving the last row unchanged</span></span>
-<span id="cb328-336"><a href="on-your-own-5.html#cb328-336" aria-hidden="true" tabindex="-1"></a>   </span>
-<span id="cb328-337"><a href="on-your-own-5.html#cb328-337" aria-hidden="true" tabindex="-1"></a> <span class="co"># group ID  for the last row</span></span>
-<span id="cb328-338"><a href="on-your-own-5.html#cb328-338" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span>(img_tmp<span class="sc">$</span>duration[<span class="fu">nrow</span>(img_tmp)] <span class="sc">&lt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>)<span class="sc">|</span></span>
-<span id="cb328-339"><a href="on-your-own-5.html#cb328-339" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration[<span class="fu">nrow</span>(img_tmp)])){</span>
-<span id="cb328-340"><a href="on-your-own-5.html#cb328-340" aria-hidden="true" tabindex="-1"></a>   img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)] <span class="ot">&lt;-</span> img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb328-341"><a href="on-your-own-5.html#cb328-341" aria-hidden="true" tabindex="-1"></a> } <span class="cf">else</span>{</span>
-<span id="cb328-342"><a href="on-your-own-5.html#cb328-342" aria-hidden="true" tabindex="-1"></a>   counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb328-343"><a href="on-your-own-5.html#cb328-343" aria-hidden="true" tabindex="-1"></a>   img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(counter, <span class="fu">nchar</span>(num_code), <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
-<span id="cb328-344"><a href="on-your-own-5.html#cb328-344" aria-hidden="true" tabindex="-1"></a> }</span>
-<span id="cb328-345"><a href="on-your-own-5.html#cb328-345" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-346"><a href="on-your-own-5.html#cb328-346" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the duration column</span></span>
-<span id="cb328-347"><a href="on-your-own-5.html#cb328-347" aria-hidden="true" tabindex="-1"></a>img_tmp<span class="sc">$</span>duration <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb328-348"><a href="on-your-own-5.html#cb328-348" aria-hidden="true" tabindex="-1"></a> </span>
-<span id="cb328-349"><a href="on-your-own-5.html#cb328-349" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-350"><a href="on-your-own-5.html#cb328-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-351"><a href="on-your-own-5.html#cb328-351" aria-hidden="true" tabindex="-1"></a> <span class="co"># find out the last and the first of the time in the group</span></span>
-<span id="cb328-352"><a href="on-your-own-5.html#cb328-352" aria-hidden="true" tabindex="-1"></a>  top <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1</span>,timestamp) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(event_id, timestamp)</span>
-<span id="cb328-353"><a href="on-your-own-5.html#cb328-353" aria-hidden="true" tabindex="-1"></a>  bot <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="sc">-</span><span class="dv">1</span>,timestamp) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(event_id, timestamp)</span>
-<span id="cb328-354"><a href="on-your-own-5.html#cb328-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(bot)[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;timestamp_end&quot;</span>)</span>
-<span id="cb328-355"><a href="on-your-own-5.html#cb328-355" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-356"><a href="on-your-own-5.html#cb328-356" aria-hidden="true" tabindex="-1"></a>  img_num <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">event_observations=</span><span class="fu">n</span>()) <span class="co"># number of images in the event</span></span>
-<span id="cb328-357"><a href="on-your-own-5.html#cb328-357" aria-hidden="true" tabindex="-1"></a>  event_grp <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">event_groupsize=</span><span class="fu">max</span>(animal_count))</span>
-<span id="cb328-358"><a href="on-your-own-5.html#cb328-358" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-359"><a href="on-your-own-5.html#cb328-359" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the duration and add the other elements</span></span>
-<span id="cb328-360"><a href="on-your-own-5.html#cb328-360" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span>  top <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(bot, <span class="at">by=</span><span class="st">&quot;event_id&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb328-361"><a href="on-your-own-5.html#cb328-361" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">event_duration=</span><span class="fu">abs</span>(<span class="fu">int_length</span>(timestamp <span class="sc">%--%</span> timestamp_end))) <span class="sc">%&gt;%</span></span>
-<span id="cb328-362"><a href="on-your-own-5.html#cb328-362" aria-hidden="true" tabindex="-1"></a>      <span class="fu">left_join</span>(event_grp, <span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)<span class="sc">%&gt;%</span></span>
-<span id="cb328-363"><a href="on-your-own-5.html#cb328-363" aria-hidden="true" tabindex="-1"></a>      <span class="fu">left_join</span>(img_num, <span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)</span>
-<span id="cb328-364"><a href="on-your-own-5.html#cb328-364" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-365"><a href="on-your-own-5.html#cb328-365" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove columns you don&#39;t need</span></span>
-<span id="cb328-366"><a href="on-your-own-5.html#cb328-366" aria-hidden="true" tabindex="-1"></a>  diff<span class="sc">$</span>timestamp   <span class="ot">&lt;-</span><span class="cn">NULL</span></span>
-<span id="cb328-367"><a href="on-your-own-5.html#cb328-367" aria-hidden="true" tabindex="-1"></a>  diff<span class="sc">$</span>timestamp_end <span class="ot">&lt;-</span><span class="cn">NULL</span></span>
-<span id="cb328-368"><a href="on-your-own-5.html#cb328-368" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-369"><a href="on-your-own-5.html#cb328-369" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Merge the img_tmp with the event data</span></span>
-<span id="cb328-370"><a href="on-your-own-5.html#cb328-370" aria-hidden="true" tabindex="-1"></a>  img_tmp <span class="ot">&lt;-</span>  img_tmp <span class="sc">%&gt;%</span></span>
-<span id="cb328-371"><a href="on-your-own-5.html#cb328-371" aria-hidden="true" tabindex="-1"></a>   <span class="fu">left_join</span>(diff,<span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)</span>
-<span id="cb328-372"><a href="on-your-own-5.html#cb328-372" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-373"><a href="on-your-own-5.html#cb328-373" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-374"><a href="on-your-own-5.html#cb328-374" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove duplicates</span></span>
-<span id="cb328-375"><a href="on-your-own-5.html#cb328-375" aria-hidden="true" tabindex="-1"></a>ind_dat <span class="ot">&lt;-</span> img_tmp[<span class="fu">duplicated</span>(img_tmp<span class="sc">$</span>event_id)<span class="sc">==</span>F,]</span>
-<span id="cb328-376"><a href="on-your-own-5.html#cb328-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-377"><a href="on-your-own-5.html#cb328-377" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a  unique code for ever day and deployment where cameras were functioning</span></span>
-<span id="cb328-378"><a href="on-your-own-5.html#cb328-378" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">paste</span>(row_lookup<span class="sc">$</span>date, row_lookup<span class="sc">$</span>placename)</span>
-<span id="cb328-379"><a href="on-your-own-5.html#cb328-379" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-380"><a href="on-your-own-5.html#cb328-380" aria-hidden="true" tabindex="-1"></a><span class="co">#Subset ind_dat to data that matches the unique codes</span></span>
-<span id="cb328-381"><a href="on-your-own-5.html#cb328-381" aria-hidden="true" tabindex="-1"></a>ind_dat <span class="ot">&lt;-</span> ind_dat[<span class="fu">paste</span>(<span class="fu">substr</span>(ind_dat<span class="sc">$</span>timestamp,<span class="dv">1</span>,<span class="dv">10</span>), ind_dat<span class="sc">$</span>placename) <span class="sc">%in%</span> tmp, ]</span>
-<span id="cb328-382"><a href="on-your-own-5.html#cb328-382" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-383"><a href="on-your-own-5.html#cb328-383" aria-hidden="true" tabindex="-1"></a>ind_dat<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(ind_dat<span class="sc">$</span>sp)</span>
-<span id="cb328-384"><a href="on-your-own-5.html#cb328-384" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-385"><a href="on-your-own-5.html#cb328-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-386"><a href="on-your-own-5.html#cb328-386" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-387"><a href="on-your-own-5.html#cb328-387" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ind_dat, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_detections.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
-<span id="cb328-388"><a href="on-your-own-5.html#cb328-388" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-389"><a href="on-your-own-5.html#cb328-389" aria-hidden="true" tabindex="-1"></a><span class="co"># also write the cleaned all detections file (some activity analyses require it)</span></span>
-<span id="cb328-390"><a href="on-your-own-5.html#cb328-390" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(img_tmp, paste0(&quot;data/processed_data/&quot;,ind_dat$project_id[1], &quot;_raw_detections.csv&quot;), row.names = F)</span></span>
-<span id="cb328-391"><a href="on-your-own-5.html#cb328-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-392"><a href="on-your-own-5.html#cb328-392" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(row_lookup, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_daily_lookup.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
-<span id="cb328-393"><a href="on-your-own-5.html#cb328-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-394"><a href="on-your-own-5.html#cb328-394" aria-hidden="true" tabindex="-1"></a><span class="co">#Subset the columns</span></span>
-<span id="cb328-395"><a href="on-your-own-5.html#cb328-395" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> dep[, <span class="fu">c</span>(<span class="st">&quot;project_id&quot;</span>, <span class="st">&quot;placename&quot;</span>, <span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>, <span class="st">&quot;feature_type&quot;</span>)]</span>
-<span id="cb328-396"><a href="on-your-own-5.html#cb328-396" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicated rows</span></span>
-<span id="cb328-397"><a href="on-your-own-5.html#cb328-397" aria-hidden="true" tabindex="-1"></a>tmp<span class="ot">&lt;-</span> tmp[<span class="fu">duplicated</span>(tmp)<span class="sc">==</span>F,]</span>
-<span id="cb328-398"><a href="on-your-own-5.html#cb328-398" aria-hidden="true" tabindex="-1"></a><span class="co"># write the file</span></span>
-<span id="cb328-399"><a href="on-your-own-5.html#cb328-399" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tmp, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_camera_locations.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
-<span id="cb328-400"><a href="on-your-own-5.html#cb328-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-401"><a href="on-your-own-5.html#cb328-401" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-402"><a href="on-your-own-5.html#cb328-402" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> sp_list[sp_list<span class="sc">$</span>sp <span class="sc">%in%</span> ind_dat<span class="sc">$</span>sp,]</span>
-<span id="cb328-403"><a href="on-your-own-5.html#cb328-403" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-404"><a href="on-your-own-5.html#cb328-404" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the &#39;verified&#39; column</span></span>
-<span id="cb328-405"><a href="on-your-own-5.html#cb328-405" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>verified <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb328-406"><a href="on-your-own-5.html#cb328-406" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-407"><a href="on-your-own-5.html#cb328-407" aria-hidden="true" tabindex="-1"></a><span class="co"># We will replace the spaces in the species names with dots, this will make things easier for us later (as column headings with spaces in are annoying).</span></span>
-<span id="cb328-408"><a href="on-your-own-5.html#cb328-408" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb328-409"><a href="on-your-own-5.html#cb328-409" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(tmp<span class="sc">$</span>sp, <span class="st">&quot; &quot;</span>, <span class="st">&quot;.&quot;</span>)</span>
-<span id="cb328-410"><a href="on-your-own-5.html#cb328-410" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-411"><a href="on-your-own-5.html#cb328-411" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-412"><a href="on-your-own-5.html#cb328-412" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tmp, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_species_list.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
-<span id="cb328-413"><a href="on-your-own-5.html#cb328-413" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-414"><a href="on-your-own-5.html#cb328-414" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-415"><a href="on-your-own-5.html#cb328-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-416"><a href="on-your-own-5.html#cb328-416" aria-hidden="true" tabindex="-1"></a><span class="co"># Total counts</span></span>
-<span id="cb328-417"><a href="on-your-own-5.html#cb328-417" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Station / Month / deport / Species      </span></span>
-<span id="cb328-418"><a href="on-your-own-5.html#cb328-418" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> row_lookup</span>
-<span id="cb328-419"><a href="on-your-own-5.html#cb328-419" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-420"><a href="on-your-own-5.html#cb328-420" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the number of days at each site  </span></span>
-<span id="cb328-421"><a href="on-your-own-5.html#cb328-421" aria-hidden="true" tabindex="-1"></a>  total_obs <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> </span>
-<span id="cb328-422"><a href="on-your-own-5.html#cb328-422" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(placename) <span class="sc">%&gt;%</span></span>
-<span id="cb328-423"><a href="on-your-own-5.html#cb328-423" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">days =</span> <span class="fu">n</span>())</span>
-<span id="cb328-424"><a href="on-your-own-5.html#cb328-424" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-425"><a href="on-your-own-5.html#cb328-425" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
-<span id="cb328-426"><a href="on-your-own-5.html#cb328-426" aria-hidden="true" tabindex="-1"></a>  total_obs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(total_obs)</span>
-<span id="cb328-427"><a href="on-your-own-5.html#cb328-427" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-428"><a href="on-your-own-5.html#cb328-428" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add columns for each species  </span></span>
-<span id="cb328-429"><a href="on-your-own-5.html#cb328-429" aria-hidden="true" tabindex="-1"></a>  total_obs[, <span class="fu">levels</span>(ind_dat<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb328-430"><a href="on-your-own-5.html#cb328-430" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Duplicate for counts</span></span>
-<span id="cb328-431"><a href="on-your-own-5.html#cb328-431" aria-hidden="true" tabindex="-1"></a>  total_count <span class="ot">&lt;-</span> total_obs</span>
-<span id="cb328-432"><a href="on-your-own-5.html#cb328-432" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Test counter</span></span>
-<span id="cb328-433"><a href="on-your-own-5.html#cb328-433" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span><span class="dv">1</span></span>
-<span id="cb328-434"><a href="on-your-own-5.html#cb328-434" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For each station, count the number of individuals/observations</span></span>
-<span id="cb328-435"><a href="on-your-own-5.html#cb328-435" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(total_obs))</span>
-<span id="cb328-436"><a href="on-your-own-5.html#cb328-436" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb328-437"><a href="on-your-own-5.html#cb328-437" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> ind_dat[ind_dat<span class="sc">$</span>placename<span class="sc">==</span>total_obs<span class="sc">$</span>placename[i],]</span>
-<span id="cb328-438"><a href="on-your-own-5.html#cb328-438" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-439"><a href="on-your-own-5.html#cb328-439" aria-hidden="true" tabindex="-1"></a>      tmp_stats <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(sp, <span class="at">.drop=</span>F) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">obs=</span><span class="fu">n</span>(), <span class="at">count=</span><span class="fu">sum</span>(animal_count))</span>
-<span id="cb328-440"><a href="on-your-own-5.html#cb328-440" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-441"><a href="on-your-own-5.html#cb328-441" aria-hidden="true" tabindex="-1"></a>      total_obs[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>obs</span>
-<span id="cb328-442"><a href="on-your-own-5.html#cb328-442" aria-hidden="true" tabindex="-1"></a>      total_count[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>count</span>
-<span id="cb328-443"><a href="on-your-own-5.html#cb328-443" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb328-444"><a href="on-your-own-5.html#cb328-444" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-445"><a href="on-your-own-5.html#cb328-445" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-446"><a href="on-your-own-5.html#cb328-446" aria-hidden="true" tabindex="-1"></a><span class="co"># Save them</span></span>
-<span id="cb328-447"><a href="on-your-own-5.html#cb328-447" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb328-448"><a href="on-your-own-5.html#cb328-448" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(total_obs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_total_observations.csv&quot;</span>), <span class="at">row.names =</span> F) </span>
-<span id="cb328-449"><a href="on-your-own-5.html#cb328-449" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-450"><a href="on-your-own-5.html#cb328-450" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(total_count, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_total_counts.csv&quot;</span>), <span class="at">row.names =</span> F) </span>
-<span id="cb328-451"><a href="on-your-own-5.html#cb328-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-452"><a href="on-your-own-5.html#cb328-452" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-453"><a href="on-your-own-5.html#cb328-453" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly counts</span></span>
-<span id="cb328-454"><a href="on-your-own-5.html#cb328-454" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Station / Month / days / Covariates / Species      </span></span>
-<span id="cb328-455"><a href="on-your-own-5.html#cb328-455" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> row_lookup</span>
-<span id="cb328-456"><a href="on-your-own-5.html#cb328-456" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simplify the date to monthly</span></span>
-<span id="cb328-457"><a href="on-your-own-5.html#cb328-457" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">substr</span>(tmp<span class="sc">$</span>date,<span class="dv">1</span>,<span class="dv">7</span>)</span>
-<span id="cb328-458"><a href="on-your-own-5.html#cb328-458" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-459"><a href="on-your-own-5.html#cb328-459" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the number of days in each month  </span></span>
-<span id="cb328-460"><a href="on-your-own-5.html#cb328-460" aria-hidden="true" tabindex="-1"></a>  mon_obs <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> </span>
-<span id="cb328-461"><a href="on-your-own-5.html#cb328-461" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(placename,date ) <span class="sc">%&gt;%</span></span>
-<span id="cb328-462"><a href="on-your-own-5.html#cb328-462" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">days =</span> <span class="fu">n</span>())</span>
-<span id="cb328-463"><a href="on-your-own-5.html#cb328-463" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
-<span id="cb328-464"><a href="on-your-own-5.html#cb328-464" aria-hidden="true" tabindex="-1"></a>  mon_obs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mon_obs)</span>
-<span id="cb328-465"><a href="on-your-own-5.html#cb328-465" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb328-466"><a href="on-your-own-5.html#cb328-466" aria-hidden="true" tabindex="-1"></a>  mon_obs[, <span class="fu">levels</span>(ind_dat<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
-<span id="cb328-467"><a href="on-your-own-5.html#cb328-467" aria-hidden="true" tabindex="-1"></a>  mon_count <span class="ot">&lt;-</span> mon_obs</span>
-<span id="cb328-468"><a href="on-your-own-5.html#cb328-468" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For each month, count the number of individuals/observations</span></span>
-<span id="cb328-469"><a href="on-your-own-5.html#cb328-469" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(mon_obs))</span>
-<span id="cb328-470"><a href="on-your-own-5.html#cb328-470" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb328-471"><a href="on-your-own-5.html#cb328-471" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> ind_dat[ind_dat<span class="sc">$</span>placename<span class="sc">==</span>mon_obs<span class="sc">$</span>placename[i] <span class="sc">&amp;</span> <span class="fu">substr</span>(ind_dat<span class="sc">$</span>timestamp,<span class="dv">1</span>,<span class="dv">7</span>)<span class="sc">==</span> mon_obs<span class="sc">$</span>date[i],]</span>
-<span id="cb328-472"><a href="on-your-own-5.html#cb328-472" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-473"><a href="on-your-own-5.html#cb328-473" aria-hidden="true" tabindex="-1"></a>      tmp_stats <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(sp, <span class="at">.drop=</span>F) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">obs=</span><span class="fu">n</span>(), <span class="at">count=</span><span class="fu">sum</span>(animal_count))</span>
-<span id="cb328-474"><a href="on-your-own-5.html#cb328-474" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-475"><a href="on-your-own-5.html#cb328-475" aria-hidden="true" tabindex="-1"></a>      mon_obs[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>obs</span>
-<span id="cb328-476"><a href="on-your-own-5.html#cb328-476" aria-hidden="true" tabindex="-1"></a>      mon_count[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>count</span>
-<span id="cb328-477"><a href="on-your-own-5.html#cb328-477" aria-hidden="true" tabindex="-1"></a>      </span>
-<span id="cb328-478"><a href="on-your-own-5.html#cb328-478" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb328-479"><a href="on-your-own-5.html#cb328-479" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-480"><a href="on-your-own-5.html#cb328-480" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb328-481"><a href="on-your-own-5.html#cb328-481" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mon_obs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_monthly_observations.csv&quot;</span>), <span class="at">row.names =</span> F) </span>
-<span id="cb328-482"><a href="on-your-own-5.html#cb328-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb328-483"><a href="on-your-own-5.html#cb328-483" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mon_count, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_monthly_counts.csv&quot;</span>), <span class="at">row.names =</span> F) </span></code></pre></div>
+<div class="sourceCode" id="cb326"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb326-1"><a href="on-your-own-5.html#cb326-1" aria-hidden="true" tabindex="-1"></a><span class="co"># start dates</span></span>
+<span id="cb326-2"><a href="on-your-own-5.html#cb326-2" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>start_date <span class="ot">&lt;-</span> <span class="fu">ymd</span>(dep<span class="sc">$</span>start_date)</span>
+<span id="cb326-3"><a href="on-your-own-5.html#cb326-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-4"><a href="on-your-own-5.html#cb326-4" aria-hidden="true" tabindex="-1"></a><span class="co"># end dates</span></span>
+<span id="cb326-5"><a href="on-your-own-5.html#cb326-5" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>end_date   <span class="ot">&lt;-</span> <span class="fu">ymd</span>(dep<span class="sc">$</span>end_date)</span>
+<span id="cb326-6"><a href="on-your-own-5.html#cb326-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-7"><a href="on-your-own-5.html#cb326-7" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>days <span class="ot">&lt;-</span> <span class="fu">interval</span>(dep<span class="sc">$</span>start_date, dep<span class="sc">$</span>end_date)<span class="sc">/</span><span class="fu">ddays</span>(<span class="dv">1</span>)</span>
+<span id="cb326-8"><a href="on-your-own-5.html#cb326-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-9"><a href="on-your-own-5.html#cb326-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-10"><a href="on-your-own-5.html#cb326-10" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(img<span class="sc">$</span>timestamp)</span>
+<span id="cb326-11"><a href="on-your-own-5.html#cb326-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-12"><a href="on-your-own-5.html#cb326-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-13"><a href="on-your-own-5.html#cb326-13" aria-hidden="true" tabindex="-1"></a><span class="co"># First, set a single categorical variable of interest from station covariates for summary graphs. If you do not have an appropriate category use &quot;project_id&quot;.</span></span>
+<span id="cb326-14"><a href="on-your-own-5.html#cb326-14" aria-hidden="true" tabindex="-1"></a>category <span class="ot">&lt;-</span> <span class="st">&quot;feature_type&quot;</span></span>
+<span id="cb326-15"><a href="on-your-own-5.html#cb326-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-16"><a href="on-your-own-5.html#cb326-16" aria-hidden="true" tabindex="-1"></a><span class="co"># We first convert this category to a factor with discrete levels</span></span>
+<span id="cb326-17"><a href="on-your-own-5.html#cb326-17" aria-hidden="true" tabindex="-1"></a>dep[,category] <span class="ot">&lt;-</span> <span class="fu">factor</span>(dep[,category])</span>
+<span id="cb326-18"><a href="on-your-own-5.html#cb326-18" aria-hidden="true" tabindex="-1"></a><span class="co"># then use the turbo() function to assign each level a color</span></span>
+<span id="cb326-19"><a href="on-your-own-5.html#cb326-19" aria-hidden="true" tabindex="-1"></a>col.cat <span class="ot">&lt;-</span> <span class="fu">turbo</span>(<span class="fu">length</span>(<span class="fu">levels</span>(dep[,category])))</span>
+<span id="cb326-20"><a href="on-your-own-5.html#cb326-20" aria-hidden="true" tabindex="-1"></a><span class="co"># then we apply it to the dataframe</span></span>
+<span id="cb326-21"><a href="on-your-own-5.html#cb326-21" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>colours <span class="ot">&lt;-</span> col.cat[dep[,category]]</span>
+<span id="cb326-22"><a href="on-your-own-5.html#cb326-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-23"><a href="on-your-own-5.html#cb326-23" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb326-24"><a href="on-your-own-5.html#cb326-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldImagery, <span class="at">group=</span><span class="st">&quot;Satellite&quot;</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb326-25"><a href="on-your-own-5.html#cb326-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addTiles</span>(<span class="at">group=</span><span class="st">&quot;Base&quot;</span>) <span class="sc">%&gt;%</span>     <span class="co"># Include a basemap option too</span></span>
+<span id="cb326-26"><a href="on-your-own-5.html#cb326-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">lng=</span>dep<span class="sc">$</span>longitude, <span class="at">lat=</span>dep<span class="sc">$</span>latitude,</span>
+<span id="cb326-27"><a href="on-your-own-5.html#cb326-27" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># Co lour the markers depending on the &#39;feature type&#39;</span></span>
+<span id="cb326-28"><a href="on-your-own-5.html#cb326-28" aria-hidden="true" tabindex="-1"></a>                   <span class="at">color=</span>dep<span class="sc">$</span>colours,</span>
+<span id="cb326-29"><a href="on-your-own-5.html#cb326-29" aria-hidden="true" tabindex="-1"></a>                   <span class="co"># Add a popup of the placename and feature_type together </span></span>
+<span id="cb326-30"><a href="on-your-own-5.html#cb326-30" aria-hidden="true" tabindex="-1"></a>                   <span class="at">popup=</span><span class="fu">paste</span>(dep<span class="sc">$</span>placename, dep[,category])) <span class="sc">%&gt;%</span></span>
+<span id="cb326-31"><a href="on-your-own-5.html#cb326-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-32"><a href="on-your-own-5.html#cb326-32" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add a legend explaining what is going on</span></span>
+<span id="cb326-33"><a href="on-your-own-5.html#cb326-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLegend</span>(<span class="st">&quot;bottomleft&quot;</span>, <span class="at">colors =</span> col.cat,  <span class="at">labels =</span> <span class="fu">levels</span>(dep[,category]),</span>
+<span id="cb326-34"><a href="on-your-own-5.html#cb326-34" aria-hidden="true" tabindex="-1"></a>                   <span class="at">title =</span> category,</span>
+<span id="cb326-35"><a href="on-your-own-5.html#cb326-35" aria-hidden="true" tabindex="-1"></a>                   <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>),</span>
+<span id="cb326-36"><a href="on-your-own-5.html#cb326-36" aria-hidden="true" tabindex="-1"></a>                   <span class="at">opacity =</span> <span class="dv">1</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb326-37"><a href="on-your-own-5.html#cb326-37" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-38"><a href="on-your-own-5.html#cb326-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># add a layer control box to toggle between the layers</span></span>
+<span id="cb326-39"><a href="on-your-own-5.html#cb326-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">addLayersControl</span>(</span>
+<span id="cb326-40"><a href="on-your-own-5.html#cb326-40" aria-hidden="true" tabindex="-1"></a>                    <span class="at">baseGroups =</span> <span class="fu">c</span>(<span class="st">&quot;Satellite&quot;</span>, <span class="st">&quot;Base&quot;</span>))</span>
+<span id="cb326-41"><a href="on-your-own-5.html#cb326-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-42"><a href="on-your-own-5.html#cb326-42" aria-hidden="true" tabindex="-1"></a>m</span>
+<span id="cb326-43"><a href="on-your-own-5.html#cb326-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-44"><a href="on-your-own-5.html#cb326-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-45"><a href="on-your-own-5.html#cb326-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Distance between traps</span></span>
+<span id="cb326-46"><a href="on-your-own-5.html#cb326-46" aria-hidden="true" tabindex="-1"></a>camera_locs <span class="ot">&lt;-</span> dep <span class="sc">%&gt;%</span> </span>
+<span id="cb326-47"><a href="on-your-own-5.html#cb326-47" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(placename, latitude, longitude) <span class="sc">%&gt;%</span> </span>
+<span id="cb326-48"><a href="on-your-own-5.html#cb326-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>() <span class="sc">%&gt;%</span> <span class="co"># remove duplicated rows (rows where the placename and coordinates match)</span></span>
+<span id="cb326-49"><a href="on-your-own-5.html#cb326-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="at">crs =</span> <span class="st">&quot;+proj=longlat&quot;</span>) <span class="co"># Convert to `sf` format</span></span>
+<span id="cb326-50"><a href="on-your-own-5.html#cb326-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-51"><a href="on-your-own-5.html#cb326-51" aria-hidden="true" tabindex="-1"></a>camera_dist <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(camera_locs) <span class="sc">%&gt;%</span> </span>
+<span id="cb326-52"><a href="on-your-own-5.html#cb326-52" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">as.dist</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb326-53"><a href="on-your-own-5.html#cb326-53" aria-hidden="true" tabindex="-1"></a>                  usedist<span class="sc">::</span><span class="fu">dist_setNames</span>(<span class="fu">as.character</span>(camera_locs<span class="sc">$</span>placename)) <span class="sc">%&gt;%</span> </span>
+<span id="cb326-54"><a href="on-your-own-5.html#cb326-54" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">as.matrix</span>()</span>
+<span id="cb326-55"><a href="on-your-own-5.html#cb326-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-56"><a href="on-your-own-5.html#cb326-56" aria-hidden="true" tabindex="-1"></a><span class="co"># convert to pairwise list</span></span>
+<span id="cb326-57"><a href="on-your-own-5.html#cb326-57" aria-hidden="true" tabindex="-1"></a>camera_dist_list <span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">combn</span>(<span class="fu">colnames</span>(camera_dist), <span class="dv">2</span>))</span>
+<span id="cb326-58"><a href="on-your-own-5.html#cb326-58" aria-hidden="true" tabindex="-1"></a>camera_dist_list <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(camera_dist_list, <span class="at">dist =</span> camera_dist[camera_dist_list]) <span class="sc">%&gt;%</span> </span>
+<span id="cb326-59"><a href="on-your-own-5.html#cb326-59" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">arrange</span>(dist) <span class="co"># sort descending</span></span>
+<span id="cb326-60"><a href="on-your-own-5.html#cb326-60" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-61"><a href="on-your-own-5.html#cb326-61" aria-hidden="true" tabindex="-1"></a><span class="co"># keep just the closest camera for each location</span></span>
+<span id="cb326-62"><a href="on-your-own-5.html#cb326-62" aria-hidden="true" tabindex="-1"></a>camera_dist_list <span class="ot">&lt;-</span> camera_dist_list <span class="sc">%&gt;%</span> </span>
+<span id="cb326-63"><a href="on-your-own-5.html#cb326-63" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">group_by</span>(X1) <span class="sc">%&gt;%</span> </span>
+<span id="cb326-64"><a href="on-your-own-5.html#cb326-64" aria-hidden="true" tabindex="-1"></a>                  <span class="fu">slice</span>(<span class="fu">which.min</span>(dist))</span>
+<span id="cb326-65"><a href="on-your-own-5.html#cb326-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-66"><a href="on-your-own-5.html#cb326-66" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-67"><a href="on-your-own-5.html#cb326-67" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(camera_dist_list<span class="sc">$</span>dist)</span>
+<span id="cb326-68"><a href="on-your-own-5.html#cb326-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-69"><a href="on-your-own-5.html#cb326-69" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-70"><a href="on-your-own-5.html#cb326-70" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">unique</span>(img<span class="sc">$</span>placename) <span class="sc">%in%</span> <span class="fu">unique</span>(dep<span class="sc">$</span>placename))</span>
+<span id="cb326-71"><a href="on-your-own-5.html#cb326-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-72"><a href="on-your-own-5.html#cb326-72" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(<span class="fu">unique</span>(dep<span class="sc">$</span>placename)  <span class="sc">%in%</span> <span class="fu">unique</span>(img<span class="sc">$</span>placename))</span>
+<span id="cb326-73"><a href="on-your-own-5.html#cb326-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-74"><a href="on-your-own-5.html#cb326-74" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-75"><a href="on-your-own-5.html#cb326-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-76"><a href="on-your-own-5.html#cb326-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-77"><a href="on-your-own-5.html#cb326-77" aria-hidden="true" tabindex="-1"></a><span class="co"># Activity check</span></span>
+<span id="cb326-78"><a href="on-your-own-5.html#cb326-78" aria-hidden="true" tabindex="-1"></a><span class="co"># Correct the brken deploymenrt</span></span>
+<span id="cb326-79"><a href="on-your-own-5.html#cb326-79" aria-hidden="true" tabindex="-1"></a><span class="co">#dep[dep$deployment_id==&quot;LAC065_C187_030222&quot;, ]$end_date &lt;- &quot;2022-05-22&quot;</span></span>
+<span id="cb326-80"><a href="on-your-own-5.html#cb326-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-81"><a href="on-your-own-5.html#cb326-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-82"><a href="on-your-own-5.html#cb326-82" aria-hidden="true" tabindex="-1"></a><span class="co"># Call the plot</span></span>
+<span id="cb326-83"><a href="on-your-own-5.html#cb326-83" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>()</span>
+<span id="cb326-84"><a href="on-your-own-5.html#cb326-84" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-85"><a href="on-your-own-5.html#cb326-85" aria-hidden="true" tabindex="-1"></a><span class="co"># We want a separate row for each &#39;placename&#39; - so lets turn it into a factor</span></span>
+<span id="cb326-86"><a href="on-your-own-5.html#cb326-86" aria-hidden="true" tabindex="-1"></a>dep<span class="sc">$</span>placename <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(dep<span class="sc">$</span>placename)</span>
+<span id="cb326-87"><a href="on-your-own-5.html#cb326-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-88"><a href="on-your-own-5.html#cb326-88" aria-hidden="true" tabindex="-1"></a><span class="co"># loop through each place name</span></span>
+<span id="cb326-89"><a href="on-your-own-5.html#cb326-89" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="fu">seq_along</span>(<span class="fu">levels</span>(dep<span class="sc">$</span>placename)))</span>
+<span id="cb326-90"><a href="on-your-own-5.html#cb326-90" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb326-91"><a href="on-your-own-5.html#cb326-91" aria-hidden="true" tabindex="-1"></a>      <span class="co">#Subset the data to just that placename</span></span>
+<span id="cb326-92"><a href="on-your-own-5.html#cb326-92" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> dep[dep<span class="sc">$</span>placename<span class="sc">==</span><span class="fu">levels</span>(dep<span class="sc">$</span>placename)[i],]</span>
+<span id="cb326-93"><a href="on-your-own-5.html#cb326-93" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Order by date</span></span>
+<span id="cb326-94"><a href="on-your-own-5.html#cb326-94" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> tmp[<span class="fu">order</span>(tmp<span class="sc">$</span>start_date),]</span>
+<span id="cb326-95"><a href="on-your-own-5.html#cb326-95" aria-hidden="true" tabindex="-1"></a>      <span class="co"># Loop through each deployment at that placename</span></span>
+<span id="cb326-96"><a href="on-your-own-5.html#cb326-96" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp))</span>
+<span id="cb326-97"><a href="on-your-own-5.html#cb326-97" aria-hidden="true" tabindex="-1"></a>      {</span>
+<span id="cb326-98"><a href="on-your-own-5.html#cb326-98" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Add a line to &#39;p&#39;</span></span>
+<span id="cb326-99"><a href="on-your-own-5.html#cb326-99" aria-hidden="true" tabindex="-1"></a>        p <span class="ot">&lt;-</span> <span class="fu">add_trace</span>(p, </span>
+<span id="cb326-100"><a href="on-your-own-5.html#cb326-100" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the start and end date as x coordinates</span></span>
+<span id="cb326-101"><a href="on-your-own-5.html#cb326-101" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">c</span>(tmp<span class="sc">$</span>start_date[j], tmp<span class="sc">$</span>end_date[j]), </span>
+<span id="cb326-102"><a href="on-your-own-5.html#cb326-102" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the counter for the y coordinates</span></span>
+<span id="cb326-103"><a href="on-your-own-5.html#cb326-103" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="fu">c</span>(i,i), </span>
+<span id="cb326-104"><a href="on-your-own-5.html#cb326-104" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># State the type of chart</span></span>
+<span id="cb326-105"><a href="on-your-own-5.html#cb326-105" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
+<span id="cb326-106"><a href="on-your-own-5.html#cb326-106" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># make a line that also has points</span></span>
+<span id="cb326-107"><a href="on-your-own-5.html#cb326-107" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mode =</span> <span class="st">&quot;lines+markers&quot;</span>, </span>
+<span id="cb326-108"><a href="on-your-own-5.html#cb326-108" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Add the deployment ID as hover text</span></span>
+<span id="cb326-109"><a href="on-your-own-5.html#cb326-109" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hovertext=</span>tmp<span class="sc">$</span>deployment_id[j], </span>
+<span id="cb326-110"><a href="on-your-own-5.html#cb326-110" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Color it all black</span></span>
+<span id="cb326-111"><a href="on-your-own-5.html#cb326-111" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color=</span><span class="fu">I</span>(<span class="st">&quot;black&quot;</span>), </span>
+<span id="cb326-112"><a href="on-your-own-5.html#cb326-112" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Suppress the legend</span></span>
+<span id="cb326-113"><a href="on-your-own-5.html#cb326-113" aria-hidden="true" tabindex="-1"></a>                       <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb326-114"><a href="on-your-own-5.html#cb326-114" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb326-115"><a href="on-your-own-5.html#cb326-115" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-116"><a href="on-your-own-5.html#cb326-116" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb326-117"><a href="on-your-own-5.html#cb326-117" aria-hidden="true" tabindex="-1"></a><span class="co"># Add a categorical y axis</span></span>
+<span id="cb326-118"><a href="on-your-own-5.html#cb326-118" aria-hidden="true" tabindex="-1"></a> p <span class="ot">&lt;-</span> p <span class="sc">%&gt;%</span>   <span class="fu">layout</span>(<span class="at">yaxis =</span> <span class="fu">list</span>(</span>
+<span id="cb326-119"><a href="on-your-own-5.html#cb326-119" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-120"><a href="on-your-own-5.html#cb326-120" aria-hidden="true" tabindex="-1"></a>      <span class="at">ticktext =</span> <span class="fu">as.list</span>(<span class="fu">levels</span>(dep<span class="sc">$</span>placename)), </span>
+<span id="cb326-121"><a href="on-your-own-5.html#cb326-121" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-122"><a href="on-your-own-5.html#cb326-122" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickvals =</span> <span class="fu">as.list</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">levels</span>(dep<span class="sc">$</span>placename))),</span>
+<span id="cb326-123"><a href="on-your-own-5.html#cb326-123" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-124"><a href="on-your-own-5.html#cb326-124" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickmode =</span> <span class="st">&quot;array&quot;</span>))</span>
+<span id="cb326-125"><a href="on-your-own-5.html#cb326-125" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-126"><a href="on-your-own-5.html#cb326-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-127"><a href="on-your-own-5.html#cb326-127" aria-hidden="true" tabindex="-1"></a>p</span>
+<span id="cb326-128"><a href="on-your-own-5.html#cb326-128" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-129"><a href="on-your-own-5.html#cb326-129" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-130"><a href="on-your-own-5.html#cb326-130" aria-hidden="true" tabindex="-1"></a><span class="do">#################</span></span>
+<span id="cb326-131"><a href="on-your-own-5.html#cb326-131" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-132"><a href="on-your-own-5.html#cb326-132" aria-hidden="true" tabindex="-1"></a><span class="co"># add an sp column to the img dataframe - remember the genus and species columns are not pasted together yet</span></span>
+<span id="cb326-133"><a href="on-your-own-5.html#cb326-133" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste</span>(img<span class="sc">$</span>genus, img<span class="sc">$</span>species, <span class="at">sep=</span><span class="st">&quot;.&quot;</span>)</span>
+<span id="cb326-134"><a href="on-your-own-5.html#cb326-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-135"><a href="on-your-own-5.html#cb326-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-136"><a href="on-your-own-5.html#cb326-136" aria-hidden="true" tabindex="-1"></a><span class="do">### Species lists</span></span>
+<span id="cb326-137"><a href="on-your-own-5.html#cb326-137" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-138"><a href="on-your-own-5.html#cb326-138" aria-hidden="true" tabindex="-1"></a><span class="co"># First define vector of the headings you want to see (we will use this trick a lot later on)</span></span>
+<span id="cb326-139"><a href="on-your-own-5.html#cb326-139" aria-hidden="true" tabindex="-1"></a>taxonomy_headings <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;class&quot;</span>, <span class="st">&quot;order&quot;</span>, <span class="st">&quot;family&quot;</span>, <span class="st">&quot;genus&quot;</span>, <span class="st">&quot;species&quot;</span>, <span class="st">&quot;common_name&quot;</span>)</span>
+<span id="cb326-140"><a href="on-your-own-5.html#cb326-140" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-141"><a href="on-your-own-5.html#cb326-141" aria-hidden="true" tabindex="-1"></a><span class="co"># Subset the image data to just those columns</span></span>
+<span id="cb326-142"><a href="on-your-own-5.html#cb326-142" aria-hidden="true" tabindex="-1"></a>tmp<span class="ot">&lt;-</span> img[,<span class="fu">colnames</span>(img)<span class="sc">%in%</span> taxonomy_headings]</span>
+<span id="cb326-143"><a href="on-your-own-5.html#cb326-143" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates</span></span>
+<span id="cb326-144"><a href="on-your-own-5.html#cb326-144" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp[<span class="fu">duplicated</span>(tmp)<span class="sc">==</span>F,]</span>
+<span id="cb326-145"><a href="on-your-own-5.html#cb326-145" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-146"><a href="on-your-own-5.html#cb326-146" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an ordered species list</span></span>
+<span id="cb326-147"><a href="on-your-own-5.html#cb326-147" aria-hidden="true" tabindex="-1"></a>sp_list  <span class="ot">&lt;-</span> tmp[<span class="fu">order</span>(tmp<span class="sc">$</span>class, tmp<span class="sc">$</span>order, tmp<span class="sc">$</span>family, tmp<span class="sc">$</span>genus, tmp<span class="sc">$</span>species),]</span>
+<span id="cb326-148"><a href="on-your-own-5.html#cb326-148" aria-hidden="true" tabindex="-1"></a>sp_list<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste</span>(sp_list<span class="sc">$</span>genus, sp_list<span class="sc">$</span>species)</span>
+<span id="cb326-149"><a href="on-your-own-5.html#cb326-149" aria-hidden="true" tabindex="-1"></a><span class="do">### DETCTION CHECK</span></span>
+<span id="cb326-150"><a href="on-your-own-5.html#cb326-150" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-151"><a href="on-your-own-5.html#cb326-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-152"><a href="on-your-own-5.html#cb326-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-153"><a href="on-your-own-5.html#cb326-153" aria-hidden="true" tabindex="-1"></a><span class="co">#Camera activity plot</span></span>
+<span id="cb326-154"><a href="on-your-own-5.html#cb326-154" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a separate plot for each 20 stations For each 20 stations</span></span>
+<span id="cb326-155"><a href="on-your-own-5.html#cb326-155" aria-hidden="true" tabindex="-1"></a><span class="co"># To do this make a plot dataframe</span></span>
+<span id="cb326-156"><a href="on-your-own-5.html#cb326-156" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;deployment_id&quot;</span><span class="ot">=</span><span class="fu">unique</span>(dep<span class="sc">$</span>deployment_id), <span class="st">&quot;plot_group&quot;</span><span class="ot">=</span><span class="fu">ceiling</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(<span class="fu">unique</span>(dep<span class="sc">$</span>deployment_id))<span class="sc">/</span><span class="dv">20</span>))</span>
+<span id="cb326-157"><a href="on-your-own-5.html#cb326-157" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-158"><a href="on-your-own-5.html#cb326-158" aria-hidden="true" tabindex="-1"></a>dep_tmp <span class="ot">&lt;-</span> <span class="fu">left_join</span>(dep,tmp, <span class="at">by=</span><span class="st">&quot;deployment_id&quot;</span>)</span>
+<span id="cb326-159"><a href="on-your-own-5.html#cb326-159" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-160"><a href="on-your-own-5.html#cb326-160" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">max</span>(dep_tmp<span class="sc">$</span>plot_group))</span>
+<span id="cb326-161"><a href="on-your-own-5.html#cb326-161" aria-hidden="true" tabindex="-1"></a>{  </span>
+<span id="cb326-162"><a href="on-your-own-5.html#cb326-162" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Call the plot</span></span>
+<span id="cb326-163"><a href="on-your-own-5.html#cb326-163" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>() </span>
+<span id="cb326-164"><a href="on-your-own-5.html#cb326-164" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-165"><a href="on-your-own-5.html#cb326-165" aria-hidden="true" tabindex="-1"></a>  <span class="co">#Subset the data to just that placename</span></span>
+<span id="cb326-166"><a href="on-your-own-5.html#cb326-166" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> dep_tmp[dep_tmp<span class="sc">$</span>plot_group<span class="sc">==</span>i,]</span>
+<span id="cb326-167"><a href="on-your-own-5.html#cb326-167" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Order by placename </span></span>
+<span id="cb326-168"><a href="on-your-own-5.html#cb326-168" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> tmp[<span class="fu">order</span>(tmp<span class="sc">$</span>placename),]</span>
+<span id="cb326-169"><a href="on-your-own-5.html#cb326-169" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-170"><a href="on-your-own-5.html#cb326-170" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb326-171"><a href="on-your-own-5.html#cb326-171" aria-hidden="true" tabindex="-1"></a> <span class="co"># Loop through each deployment at that placename</span></span>
+<span id="cb326-172"><a href="on-your-own-5.html#cb326-172" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(j <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp))</span>
+<span id="cb326-173"><a href="on-your-own-5.html#cb326-173" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb326-174"><a href="on-your-own-5.html#cb326-174" aria-hidden="true" tabindex="-1"></a>        <span class="co">#Subset the image data</span></span>
+<span id="cb326-175"><a href="on-your-own-5.html#cb326-175" aria-hidden="true" tabindex="-1"></a>        tmp_img <span class="ot">&lt;-</span> img[img<span class="sc">$</span>deployment_id<span class="sc">==</span>tmp<span class="sc">$</span>deployment_id[j],]</span>
+<span id="cb326-176"><a href="on-your-own-5.html#cb326-176" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb326-177"><a href="on-your-own-5.html#cb326-177" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span>(<span class="fu">nrow</span>(tmp_img)<span class="sc">&gt;</span><span class="dv">0</span>)</span>
+<span id="cb326-178"><a href="on-your-own-5.html#cb326-178" aria-hidden="true" tabindex="-1"></a>        {</span>
+<span id="cb326-179"><a href="on-your-own-5.html#cb326-179" aria-hidden="true" tabindex="-1"></a>         </span>
+<span id="cb326-180"><a href="on-your-own-5.html#cb326-180" aria-hidden="true" tabindex="-1"></a>          p <span class="ot">&lt;-</span> <span class="fu">add_trace</span>(p, </span>
+<span id="cb326-181"><a href="on-your-own-5.html#cb326-181" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the start and end date as x coordinates</span></span>
+<span id="cb326-182"><a href="on-your-own-5.html#cb326-182" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">c</span>(tmp_img<span class="sc">$</span>timestamp), </span>
+<span id="cb326-183"><a href="on-your-own-5.html#cb326-183" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the counter for the y coordinates</span></span>
+<span id="cb326-184"><a href="on-your-own-5.html#cb326-184" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="fu">rep</span>(j, <span class="fu">nrow</span>(tmp_img)), </span>
+<span id="cb326-185"><a href="on-your-own-5.html#cb326-185" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># State the type of chart</span></span>
+<span id="cb326-186"><a href="on-your-own-5.html#cb326-186" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
+<span id="cb326-187"><a href="on-your-own-5.html#cb326-187" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># make a line that also has points</span></span>
+<span id="cb326-188"><a href="on-your-own-5.html#cb326-188" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mode =</span> <span class="st">&quot;markers&quot;</span>, </span>
+<span id="cb326-189"><a href="on-your-own-5.html#cb326-189" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Add the deployment ID as hover text</span></span>
+<span id="cb326-190"><a href="on-your-own-5.html#cb326-190" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hovertext=</span><span class="fu">paste</span>(tmp_img<span class="sc">$</span>genus,tmp_img<span class="sc">$</span>species), </span>
+<span id="cb326-191"><a href="on-your-own-5.html#cb326-191" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Color it all black</span></span>
+<span id="cb326-192"><a href="on-your-own-5.html#cb326-192" aria-hidden="true" tabindex="-1"></a>                       <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&quot;red&quot;</span>), </span>
+<span id="cb326-193"><a href="on-your-own-5.html#cb326-193" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Suppress the legend</span></span>
+<span id="cb326-194"><a href="on-your-own-5.html#cb326-194" aria-hidden="true" tabindex="-1"></a>                       <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb326-195"><a href="on-your-own-5.html#cb326-195" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb326-196"><a href="on-your-own-5.html#cb326-196" aria-hidden="true" tabindex="-1"></a>        </span>
+<span id="cb326-197"><a href="on-your-own-5.html#cb326-197" aria-hidden="true" tabindex="-1"></a>       <span class="co"># Add a line to &#39;p&#39;</span></span>
+<span id="cb326-198"><a href="on-your-own-5.html#cb326-198" aria-hidden="true" tabindex="-1"></a>        p <span class="ot">&lt;-</span> <span class="fu">add_trace</span>(p, </span>
+<span id="cb326-199"><a href="on-your-own-5.html#cb326-199" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the start and end date as x coordinates</span></span>
+<span id="cb326-200"><a href="on-your-own-5.html#cb326-200" aria-hidden="true" tabindex="-1"></a>                       <span class="at">x =</span> <span class="fu">c</span>(tmp<span class="sc">$</span>start_date[j], tmp<span class="sc">$</span>end_date[j]), </span>
+<span id="cb326-201"><a href="on-your-own-5.html#cb326-201" aria-hidden="true" tabindex="-1"></a>                       <span class="co">#Use the counter for the y coordinates</span></span>
+<span id="cb326-202"><a href="on-your-own-5.html#cb326-202" aria-hidden="true" tabindex="-1"></a>                       <span class="at">y =</span> <span class="fu">c</span>(j,j), </span>
+<span id="cb326-203"><a href="on-your-own-5.html#cb326-203" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># State the type of chart</span></span>
+<span id="cb326-204"><a href="on-your-own-5.html#cb326-204" aria-hidden="true" tabindex="-1"></a>                       <span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
+<span id="cb326-205"><a href="on-your-own-5.html#cb326-205" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># make a line that also has points</span></span>
+<span id="cb326-206"><a href="on-your-own-5.html#cb326-206" aria-hidden="true" tabindex="-1"></a>                       <span class="at">mode =</span> <span class="st">&quot;lines&quot;</span>, </span>
+<span id="cb326-207"><a href="on-your-own-5.html#cb326-207" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Add the deployment ID as hover text</span></span>
+<span id="cb326-208"><a href="on-your-own-5.html#cb326-208" aria-hidden="true" tabindex="-1"></a>                       <span class="at">hovertext=</span>tmp<span class="sc">$</span>deployment_id[j], </span>
+<span id="cb326-209"><a href="on-your-own-5.html#cb326-209" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Color it all black</span></span>
+<span id="cb326-210"><a href="on-your-own-5.html#cb326-210" aria-hidden="true" tabindex="-1"></a>                       <span class="at">color=</span><span class="fu">I</span>(<span class="st">&quot;black&quot;</span>), </span>
+<span id="cb326-211"><a href="on-your-own-5.html#cb326-211" aria-hidden="true" tabindex="-1"></a>                       <span class="co"># Suppress the legend</span></span>
+<span id="cb326-212"><a href="on-your-own-5.html#cb326-212" aria-hidden="true" tabindex="-1"></a>                       <span class="at">showlegend =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb326-213"><a href="on-your-own-5.html#cb326-213" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb326-214"><a href="on-your-own-5.html#cb326-214" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add custom y axis labels  </span></span>
+<span id="cb326-215"><a href="on-your-own-5.html#cb326-215" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> p <span class="sc">%&gt;%</span>   <span class="fu">layout</span>(<span class="at">yaxis =</span> <span class="fu">list</span>(</span>
+<span id="cb326-216"><a href="on-your-own-5.html#cb326-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-217"><a href="on-your-own-5.html#cb326-217" aria-hidden="true" tabindex="-1"></a>      <span class="at">ticktext =</span> <span class="fu">as.list</span>(tmp<span class="sc">$</span>deployment_id), </span>
+<span id="cb326-218"><a href="on-your-own-5.html#cb326-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-219"><a href="on-your-own-5.html#cb326-219" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickvals =</span> <span class="fu">as.list</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp)),</span>
+<span id="cb326-220"><a href="on-your-own-5.html#cb326-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-221"><a href="on-your-own-5.html#cb326-221" aria-hidden="true" tabindex="-1"></a>      <span class="at">tickmode =</span> <span class="st">&quot;array&quot;</span>))</span>
+<span id="cb326-222"><a href="on-your-own-5.html#cb326-222" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-223"><a href="on-your-own-5.html#cb326-223" aria-hidden="true" tabindex="-1"></a>  <span class="fu">print</span>(p)</span>
+<span id="cb326-224"><a href="on-your-own-5.html#cb326-224" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-225"><a href="on-your-own-5.html#cb326-225" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-226"><a href="on-your-own-5.html#cb326-226" aria-hidden="true" tabindex="-1"></a>} </span>
+<span id="cb326-227"><a href="on-your-own-5.html#cb326-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-228"><a href="on-your-own-5.html#cb326-228" aria-hidden="true" tabindex="-1"></a><span class="do">##### Already got common names dont worry about that</span></span>
+<span id="cb326-229"><a href="on-your-own-5.html#cb326-229" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-230"><a href="on-your-own-5.html#cb326-230" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-231"><a href="on-your-own-5.html#cb326-231" aria-hidden="true" tabindex="-1"></a><span class="co"># First lets convert our timestamp to decimal hours</span></span>
+<span id="cb326-232"><a href="on-your-own-5.html#cb326-232" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>hours <span class="ot">&lt;-</span> <span class="fu">hour</span>(img<span class="sc">$</span>timestamp) <span class="sc">+</span> <span class="fu">minute</span>(img<span class="sc">$</span>timestamp)<span class="sc">/</span><span class="dv">60</span> <span class="sc">+</span> <span class="fu">second</span>(img<span class="sc">$</span>timestamp)<span class="sc">/</span>(<span class="dv">60</span><span class="sc">*</span><span class="dv">60</span>)</span>
+<span id="cb326-233"><a href="on-your-own-5.html#cb326-233" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-234"><a href="on-your-own-5.html#cb326-234" aria-hidden="true" tabindex="-1"></a><span class="co"># Count all of the captures</span></span>
+<span id="cb326-235"><a href="on-your-own-5.html#cb326-235" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> img <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(common_name) <span class="sc">%&gt;%</span> <span class="fu">summarize</span>(<span class="at">count=</span><span class="fu">n</span>())</span>
+<span id="cb326-236"><a href="on-your-own-5.html#cb326-236" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-237"><a href="on-your-own-5.html#cb326-237" aria-hidden="true" tabindex="-1"></a>yform <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">categoryorder =</span> <span class="st">&quot;array&quot;</span>,</span>
+<span id="cb326-238"><a href="on-your-own-5.html#cb326-238" aria-hidden="true" tabindex="-1"></a>              <span class="at">categoryarray =</span> tmp<span class="sc">$</span>common_name)</span>
+<span id="cb326-239"><a href="on-your-own-5.html#cb326-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-240"><a href="on-your-own-5.html#cb326-240" aria-hidden="true" tabindex="-1"></a>fig <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x =</span> img<span class="sc">$</span>hours, <span class="at">y =</span> img<span class="sc">$</span>common_name,<span class="at">type=</span><span class="st">&quot;scatter&quot;</span>,</span>
+<span id="cb326-241"><a href="on-your-own-5.html#cb326-241" aria-hidden="true" tabindex="-1"></a>               <span class="at">height=</span><span class="dv">1000</span>, <span class="at">text=</span>img<span class="sc">$</span>deployment_id, <span class="at">hoverinfo=</span><span class="st">&#39;text&#39;</span>,</span>
+<span id="cb326-242"><a href="on-your-own-5.html#cb326-242" aria-hidden="true" tabindex="-1"></a>               <span class="at">mode   =</span> <span class="st">&#39;markers&#39;</span>,</span>
+<span id="cb326-243"><a href="on-your-own-5.html#cb326-243" aria-hidden="true" tabindex="-1"></a>               <span class="at">marker =</span> <span class="fu">list</span>(<span class="at">size =</span> <span class="dv">5</span>,</span>
+<span id="cb326-244"><a href="on-your-own-5.html#cb326-244" aria-hidden="true" tabindex="-1"></a>                             <span class="at">color =</span> <span class="st">&#39;rgba(50, 100, 255, .2)&#39;</span>,</span>
+<span id="cb326-245"><a href="on-your-own-5.html#cb326-245" aria-hidden="true" tabindex="-1"></a>                             <span class="at">line =</span> <span class="fu">list</span>(<span class="at">color =</span> <span class="st">&#39;rgba(0, 0, 0, 0)&#39;</span>,</span>
+<span id="cb326-246"><a href="on-your-own-5.html#cb326-246" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">width =</span> <span class="dv">0</span>))) <span class="sc">%&gt;%</span> </span>
+<span id="cb326-247"><a href="on-your-own-5.html#cb326-247" aria-hidden="true" tabindex="-1"></a>              <span class="fu">layout</span>(<span class="at">yaxis =</span> yform)</span>
+<span id="cb326-248"><a href="on-your-own-5.html#cb326-248" aria-hidden="true" tabindex="-1"></a>fig</span>
+<span id="cb326-249"><a href="on-your-own-5.html#cb326-249" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-250"><a href="on-your-own-5.html#cb326-250" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the column</span></span>
+<span id="cb326-251"><a href="on-your-own-5.html#cb326-251" aria-hidden="true" tabindex="-1"></a>img<span class="sc">$</span>hours <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb326-252"><a href="on-your-own-5.html#cb326-252" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-253"><a href="on-your-own-5.html#cb326-253" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-254"><a href="on-your-own-5.html#cb326-254" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################</span></span>
+<span id="cb326-255"><a href="on-your-own-5.html#cb326-255" aria-hidden="true" tabindex="-1"></a><span class="do">#####################################</span></span>
+<span id="cb326-256"><a href="on-your-own-5.html#cb326-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-257"><a href="on-your-own-5.html#cb326-257" aria-hidden="true" tabindex="-1"></a><span class="co"># Create dataframes</span></span>
+<span id="cb326-258"><a href="on-your-own-5.html#cb326-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-259"><a href="on-your-own-5.html#cb326-259" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">&quot;data/processed_data&quot;</span>)</span>
+<span id="cb326-260"><a href="on-your-own-5.html#cb326-260" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-261"><a href="on-your-own-5.html#cb326-261" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove observations without animals detected, where we don&#39;t know the species, and non-mammals</span></span>
+<span id="cb326-262"><a href="on-your-own-5.html#cb326-262" aria-hidden="true" tabindex="-1"></a> img_sub <span class="ot">&lt;-</span> img <span class="sc">%&gt;%</span> <span class="fu">filter</span>(is_blank<span class="sc">==</span><span class="dv">0</span>,                <span class="co"># Remove the blanks</span></span>
+<span id="cb326-263"><a href="on-your-own-5.html#cb326-263" aria-hidden="true" tabindex="-1"></a>                          <span class="fu">is.na</span>(img<span class="sc">$</span>species)<span class="sc">==</span><span class="cn">FALSE</span>, <span class="co"># Remove classifications which don&#39;t have species </span></span>
+<span id="cb326-264"><a href="on-your-own-5.html#cb326-264" aria-hidden="true" tabindex="-1"></a>                          class<span class="sc">==</span><span class="st">&quot;Mammalia&quot;</span>,          <span class="co"># Subset to mammals</span></span>
+<span id="cb326-265"><a href="on-your-own-5.html#cb326-265" aria-hidden="true" tabindex="-1"></a>                          species<span class="sc">!=</span><span class="st">&quot;sapiens&quot;</span>)         <span class="co"># Subset to anything that isn&#39;t human</span></span>
+<span id="cb326-266"><a href="on-your-own-5.html#cb326-266" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-267"><a href="on-your-own-5.html#cb326-267" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(img_sub<span class="sc">$</span>sp)</span>
+<span id="cb326-268"><a href="on-your-own-5.html#cb326-268" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-269"><a href="on-your-own-5.html#cb326-269" aria-hidden="true" tabindex="-1"></a><span class="do">##########################################</span></span>
+<span id="cb326-270"><a href="on-your-own-5.html#cb326-270" aria-hidden="true" tabindex="-1"></a><span class="co"># Create lookup</span></span>
+<span id="cb326-271"><a href="on-your-own-5.html#cb326-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-272"><a href="on-your-own-5.html#cb326-272" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove any deployments without end dates</span></span>
+<span id="cb326-273"><a href="on-your-own-5.html#cb326-273" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> dep[<span class="fu">is.na</span>(dep<span class="sc">$</span>end_date)<span class="sc">==</span>F,]</span>
+<span id="cb326-274"><a href="on-your-own-5.html#cb326-274" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-275"><a href="on-your-own-5.html#cb326-275" aria-hidden="true" tabindex="-1"></a><span class="co"># Create an empty list to store our days</span></span>
+<span id="cb326-276"><a href="on-your-own-5.html#cb326-276" aria-hidden="true" tabindex="-1"></a>daily_lookup <span class="ot">&lt;-</span> <span class="fu">list</span>()</span>
+<span id="cb326-277"><a href="on-your-own-5.html#cb326-277" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-278"><a href="on-your-own-5.html#cb326-278" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through the deployment dataframe and create a row for every day the camera is active</span></span>
+<span id="cb326-279"><a href="on-your-own-5.html#cb326-279" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(tmp))</span>
+<span id="cb326-280"><a href="on-your-own-5.html#cb326-280" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb326-281"><a href="on-your-own-5.html#cb326-281" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">ymd</span>(tmp<span class="sc">$</span>start_date[i])<span class="sc">!=</span><span class="fu">ymd</span>(tmp<span class="sc">$</span>end_date[i]))</span>
+<span id="cb326-282"><a href="on-your-own-5.html#cb326-282" aria-hidden="true" tabindex="-1"></a>  {</span>
+<span id="cb326-283"><a href="on-your-own-5.html#cb326-283" aria-hidden="true" tabindex="-1"></a>    daily_lookup[[i]] <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="st">&quot;date&quot;</span><span class="ot">=</span><span class="fu">seq</span>(<span class="fu">ymd</span>(tmp<span class="sc">$</span>start_date[i]), <span class="fu">ymd</span>(tmp<span class="sc">$</span>end_date[i]), <span class="at">by=</span><span class="st">&quot;days&quot;</span>), <span class="st">&quot;placename&quot;</span><span class="ot">=</span>tmp<span class="sc">$</span>placename[i])</span>
+<span id="cb326-284"><a href="on-your-own-5.html#cb326-284" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb326-285"><a href="on-your-own-5.html#cb326-285" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb326-286"><a href="on-your-own-5.html#cb326-286" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-287"><a href="on-your-own-5.html#cb326-287" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the lists into a dataframe</span></span>
+<span id="cb326-288"><a href="on-your-own-5.html#cb326-288" aria-hidden="true" tabindex="-1"></a>row_lookup <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(daily_lookup)</span>
+<span id="cb326-289"><a href="on-your-own-5.html#cb326-289" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-290"><a href="on-your-own-5.html#cb326-290" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates - when start and end days are the same for successive deployments</span></span>
+<span id="cb326-291"><a href="on-your-own-5.html#cb326-291" aria-hidden="true" tabindex="-1"></a>row_lookup <span class="ot">&lt;-</span> row_lookup[<span class="fu">duplicated</span>(row_lookup)<span class="sc">==</span>F,]</span>
+<span id="cb326-292"><a href="on-your-own-5.html#cb326-292" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-293"><a href="on-your-own-5.html#cb326-293" aria-hidden="true" tabindex="-1"></a>independent <span class="ot">&lt;-</span> <span class="dv">30</span></span>
+<span id="cb326-294"><a href="on-your-own-5.html#cb326-294" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-295"><a href="on-your-own-5.html#cb326-295" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for a `group_size` variable? </span></span>
+<span id="cb326-296"><a href="on-your-own-5.html#cb326-296" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(img_sub<span class="sc">$</span>group_size)</span>
+<span id="cb326-297"><a href="on-your-own-5.html#cb326-297" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-298"><a href="on-your-own-5.html#cb326-298" aria-hidden="true" tabindex="-1"></a><span class="co"># Check for a &#39;number_ofobjects&#39; variable</span></span>
+<span id="cb326-299"><a href="on-your-own-5.html#cb326-299" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(img_sub<span class="sc">$</span>number_of_objects)</span>
+<span id="cb326-300"><a href="on-your-own-5.html#cb326-300" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-301"><a href="on-your-own-5.html#cb326-301" aria-hidden="true" tabindex="-1"></a>img_sub<span class="sc">$</span>animal_count <span class="ot">&lt;-</span> img_sub<span class="sc">$</span>number_of_objects</span>
+<span id="cb326-302"><a href="on-your-own-5.html#cb326-302" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-303"><a href="on-your-own-5.html#cb326-303" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-304"><a href="on-your-own-5.html#cb326-304" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-305"><a href="on-your-own-5.html#cb326-305" aria-hidden="true" tabindex="-1"></a><span class="co"># Events</span></span>
+<span id="cb326-306"><a href="on-your-own-5.html#cb326-306" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-307"><a href="on-your-own-5.html#cb326-307" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-308"><a href="on-your-own-5.html#cb326-308" aria-hidden="true" tabindex="-1"></a>img_tmp <span class="ot">&lt;-</span> img_sub <span class="sc">%&gt;%</span></span>
+<span id="cb326-309"><a href="on-your-own-5.html#cb326-309" aria-hidden="true" tabindex="-1"></a>              <span class="fu">arrange</span>(deployment_id) <span class="sc">%&gt;%</span>        <span class="co"># Order by deployment_id</span></span>
+<span id="cb326-310"><a href="on-your-own-5.html#cb326-310" aria-hidden="true" tabindex="-1"></a>              <span class="fu">group_by</span>(deployment_id, sp) <span class="sc">%&gt;%</span>   <span class="co"># Group species together</span></span>
+<span id="cb326-311"><a href="on-your-own-5.html#cb326-311" aria-hidden="true" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">duration =</span> <span class="fu">int_length</span>(timestamp <span class="sc">%--%</span> <span class="fu">lag</span>(timestamp))) <span class="co"># Calculate the gap bet</span></span>
+<span id="cb326-312"><a href="on-your-own-5.html#cb326-312" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-313"><a href="on-your-own-5.html#cb326-313" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-314"><a href="on-your-own-5.html#cb326-314" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-315"><a href="on-your-own-5.html#cb326-315" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb326-316"><a href="on-your-own-5.html#cb326-316" aria-hidden="true" tabindex="-1"></a><span class="co"># Give a random value to all cells</span></span>
+<span id="cb326-317"><a href="on-your-own-5.html#cb326-317" aria-hidden="true" tabindex="-1"></a>img_tmp<span class="sc">$</span>event_id <span class="ot">&lt;-</span> <span class="dv">9999</span></span>
+<span id="cb326-318"><a href="on-your-own-5.html#cb326-318" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-319"><a href="on-your-own-5.html#cb326-319" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a counter</span></span>
+<span id="cb326-320"><a href="on-your-own-5.html#cb326-320" aria-hidden="true" tabindex="-1"></a>counter <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb326-321"><a href="on-your-own-5.html#cb326-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-322"><a href="on-your-own-5.html#cb326-322" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a unique code that has one more zero than rows in your dataframe  </span></span>
+<span id="cb326-323"><a href="on-your-own-5.html#cb326-323" aria-hidden="true" tabindex="-1"></a>num_code <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">paste0</span>(<span class="fu">nrow</span>(img_sub),<span class="dv">0</span>))</span>
+<span id="cb326-324"><a href="on-your-own-5.html#cb326-324" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-325"><a href="on-your-own-5.html#cb326-325" aria-hidden="true" tabindex="-1"></a><span class="co"># Loop through img_tmp - if gap is greater than the threshold -&gt; give it a new event ID</span></span>
+<span id="cb326-326"><a href="on-your-own-5.html#cb326-326" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(img_tmp)) {</span>
+<span id="cb326-327"><a href="on-your-own-5.html#cb326-327" aria-hidden="true" tabindex="-1"></a>  img_tmp<span class="sc">$</span>event_id[i<span class="dv">-1</span>]  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(counter, <span class="fu">nchar</span>(num_code), <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
+<span id="cb326-328"><a href="on-your-own-5.html#cb326-328" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-329"><a href="on-your-own-5.html#cb326-329" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration[i]) <span class="sc">|</span> <span class="fu">abs</span>(img_tmp<span class="sc">$</span>duration[i]) <span class="sc">&gt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>))</span>
+<span id="cb326-330"><a href="on-your-own-5.html#cb326-330" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb326-331"><a href="on-your-own-5.html#cb326-331" aria-hidden="true" tabindex="-1"></a>      counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb326-332"><a href="on-your-own-5.html#cb326-332" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb326-333"><a href="on-your-own-5.html#cb326-333" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb326-334"><a href="on-your-own-5.html#cb326-334" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-335"><a href="on-your-own-5.html#cb326-335" aria-hidden="true" tabindex="-1"></a><span class="co"># Update the information for the last row - the loop above always updates the previous row... leaving the last row unchanged</span></span>
+<span id="cb326-336"><a href="on-your-own-5.html#cb326-336" aria-hidden="true" tabindex="-1"></a>   </span>
+<span id="cb326-337"><a href="on-your-own-5.html#cb326-337" aria-hidden="true" tabindex="-1"></a> <span class="co"># group ID  for the last row</span></span>
+<span id="cb326-338"><a href="on-your-own-5.html#cb326-338" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span>(img_tmp<span class="sc">$</span>duration[<span class="fu">nrow</span>(img_tmp)] <span class="sc">&lt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>)<span class="sc">|</span></span>
+<span id="cb326-339"><a href="on-your-own-5.html#cb326-339" aria-hidden="true" tabindex="-1"></a>    <span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration[<span class="fu">nrow</span>(img_tmp)])){</span>
+<span id="cb326-340"><a href="on-your-own-5.html#cb326-340" aria-hidden="true" tabindex="-1"></a>   img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)] <span class="ot">&lt;-</span> img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb326-341"><a href="on-your-own-5.html#cb326-341" aria-hidden="true" tabindex="-1"></a> } <span class="cf">else</span>{</span>
+<span id="cb326-342"><a href="on-your-own-5.html#cb326-342" aria-hidden="true" tabindex="-1"></a>   counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb326-343"><a href="on-your-own-5.html#cb326-343" aria-hidden="true" tabindex="-1"></a>   img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(counter, <span class="fu">nchar</span>(num_code), <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
+<span id="cb326-344"><a href="on-your-own-5.html#cb326-344" aria-hidden="true" tabindex="-1"></a> }</span>
+<span id="cb326-345"><a href="on-your-own-5.html#cb326-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-346"><a href="on-your-own-5.html#cb326-346" aria-hidden="true" tabindex="-1"></a><span class="co"># remove the duration column</span></span>
+<span id="cb326-347"><a href="on-your-own-5.html#cb326-347" aria-hidden="true" tabindex="-1"></a>img_tmp<span class="sc">$</span>duration <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb326-348"><a href="on-your-own-5.html#cb326-348" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb326-349"><a href="on-your-own-5.html#cb326-349" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-350"><a href="on-your-own-5.html#cb326-350" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-351"><a href="on-your-own-5.html#cb326-351" aria-hidden="true" tabindex="-1"></a> <span class="co"># find out the last and the first of the time in the group</span></span>
+<span id="cb326-352"><a href="on-your-own-5.html#cb326-352" aria-hidden="true" tabindex="-1"></a>  top <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="dv">1</span>,timestamp) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(event_id, timestamp)</span>
+<span id="cb326-353"><a href="on-your-own-5.html#cb326-353" aria-hidden="true" tabindex="-1"></a>  bot <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">top_n</span>(<span class="sc">-</span><span class="dv">1</span>,timestamp) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(event_id, timestamp)</span>
+<span id="cb326-354"><a href="on-your-own-5.html#cb326-354" aria-hidden="true" tabindex="-1"></a>  <span class="fu">names</span>(bot)[<span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;timestamp_end&quot;</span>)</span>
+<span id="cb326-355"><a href="on-your-own-5.html#cb326-355" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-356"><a href="on-your-own-5.html#cb326-356" aria-hidden="true" tabindex="-1"></a>  img_num <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">event_observations=</span><span class="fu">n</span>()) <span class="co"># number of images in the event</span></span>
+<span id="cb326-357"><a href="on-your-own-5.html#cb326-357" aria-hidden="true" tabindex="-1"></a>  event_grp <span class="ot">&lt;-</span> img_tmp <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(event_id) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">event_groupsize=</span><span class="fu">max</span>(animal_count))</span>
+<span id="cb326-358"><a href="on-your-own-5.html#cb326-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-359"><a href="on-your-own-5.html#cb326-359" aria-hidden="true" tabindex="-1"></a>  <span class="co"># calculate the duration and add the other elements</span></span>
+<span id="cb326-360"><a href="on-your-own-5.html#cb326-360" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span>  top <span class="sc">%&gt;%</span> <span class="fu">left_join</span>(bot, <span class="at">by=</span><span class="st">&quot;event_id&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb326-361"><a href="on-your-own-5.html#cb326-361" aria-hidden="true" tabindex="-1"></a>      <span class="fu">mutate</span>(<span class="at">event_duration=</span><span class="fu">abs</span>(<span class="fu">int_length</span>(timestamp <span class="sc">%--%</span> timestamp_end))) <span class="sc">%&gt;%</span></span>
+<span id="cb326-362"><a href="on-your-own-5.html#cb326-362" aria-hidden="true" tabindex="-1"></a>      <span class="fu">left_join</span>(event_grp, <span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb326-363"><a href="on-your-own-5.html#cb326-363" aria-hidden="true" tabindex="-1"></a>      <span class="fu">left_join</span>(img_num, <span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)</span>
+<span id="cb326-364"><a href="on-your-own-5.html#cb326-364" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-365"><a href="on-your-own-5.html#cb326-365" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove columns you don&#39;t need</span></span>
+<span id="cb326-366"><a href="on-your-own-5.html#cb326-366" aria-hidden="true" tabindex="-1"></a>  diff<span class="sc">$</span>timestamp   <span class="ot">&lt;-</span><span class="cn">NULL</span></span>
+<span id="cb326-367"><a href="on-your-own-5.html#cb326-367" aria-hidden="true" tabindex="-1"></a>  diff<span class="sc">$</span>timestamp_end <span class="ot">&lt;-</span><span class="cn">NULL</span></span>
+<span id="cb326-368"><a href="on-your-own-5.html#cb326-368" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-369"><a href="on-your-own-5.html#cb326-369" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Merge the img_tmp with the event data</span></span>
+<span id="cb326-370"><a href="on-your-own-5.html#cb326-370" aria-hidden="true" tabindex="-1"></a>  img_tmp <span class="ot">&lt;-</span>  img_tmp <span class="sc">%&gt;%</span></span>
+<span id="cb326-371"><a href="on-your-own-5.html#cb326-371" aria-hidden="true" tabindex="-1"></a>   <span class="fu">left_join</span>(diff,<span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)</span>
+<span id="cb326-372"><a href="on-your-own-5.html#cb326-372" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-373"><a href="on-your-own-5.html#cb326-373" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-374"><a href="on-your-own-5.html#cb326-374" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove duplicates</span></span>
+<span id="cb326-375"><a href="on-your-own-5.html#cb326-375" aria-hidden="true" tabindex="-1"></a>ind_dat <span class="ot">&lt;-</span> img_tmp[<span class="fu">duplicated</span>(img_tmp<span class="sc">$</span>event_id)<span class="sc">==</span>F,]</span>
+<span id="cb326-376"><a href="on-your-own-5.html#cb326-376" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-377"><a href="on-your-own-5.html#cb326-377" aria-hidden="true" tabindex="-1"></a><span class="co"># Make a  unique code for ever day and deployment where cameras were functioning</span></span>
+<span id="cb326-378"><a href="on-your-own-5.html#cb326-378" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> <span class="fu">paste</span>(row_lookup<span class="sc">$</span>date, row_lookup<span class="sc">$</span>placename)</span>
+<span id="cb326-379"><a href="on-your-own-5.html#cb326-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-380"><a href="on-your-own-5.html#cb326-380" aria-hidden="true" tabindex="-1"></a><span class="co">#Subset ind_dat to data that matches the unique codes</span></span>
+<span id="cb326-381"><a href="on-your-own-5.html#cb326-381" aria-hidden="true" tabindex="-1"></a>ind_dat <span class="ot">&lt;-</span> ind_dat[<span class="fu">paste</span>(<span class="fu">substr</span>(ind_dat<span class="sc">$</span>timestamp,<span class="dv">1</span>,<span class="dv">10</span>), ind_dat<span class="sc">$</span>placename) <span class="sc">%in%</span> tmp, ]</span>
+<span id="cb326-382"><a href="on-your-own-5.html#cb326-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-383"><a href="on-your-own-5.html#cb326-383" aria-hidden="true" tabindex="-1"></a>ind_dat<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">as.factor</span>(ind_dat<span class="sc">$</span>sp)</span>
+<span id="cb326-384"><a href="on-your-own-5.html#cb326-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-385"><a href="on-your-own-5.html#cb326-385" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-386"><a href="on-your-own-5.html#cb326-386" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-387"><a href="on-your-own-5.html#cb326-387" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(ind_dat, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_detections.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
+<span id="cb326-388"><a href="on-your-own-5.html#cb326-388" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-389"><a href="on-your-own-5.html#cb326-389" aria-hidden="true" tabindex="-1"></a><span class="co"># also write the cleaned all detections file (some activity analyses require it)</span></span>
+<span id="cb326-390"><a href="on-your-own-5.html#cb326-390" aria-hidden="true" tabindex="-1"></a><span class="co">#write.csv(img_tmp, paste0(&quot;data/processed_data/&quot;,ind_dat$project_id[1], &quot;_raw_detections.csv&quot;), row.names = F)</span></span>
+<span id="cb326-391"><a href="on-your-own-5.html#cb326-391" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-392"><a href="on-your-own-5.html#cb326-392" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(row_lookup, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_daily_lookup.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
+<span id="cb326-393"><a href="on-your-own-5.html#cb326-393" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-394"><a href="on-your-own-5.html#cb326-394" aria-hidden="true" tabindex="-1"></a><span class="co">#Subset the columns</span></span>
+<span id="cb326-395"><a href="on-your-own-5.html#cb326-395" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> dep[, <span class="fu">c</span>(<span class="st">&quot;project_id&quot;</span>, <span class="st">&quot;placename&quot;</span>, <span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>, <span class="st">&quot;feature_type&quot;</span>)]</span>
+<span id="cb326-396"><a href="on-your-own-5.html#cb326-396" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicated rows</span></span>
+<span id="cb326-397"><a href="on-your-own-5.html#cb326-397" aria-hidden="true" tabindex="-1"></a>tmp<span class="ot">&lt;-</span> tmp[<span class="fu">duplicated</span>(tmp)<span class="sc">==</span>F,]</span>
+<span id="cb326-398"><a href="on-your-own-5.html#cb326-398" aria-hidden="true" tabindex="-1"></a><span class="co"># write the file</span></span>
+<span id="cb326-399"><a href="on-your-own-5.html#cb326-399" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tmp, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_camera_locations.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
+<span id="cb326-400"><a href="on-your-own-5.html#cb326-400" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-401"><a href="on-your-own-5.html#cb326-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-402"><a href="on-your-own-5.html#cb326-402" aria-hidden="true" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> sp_list[sp_list<span class="sc">$</span>sp <span class="sc">%in%</span> ind_dat<span class="sc">$</span>sp,]</span>
+<span id="cb326-403"><a href="on-your-own-5.html#cb326-403" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-404"><a href="on-your-own-5.html#cb326-404" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove the &#39;verified&#39; column</span></span>
+<span id="cb326-405"><a href="on-your-own-5.html#cb326-405" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>verified <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb326-406"><a href="on-your-own-5.html#cb326-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-407"><a href="on-your-own-5.html#cb326-407" aria-hidden="true" tabindex="-1"></a><span class="co"># We will replace the spaces in the species names with dots, this will make things easier for us later (as column headings with spaces in are annoying).</span></span>
+<span id="cb326-408"><a href="on-your-own-5.html#cb326-408" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb326-409"><a href="on-your-own-5.html#cb326-409" aria-hidden="true" tabindex="-1"></a>tmp<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">str_replace</span>(tmp<span class="sc">$</span>sp, <span class="st">&quot; &quot;</span>, <span class="st">&quot;.&quot;</span>)</span>
+<span id="cb326-410"><a href="on-your-own-5.html#cb326-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-411"><a href="on-your-own-5.html#cb326-411" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-412"><a href="on-your-own-5.html#cb326-412" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(tmp, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_species_list.csv&quot;</span>), <span class="at">row.names =</span> F)</span>
+<span id="cb326-413"><a href="on-your-own-5.html#cb326-413" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-414"><a href="on-your-own-5.html#cb326-414" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-415"><a href="on-your-own-5.html#cb326-415" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-416"><a href="on-your-own-5.html#cb326-416" aria-hidden="true" tabindex="-1"></a><span class="co"># Total counts</span></span>
+<span id="cb326-417"><a href="on-your-own-5.html#cb326-417" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Station / Month / deport / Species      </span></span>
+<span id="cb326-418"><a href="on-your-own-5.html#cb326-418" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> row_lookup</span>
+<span id="cb326-419"><a href="on-your-own-5.html#cb326-419" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-420"><a href="on-your-own-5.html#cb326-420" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the number of days at each site  </span></span>
+<span id="cb326-421"><a href="on-your-own-5.html#cb326-421" aria-hidden="true" tabindex="-1"></a>  total_obs <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> </span>
+<span id="cb326-422"><a href="on-your-own-5.html#cb326-422" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(placename) <span class="sc">%&gt;%</span></span>
+<span id="cb326-423"><a href="on-your-own-5.html#cb326-423" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">days =</span> <span class="fu">n</span>())</span>
+<span id="cb326-424"><a href="on-your-own-5.html#cb326-424" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-425"><a href="on-your-own-5.html#cb326-425" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
+<span id="cb326-426"><a href="on-your-own-5.html#cb326-426" aria-hidden="true" tabindex="-1"></a>  total_obs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(total_obs)</span>
+<span id="cb326-427"><a href="on-your-own-5.html#cb326-427" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-428"><a href="on-your-own-5.html#cb326-428" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Add columns for each species  </span></span>
+<span id="cb326-429"><a href="on-your-own-5.html#cb326-429" aria-hidden="true" tabindex="-1"></a>  total_obs[, <span class="fu">levels</span>(ind_dat<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb326-430"><a href="on-your-own-5.html#cb326-430" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Duplicate for counts</span></span>
+<span id="cb326-431"><a href="on-your-own-5.html#cb326-431" aria-hidden="true" tabindex="-1"></a>  total_count <span class="ot">&lt;-</span> total_obs</span>
+<span id="cb326-432"><a href="on-your-own-5.html#cb326-432" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Test counter</span></span>
+<span id="cb326-433"><a href="on-your-own-5.html#cb326-433" aria-hidden="true" tabindex="-1"></a>  i <span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb326-434"><a href="on-your-own-5.html#cb326-434" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For each station, count the number of individuals/observations</span></span>
+<span id="cb326-435"><a href="on-your-own-5.html#cb326-435" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(total_obs))</span>
+<span id="cb326-436"><a href="on-your-own-5.html#cb326-436" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb326-437"><a href="on-your-own-5.html#cb326-437" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> ind_dat[ind_dat<span class="sc">$</span>placename<span class="sc">==</span>total_obs<span class="sc">$</span>placename[i],]</span>
+<span id="cb326-438"><a href="on-your-own-5.html#cb326-438" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-439"><a href="on-your-own-5.html#cb326-439" aria-hidden="true" tabindex="-1"></a>      tmp_stats <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(sp, <span class="at">.drop=</span>F) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">obs=</span><span class="fu">n</span>(), <span class="at">count=</span><span class="fu">sum</span>(animal_count))</span>
+<span id="cb326-440"><a href="on-your-own-5.html#cb326-440" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-441"><a href="on-your-own-5.html#cb326-441" aria-hidden="true" tabindex="-1"></a>      total_obs[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>obs</span>
+<span id="cb326-442"><a href="on-your-own-5.html#cb326-442" aria-hidden="true" tabindex="-1"></a>      total_count[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>count</span>
+<span id="cb326-443"><a href="on-your-own-5.html#cb326-443" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb326-444"><a href="on-your-own-5.html#cb326-444" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-445"><a href="on-your-own-5.html#cb326-445" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-446"><a href="on-your-own-5.html#cb326-446" aria-hidden="true" tabindex="-1"></a><span class="co"># Save them</span></span>
+<span id="cb326-447"><a href="on-your-own-5.html#cb326-447" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb326-448"><a href="on-your-own-5.html#cb326-448" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(total_obs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_total_observations.csv&quot;</span>), <span class="at">row.names =</span> F) </span>
+<span id="cb326-449"><a href="on-your-own-5.html#cb326-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-450"><a href="on-your-own-5.html#cb326-450" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(total_count, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_total_counts.csv&quot;</span>), <span class="at">row.names =</span> F) </span>
+<span id="cb326-451"><a href="on-your-own-5.html#cb326-451" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-452"><a href="on-your-own-5.html#cb326-452" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-453"><a href="on-your-own-5.html#cb326-453" aria-hidden="true" tabindex="-1"></a><span class="co"># Monthly counts</span></span>
+<span id="cb326-454"><a href="on-your-own-5.html#cb326-454" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Station / Month / days / Covariates / Species      </span></span>
+<span id="cb326-455"><a href="on-your-own-5.html#cb326-455" aria-hidden="true" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> row_lookup</span>
+<span id="cb326-456"><a href="on-your-own-5.html#cb326-456" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Simplify the date to monthly</span></span>
+<span id="cb326-457"><a href="on-your-own-5.html#cb326-457" aria-hidden="true" tabindex="-1"></a>  tmp<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">substr</span>(tmp<span class="sc">$</span>date,<span class="dv">1</span>,<span class="dv">7</span>)</span>
+<span id="cb326-458"><a href="on-your-own-5.html#cb326-458" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-459"><a href="on-your-own-5.html#cb326-459" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Calculate the number of days in each month  </span></span>
+<span id="cb326-460"><a href="on-your-own-5.html#cb326-460" aria-hidden="true" tabindex="-1"></a>  mon_obs <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> </span>
+<span id="cb326-461"><a href="on-your-own-5.html#cb326-461" aria-hidden="true" tabindex="-1"></a>      <span class="fu">group_by</span>(placename,date ) <span class="sc">%&gt;%</span></span>
+<span id="cb326-462"><a href="on-your-own-5.html#cb326-462" aria-hidden="true" tabindex="-1"></a>      <span class="fu">summarise</span>(<span class="at">days =</span> <span class="fu">n</span>())</span>
+<span id="cb326-463"><a href="on-your-own-5.html#cb326-463" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Convert to a data frame</span></span>
+<span id="cb326-464"><a href="on-your-own-5.html#cb326-464" aria-hidden="true" tabindex="-1"></a>  mon_obs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mon_obs)</span>
+<span id="cb326-465"><a href="on-your-own-5.html#cb326-465" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb326-466"><a href="on-your-own-5.html#cb326-466" aria-hidden="true" tabindex="-1"></a>  mon_obs[, <span class="fu">levels</span>(ind_dat<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb326-467"><a href="on-your-own-5.html#cb326-467" aria-hidden="true" tabindex="-1"></a>  mon_count <span class="ot">&lt;-</span> mon_obs</span>
+<span id="cb326-468"><a href="on-your-own-5.html#cb326-468" aria-hidden="true" tabindex="-1"></a>  <span class="co"># For each month, count the number of individuals/observations</span></span>
+<span id="cb326-469"><a href="on-your-own-5.html#cb326-469" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(mon_obs))</span>
+<span id="cb326-470"><a href="on-your-own-5.html#cb326-470" aria-hidden="true" tabindex="-1"></a>    {</span>
+<span id="cb326-471"><a href="on-your-own-5.html#cb326-471" aria-hidden="true" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> ind_dat[ind_dat<span class="sc">$</span>placename<span class="sc">==</span>mon_obs<span class="sc">$</span>placename[i] <span class="sc">&amp;</span> <span class="fu">substr</span>(ind_dat<span class="sc">$</span>timestamp,<span class="dv">1</span>,<span class="dv">7</span>)<span class="sc">==</span> mon_obs<span class="sc">$</span>date[i],]</span>
+<span id="cb326-472"><a href="on-your-own-5.html#cb326-472" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-473"><a href="on-your-own-5.html#cb326-473" aria-hidden="true" tabindex="-1"></a>      tmp_stats <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(sp, <span class="at">.drop=</span>F) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">obs=</span><span class="fu">n</span>(), <span class="at">count=</span><span class="fu">sum</span>(animal_count))</span>
+<span id="cb326-474"><a href="on-your-own-5.html#cb326-474" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-475"><a href="on-your-own-5.html#cb326-475" aria-hidden="true" tabindex="-1"></a>      mon_obs[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>obs</span>
+<span id="cb326-476"><a href="on-your-own-5.html#cb326-476" aria-hidden="true" tabindex="-1"></a>      mon_count[i,<span class="fu">as.character</span>(tmp_stats<span class="sc">$</span>sp)] <span class="ot">&lt;-</span> tmp_stats<span class="sc">$</span>count</span>
+<span id="cb326-477"><a href="on-your-own-5.html#cb326-477" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb326-478"><a href="on-your-own-5.html#cb326-478" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb326-479"><a href="on-your-own-5.html#cb326-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-480"><a href="on-your-own-5.html#cb326-480" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb326-481"><a href="on-your-own-5.html#cb326-481" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mon_obs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_monthly_observations.csv&quot;</span>), <span class="at">row.names =</span> F) </span>
+<span id="cb326-482"><a href="on-your-own-5.html#cb326-482" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb326-483"><a href="on-your-own-5.html#cb326-483" aria-hidden="true" tabindex="-1"></a><span class="fu">write.csv</span>(mon_count, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_&quot;</span>,independent ,<span class="st">&quot;min_independent_monthly_counts.csv&quot;</span>), <span class="at">row.names =</span> F) </span></code></pre></div>
 
 </div>
 </div>

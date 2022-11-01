@@ -350,7 +350,7 @@ m <- leaflet() %>%
                    popup=paste(dep$placename, dep[,category])) %>%
   
   # Add a legend explaining what is going on
-  addLegend("bottomleft", colors = col.cat,  labels = levels(dep[,category]),
+  addLegend("topleft", colors = col.cat,  labels = levels(dep[,category]),
                    title = category,
                    labFormat = labelFormat(prefix = "$"),
                    opacity = 1) %>%
