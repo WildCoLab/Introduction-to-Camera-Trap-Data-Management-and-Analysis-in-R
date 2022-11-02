@@ -8,7 +8,7 @@ I will help you read in the data - and correct a mistake I made. Then you are on
 
 ## The new dataset
 
-
+### Data cleaning and creation
 ```{r ch13_1, class.source="Rmain"}
 # Load your data 
 pro <- read.csv("data/raw_data/your_data/proj.csv", header=T)
@@ -42,20 +42,19 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 Away you go!
 
+We have included the relevant code blocks below:
 
-Emergency code if you get stuck!
-
-
-```{r, echo=T, eval=F}
+```{r, echo=T, eval=F, class.source="Rmain"}
 # start dates
 dep$start_date <- ymd(dep$start_date)
 
 # end dates
 dep$end_date   <- ymd(dep$end_date)
 
+# camera days
 dep$days <- interval(dep$start_date, dep$end_date)/ddays(1)
 
-
+# Image timestamp
 img$timestamp <- ymd_hms(img$timestamp)
 
 
@@ -89,14 +88,20 @@ m <- leaflet() %>%
                     baseGroups = c("Satellite", "Base"))
 
 m
+```
 
 
+**QUESTION** What is the survey design? Hint: zoom in.
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
 # Distance between traps
 camera_locs <- dep %>% 
   dplyr::select(placename, latitude, longitude) %>% 
   unique() %>% # remove duplicated rows (rows where the placename and coordinates match)
   st_as_sf(coords = c("longitude", "latitude"), crs = "+proj=longlat") # Convert to `sf` format
 
+# distance matrix for all cameras
 camera_dist <- st_distance(camera_locs) %>% 
                   as.dist() %>% 
                   usedist::dist_setNames(as.character(camera_locs$placename)) %>% 
@@ -107,22 +112,29 @@ camera_dist_list <- t(combn(colnames(camera_dist), 2))
 camera_dist_list <- data.frame(camera_dist_list, dist = camera_dist[camera_dist_list]) %>% 
                           arrange(dist) # sort descending
 
+# Duplicate and flip the stations so each one is represented on the left hand side
+camera_dist_list <- rbind(camera_dist_list, camera_dist_list[,c(2,1,3)])
+
 # keep just the closest camera for each location
 camera_dist_list <- camera_dist_list %>% 
                   group_by(X1) %>% 
                   slice(which.min(dist))
 
-
 summary(camera_dist_list$dist)
+```
 
+Do you have anything to be worried about here?
 
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Do all deployments have images, and images have deployments?
 table(unique(img$placename) %in% unique(dep$placename))
-
 table(unique(dep$placename)  %in% unique(img$placename))
 
+```
 
 
 
+```{r, echo=T, eval=F, class.source="Rmain"}
 # Activity check
 # Correct the brken deploymenrt
 #dep[dep$deployment_id=="LAC065_C187_030222", ]$end_date <- "2022-05-22"
@@ -175,29 +187,12 @@ for(i in seq_along(levels(dep$placename)))
 
 p
 
+```
 
-#################
+**QUESTION** What do you think about the camera deployments?
 
-# add an sp column to the img dataframe - remember the genus and species columns are not pasted together yet
-img$sp <- paste(img$genus, img$species, sep=".")
-
-
-### Species lists
-
-# First define vector of the headings you want to see (we will use this trick a lot later on)
-taxonomy_headings <- c("class", "order", "family", "genus", "species", "common_name")
-
-# Subset the image data to just those columns
-tmp<- img[,colnames(img)%in% taxonomy_headings]
-# Remove duplicates
-tmp <- tmp[duplicated(tmp)==F,]
-
-# Create an ordered species list
-sp_list  <- tmp[order(tmp$class, tmp$order, tmp$family, tmp$genus, tmp$species),]
-sp_list$sp <- paste(sp_list$genus, sp_list$species)
+```{r, echo=T, eval=F, class.source="Rmain"}
 ### DETCTION CHECK
-
-
 
 #Camera activity plot
 # Make a separate plot for each 20 stations For each 20 stations
@@ -274,8 +269,39 @@ for(i in 1:max(dep_tmp$plot_group))
   
 } 
 
-##### Already got common names dont worry about that
 
+```
+
+**QUESTION** Do you need to make any edits? Note - there are three plot windows to check.
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+
+# Create a species list
+# add an sp column to the img dataframe - remember the genus and species columns are not pasted together yet
+img$sp <- paste(img$genus, img$species, sep=".")
+### Species lists
+
+# First define vector of the headings you want to see (we will use this trick a lot later on)
+taxonomy_headings <- c("class", "order", "family", "genus", "species", "common_name")
+
+# Subset the image data to just those columns
+tmp<- img[,colnames(img)%in% taxonomy_headings]
+# Remove duplicates
+tmp <- tmp[duplicated(tmp)==F,]
+
+# Create an ordered species list
+sp_list  <- tmp[order(tmp$class, tmp$order, tmp$family, tmp$genus, tmp$species),]
+sp_list$sp <- paste(sp_list$genus, sp_list$species, sep=".")
+
+write.csv(sp_list, paste0("data/raw_data/",pro$project_id[1],"_raw_species_list.csv"))
+
+
+```
+
+**QUESTION** Are there any classifications you will remove when we create our analysis dataframes?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Diel activity check
 
 # First lets convert our timestamp to decimal hours
 img$hours <- hour(img$timestamp) + minute(img$timestamp)/60 + second(img$timestamp)/(60*60)
@@ -298,25 +324,42 @@ fig
 
 # Remove the column
 img$hours <- NULL
+```
 
+**QUESTION** Are there any images you would like to check?
 
-#####################################
-#####################################
-
-# Create dataframes
-
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Create your dataframe folder
 dir.create("data/processed_data")
 
+
+# Filter your species
 # Remove observations without animals detected, where we don't know the species, and non-mammals
- img_sub <- img %>% filter(is_blank==0,                # Remove the blanks
+img_sub <- img %>% filter(is_blank==0,                # Remove the blanks
                           is.na(img$species)==FALSE, # Remove classifications which don't have species 
                           class=="Mammalia",          # Subset to mammals
                           species!="sapiens")         # Subset to anything that isn't human
 
 table(img_sub$sp)
+```
 
+**QUESTION** Are there any other classifications you would like to remove?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Create your dataframe folder
+
+# Filter your species
+# Remove observations without animals detected, where we don't know the species, and non-mammals
+img_sub <- img_sub %>% filter(sp!=".")         # Subset to anything that isn't human
+
+table(img_sub$sp)
+```
+
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
 ##########################################
-# Create lookup
+# Create your daily lookup
 
 # Remove any deployments without end dates
 tmp <- dep[is.na(dep$end_date)==F,]
@@ -339,20 +382,37 @@ row_lookup <- bind_rows(daily_lookup)
 # Remove duplicates - when start and end days are the same for successive deployments
 row_lookup <- row_lookup[duplicated(row_lookup)==F,]
 
+
+###################################
+# Create your independent detections
 independent <- 30
 
 # Check for a `group_size` variable? 
 table(img_sub$group_size)
 
-# Check for a 'number_ofobjects' variable
+# Check for a 'number_of_objects' variable
 table(img_sub$number_of_objects)
+
+```
+
+**QUESTION** WHich variable will you use for your `animal_count`?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+
+img_sub$animal_count <- ###INSERT YOUR SELECTION HERE###
+
+```
+
+```{r, echo=F, eval=F}
 
 img_sub$animal_count <- img_sub$number_of_objects
 
+```
 
 
-# Events
 
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Create your independent data
 
 img_tmp <- img_sub %>%
               arrange(deployment_id) %>%        # Order by deployment_id
@@ -414,10 +474,10 @@ img_tmp$duration <- NULL
   # Remove columns you don't need
   diff$timestamp   <-NULL
   diff$timestamp_end <-NULL
-
+  diff <- diff[duplicated(diff)==F,]
     # Merge the img_tmp with the event data
-  img_tmp <-  img_tmp %>%
-   left_join(diff,by="event_id")
+  img_tmp <- 
+   left_join(img_tmp,diff,by="event_id")
   
   
   # Remove duplicates
@@ -432,11 +492,12 @@ ind_dat <- ind_dat[paste(substr(ind_dat$timestamp,1,10), ind_dat$placename) %in%
 ind_dat$sp <- as.factor(ind_dat$sp)
 
 
+# Export your data frames
 
 write.csv(ind_dat, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_detections.csv"), row.names = F)
 
 # also write the cleaned all detections file (some activity analyses require it)
-#write.csv(img_tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_raw_detections.csv"), row.names = F)
+write.csv(img_tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_raw_detections.csv"), row.names = F)
 
 write.csv(row_lookup, paste0("data/processed_data/",ind_dat$project_id[1], "_daily_lookup.csv"), row.names = F)
 
@@ -450,17 +511,13 @@ write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_camera_loc
 
 tmp <- sp_list[sp_list$sp %in% ind_dat$sp,]
 
-# Remove the 'verified' column
-tmp$verified <- NULL
-
-# We will replace the spaces in the species names with dots, this will make things easier for us later (as column headings with spaces in are annoying).
-library(stringr)
-tmp$sp <- str_replace(tmp$sp, " ", ".")
-
-
 write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_species_list.csv"), row.names = F)
+```
 
 
+In the next step, we will won't create the daily dataframe as it takes too long!
+
+```{r, echo=T, eval=F, class.source="Rmain"}
 
 # Total counts
   # Station / Month / deport / Species      
@@ -531,8 +588,415 @@ write.csv(mon_obs, paste0("data/processed_data/",ind_dat$project_id[1], "_",inde
 
 write.csv(mon_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_monthly_counts.csv"), row.names = F) 
 
+### Weekly 
+
+# Weekly format
+  # Station / Month / days / Covariates / Species      
+  tmp <- row_lookup
+  # Simplify the date to year-week
+  tmp$date <- strftime(tmp$date, format = "%Y-W%U")
+  # The way this is coded is the counter W01 starts at the first Sunday of the year, everything before that is W00. Weeks do not roll across years.
+  
+  # Calculate the number of days in each week  
+  week_obs <- tmp %>% 
+      group_by(placename,date ) %>%
+      summarise(days = n())
+  
+  # Convert to a data frame
+  week_obs <- as.data.frame(week_obs)
+  
+  # Add species columns  
+  week_obs[, levels(ind_dat$sp)] <- NA
+  
+  # Duplicate for counts
+  week_count <- week_obs
+  
+  # For each week, count the number of individuals/observations
+  for(i in 1:nrow(week_obs))
+    {
+      tmp <- ind_dat[ind_dat$placename==week_obs$placename[i] & strftime(ind_dat$timestamp, format = "%Y-W%U")== week_obs$date[i],]
+      
+      tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
+      
+      week_obs[i,as.character(tmp_stats$sp)] <- tmp_stats$obs
+      week_count[i,as.character(tmp_stats$sp)] <- tmp_stats$count
+      
+    }
+
+write.csv(week_obs, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_weekly_observations.csv"), row.names = F) 
+
+write.csv(week_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",independent ,"min_independent_weekly_counts.csv"), row.names = F) 
+
+```
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Do an observations check
+
+
+tmp <- cbind(data.frame("Time"=c("Total", "Monthly", "Weekly")),
+rbind(colSums(total_obs[,2:ncol(total_obs)]),
+colSums(mon_obs[,3:ncol(mon_obs)]),
+colSums(week_obs[,3:ncol(week_obs)])))
+
+tmp %>%
+  kbl() %>%
+  kable_styling(full_width = T) %>%
+  column_spec(1, bold = T, border_right = T)%>% 
+  kableExtra::scroll_box(width = "100%")
+
+
+```
+
+### Covariates
+
+
+```{r, echo=T, results='hide', message =F, warning=F, class.source="Rmain"}
+# LOad the packages
+library(kableExtra);library(dplyr); library(sf); library(MODISTools); library(lubridate); library(corrplot); library(traitdata); library(terra); library(osmdata); library(elevatr)
+```
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Start by reading in your species list
+sp_summary <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_species_list.csv"), header=T)
+locs <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_camera_locations.csv"), header=T)
+
+# Species traits
+library(traitdata)
+data("elton_mammals")
+elton_mammals$sp <- paste0(elton_mammals$Genus,"." ,elton_mammals$Species)
+
+tmp <- elton_mammals[, c("sp","BodyMass.Value", "Activity.Nocturnal", "Activity.Crepuscular",	"Activity.Diurnal")]
+
+# Lets rename the columns to make them more usable
+tmp <- tmp %>% rename(
+              mass_g = BodyMass.Value,
+              act_noct = Activity.Nocturnal,
+              act_crep = Activity.Crepuscular,
+              act_diur = Activity.Diurnal)
+
+sp_summary <- left_join(sp_summary, tmp)
+
+```
+
+**QUESTION** Are there any missing values you need to fill in?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+write.csv(sp_summary, paste0("data/processed_data/", locs$project_id[1],"_species_list.csv"), row.names = F)
+
 ```
 
 
 
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Spatial covariates
+locs_sf <- st_as_sf(locs,                              # We specify the dataframe 
+                    coords=c("longitude", "latitude"), # The XY coordinates
+                    crs=4326)                          # And the projection code
+
+library(elevatr)
+locs_sf <- get_elev_point(locs_sf, 
+                          src="aws", #Amazon Web Service Terrain Tiles - available globally
+                          z = 12)  # z specifies the zoom level, the lower the value the faster the code runs, but the coarser the elevation values are
+
+boxplot(locs_sf$elevation)
+
+
+library(osmdata)
+aoi <- st_bbox(st_buffer(locs_sf, 10000)) # Units are in meters 
+
+water <- opq(aoi) %>%
+           add_osm_feature(key="water") %>%
+           osmdata_sf()
+
+ # NO OPEN STREET MAP DATA FOR THIS AREA
+
+
+library(MODISTools)
+modis_locs <- locs %>% 
+  select("placename", "longitude", "latitude") %>% 
+  rename(site_name=placename, lat=latitude, lon=longitude)
+
+
+# list available dates for a product at a location
+dates <- mt_dates(product = "MOD13Q1", lat = modis_locs$lat[1], lon = modis_locs$lon[1]) #MOD15A2H
+
+# Get the first and last date!
+first(dates$calendar_date); last(dates$calendar_date)
+
+
+site_ndvi <- mt_batch_subset(product = "MOD13Q1",
+                              df=modis_locs,
+                              band = "250m_16_days_NDVI",
+                              start = "2022-01-01",
+                              end = "2022-02-28",
+                              km_lr = 0,         # Use these options if you want to buffer the value (km left)
+                              km_ab = 0,         # Use these options if you want to buffer the value (km above)
+                              internal = TRUE)
+
+ndvi_simple <- site_ndvi %>% 
+  select(	site, band, calendar_date, value) %>% 
+  rename(placename=site)
+
+tmp <- ndvi_simple %>%             #Take the NDVI layer
+  group_by(placename) %>%          # Group observations by the placename
+  summarize(mean_ndvi=mean(value)) # Take the mean of the values and call the new column `mean_ndvi`
+
+# Add the new data to our locations dataframe
+locs_sf <- left_join(locs_sf, tmp)
+
+# Convert it back to a dataframe
+locs_sf$geometry <- NULL
+
+locs <- left_join(locs, locs_sf)
+
+
+# Write the dataset
+
+write.csv(locs, paste0("data/processed_data/", locs$project_id[1],"_camera_locations_and_covariates.csv"), row.names=F)
+```
+
+### Data exploration
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+list.of.packages <- c("kableExtra", "tidyr", "leaflet", "dplyr", "viridis", "corrplot", "lubridate", "plotly")
+
+new.packages <- list.of.packages[!(list.of.packages %in% installed.packages()[,"Package"])]
+if(length(new.packages)) install.packages(new.packages)
+lapply(list.of.packages, require, character.only = TRUE)
+
+# Final locations plot
+
+locs <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_camera_locations_and_covariates.csv"))
+
+# If you want to color by a category do it here:
+category <- "feature_type"
+# First lets choose a category to color
+locs[,category] <- factor(locs[,category])
+col.cat <- turbo(length(levels(locs[,category])))
+# Add it to the dataframe
+locs$colours <- col.cat[locs[,category]]
+
+m <- leaflet() %>%
+  # Add a satellite image layer
+  addProviderTiles(providers$Esri.WorldImagery, group="Satellite") %>%  
+  addProviderTiles(providers$Esri.WorldTopoMap, group="Base") %>%     
+  addCircleMarkers(lng=locs$longitude, lat=locs$latitude,
+                   # Color the markers depending on the 'feature type'
+                   color=locs$colours,
+                   # Add a popup of the deployment code 
+                   popup=paste(locs$placename, locs[,category])) %>%
+  # Add a legend explaining what is going on
+  addLegend("bottomleft", colors = col.cat,  labels = levels(locs[,category]),
+    title = category,
+    labFormat = labelFormat(prefix = "$"),
+    opacity = 1
+  ) %>%
+  # add a layer control box to toggle between the layers
+  addLayersControl(
+    baseGroups = c("Satellite", "Base"),
+    options = layersControlOptions(collapsed = FALSE)
+  )
+m
+
+```
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+sp_summary <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_species_list.csv"), header=T)
+total_obs <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_30min_independent_total_observations.csv"), header=T)
+
+# Convert to long
+long_obs <- total_obs %>% 
+  pivot_longer(cols=sp_summary$sp,  # The columns we want to create into rows - species
+               names_to="sp",       # What we what the number column to be called
+               values_to = "count") # Takes the values in the species columns and calls them `count`
+
+
+# We can them summaries those using dplyr
+tmp <- long_obs %>%                   # Take the long observation data frame `long_obs` 
+          group_by(sp) %>%            # Group by species
+          summarise(count=sum(count)) # Sum all the independent observations
+
+# Add it to the sp_summary dataframe
+sp_summary <- left_join(sp_summary, tmp)
+
+## Occupancy
+# We use the mutate function to mutate the column
+total_binary <-  total_obs %>%    # The total obs dataframe              
+                    mutate(across(sp_summary$sp, ~+as.logical(.x)))  # across all of the species columns, make it binary
+
+# Flip the dataframe to longer - as before
+long_bin <- total_binary %>% 
+  pivot_longer(cols=sp_summary$sp, names_to="sp", values_to = "count") # Takes the species names columns, and makes them unique rows with "sp" as the key 
+
+# We can now sum the presence/absences and divide by the number of survey locations
+tmp <- long_bin %>% 
+  group_by(sp) %>% 
+  summarise(occupancy=sum(count)/nrow(locs)) # divided the sum by the number of sites
+
+# add the results to the sp_summary
+sp_summary <- left_join(sp_summary, tmp)
+
+
+###########################
+# Comparison plot
+# Lets put the dataframes in a sensible order
+sp_summary <- sp_summary[order(sp_summary$count),]
+
+yform <- list(categoryorder = "array",
+              categoryarray = sp_summary$sp)
+
+xform <- list(title="Captures")
+
+# Capture rate
+fig1 <- plot_ly(x = sp_summary$count, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
+ layout(yaxis = yform, xaxis=xform)
+
+yform <- list(categoryorder = "array",
+              categoryarray = sp_summary$sp,
+              showticklabels=F)
+xform <- list(title="Occupancy")
+
+
+# Occupancy
+fig2 <- plot_ly(x = sp_summary$occupancy, y = sp_summary$common_name, type = 'bar', orientation = 'h') %>% 
+ layout(yaxis = yform, xaxis=xform)
+
+subplot(nrows=1,fig1, fig2, titleX = T) # We could stack them on top of one another using nrows=2
+
+```
+
+**QUESTION** What does this tell you about the behavior of the target species?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Temporal patterns
+mon_obs <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_30min_independent_monthly_observations.csv"), header=T)
+
+# Count up the number of stations and the number of camera nights
+mon_summary <- mon_obs %>%                  # Use the monthly observations dataframe
+            group_by(date) %>%              # Group by the date
+            summarise(locs_active=n(),      # Count the number of active cameras
+                      cam_days=sum(days))   # And sum the active days 
+
+
+# Add in the species specific counts - and join it with the mon_summary dataframe
+mon_summary <- mon_obs %>% 
+                group_by(date) %>%  
+                summarise(across(sp_summary$sp, sum, na.rm=TRUE)) %>% # summarise across all of 
+                                                                      # the species columns 
+                left_join(x=mon_summary)   # Join with the mon_summary dataframe
+
+# We first need to convert the date column to a date object
+mon_summary$date <- ym(mon_summary$date)
+
+# Set up a two panel plot (side by side)
+par(mfrow=c(1,2))
+
+plot(mon_summary$date, mon_summary$locs_active,
+     type="o", 
+     pch=19,
+     ylim=c(0, max(mon_summary$locs_active)),
+     las=1, 
+     ylab="Number of cameras active", xlab="Date")
+
+
+# Sum all the captures rates for the species columns
+mon_summary$all.sp <- rowSums(mon_summary[, sp_summary$sp])
+
+# Plot them
+plot(mon_summary$date, mon_summary$all.sp/(mon_summary$cam_days/100),
+     type="o",
+     pch=19,
+     las=1, ylab="Detections per 100 cam days", xlab="Date")
+
+```
+
+**Question** What is going on in these plots?
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Species specific plots
+
+par(mfrow=c(2,2))
+i <- 1
+for(i in 1:length(sp_summary$sp))
+{
+  plot(mon_summary$date, pull(mon_summary, sp_summary$sp[i])/(mon_summary$cam_days/100),  # The pull command allows you to grab a specific column in a dataframe and turn it into a vector!
+     type="o",
+     pch=19,
+     las=1, ylab="Detections per 100 cam days", xlab="Date",
+     main=sp_summary$sp[i])
+}
+
+```
+
+**Question** Any interesting patterns?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Spatial plots
+
+total_obs <- left_join(total_obs, locs)
+
+# Jaguar
+focal_species <- "Panthera.onca"
+
+focal_cr <- pull(total_obs, focal_species)/(total_obs$days/100)
+
+m <- leaflet() %>%
+  addProviderTiles(providers$Esri.WorldTopoMap, group="Base") %>%     
+  addCircleMarkers(lng=locs$longitude, lat=locs$latitude,
+                   # Add a popup of the deployment code 
+                   popup=paste(locs$placename),
+                   radius=(focal_cr/max(focal_cr)*10)+1, stroke=F,
+                   fillOpacity=0.6) 
+m
+
+
+```
+
+**Question** Any interesting patterns?
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Co-occurances
+par(mfrow=c(1,1))
+
+# Pull the data for each of the species from 
+tmp <- total_obs[, sp_summary$sp]
+M <- cor(tmp)
+
+corrplot(M, method="color", 
+         type="upper", 
+         order="hclust",
+         # addCoef.col = "black", # We suppress the coefs to make a cleaner plot
+         tl.col="black", tl.srt=45, #Text label color and rotation
+         diag=FALSE
+         )
+```
+
+**Question** Any interesting patterns?
+
+You can now do some data exploration plots. 
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Prepare the data
+locs <- locs %>% 
+            mutate_if(is.character,as.factor) # If a column is a character string, make it a factor
+
+total_obs <- left_join(total_obs, locs)
+```
+
+We have the following species:
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+sp_summary$sp
+```
+
+
+And the following categories to explore:
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+ c("feature_type", "elevation", "mean_ndvi")
+```
 

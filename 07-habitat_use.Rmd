@@ -455,7 +455,7 @@ With Bayesian approaches we need to set up our sampling conditions
 
 ```{r ch7_37, class.source="Rmain"}
 nChains   = 2       # How many total repeats to run
-thin      = 2       # How often to thin the samples
+thin      = 5       # How often to thin the samples
 samples   = 100     # How many samples to take  
 transient = 1000 # How long should the "warm up" be
 verbose   = T       # Give reports on model progress

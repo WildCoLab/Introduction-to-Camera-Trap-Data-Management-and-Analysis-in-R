@@ -178,3 +178,6 @@ attractance-avoidance-ratios-aar
 worked-examples
 on-your-own-5
 the-new-dataset
+data-cleaning-and-creation
+covariates-1
+data-exploration

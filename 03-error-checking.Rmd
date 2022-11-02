@@ -1214,7 +1214,8 @@ c)  how many images are in each event
   # Remove columns you don't need
   diff$timestamp   <-NULL
   diff$timestamp_end <-NULL
-
+  # remove duplicates
+  diff <- diff[duplicated(diff)==F,]
     # Merge the img_tmp with the event data
   img_tmp <-  img_tmp %>%
    left_join(diff,by="event_id")

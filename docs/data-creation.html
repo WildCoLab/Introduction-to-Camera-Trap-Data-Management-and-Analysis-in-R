@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2022-11-01" />
+<meta name="date" content="2022-11-02" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -396,7 +396,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
 <ul>
-<li class="chapter" data-level="15.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#the-new-dataset"><i class="fa fa-check"></i><b>15.1</b> The new dataset</a></li>
+<li class="chapter" data-level="15.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#the-new-dataset"><i class="fa fa-check"></i><b>15.1</b> The new dataset</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-cleaning-and-creation"><i class="fa fa-check"></i><b>15.1.1</b> Data cleaning and creation</a></li>
+<li class="chapter" data-level="15.1.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#covariates-1"><i class="fa fa-check"></i><b>15.1.2</b> Covariates</a></li>
+<li class="chapter" data-level="15.1.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-exploration"><i class="fa fa-check"></i><b>15.1.3</b> Data exploration</a></li>
+</ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
 <li class="divider"></li>
@@ -615,10 +620,11 @@ For example, if your organism of interest is very abundant, for examples human h
 <span id="cb78-15"><a href="data-creation.html#cb78-15" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove columns you don&#39;t need</span></span>
 <span id="cb78-16"><a href="data-creation.html#cb78-16" aria-hidden="true" tabindex="-1"></a>  diff<span class="sc">$</span>timestamp   <span class="ot">&lt;-</span><span class="cn">NULL</span></span>
 <span id="cb78-17"><a href="data-creation.html#cb78-17" aria-hidden="true" tabindex="-1"></a>  diff<span class="sc">$</span>timestamp_end <span class="ot">&lt;-</span><span class="cn">NULL</span></span>
-<span id="cb78-18"><a href="data-creation.html#cb78-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-19"><a href="data-creation.html#cb78-19" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Merge the img_tmp with the event data</span></span>
-<span id="cb78-20"><a href="data-creation.html#cb78-20" aria-hidden="true" tabindex="-1"></a>  img_tmp <span class="ot">&lt;-</span>  img_tmp <span class="sc">%&gt;%</span></span>
-<span id="cb78-21"><a href="data-creation.html#cb78-21" aria-hidden="true" tabindex="-1"></a>   <span class="fu">left_join</span>(diff,<span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)</span></code></pre></div>
+<span id="cb78-18"><a href="data-creation.html#cb78-18" aria-hidden="true" tabindex="-1"></a>  <span class="co"># remove duplicates</span></span>
+<span id="cb78-19"><a href="data-creation.html#cb78-19" aria-hidden="true" tabindex="-1"></a>  diff <span class="ot">&lt;-</span> diff[<span class="fu">duplicated</span>(diff)<span class="sc">==</span>F,]</span>
+<span id="cb78-20"><a href="data-creation.html#cb78-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Merge the img_tmp with the event data</span></span>
+<span id="cb78-21"><a href="data-creation.html#cb78-21" aria-hidden="true" tabindex="-1"></a>  img_tmp <span class="ot">&lt;-</span>  img_tmp <span class="sc">%&gt;%</span></span>
+<span id="cb78-22"><a href="data-creation.html#cb78-22" aria-hidden="true" tabindex="-1"></a>   <span class="fu">left_join</span>(diff,<span class="at">by=</span><span class="st">&quot;event_id&quot;</span>)</span></code></pre></div>
 <p>Finally lets subset to the first row of each event to create our independent dataframe!</p>
 <div class="sourceCode" id="cb79"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb79-1"><a href="data-creation.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Remove duplicates</span></span>
 <span id="cb79-2"><a href="data-creation.html#cb79-2" aria-hidden="true" tabindex="-1"></a>ind_dat <span class="ot">&lt;-</span> img_tmp[<span class="fu">duplicated</span>(img_tmp<span class="sc">$</span>event_id)<span class="sc">==</span>F,]</span></code></pre></div>

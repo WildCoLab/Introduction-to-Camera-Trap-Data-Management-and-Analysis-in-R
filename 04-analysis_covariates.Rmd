@@ -446,7 +446,7 @@ In the interest of processing time, lets not pull the NDVI scores for the full d
 Be patient, this might take a while!
 
 ```{r ch4_50, class.source="Rmain"}
-algar_ndvi <- mt_batch_subset(product = "MOD13Q1",
+site_ndvi <- mt_batch_subset(product = "MOD13Q1",
                               df=modis_locs,
                               band = "250m_16_days_NDVI",
                               start = "2019-07-01",
@@ -460,7 +460,7 @@ algar_ndvi <- mt_batch_subset(product = "MOD13Q1",
 The raw output is somewhat intimidating:
 
 ```{r ch4_51, class.source="Rinfo"}
-algar_ndvi[1:10, ] %>% 
+site_ndvi[1:10, ] %>% 
   kbl() %>% 
   scroll_box(height = "300px") %>%
   kable_paper("striped", full_width = F)
@@ -469,7 +469,7 @@ algar_ndvi[1:10, ] %>%
 So lets simplify it to the key elements of information and rename them to match our camera data where appropriate:
 
 ```{r ch4_52, class.source="Rmain"}
-ndvi_simple <- algar_ndvi %>% 
+ndvi_simple <- site_ndvi %>% 
   select(	site, band, calendar_date, value) %>% 
   rename(placename=site)
 
