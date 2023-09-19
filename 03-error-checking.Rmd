@@ -409,18 +409,27 @@ camera_dist <- st_distance(camera_locs) %>%
                   usedist::dist_setNames(as.character(camera_locs$placename)) %>% 
                   as.matrix()
 
-# convert to pairwise list
-camera_dist_list <- t(combn(colnames(camera_dist), 2))
-camera_dist_list <- data.frame(camera_dist_list, dist = camera_dist[camera_dist_list]) %>% 
-                          arrange(dist) # sort descending
 
-# Duplicate and flip the stations so each one is represented on the left hand side
-camera_dist_list <- rbind(camera_dist_list, camera_dist_list[,c(2,1,3)])
+#Make temporary camera_dist_mins by  converting diagonals/zeros to 999999 so we can avoid the zeros when using which.min function to find nearest cameras
+camera_dist_mins <- camera_dist + diag(999999,dim(camera_dist)[1])
 
-# keep just the closest camera for each location
-camera_dist_list <- camera_dist_list %>% 
-                  group_by(X1) %>% 
-                  slice(which.min(dist))
+#Create new empty dataframe for appending results to
+camera_dist_list <- data.frame(focal_cam = character(),nearest_cam = character(), dist = double())
+
+#Cycle through each column of camera_dist_mins
+for (i in (1:dim(camera_dist_mins)[1])) 
+  {
+
+    #Get index of minimum value of column i
+    t <- which.min(camera_dist_mins[,i])
+
+    #Combine relevant data into new_row
+    new_row <- data.frame(colnames(camera_dist_mins)[i],names(t),camera_dist_mins[t,i])
+
+    #Append the new_row to the accumulated results dataframe
+    camera_dist_list[nrow(camera_dist_list) + 1,] = new_row
+
+  }
 ```
 
 Lets summarize the output:
@@ -1057,7 +1066,7 @@ This section will follow the following steps:
 ```{r ch3_52, class.source="Rmain"}
 # Remove observations without animals detected, where we don't know the species, and non-mammals
  img_sub <- img %>% filter(is_blank==0,                # Remove the blanks
-                          is.na(img$species)==FALSE, # Remove classifications which don't have species 
+                          is.na(img$species)==FALSE,  # Remove classifications which don't have species 
                           class=="Mammalia",          # Subset to mammals
                           species!="sapiens")         # Subset to anything that isn't human
 ```
