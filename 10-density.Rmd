@@ -2,21 +2,47 @@
 output: html_document
 editor_options: 
   chunk_output_type: console
+  markdown: 
+    wrap: 72
 ---
+
 # Density {#density}
 
-Precise and unbiased population density estimates are fundamental to conserve rare and vulnerable species... But it is complicated, especially with camera traps!
+Precise and unbiased population density estimates are fundamental to
+conserve rare and vulnerable species... But it is complicated,
+especially with camera traps!
 
-There we said it, estimating density from camera trap data is not easy, often isn't precise, and can require you to move beyond "just" R (typically JAGS or Nimble). Also - over the last few years the number of approaches has grown rapidly, consequently it is impossible to cover all of them here.
+There we said it, estimating density from camera trap data is not easy,
+often isn't precise, and can require you to move beyond "just" R
+(typically JAGS or Nimble). Also - over the last few years the number of
+approaches has grown rapidly, consequently it is impossible to cover all
+of them here.
 
-There have been several great review papers published recently, and we recommend you check each one out:
+There have been several great review papers published recently, and we
+recommend you check each one out:
 
-[Morin, Dana J., et al. "Comparison of methods for estimating density and population trends for low-density Asian bears." Global Ecology and Conservation 35 (2022): e02058.](https://www.sciencedirect.com/science/article/pii/S2351989422000609) This paper is great for overview of the different methods available with a specific species in mind - Asian black bear. They discuss the methods, and do not directly compare them.
+[Morin, Dana J., et al. "Comparison of methods for estimating density
+and population trends for low-density Asian bears." Global Ecology and
+Conservation 35 (2022):
+e02058.](https://www.sciencedirect.com/science/article/pii/S2351989422000609)
+This paper is great for overview of the different methods available with
+a specific species in mind - Asian black bear. They discuss the methods,
+and do not directly compare them.
 
-[Gilbert, N. A., Clare, J. D., Stenglein, J. L., & Zuckerberg, B. (2021). Abundance estimation of unmarked animals based on camera‐trap data. Conservation Biology, 35(1), 88-100.](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517) This paper provides a nice overview of the state of the art of density estimation of unmarked animals. They discuss the methods, and do not directly compare them.
+[Gilbert, N. A., Clare, J. D., Stenglein, J. L., & Zuckerberg, B.
+(2021). Abundance estimation of unmarked animals based on camera‐trap
+data. Conservation Biology, 35(1),
+88-100.](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517)
+This paper provides a nice overview of the state of the art of density
+estimation of unmarked animals. They discuss the methods, and do not
+directly compare them.
 
-[Palencia, P., Rowcliffe, J. M., Vicente, J., & Acevedo, P. (2021). Assessing the camera trap methodologies used to estimate density of unmarked populations. Journal of Applied Ecology, 58(8), 1583-1592.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13913) A quantitative comparison of different unmarked density estimators - focusing on REM, REST and Distance methods. 
-
+[Palencia, P., Rowcliffe, J. M., Vicente, J., & Acevedo, P. (2021).
+Assessing the camera trap methodologies used to estimate density of
+unmarked populations. Journal of Applied Ecology, 58(8),
+1583-1592.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13913)
+A quantitative comparison of different unmarked density estimators -
+focusing on REM, REST and Distance methods.
 
 ```{r, echo=F, include=F}
 # THE LECTURE ON THIS
@@ -27,31 +53,49 @@ There have been several great review papers published recently, and we recommend
 
 ## Individually identifiable individuals
 
-If you are dealing with a project with individually identifiable animals, you are in luck as there are some great resources created by Ian Durbach and David Borchers: [https://www.scr-cameratrap.com/](https://www.scr-cameratrap.com/) and [an amazing tool for helping you design your surveys](https://www.otago.ac.nz/density/secrdesign.html) called `secrdesign`. Spatial capture recapture is considered the gold standard in density estimation, you cannot get much better than this!
+If you are dealing with a project with individually identifiable
+animals, you are in luck as there are some great resources created by
+Ian Durbach and David Borchers: <https://www.scr-cameratrap.com/> and
+[an amazing tool for helping you design your
+surveys](https://www.otago.ac.nz/density/secrdesign.html) called
+`secrdesign`. Spatial capture recapture is considered the gold standard
+in density estimation, you cannot get much better than this!
 
 ## Unmarked animals
-Unfortunately, it is not possible to identify individual animals for the vast majority of species detected by camera traps. There are a growing number of analysis frameworks for unmarked animals, including:  
+
+Unfortunately, it is not possible to identify individual animals for the
+vast majority of species detected by camera traps. There are a growing
+number of analysis frameworks for unmarked animals, including:
 
 ### Random encounter model
 
-The random encounter model is based on modelling the 'random encounters' between moving animals and stationary camera traps. It takes into account key variables that affect the encounter rate:
+The random encounter model is based on modelling the 'random encounters'
+between moving animals and stationary camera traps. It takes into
+account key variables that affect the encounter rate:
 
-  - the camera detection zone, defined by its radius and angle, 
-  - the daily distance travelled by an animal in the population (a.k.a. day range) 
+-   the camera detection zone, defined by its radius and angle,
+-   the daily distance travelled by an animal in the population (a.k.a.
+    day range)
 
 Parameters required [*and how you might get them*]:
 
-y = number of independent photo events [*from our independent detections file*]
-t - total survey effort [*from our deployment data*]
-v = average speed of animal movement [*We could use telemetry, we could use speed derived from cameras*]
-r = radius of camera detection zone [*Could use field trials as these parameters can vary station to station*]
-theta = angle of camera detection zone [*Could use field trials as these parameters can vary station to station*]
+y = number of independent photo events [*from our independent detections
+file*] t - total survey effort [*from our deployment data*] v = average
+speed of animal movement [*We could use telemetry, we could use speed
+derived from cameras*] r = radius of camera detection zone [*Could use
+field trials as these parameters can vary station to station*] theta =
+angle of camera detection zone [*Could use field trials as these
+parameters can vary station to station*]
 
-We have speed data for moose and wolf in both winter and summer (derived from telemetery studies which occured close to our region of interest). So let's compare density estimates between winter (Oct-Mar) and summer (Apr-Sep) between these two species. 
+We have speed data for moose and wolf in both winter and summer (derived
+from telemetery studies which occured close to our region of interest).
+So let's compare density estimates between winter (Oct-Mar) and summer
+(Apr-Sep) between these two species.
 
-In our project we didn't empirically measure the detection zone, so we will assume that these remain constant through time time and space. 
+In our project we didn't empirically measure the detection zone, so we
+will assume that these remain constant through time time and space.
 
-First, install the remBoot package to help us fit the REM model. 
+First, install the remBoot package to help us fit the REM model.
 
 ```{r ch12_2, class.source="Rmain", message=F, warning=F}
 #devtools::install_github("arcaravaggi/remBoot")
@@ -60,9 +104,20 @@ library(remBoot); library(dplyr); library(lubridate)
 
 #### Formatting
 
-The formulation of the REM included in the 'remBoot' package is fairly simple, a dataframe consisting of rows, there each row is an independent detection, and with columns reflecting the strata of interest (confusingly labeled `site`), `location_id` (labelled `cam`), the `group_size` (labelled `count`), the viewshed radius (in km) and the viewshed angle (width) in radians. 
+The formulation of the REM included in the 'remBoot' package is fairly
+simple, a dataframe consisting of rows, there each row is an independent
+detection, and with columns reflecting the strata of interest
+(confusingly labeled `site`), `location_id` (labelled `cam`), the
+`group_size` (labelled `count`), the viewshed radius (in km) and the
+viewshed angle (width) in radians.
 
-Note: in this instance, we don't have empirically derived measures of the viewshed radius and angle, so we will use the values assessed by TrailCameraPro by Reconyx for the Hyperfire 2 (the camera model used in this study): [angle](https://www.trailcampro.com/pages/trail-camera-detection-field-of-view-angle) = 42.9; and half the [maximum distance for its range](https://www.trailcampro.com/products/reconyx-hyperfire-2) = 25m .
+Note: in this instance, we don't have empirically derived measures of
+the viewshed radius and angle, so we will use the values assessed by
+TrailCameraPro by Reconyx for the Hyperfire 2 (the camera model used in
+this study):
+[angle](https://www.trailcampro.com/pages/trail-camera-detection-field-of-view-angle)
+= 42.9; and half the [maximum distance for its
+range](https://www.trailcampro.com/products/reconyx-hyperfire-2) = 25m .
 
 We can easily derive this from our independent detections data frame.
 
@@ -70,7 +125,8 @@ Moose first!
 
 ### Moose
 
-From existing literature, we are expecting moose densities of roughly 0.2-0.5 individuals per km2. 
+From existing literature, we are expecting moose densities of roughly
+0.2-0.5 individuals per km2.
 
 ```{r ch12_3, class.source="Rmain"}
 ind <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_detections.csv", header=T)
@@ -106,9 +162,11 @@ moose_winter$theta <- 42.9*(pi/180)
 
 Finally we need two constants:
 
-1) the effort in each given strata of interest (days), and 2) the average day range of the focal animal.
+1)  the effort in each given strata of interest (days), and 2) the
+    average day range of the focal animal.
 
-To get the number of days per season, we can use the monthly_observations dataframe:
+To get the number of days per season, we can use the
+monthly_observations dataframe:
 
 ```{r ch12_4, class.source="Rmain"}
 mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
@@ -118,10 +176,11 @@ winter_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% winter])
 
 ```
 
-Here I will use the average daily distance for summer and winter derived from telemetry datasets on Movebank from locations close to where this camera trap study was conducted:
+Here I will use the average daily distance for summer and winter derived
+from telemetry datasets on Movebank from locations close to where this
+camera trap study was conducted:
 
-Moose winter = 1.07 km per day
-Moose summer = 1.15 km per day
+Moose winter = 1.07 km per day Moose summer = 1.15 km per day
 
 Now lets fit the REM model.
 
@@ -155,9 +214,11 @@ Take a look at your results:
 moose_res
 ```
 
-Remember, we were expecting a density of around 0.2 to 0.5 individuals per km^2^... not bad!
+Remember, we were expecting a density of around 0.2 to 0.5 individuals
+per km^2^... not bad!
 
-Lets make a plot of the estimated densities and their standard deviations:
+Lets make a plot of the estimated densities and their standard
+deviations:
 
 ```{r ,class.source="Rmain"}
 library(ggplot2)
@@ -172,7 +233,8 @@ p
 
 ### Wolf
 
-From existing literature we would expect wolf densities of 0.001 - 0.025 individuals per km^2^.
+From existing literature we would expect wolf densities of 0.001 - 0.025
+individuals per km^2^.
 
 Lets repeat our analysis for wolves:
 
@@ -203,8 +265,7 @@ wolf_winter$theta <- 42.9*(pi/180)
 
 We have the following values for wolf movement
 
-Wolf winter = 11.8 km per day
-Wolf summer = 11.9 km per day
+Wolf winter = 11.8 km per day Wolf summer = 11.9 km per day
 
 ```{r, class.source="Rmain"}
 summer_rem <- rem(dat = wolf_summer, tm=summer_effort, v=11.9)
@@ -227,7 +288,8 @@ wolf_res$sd[wolf_res$season=="winter"] <- sd(boot_sd(wolf_winter))
 
 ```
 
-Which again, is fairly close to our expected densities, if a little on the high side. Again let's plot them:
+Which again, is fairly close to our expected densities, if a little on
+the high side. Again let's plot them:
 
 ```{r ,class.source="Rmain"}
 library(ggplot2)
@@ -240,15 +302,21 @@ p<-ggplot(wolf_res, aes(x=season, y=density)) +
 p
 ```
 
-These estimates are in the right ball park - and suggesting that wolf densities are higher in winter. 
+These estimates are in the right ball park - and suggesting that wolf
+densities are higher in winter.
 
+The reference for the movement data use to calculate the movement speeds
+are:
 
-The reference for the movement data use to calculate the movement speeds are:
+Wolves: [Latham ADM, Boutin S. 2019. Data from: Wolf ecology and
+caribou-primary prey-wolf spatial relationships in low productivity
+peatland complexes in northeastern Alberta. Movebank Data
+Repository.](https://www.doi.org/10.5441/001/1.7vr1k987)
 
-Wolves: [Latham ADM, Boutin S. 2019. Data from: Wolf ecology and caribou-primary prey-wolf spatial relationships in low productivity peatland complexes in northeastern Alberta. Movebank Data Repository.](https://www.doi.org/10.5441/001/1.7vr1k987)
-
-Moose: [Bohm H, Neilson E, de la Mare C, Boutin S (2014) Wildlife habitat effectiveness and connectivity: moose ecology project summary report 2010–2012: Final report. 41 p.](https://www.researchgate.net/publication/328319031_Wildlife_Habitat_Effectiveness_and_Connectivity_Final_Report_August_2015)
-
+Moose: [Bohm H, Neilson E, de la Mare C, Boutin S (2014) Wildlife
+habitat effectiveness and connectivity: moose ecology project summary
+report 2010--2012: Final report. 41
+p.](https://www.researchgate.net/publication/328319031_Wildlife_Habitat_Effectiveness_and_Connectivity_Final_Report_August_2015)
 
 ```{r ch12_6, include=F}
 #NOT IMPLEMENTED#
@@ -263,7 +331,6 @@ Moose: [Bohm H, Neilson E, de la Mare C, Boutin S (2014) Wildlife habitat effect
 #Access a projects movement data using the projects ID
 #dat <- getMovebankData(study=	178979729, login=loginStored,  removeDuplicatedTimestamps=TRUE)
 ```
-
 
 ```{r ch12_7, include=F, eval=F}
 library(lubridate)
@@ -345,40 +412,81 @@ mean(silly$dist[substr(silly$`substr(timestamp, 1, 10)`,6,7) %in% winter], na.rm
 
 #### Further reading about REM
 
-[Palencia, Pablo, et al. "Random encounter model is a reliable method for estimating population density of multiple species using camera traps." Remote Sensing in Ecology and Conservation (2022).](https://www.researchgate.net/publication/361547983_Random_encounter_model_is_a_reliable_method_for_estimating_population_density_of_multiple_species_using_camera_traps)
-           
-[Palencia, Pablo, et al. "Assessing the camera trap methodologies used to estimate density of unmarked populations." Journal of Applied Ecology 58.8 (2021): 1583-1592.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13913)
+[Palencia, Pablo, et al. "Random encounter model is a reliable method
+for estimating population density of multiple species using camera
+traps." Remote Sensing in Ecology and Conservation
+(2022).](https://www.researchgate.net/publication/361547983_Random_encounter_model_is_a_reliable_method_for_estimating_population_density_of_multiple_species_using_camera_traps)
 
-
+[Palencia, Pablo, et al. "Assessing the camera trap methodologies used
+to estimate density of unmarked populations." Journal of Applied Ecology
+58.8 (2021):
+1583-1592.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.13913)
 
 ### Time to event / Space to event density estimates
 
 **NIT YET IMPLEMENTED ROBUSTLY - WILL BE UPDATED SOON**
 
+Whist the REM has been around for a while, there are a couple of new
+density formulations on the block! Time to event (TTE) and Space to
+event (STE).
 
+Both TTE and STE models use the mathematical relationship between the
+poisson and exponential distributions to estimate animal density.
+Conceptually, TTE and STE rely on the basic idea that greater abundance
+in an area leads to greater detection rates at cameras. The first of
+these, TTE, estimates abundance from the amount of time that elapses
+before an animal enters the viewshed of a given camera.
 
-Whist the REM has been around for a while, there are a couple of new density formulations on the block! Time to event (TTE) and Space to event (STE).
+-   TTE requires an independent estimate of animal movement rate. TTE is
+    the only method of the three that requires an estimate of mean
+    animal movement rate, defined across all animal behaviors, including
+    rest (Moeller et al. 2018)
 
+-   Conceptually, STE is similar to TTE with space substituted for
+    time... In contrast to TTE, the STE model uses instantaneous
+    sampling occasions, and therefore it does not depend on movement
+    rate.
 
-Both TTE and STE models use the mathematical relationship between the poisson and exponential distributions to estimate animal density. Conceptually, TTE and STE rely on the basic idea that greater abundance in an area leads to greater detection rates at cameras. The first of these, TTE, estimates abundance from the amount of time that elapses before an animal enters the viewshed of a given camera.
+For both methods, cameras should be randomly or systematically deployed
+across the sampling frame. Practices to increase detections, such as
+targeting high-use trails, should be avoided as they can bias the
+abundance estimate. Second, the authors note that animals should have no
+behavioral response to cameras or camera sites. This precludes the use
+of bait or lures to increase encounter rates. It also means that cameras
+should be unobtrusive and not repel animals with bright flashes or human
+scent. Finally, the area viewed by each camera should be known across
+time and measured accurately. If camera area is not measured accurately,
+abundance estimates will be biased.
 
-- TTE requires an independent estimate of animal movement rate. TTE is the only method of the three that requires an estimate of mean animal movement rate, defined across all animal behaviors, including rest (Moeller et al. 2018)
+For STE, motion-sensor detection probability is defined by four
+conditions: the animal is present in the camera's viewshed, the motion
+sensor detects the animal, the camera takes a picture with the animal
+still in view, and the user correctly identifies the species.
 
-- Conceptually, STE is similar to TTE with space substituted for time... In contrast to TTE, the STE model uses instantaneous sampling occasions, and therefore it does not depend on movement rate.
+Sampling effort is difficult to quantify from motion-sensor photography,
+as the outcome (no picture) is the same whether the camera stops
+working, the motion-sensor doesn't detect the animal, or the animal is
+absent. Time-lapse photography can help define motion-sensor effort if
+the two are used in conjunction. For example, time-lapse photos
+throughout the day will show that the batteries are functioning, the
+lens is clear of snow and debris, and the camera is pointed in the
+intended direction, which can help give confidence that the motion
+sensor is working as intended.
 
-For both methods, cameras should be randomly or systematically deployed across the sampling frame. Practices to increase detections, such as targeting high-use trails, should be avoided as they can bias the abundance estimate. Second, the authors note that animals should have no behavioral response to cameras or camera sites. This precludes the use of bait or lures to increase encounter rates. It also means that cameras should be unobtrusive and not repel animals with bright flashes or human scent. Finally, the area viewed by each camera should be known across time and measured accurately. If camera area is not measured accurately, abundance estimates will be biased.
+STE and TTE use camera data in a particularly unique way that may be
+unfamiliar to many users. Rather than using counts of individual animals
+or independent detection events, STE uses the amount of space sampled by
+cameras until an animal detection at a given time, while TTE uses the
+time elapsed from an arbitrary starting point to the first detection of
+the species of interest.
 
-For STE, motion-sensor detection probability is defined by four conditions: the animal is present in the camera’s viewshed, the motion sensor detects the animal, the camera takes a picture with the animal still in view, and the user correctly identifies the species. 
+*Note* The details above represent an abridged form of the information
+in:
 
-Sampling effort is difficult to quantify from motion-sensor photography, as the outcome (no picture) is the same whether the camera stops working, the motion-sensor doesn’t detect the animal, or the animal is absent. Time-lapse photography can help define motion-sensor effort if the two are used in conjunction. For example, time-lapse photos throughout the day will show that the batteries are functioning, the lens is clear of snow and debris, and the camera is pointed in the intended direction, which can help give confidence that the motion sensor is working as intended.
-
-STE and TTE use camera data in a particularly unique way that may be unfamiliar to many users. Rather than using counts of individual animals or independent detection events, STE uses the amount of space sampled by cameras until an animal detection at a given time, while TTE uses the time elapsed from an arbitrary starting point to the first detection of the species of interest. 
-
-
-*Note* The details above represent an abridged form of the information in:
-
-[Moeller, Anna K., and Paul M. Lukacs. "spaceNtime: an R package for estimating abundance of unmarked animals using camera-trap photographs." Mammalian Biology (2021): 1-10.](https://link.springer.com/article/10.1007/s42991-021-00181-8)
-
+[Moeller, Anna K., and Paul M. Lukacs. "spaceNtime: an R package for
+estimating abundance of unmarked animals using camera-trap photographs."
+Mammalian Biology (2021):
+1-10.](https://link.springer.com/article/10.1007/s42991-021-00181-8)
 
 Again, lets attempt to repeat these methods for moose and wolves.
 
@@ -390,12 +498,12 @@ Again, lets attempt to repeat these methods for moose and wolves.
 library(spaceNtime)
 ```
 
-The first thing we need is a dataframe of all the detections of our focal species with three columns:
+The first thing we need is a dataframe of all the detections of our
+focal species with three columns:
 
-- cam: the `placename` (camera location) where surveys occured 
-- datetime: the 'timestamp'
-- count: the group count
-
+-   cam: the `placename` (camera location) where surveys occured
+-   datetime: the 'timestamp'
+-   count: the group count
 
 ```{r ch12_10, eval=F, class.source="Rinfo"}
 img <- read.csv("data/processed_data/AlgarRestorationProject_raw_detections.csv", header=T)
@@ -413,14 +521,18 @@ moose_dat <- img %>%
 
 ```
 
-`spaceNtime` also needs camera deployment data. Luckily, the deployment data it requires is identical to how we store deployment data - each row represents a block of continuous activity, and if the camera ever goes off then comes back online, that is represented as a new row. 
+`spaceNtime` also needs camera deployment data. Luckily, the deployment
+data it requires is identical to how we store deployment data - each row
+represents a block of continuous activity, and if the camera ever goes
+off then comes back online, that is represented as a new row.
 
 The deployment data needs the following columns:
 
-- cam: the `placename` (camera location) where surveys occured 
-- start: deployment start date 	
-- end: deployment end date 	
-- area: area in sq meters (we will use the same definition as in the REM ecample 24m depth and radius of 42.9 -> 196m2)
+-   cam: the `placename` (camera location) where surveys occured
+-   start: deployment start date\
+-   end: deployment end date\
+-   area: area in sq meters (we will use the same definition as in the
+    REM ecample 24m depth and radius of 42.9 -\> 196m2)
 
 ```{r, class.source="Rinfo", eval=F}
 dep <-  read.csv("data/raw_data/example_data/dep.csv", header=T)
@@ -440,8 +552,10 @@ snt_dep$area <- 196
 snt_dep <- snt_dep[is.na(snt_dep$end)==F,]
 ```
 
-After defining the detection dataframe and deployment data we need to specify the sampling occasions. This can be done manually or with the function build_occ(). The sampling occasions should be in a data.frame or tibble with the following structure:
-
+After defining the detection dataframe and deployment data we need to
+specify the sampling occasions. This can be done manually or with the
+function build_occ(). The sampling occasions should be in a data.frame
+or tibble with the following structure:
 
 ```{r, class.source="Rinfo", eval=F}
 summer_dates <- as.POSIXct(c("2018-04-07 00:00:00", "2018-09-30 23:59:59"), tz = "GMT")
@@ -471,10 +585,16 @@ moose_wnter_res  <- ste_estN_fn(ste_winter, study_area = 1e6) # specify 1 sq kil
 
 An application of this method on wolves can be seen here:
 
-[Ausband, David E., et al. "Estimating wolf abundance from cameras." Ecosphere 13.2 (2022): e3933.
-Ausband, D. E., Luk](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.3933)
+[Ausband, David E., et al. "Estimating wolf abundance from cameras."
+Ecosphere 13.2 (2022): e3933. Ausband, D. E.,
+Luk](https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.3933)
 
-They didn't estimate viewshed size either: **"we did not estimate viewshed area during camera deployment; thus, we used a viewshed area based on expected performance of motion-triggered cameras. We assumed the cameras detected wolves within a 106-m2, pie-slice shape area in front of the camera derived from standard field protocols and that the motion trigger detected all wolves that passed through the viewshed."**
+They didn't estimate viewshed size either: **"we did not estimate
+viewshed area during camera deployment; thus, we used a viewshed area
+based on expected performance of motion-triggered cameras. We assumed
+the cameras detected wolves within a 106-m2, pie-slice shape area in
+front of the camera derived from standard field protocols and that the
+motion trigger detected all wolves that passed through the viewshed."**
 
 ### N-mixture model in unmarked
 
@@ -482,34 +602,58 @@ They didn't estimate viewshed size either: **"we did not estimate viewshed area 
 
 Example:
 
-[Ribeiro, Fernando S., et al. "Disturbance or propagule pressure? Unravelling the drivers and mapping the intensity of invasion of free‐ranging dogs across the Atlantic forest hotspot." Diversity and Distributions 25.2 (2019): 191-204.](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12845)
-
+[Ribeiro, Fernando S., et al. "Disturbance or propagule pressure?
+Unravelling the drivers and mapping the intensity of invasion of
+free‐ranging dogs across the Atlantic forest hotspot." Diversity and
+Distributions 25.2 (2019):
+191-204.](https://onlinelibrary.wiley.com/doi/full/10.1111/ddi.12845)
 
 ### ABMI Method
 
-[Becker, Marcus, et al. "Applying and testing a novel method to estimate animal density from motion‐triggered cameras." Ecosphere 13.4 (2022: e4005](https://esajournals.onlinelibrary.wiley.com/journal/21508925).
+[Becker, Marcus, et al. "Applying and testing a novel method to estimate
+animal density from motion‐triggered cameras." Ecosphere 13.4 (2022:
+e4005](https://esajournals.onlinelibrary.wiley.com/journal/21508925).
 
 ### Unmarked spatial capture recapture (uSCR)
-Here you have to currently have to go beyond R - but there are some good options and exciting new developments. See [Gilbert et al. 2021](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517) for more details.
+
+Here you have to currently have to go beyond R - but there are some good
+options and exciting new developments. See [Gilbert et al.
+2021](https://conbio.onlinelibrary.wiley.com/doi/epdf/10.1111/cobi.13517)
+for more details.
 
 ## Future directions
 
 Direct comparisons of the different methods are starting to appear:
 
-[Santini, Giacomo, et al. "Population assessment without individual identification using camera-traps: A comparison of four methods." Basic and Applied Ecology 61 (2022): 68-81.](https://www.sciencedirect.com/science/article/pii/S1439179122000263)
+[Santini, Giacomo, et al. "Population assessment without individual
+identification using camera-traps: A comparison of four methods." Basic
+and Applied Ecology 61 (2022):
+68-81.](https://www.sciencedirect.com/science/article/pii/S1439179122000263)
 
-"Further, while unmarked methods require less information and model parameters, there is far greater risk of bias in estimates resulting from model assumptions that are difficult to validate. The inconsistencies in precision of unmarked empirical estimates, even within the same study designs, sites, and species (Table 3), likely demonstrate unaccounted assumption violations pertaining to animal movement and we would expect these issues to extend to most Asian bear populations."
+"Further, while unmarked methods require less information and model
+parameters, there is far greater risk of bias in estimates resulting
+from model assumptions that are difficult to validate. The
+inconsistencies in precision of unmarked empirical estimates, even
+within the same study designs, sites, and species (Table 3), likely
+demonstrate unaccounted assumption violations pertaining to animal
+movement and we would expect these issues to extend to most Asian bear
+populations."
 
 The future of determining viewshed area:
 
-[Moeller, Anna K., et al. "Best practices to account for capture probability and viewable area in camera‐based abundance estimation." Remote Sensing in Ecology and Conservation (2022).](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.300)
+[Moeller, Anna K., et al. "Best practices to account for capture
+probability and viewable area in camera‐based abundance estimation."
+Remote Sensing in Ecology and Conservation
+(2022).](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.300)
 
-Nice way of estimating "day range" from camera traps which is equivalent to telemetry data
-[Palencia, Pablo, et al. "Estimating day range from camera‐trap data: the animals’ behaviour as a key parameter." Journal of Zoology 309.3 (2019): 182-190.](https://zslpublications.onlinelibrary.wiley.com/doi/10.1111/jzo.12710)
+Nice way of estimating "day range" from camera traps which is equivalent
+to telemetry data [Palencia, Pablo, et al. "Estimating day range from
+camera‐trap data: the animals' behaviour as a key parameter." Journal of
+Zoology 309.3 (2019):
+182-190.](https://zslpublications.onlinelibrary.wiley.com/doi/10.1111/jzo.12710)
 
-And Pablo Palencia has a nice package to help you integrate speed data derived from cameras with activity data derived from camera traps in the activity package. See the Activity chapter!
+And Pablo Palencia has a nice package to help you integrate speed data
+derived from cameras with activity data derived from camera traps in the
+activity package. See the Activity chapter!
 
-[trappingmotion](https://github.com/PabloPalencia/trappingmotion) 
-
-
-
+[trappingmotion](https://github.com/PabloPalencia/trappingmotion)

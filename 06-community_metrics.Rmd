@@ -72,13 +72,13 @@ You may want to see if your camera project has sufficient survey effort to captu
 
 ## Sampling-unit-based accumulation curves
 
-In camera trap projects we typically do not think about our survey effort in terms of the number of camera stations we deploy on the landscape or the units of time they are active (e.g. camera days). 
+In camera trap projects we typically think about our survey effort in terms of the number of camera stations we deploy on the landscape or the units of time they are active (e.g. camera days). 
 
-Performing our species accumulation curves using survey location allows us to determine if we have enough survey locations in a given strata to detect all of the species present. Repeating the analyses using camera days would also give insight into whether we need for survey effort in a given location. 
+Performing our species accumulation curves using survey location allows us to determine if we have enough survey locations in a given strata to detect all of the species present. Repeating the analyses using camera days would also give insight into whether we need more survey effort in a given location. 
 
 *Data formatting*
 
-The data formatting for a sampling-unit based accumulation curve is dis follows: we need a list of strata then the elements in that list first represent the number of sampling units surveyed, then the number of those units where each given species was detected following it.
+The data formatting for a sampling-unit based accumulation curve is as follows: we need to create a list object with each strata as elements in that list. Next we nest a vector of numbers within each element, the first represents the number of sampling units surveyed, then the number of those units where each given species was detected following it.
 
 The example that comes with the `iNext` package looks like this.
 
@@ -199,7 +199,7 @@ p1 <- ggiNEXT(out, type=1)+ theme_classic() +   #  type 1 = the diversity estima
 
 The iNEXT package gets really interesting when we start to compare multiple different strata. e.g. different treatment types or species groupings. 
 
-The code to build a multi strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories. 
+The code to build a multi-strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories/strata. 
 
 We will compare the different categories using the `feature_type` column in the covariate file. We match the 'placenames' in our locations dataframe with the corresponding capture data in `total_obs`  using the `%in%` command.
 
@@ -250,7 +250,7 @@ So it looks like the human use features are more diverse than the offline featur
 
 ### Sampling duration example
 
-If we want to explore the species accumulation patterns as a function of the number of survey nights, we can make use of the `...weekly_observations` dataframes.
+If we want to explore the species accumulation patterns as a function of the number of survey duration, we can make use of the `...weekly_observations` dataframes.
 
 ```{r ch6_20, class.source="Rmain", message=F, warning=F}
 week_obs<- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_weekly_observations.csv", header=T)
@@ -282,7 +282,7 @@ And run the model:
 out.inc <- iNEXT(inc_time, q=0, datatype="incidence_freq")
 # Sample‐size‐based R/E curves
 ggiNEXT(out.inc, type=1, color.var="Assemblage") +
-       labs(y="Richness", x = "Camera days") +
+       labs(y="Richness", x = "Camera weeks") +
 theme_classic() 
 ```
 
@@ -290,7 +290,7 @@ Which suggests the same pattern!
 
 ### On your own
 
-**Simple:** Repeat the comparison for `NetReg` and `HumanUse` feature types.
+**Simple:** Repeat the comparison for all feature types (`NetReg`, `Offline` and `HumanUse`).
 
 **Advanced:** Compare the species accumulate curves at the site level for small (<10 kg) and large mammals (>10kg)
 
@@ -329,7 +329,7 @@ names(inc_time) <- c("Offline", "HumanUse", "NatRegen")
 out.inc <- iNEXT(inc_time, q=0, datatype="incidence_freq")
 # Sample‐size‐based R/E curves
 ggiNEXT(out.inc, type=1, color.var="Assemblage") +
-       labs(y="Richness", x = "Camera days") +
+       labs(y="Richness", x = "Camera weeks") +
 theme_classic() 
 ```
 
@@ -351,7 +351,7 @@ out <- iNEXT(inc_time, q=c(0,1,2) ,datatype="incidence_freq" )
 ggiNEXT(out, type=1, facet.var="Order.q", color.var="Assemblage") + theme_classic() 
 ```
 
-The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the different inst just driven by several rarely encountered species). 
+The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the differences between sites are being driven by several rarely encountered species). 
 
 Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 1000 survey units:
 
@@ -404,8 +404,7 @@ It is also possible to estimate species richness in a given area/strata using mu
 
 ## Community structure
 
-One of the shortfalls in the diversity index approaches is that you can compare two sites with completely different mammal assemblages, but identical diversity estimates! So we would conclude that the two are the same, however,in reality their compositions are totally different. Another way to assess community structure is with ordination methods (e.g non-metric multidimensional
-scaling or NMDS). 
+One of the shortfalls in the diversity index approaches is that you can compare two sites with completely different mammal assemblages, but identical diversity estimates! So we would conclude that the two are the same, however,in reality their compositions are totally different. Another way to assess community structure is with ordination methods (e.g non-metric multidimensional scaling or NMDS). 
 
 For a fantastic (although now somewhat dated) blog on NMDS methods see: [Sample(ecology)'s NMDS tutorial in R](https://jonlefcheck.net/2012/10/24/nmds-tutorial-in-r/).
 

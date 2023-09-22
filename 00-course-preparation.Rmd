@@ -215,22 +215,6 @@ You can replace this data set with your own if you wish. If you want to use your
 
 The green/bolded columns shown in the template example are the **absolute minimal essential columns** - you can have more columns with other information! 
 
-
-## A bonus, non essential, package
-
-All of the packages above work with R alone. However, the R Google Earth Engine package `rgee` needs to interface with Python. For this reason, we will not be using this package during this course. 
-
-We have, however, provided some example code if you want to try it in your own time. The first step is to install the `rgee` package. 
-
-```{r, echo=T, eval=F, class.source="Rinfo"}
-install.packages("rgee")
-library("rgee")
-```
-
-Then follow the steps in this tutorial: [Introduction to rgee](https://cran.r-project.org/web/packages/rgee/vignettes/rgee01.html)
-
-If you want to try this, good luck. It can be a little fiddly to get running!
-
 ## Practise before the course
 
 Finally, if you want to practice your R skills before the course, here are two (of many) great resources out there:

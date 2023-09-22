@@ -1,3 +1,8 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
 # On your own
 
 Congratulations! You made it to the end of the planned content in one peice.
@@ -6,12 +11,13 @@ You now have the opportunity to apply some of the skills you have learnt to a co
 
 I will help you read in the data - and correct a mistake I made. Then you are on your own!
 
-## The new dataset
+## Working with a new dataset
 
-### Data cleaning and creation
-```{r ch13_1, class.source="Rmain"}
+### Read in the data and packages
+```{r ch13_1, class.source="Rmain", echo=T, eval=F}
 # Load your data 
 pro <- read.csv("data/raw_data/your_data/proj.csv", header=T)
+# I missed of the project ID from all the dtaframes so we need to update those
 pro$project_id <- pro$project_name
 
 img <- read.csv("data/raw_data/your_data/img.csv", header=T)
@@ -23,11 +29,7 @@ dep$project_id <- pro$project_name
 cam <- read.csv("data/raw_data/your_data/cam.csv", header=T)
 cam$project_id <- pro$project_name
 
-```
 
-Load your packages:
-
-```{r ch13_2, class.source="Rmain", message=F, warning=F, results='hide'}
 # A list of the required packages
 list.of.packages <- c("activity", "corrplot", "cowplot", "dplyr",  "elevatr", "gfcanalysis",   "ggplot2", "gridExtra", "iNEXT", "kableExtra", "Hmsc", "leaflet", "lme4", "lubridate", "magrittr", "MCMCvis", "MODISTools", "osmdata", "pals", "plotly", "remotes", "rmarkdown", "sf", "spOccupancy", "stars", "stringr", "terra", "tibble", "tidyr",  "unmarked", "viridis", "jtools", "vegan", "MuMIn")
 
@@ -40,11 +42,12 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-Away you go!
 
-We have included the relevant code blocks below:
+### Format the dates
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
+
+# Deployment dates
 # start dates
 dep$start_date <- ymd(dep$start_date)
 
@@ -54,11 +57,15 @@ dep$end_date   <- ymd(dep$end_date)
 # camera days
 dep$days <- interval(dep$start_date, dep$end_date)/ddays(1)
 
+# Image dates
 # Image timestamp
 img$timestamp <- ymd_hms(img$timestamp)
+```
 
+### Plot and correct spatial co-ordinates
 
-# First, set a single categorical variable of interest from station covariates for summary graphs. If you do not have an appropriate category use "project_id".
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Pick the category you want to color
 category <- "feature_type"
 
 # We first convert this category to a factor with discrete levels
@@ -93,6 +100,7 @@ m
 
 **QUESTION** What is the survey design? Hint: zoom in.
 
+### Check camera spacing
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 # Distance between traps
@@ -107,38 +115,36 @@ camera_dist <- st_distance(camera_locs) %>%
                   usedist::dist_setNames(as.character(camera_locs$placename)) %>% 
                   as.matrix()
 
-# convert to pairwise list
-camera_dist_list <- t(combn(colnames(camera_dist), 2))
-camera_dist_list <- data.frame(camera_dist_list, dist = camera_dist[camera_dist_list]) %>% 
-                          arrange(dist) # sort descending
-
-# Duplicate and flip the stations so each one is represented on the left hand side
-camera_dist_list <- rbind(camera_dist_list, camera_dist_list[,c(2,1,3)])
-
-# keep just the closest camera for each location
-camera_dist_list <- camera_dist_list %>% 
-                  group_by(X1) %>% 
-                  slice(which.min(dist))
-
+camera_dist_list <- list()
+i <- 1
+for(i in 1:nrow(camera_dist))
+{
+  camera_dist_list[[i]]<- data.frame(placename=row.names(camera_dist)[i], dist= min(camera_dist[i,][camera_dist[i,]!=0]))
+}
+camera_dist_list <- bind_rows(camera_dist_list)
 summary(camera_dist_list$dist)
 ```
 
 Do you have anything to be worried about here?
 
+### Check all deployments have image data
+
 ```{r, echo=T, eval=F, class.source="Rmain"}
-# Do all deployments have images, and images have deployments?
-table(unique(img$placename) %in% unique(dep$placename))
+# Do all deployments have images
 table(unique(dep$placename)  %in% unique(img$placename))
+```
+
+### 5b. Check all images have deployment data
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Do all deployments have images
+table(unique(img$placename) %in% unique(dep$placename))
 
 ```
 
-
+### 5c. Check deployments occur where you expect
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
-# Activity check
-# Correct the brken deploymenrt
-#dep[dep$deployment_id=="LAC065_C187_030222", ]$end_date <- "2022-05-22"
-
 
 # Call the plot
 p <- plot_ly()
@@ -191,11 +197,15 @@ p
 
 **QUESTION** What do you think about the camera deployments?
 
-```{r, echo=T, eval=F, class.source="Rmain"}
-### DETCTION CHECK
+### Check images occur within deployments
 
+```{r, echo=T, eval=F, class.source="Rmain"}
 #Camera activity plot
 # Make a separate plot for each 20 stations For each 20 stations
+# Order by placename to make the graphs easier to follow
+dep <- dep[order(dep$placename),]
+
+
 # To do this make a plot dataframe
 tmp <- data.frame("deployment_id"=unique(dep$deployment_id), "plot_group"=ceiling(1:length(unique(dep$deployment_id))/20))
 
@@ -204,14 +214,12 @@ dep_tmp <- left_join(dep,tmp, by="deployment_id")
 for(i in 1:max(dep_tmp$plot_group))
 {  
   # Call the plot
-  p <- plot_ly() 
   
   #Subset the data to just that placename
   tmp <- dep_tmp[dep_tmp$plot_group==i,]
   # Order by placename 
   tmp <- tmp[order(tmp$placename),]
-  
- 
+  p <- plot_ly() 
  # Loop through each deployment at that placename
   for(j in 1:nrow(tmp))
     {
@@ -223,7 +231,7 @@ for(i in 1:max(dep_tmp$plot_group))
          
           p <- add_trace(p, 
                        #Use the start and end date as x coordinates
-                       x = c(tmp_img$timestamp), 
+                       x = c(ymd_hms(tmp_img$timestamp)), 
                        #Use the counter for the y coordinates
                        y = rep(j, nrow(tmp_img)), 
                        # State the type of chart
@@ -241,7 +249,7 @@ for(i in 1:max(dep_tmp$plot_group))
        # Add a line to 'p'
         p <- add_trace(p, 
                        #Use the start and end date as x coordinates
-                       x = c(tmp$start_date[j], tmp$end_date[j]), 
+                       x = c(tmp$start_date[j], tmp$end_date[j]+days(1)), 
                        #Use the counter for the y coordinates
                        y = c(j,j), 
                        # State the type of chart
@@ -269,10 +277,24 @@ for(i in 1:max(dep_tmp$plot_group))
   
 } 
 
-
 ```
 
+Note - there are three panels to check!
+
 **QUESTION** Do you need to make any edits? Note - there are three plot windows to check.
+
+The camera failed for LAC061 - try to seem in and find out the last day it worked. Then update the deployment so the camera stops the day after the last correct date.
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# The camera failed for LAC061 
+dep$end_date[dep$deployment_id=="LAC061_C186_010921"] <- ymd("2021-09-09")
+```
+
+LAC064 also looks somewhat strange, that would be worth checking what happened. Lets leave it in for now. 
+
+We could maybe remove OFF067 and OFF072? Personal choice!
+
+### Check species taxonomy
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 
@@ -295,10 +317,12 @@ sp_list$sp <- paste(sp_list$genus, sp_list$species, sep=".")
 
 write.csv(sp_list, paste0("data/raw_data/",pro$project_id[1],"_raw_species_list.csv"))
 
-
 ```
 
 **QUESTION** Are there any classifications you will remove when we create our analysis dataframes?
+
+
+### Check species activity
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 # Diel activity check
@@ -328,34 +352,28 @@ img$hours <- NULL
 
 **QUESTION** Are there any images you would like to check?
 
-```{r, echo=T, eval=F, class.source="Rmain"}
-# Create your dataframe folder
-dir.create("data/processed_data")
+Note - Paca's are nocturnal but they have some diurnal detections here. Check which station they come from. It might be that they are the same station as the one we excluded previously!
 
+### Filter to target species
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+# Create your processed dataframe folder
+dir.create("data/processed_data")
 
 # Filter your species
 # Remove observations without animals detected, where we don't know the species, and non-mammals
 img_sub <- img %>% filter(is_blank==0,                # Remove the blanks
                           is.na(img$species)==FALSE, # Remove classifications which don't have species 
                           class=="Mammalia",          # Subset to mammals
-                          species!="sapiens")         # Subset to anything that isn't human
-
-table(img_sub$sp)
+                          species!="sapiens",
+                          species!="")               # remove instances without species labels 
+                          
+table(img_sub$common_name)
 ```
 
 **QUESTION** Are there any other classifications you would like to remove?
 
-```{r, echo=T, eval=F, class.source="Rmain"}
-# Create your dataframe folder
-
-# Filter your species
-# Remove observations without animals detected, where we don't know the species, and non-mammals
-img_sub <- img_sub %>% filter(sp!=".")         # Subset to anything that isn't human
-
-table(img_sub$sp)
-```
-
-
+### Make effort look_up
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 ##########################################
@@ -381,7 +399,11 @@ row_lookup <- bind_rows(daily_lookup)
 
 # Remove duplicates - when start and end days are the same for successive deployments
 row_lookup <- row_lookup[duplicated(row_lookup)==F,]
+```
 
+### Create independent data
+
+```{r, echo=T, eval=F, class.source="Rmain"}
 
 ###################################
 # Create your independent detections
@@ -408,7 +430,6 @@ img_sub$animal_count <- ###INSERT YOUR SELECTION HERE###
 img_sub$animal_count <- img_sub$number_of_objects
 
 ```
-
 
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
@@ -489,8 +510,8 @@ tmp <- paste(row_lookup$date, row_lookup$placename)
 #Subset ind_dat to data that matches the unique codes
 ind_dat <- ind_dat[paste(substr(ind_dat$timestamp,1,10), ind_dat$placename) %in% tmp, ]
 
+# Convert your species names to factors
 ind_dat$sp <- as.factor(ind_dat$sp)
-
 
 # Export your data frames
 
@@ -503,8 +524,10 @@ write.csv(row_lookup, paste0("data/processed_data/",ind_dat$project_id[1], "_dai
 
 #Subset the columns
 tmp <- dep[, c("project_id", "placename", "longitude", "latitude", "feature_type")]
+
 # Remove duplicated rows
 tmp<- tmp[duplicated(tmp)==F,]
+
 # write the file
 write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_camera_locations.csv"), row.names = F)
 
@@ -515,7 +538,9 @@ write.csv(tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_species_li
 ```
 
 
-In the next step, we will won't create the daily dataframe as it takes too long!
+### Create analysis dataframes
+
+In the next step, we won't create the daily dataframe as it takes too long!
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 
@@ -629,9 +654,10 @@ write.csv(week_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",i
 
 ```
 
+### Check analysis dataframe counts
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
-# Do an observations check
+# Do an final check of the counts
 
 
 tmp <- cbind(data.frame("Time"=c("Total", "Monthly", "Weekly")),
@@ -648,14 +674,14 @@ tmp %>%
 
 ```
 
-### Covariates
-
+## Add your covariates
 
 ```{r, echo=T, results='hide', message =F, warning=F, class.source="Rmain"}
 # LOad the packages
 library(kableExtra);library(dplyr); library(sf); library(MODISTools); library(lubridate); library(corrplot); library(traitdata); library(terra); library(osmdata); library(elevatr)
 ```
 
+### Species Traits
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 # Start by reading in your species list
@@ -682,18 +708,30 @@ sp_summary <- left_join(sp_summary, tmp)
 
 **QUESTION** Are there any missing values you need to fill in?
 
+Dont worry about adding it right now - carry on!
+
 ```{r, echo=T, eval=F, class.source="Rmain"}
 write.csv(sp_summary, paste0("data/processed_data/", locs$project_id[1],"_species_list.csv"), row.names = F)
 
 ```
 
+## Spatial data
 
+### Convert to simple features
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 # Spatial covariates
 locs_sf <- st_as_sf(locs,                              # We specify the dataframe 
                     coords=c("longitude", "latitude"), # The XY coordinates
                     crs=4326)                          # And the projection code
+```
+
+### Get elevation data
+
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+###################
+# Elevation 
 
 library(elevatr)
 locs_sf <- get_elev_point(locs_sf, 
@@ -701,7 +739,13 @@ locs_sf <- get_elev_point(locs_sf,
                           z = 12)  # z specifies the zoom level, the lower the value the faster the code runs, but the coarser the elevation values are
 
 boxplot(locs_sf$elevation)
+```
 
+### Open street map data
+```{r, echo=T, eval=F, class.source="Rmain"}
+
+#######
+# Distance to water (there are no roads here)
 
 library(osmdata)
 aoi <- st_bbox(st_buffer(locs_sf, 10000)) # Units are in meters 
@@ -710,8 +754,13 @@ water <- opq(aoi) %>%
            add_osm_feature(key="water") %>%
            osmdata_sf()
 
- # NO OPEN STREET MAP DATA FOR THIS AREA
+# THERE IS NO OPEN STREET MAP DATA FOR THIS AREA - ARGH
+```
 
+### NDVI
+```{r, echo=T, eval=F, class.source="Rmain"}
+#######
+# NDVI
 
 library(MODISTools)
 modis_locs <- locs %>% 
@@ -751,13 +800,14 @@ locs_sf$geometry <- NULL
 
 locs <- left_join(locs, locs_sf)
 
-
 # Write the dataset
 
 write.csv(locs, paste0("data/processed_data/", locs$project_id[1],"_camera_locations_and_covariates.csv"), row.names=F)
 ```
 
-### Data exploration
+## Data exploration
+
+### Final map
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 list.of.packages <- c("kableExtra", "tidyr", "leaflet", "dplyr", "viridis", "corrplot", "lubridate", "plotly")
@@ -802,6 +852,7 @@ m
 
 ```
 
+### Detection summary
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 sp_summary <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_species_list.csv"), header=T)
@@ -870,7 +921,10 @@ subplot(nrows=1,fig1, fig2, titleX = T) # We could stack them on top of one anot
 
 **QUESTION** What does this tell you about the behavior of the target species?
 
+### Temporal patterns
+
 ```{r, echo=T, eval=F, class.source="Rmain"}
+par(mar=c(5,4,1,1))
 # Temporal patterns
 mon_obs <- read.csv(paste0("data/processed_data/",pro$project_id[1],"_30min_independent_monthly_observations.csv"), header=T)
 
@@ -934,6 +988,8 @@ for(i in 1:length(sp_summary$sp))
 
 **Question** Any interesting patterns?
 
+### Spatial patterns
+
 ```{r, echo=T, eval=F, class.source="Rmain"}
 # Spatial plots
 
@@ -956,7 +1012,11 @@ m
 
 ```
 
+Try other species!
+
 **Question** Any interesting patterns?
+
+### Species co-occurance
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 # Co-occurances
