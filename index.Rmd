@@ -72,6 +72,13 @@ print("Gray code chucks are code output from R")
 
 If you have any questions about this document and the information it contains, please [email us](wildco.lab@gmail.com) or, better still, submit an issue on our [the course GitHub page](https://github.com/WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R). 
 
+## Cite the course
+
+If you would like to cite this course, please use the following:
+
+Beirne, C. & Burton, C. (2022). An Introduction to Camera Trap Data Management and Analysis in R https://zenodo.org/doi/10.5281/zenodo.10524184
+
+
 ## Acknowledgements
 
 This course was produced by [Christopher Beirne](https://www.researchgate.net/profile/Christopher-Beirne), Cole Burton's [Wildlife Coexistence Lab at UBC](https://wildlife.forestry.ubc.ca/), and [the WildCAM Network](https://wildcams.ca/). 
