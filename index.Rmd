@@ -17,7 +17,7 @@ description: "Materials for the three day camera trap data management and analys
 
 ```{r ch0_1, echo=F, message=F, warning=F}
 library(bookdown)
-knitr::include_graphics("images/Ninja.PNG")
+knitr::include_graphics("images/Ninja.png")
 ```
 
 The number of projects employing camera traps to understand ecological phenomena is growing rapidly – as are the number of statistical tools to analyze the resultant data. Consequently, the management and analysis of camera trap data can seem complex and overwhelming. This course aims to guide participants in effective ways to store, manipulate and analyze camera trap data within the R statistical environment.
