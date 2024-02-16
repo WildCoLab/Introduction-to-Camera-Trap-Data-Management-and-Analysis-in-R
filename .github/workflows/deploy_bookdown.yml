@@ -57,8 +57,11 @@ jobs:
                                             "MuMIn",
                                             "usedist",
                                             "taxize"))'
+      - name: Install traitdata
         run: Rscript -e 'remotes::install_github("RS-eco/traitdata")'
+      - name: Install remBoot
         run: Rscript -e 'remotes::install_github("arcaravaggi/remBoot")'
+      - name: Install spaceNtime
         run: Rscript -e 'remotes::install_github("annam21/spaceNtime")'
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("index.Rmd")'
