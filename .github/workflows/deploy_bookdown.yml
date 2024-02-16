@@ -58,11 +58,17 @@ jobs:
                                             "usedist",
                                             "taxize"))'
       - name: Install traitdata
-        run: Rscript -e 'remotes::install_github("RS-eco/traitdata")'
+        run: Rscript -e "remotes::install_github('RS-eco/traitdata')"
+        env: 
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       - name: Install remBoot
         run: Rscript -e 'remotes::install_github("arcaravaggi/remBoot")'
+        env: 
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       - name: Install spaceNtime
         run: Rscript -e 'remotes::install_github("annam21/spaceNtime")'
+        env: 
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       - name: Render Book
         run: Rscript -e 'bookdown::render_book("index.Rmd")'
       - uses: actions/upload-artifact@v2
