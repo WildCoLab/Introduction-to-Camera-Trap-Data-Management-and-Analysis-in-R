@@ -313,7 +313,7 @@ Response term ~ fixed effect + offset() + (1|random intercept), data frame, dist
 
 We include `placename` as the random intercept, as camera locations are repeatedly sampled at monthly intervals and thus our data (rows in the dataframe) are not independent. We use the `poisson`  family, as our response term is a count.  
 
-```{r ch7_24, class.source="Rmain"}
+```{r ch7_24,eval=F, class.source="Rmain"}
 glmm_cat <- glmer(Odocoileus.virginianus ~ 
                     feature_type + month + offset(log(days)) + (1|placename) , data=mod_dat, family="poisson")
 ```
