@@ -37,6 +37,7 @@ camera-inventory
 important-note
 error-checking
 standardised-exploration-script
+adding-a-sampling-site-location-column-to-the-image-data
 formatting-dates
 skill-check-lubridate
 deployment-dates
