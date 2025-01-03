@@ -1113,7 +1113,7 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb183-5"><a href="composition.html#cb183-5" tabindex="-1"></a>        <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Survey sites&quot;</span>)</span>
 <span id="cb183-6"><a href="composition.html#cb183-6" tabindex="-1"></a>    </span>
 <span id="cb183-7"><a href="composition.html#cb183-7" tabindex="-1"></a>    <span class="fu">grid.arrange</span>(p1, p2, <span class="at">nrow =</span> <span class="dv">1</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_14-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_14-1.png" width="672" /></p>
 <p><strong>Multiple strata</strong></p>
 <p>The iNEXT package gets really interesting when we start to compare multiple different strata. e.g. different treatment types or species groupings.</p>
 <p>The code to build a multi-strata comparison is very similar to that of a single strata, except now you separate the observations into their relevant categories/strata.</p>
@@ -1152,7 +1152,7 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb185-3"><a href="composition.html#cb185-3" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
 <span id="cb185-4"><a href="composition.html#cb185-4" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Locations surveyed&quot;</span>) <span class="sc">+</span> </span>
 <span id="cb185-5"><a href="composition.html#cb185-5" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_19-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_19-1.png" width="672" /></p>
 <p>So it looks like the human use features are more diverse than the offline features.</p>
 <div id="sampling-duration-example" class="section level3 hasAnchor" number="9.4.1">
 <h3><span class="header-section-number">9.4.1</span> Sampling duration example<a href="composition.html#sampling-duration-example" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1187,7 +1187,7 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb189-2"><a href="composition.html#cb189-2" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
 <span id="cb189-3"><a href="composition.html#cb189-3" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Camera weeks&quot;</span>) <span class="sc">+</span></span>
 <span id="cb189-4"><a href="composition.html#cb189-4" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_21-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_21-1.png" width="672" /></p>
 <p>Which suggests the same pattern!</p>
 </div>
 <div id="on-your-own" class="section level3 hasAnchor" number="9.4.2">
@@ -1232,7 +1232,7 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb193-2"><a href="composition.html#cb193-2" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out.inc, <span class="at">type=</span><span class="dv">1</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span></span>
 <span id="cb193-3"><a href="composition.html#cb193-3" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Richness&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Camera weeks&quot;</span>) <span class="sc">+</span></span>
 <span id="cb193-4"><a href="composition.html#cb193-4" tabindex="-1"></a><span class="fu">theme_classic</span>() </span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_21b-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_21b-1.png" width="672" /></p>
 </div>
 </div>
 <div id="other-diversity-metrics" class="section level2 hasAnchor" number="9.5">
@@ -1246,7 +1246,7 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb194-2"><a href="composition.html#cb194-2" tabindex="-1"></a>out <span class="ot">&lt;-</span> <span class="fu">iNEXT</span>(inc_time, <span class="at">q=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>) ,<span class="at">datatype=</span><span class="st">&quot;incidence_freq&quot;</span> )</span>
 <span id="cb194-3"><a href="composition.html#cb194-3" tabindex="-1"></a></span>
 <span id="cb194-4"><a href="composition.html#cb194-4" tabindex="-1"></a><span class="fu">ggiNEXT</span>(out, <span class="at">type=</span><span class="dv">1</span>, <span class="at">facet.var=</span><span class="st">&quot;Order.q&quot;</span>, <span class="at">color.var=</span><span class="st">&quot;Assemblage&quot;</span>) <span class="sc">+</span> <span class="fu">theme_classic</span>() </span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_22-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_22-1.png" width="672" /></p>
 <p>The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the differences between sites are being driven by several rarely encountered species).</p>
 <p>Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 1000 survey units:</p>
 <div class="sourceCode" id="cb195"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb195-1"><a href="composition.html#cb195-1" tabindex="-1"></a><span class="co"># To generate predictions for specific amounts of survey effort, we make use of the variable t</span></span>
@@ -1257,25 +1257,25 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb195-6"><a href="composition.html#cb195-6" tabindex="-1"></a>point_estimate <span class="ot">&lt;-</span> out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based[out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based<span class="sc">$</span>t<span class="sc">==</span><span class="dv">1000</span>,] </span>
 <span id="cb195-7"><a href="composition.html#cb195-7" tabindex="-1"></a>point_estimate</span></code></pre></div>
 <pre><code>##    Assemblage    t        Method Order.q        qD    qD.LCL    qD.UCL
-## 1     Offline 1000   Rarefaction       0  9.908397  9.151963 10.664831
-## 5     Offline 1000   Rarefaction       1  5.199616  4.684928  5.714303
-## 9     Offline 1000   Rarefaction       2  3.770656  3.256395  4.284916
-## 13   HumanUse 1000   Rarefaction       0 13.700080 12.174270 15.225891
-## 17   HumanUse 1000   Rarefaction       1  8.526882  8.000006  9.053759
-## 21   HumanUse 1000   Rarefaction       2  7.468354  6.963982  7.972726
-## 28   NatRegen 1000 Extrapolation       0 11.175535  9.451419 12.899652
-## 32   NatRegen 1000 Extrapolation       1  5.404507  4.825973  5.983042
-## 36   NatRegen 1000 Extrapolation       2  4.139836  3.690279  4.589394
+## 1     Offline 1000   Rarefaction       0  9.908397  9.214173 10.602621
+## 5     Offline 1000   Rarefaction       1  5.199616  4.660471  5.738760
+## 9     Offline 1000   Rarefaction       2  3.770656  3.214241  4.327070
+## 13   HumanUse 1000   Rarefaction       0 13.700080 11.834701 15.565459
+## 17   HumanUse 1000   Rarefaction       1  8.526882  7.901720  9.152044
+## 21   HumanUse 1000   Rarefaction       2  7.468354  6.965544  7.971164
+## 28   NatRegen 1000 Extrapolation       0 11.175535  9.552559 12.798511
+## 32   NatRegen 1000 Extrapolation       1  5.404507  4.925905  5.883109
+## 36   NatRegen 1000 Extrapolation       2  4.139836  3.722624  4.557049
 ##           SC    SC.LCL    SC.UCL
-## 1  0.9942029 0.9911839 0.9972219
-## 5  0.9942029 0.9911839 0.9972219
-## 9  0.9942029 0.9911839 0.9972219
-## 13 0.9925184 0.9877354 0.9973014
-## 17 0.9925184 0.9877354 0.9973014
-## 21 0.9925184 0.9877354 0.9973014
-## 28 0.9982324 0.9940116 1.0000000
-## 32 0.9982324 0.9940116 1.0000000
-## 36 0.9982324 0.9940116 1.0000000</code></pre>
+## 1  0.9942029 0.9911733 0.9972325
+## 5  0.9942029 0.9911733 0.9972325
+## 9  0.9942029 0.9911733 0.9972325
+## 13 0.9925184 0.9872783 0.9977585
+## 17 0.9925184 0.9872783 0.9977585
+## 21 0.9925184 0.9872783 0.9977585
+## 28 0.9982324 0.9944519 1.0000000
+## 32 0.9982324 0.9944519 1.0000000
+## 36 0.9982324 0.9944519 1.0000000</code></pre>
 <div class="sourceCode" id="cb197"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb197-1"><a href="composition.html#cb197-1" tabindex="-1"></a><span class="co"># Make a nice ggplot!</span></span>
 <span id="cb197-2"><a href="composition.html#cb197-2" tabindex="-1"></a><span class="fu">ggplot</span>(point_estimate, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>,<span class="fl">0.8</span>, <span class="fl">1.8</span>,</span>
 <span id="cb197-3"><a href="composition.html#cb197-3" tabindex="-1"></a>                               <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,</span>
@@ -1285,7 +1285,7 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb197-7"><a href="composition.html#cb197-7" tabindex="-1"></a>       <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">ymin=</span>qD.LCL, <span class="at">ymax=</span>qD.UCL), <span class="at">width=</span>.<span class="dv">01</span>) <span class="sc">+</span></span>
 <span id="cb197-8"><a href="composition.html#cb197-8" tabindex="-1"></a>       <span class="fu">labs</span>(<span class="at">y=</span><span class="st">&quot;Diversity&quot;</span>, <span class="at">x =</span> <span class="st">&quot;Diversity at 1000 survey days&quot;</span>) <span class="sc">+</span></span>
 <span id="cb197-9"><a href="composition.html#cb197-9" tabindex="-1"></a>       <span class="fu">geom_point</span>() </span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_23-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_23-1.png" width="672" /></p>
 </div>
 <div id="more-examples-in-the-literature" class="section level3 hasAnchor" number="9.5.2">
 <h3><span class="header-section-number">9.5.2</span> More examples in the literature<a href="composition.html#more-examples-in-the-literature" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1386,7 +1386,7 @@ following methodology paper (Chao et al. 2014) and the application paper (Hsieh
 <span id="cb203-11"><a href="composition.html#cb203-11" tabindex="-1"></a><span class="fu">points</span>(site.scores<span class="sc">$</span>NMDS1, site.scores<span class="sc">$</span>NMDS2, <span class="at">col=</span>dat<span class="sc">$</span>colours, <span class="at">pch=</span><span class="dv">19</span>)</span>
 <span id="cb203-12"><a href="composition.html#cb203-12" tabindex="-1"></a><span class="co"># Add a legend</span></span>
 <span id="cb203-13"><a href="composition.html#cb203-13" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topleft&quot;</span>, <span class="fu">levels</span>(dat<span class="sc">$</span>feature_type), <span class="at">col=</span>col.cat, <span class="at">pch=</span><span class="dv">19</span> )</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch6_25-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch6_25-1.png" width="672" /></p>
 <p>The different <code>feature_types</code> to not differ majorly in their species compositions - there is a huge degree of overlap between sites.</p>
 <p>The NMDS framework is flexible - we can also add environmental covariates using <code>envfit</code> to explain differences we might find. Checkout <a href="https://jkzorz.github.io/2020/04/04/NMDS-extras.html">a great blog on this by Jackie Zorz</a> for more information!</p>
 </div>
@@ -1450,7 +1450,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
+"download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
 "search": {
 "engine": "fuse",
 "options": null

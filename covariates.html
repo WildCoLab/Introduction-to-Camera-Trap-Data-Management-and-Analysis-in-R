@@ -2341,12 +2341,12 @@ ALG073
 <p>Check the header of <code>locs_utm</code> and you should see that the CRS has changed!</p>
 <p>Plotting <code>sf</code> objects is a little bit odd at first. If you try to plot them normally you get lots of replicated plots (one for each column) - try it:</p>
 <div class="sourceCode" id="cb108"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb108-1"><a href="covariates.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(locs_utm)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_17-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_17-1.png" width="672" /></p>
 <p>It can be useful as it varied the colors based on the properties of the column. Typically, however, we just want to plot the points themselves. We do that by wrapping the object in <code>st_geometry()</code> this just extracts the geometry of the object.</p>
 <div class="sourceCode" id="cb109"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb109-1"><a href="covariates.html#cb109-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_utm))</span>
 <span id="cb109-2"><a href="covariates.html#cb109-2" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
 <span id="cb109-3"><a href="covariates.html#cb109-3" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_18-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_18-1.png" width="672" /></p>
 <p>We will use <code>st_geometry()</code> frequently below.</p>
 <p>For more in depth information of <code>sf</code> functionality see: <a href="https://r-spatial.github.io/sf/articles/sf1.html" class="uri">https://r-spatial.github.io/sf/articles/sf1.html</a></p>
 </div>
@@ -2367,7 +2367,7 @@ ALG073
 <p>Lets check our layers match up!</p>
 <div class="sourceCode" id="cb111"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb111-1"><a href="covariates.html#cb111-1" tabindex="-1"></a><span class="fu">plot</span>(ras) <span class="co"># The terra package makes nice raster plots with legends</span></span>
 <span id="cb111-2"><a href="covariates.html#cb111-2" tabindex="-1"></a><span class="fu">plot</span>(locs_terra, <span class="at">add=</span>T) <span class="co"># Add the survey locations as black dots</span></span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_20-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_20-1.png" width="672" /></p>
 <p>Great! Now lets buffer our camera locations by 250 meters, and take the average depth to water for each location:</p>
 <div class="sourceCode" id="cb112"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb112-1"><a href="covariates.html#cb112-1" tabindex="-1"></a><span class="co"># Buffer by 250m</span></span>
 <span id="cb112-2"><a href="covariates.html#cb112-2" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> <span class="fu">buffer</span>(locs_terra,<span class="dv">250</span>)</span>
@@ -2381,7 +2381,7 @@ ALG073
 <p>Finally, lets check the distribution of our data!</p>
 <div class="sourceCode" id="cb113"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb113-1"><a href="covariates.html#cb113-1" tabindex="-1"></a><span class="co"># Basic boxplot in base R</span></span>
 <span id="cb113-2"><a href="covariates.html#cb113-2" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>water_depth_m)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_22-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_22-1.png" width="672" /></p>
 <p>Most locations are on the water table (lowland sites), others are above it (upload sites), and they have different vegetation characteristics in the field.</p>
 </div>
 <div id="elevatr-package" class="section level3 hasAnchor" number="7.2.4">
@@ -2399,7 +2399,7 @@ ALG073
 <p>The <code>z</code> option specifies the resolution of the underlying DEM, the high the value, the more detailed it is. However, it will take longer to run so do not go crazy.</p>
 <p>Regardless of which method you use, let’s plot the output:</p>
 <div class="sourceCode" id="cb116"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb116-1"><a href="covariates.html#cb116-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>elevation)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_24-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_24-1.png" width="672" /></p>
 <p>An elevation of ~ 500m was expected. Great!</p>
 <p>If you want to download a full elevation raster for your area of interests, see the <a href="https://cran.r-project.org/web/packages/elevatr/vignettes/introduction_to_elevatr.html"><code>introduction to elevatr</code></a></p>
 </div>
@@ -2432,14 +2432,14 @@ ALG073
 <span id="cb121-2"><a href="covariates.html#cb121-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
 <span id="cb121-3"><a href="covariates.html#cb121-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">main=</span><span class="st">&quot;osm_lines&quot;</span>)</span>
 <span id="cb121-4"><a href="covariates.html#cb121-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_29-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_29-1.png" width="672" /></p>
 <p>The points or the lines datasets look must useful to us, there is nothing in the polygon layer.</p>
 <p>Let’s use the lines element and add out camera stations:</p>
 <div class="sourceCode" id="cb122"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb122-1"><a href="covariates.html#cb122-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
 <span id="cb122-2"><a href="covariates.html#cb122-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_as_sfc</span>(aoi))     <span class="co"># st_as_sfc created a polygon from a `bbox` object</span></span>
 <span id="cb122-3"><a href="covariates.html#cb122-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">add=</span>T)</span>
 <span id="cb122-4"><a href="covariates.html#cb122-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_sf), <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_30-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_30-1.png" width="672" /></p>
 <p>We can now calculate the distances from our cameras to these objects using the following codes:</p>
 <p><code>st_nearest_feature</code> gives us the index number of the feature which is closest to each station.</p>
 <p>We can the use this to request the distance from that nearest feature to each camera station using <code>st_distance</code>. Which, put together, looks like:</p>
@@ -2461,7 +2461,7 @@ ALG073
 <span id="cb125-2"><a href="covariates.html#cb125-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
 <span id="cb125-3"><a href="covariates.html#cb125-3" tabindex="-1"></a><span class="co">#plot(st_geometry(water$osm_lines), main=&quot;osm_lines&quot;) # lines is empty and wont plot</span></span>
 <span id="cb125-4"><a href="covariates.html#cb125-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_33-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_33-1.png" width="672" /></p>
 <p>In this instance, the lines is empty, out best bet are the points or the polygons options!</p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb126-1"><a href="covariates.html#cb126-1" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, water<span class="sc">$</span>osm_polygons)</span>
 <span id="cb126-2"><a href="covariates.html#cb126-2" tabindex="-1"></a></span>
@@ -2506,9 +2506,9 @@ ALG073
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="covariates.html#cb133-1" tabindex="-1"></a><span class="do">## Download the data. By default the data is downloaded in a temporary directory, but you can specify a folder</span></span>
 <span id="cb133-2"><a href="covariates.html#cb133-2" tabindex="-1"></a>res_dl <span class="ot">&lt;-</span> <span class="fu">mf_download_data</span>(urls, <span class="at">parallel =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 1  datasets in total :  0  already downloaded and  1  datasets to download
-## Downloading the data (destination folder: /var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpwORRzo/modisfast_17f475e9c89c ) ...
+## Downloading the data (destination folder: /var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpCUP7ah/modisfast_175e1350023e ) ...
 ## Estimated maximum size of data to be downloaded is ~ 4 Mb</code></pre>
-<pre><code>## ✔ Data were all properly downloaded under the folder(s) /var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpwORRzo/modisfast_17f475e9c89c/data/algar/MOD13Q1.061</code></pre>
+<pre><code>## ✔ Data were all properly downloaded under the folder(s) /var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpCUP7ah/modisfast_175e1350023e/data/algar/MOD13Q1.061</code></pre>
 <pre><code>## 
 ## Actual size of downloaded data is 2 Mb</code></pre>
 <pre><code>## ℹ To import the data in R, use the function modisfast::mf_import_data() rather than terra::rast() or stars::read_stars(). More info at help(mf_import_data)</code></pre>
@@ -2523,7 +2523,7 @@ ALG073
 <div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="covariates.html#cb141-1" tabindex="-1"></a><span class="co"># Plot the resulting NDVI data</span></span>
 <span id="cb141-2"><a href="covariates.html#cb141-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">col =</span> <span class="fu">rev</span>(<span class="fu">terrain.colors</span>(<span class="dv">20</span>)), </span>
 <span id="cb141-3"><a href="covariates.html#cb141-3" tabindex="-1"></a>            <span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># Specify the range of values you want to plot</span></span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="covariates.html#cb142-1" tabindex="-1"></a><span class="co"># Extract the data to camera locations</span></span>
 <span id="cb142-2"><a href="covariates.html#cb142-2" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r, locs_terra, <span class="at">fun=</span>mean, <span class="at">ID=</span>F) <span class="co"># Extract - each layer will become its own column</span></span>
 <span id="cb142-3"><a href="covariates.html#cb142-3" tabindex="-1"></a>locs_sf<span class="sc">$</span>mean_ndvi <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tmp) <span class="co"># take the mean of each column</span></span></code></pre></div>
@@ -2532,7 +2532,7 @@ ALG073
 <div class="sourceCode" id="cb143"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb143-1"><a href="covariates.html#cb143-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>mean_ndvi,</span>
 <span id="cb143-2"><a href="covariates.html#cb143-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Mean NDVI score&quot;</span>,</span>
 <span id="cb143-3"><a href="covariates.html#cb143-3" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_54-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_54-1.png" width="672" /></p>
 <p>Here we have created an average NDVI score across five months, but we could get monthly averages. Some products are even available at daily resolution!</p>
 </div>
 </div>
@@ -2580,7 +2580,7 @@ ALG073
 <span id="cb145-5"><a href="covariates.html#cb145-5" tabindex="-1"></a>                     <span class="st">&quot;road_dist_m&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)])</span></code></pre></div>
 <p>Now lets make the basic <code>corrplot</code>:</p>
 <div class="sourceCode" id="cb146"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb146-1"><a href="covariates.html#cb146-1" tabindex="-1"></a><span class="fu">corrplot</span>(M)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_59-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_59-1.png" width="672" /></p>
 <p>The cells denote pairwise correlations between the rows and the columns. The great thing about <code>corrplot</code> is customization option are near endless - see <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html">the corrplot vignette</a>.</p>
 <p>Let’s make a better, more informative, <code>corrplot</code>!</p>
 <div class="sourceCode" id="cb147"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb147-1"><a href="covariates.html#cb147-1" tabindex="-1"></a><span class="fu">corrplot</span>(M,                              <span class="co">#The correlation matrix we made</span></span>
@@ -2591,7 +2591,7 @@ ALG073
 <span id="cb147-6"><a href="covariates.html#cb147-6" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>,      <span class="co"># Control the text label color and rotation</span></span>
 <span id="cb147-7"><a href="covariates.html#cb147-7" tabindex="-1"></a>         <span class="at">diag=</span>F                          <span class="co"># Suppress the diagonal correlations (which are 1 anyway)</span></span>
 <span id="cb147-8"><a href="covariates.html#cb147-8" tabindex="-1"></a>         )</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_60-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_60-1.png" width="672" /></p>
 <p>In general there is very low correlation between our different predictors! If we were seeing pairwise correlations &gt;0.7 we perhaps wouldn’t include those in the same model.</p>
 
 </div>
@@ -2644,7 +2644,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
+"download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
 "search": {
 "engine": "fuse",
 "options": null

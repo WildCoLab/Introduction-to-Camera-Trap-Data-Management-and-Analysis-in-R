@@ -1290,7 +1290,7 @@ E000001
 <span id="cb278-10"><a href="activity.html#cb278-10" tabindex="-1"></a>img_locs<span class="sc">$</span>clock <span class="ot">&lt;-</span> tmp<span class="sc">$</span>clock</span></code></pre></div>
 <p>Let’s check out the relationship between these two indices:</p>
 <div class="sourceCode" id="cb279"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb279-1"><a href="activity.html#cb279-1" tabindex="-1"></a><span class="fu">plot</span>(img_locs<span class="sc">$</span>solar, img_locs<span class="sc">$</span>clock)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch9_7-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch9_7-1.png" width="672" /></p>
 <p>We are now ready to fit some models!</p>
 </div>
 </div>
@@ -1301,14 +1301,14 @@ E000001
 <div class="sourceCode" id="cb280"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb280-1"><a href="activity.html#cb280-1" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
 <span id="cb280-2"><a href="activity.html#cb280-2" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Odocoileus.virginianus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
 <span id="cb280-3"><a href="activity.html#cb280-3" tabindex="-1"></a><span class="fu">plot</span>(m1)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch9_8-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch9_8-1.png" width="672" /></p>
 <p>Take a look at the raw data if you want.</p>
 <div class="sourceCode" id="cb281"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb281-1"><a href="activity.html#cb281-1" tabindex="-1"></a>m1</span></code></pre></div>
 <p>And repeat it for Caribou</p>
 <div class="sourceCode" id="cb282"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb282-1"><a href="activity.html#cb282-1" tabindex="-1"></a><span class="co"># Fit an activity model</span></span>
 <span id="cb282-2"><a href="activity.html#cb282-2" tabindex="-1"></a>m2 <span class="ot">&lt;-</span> <span class="fu">fitact</span>(img_locs<span class="sc">$</span>solar[img_locs<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Rangifer.tarandus&quot;</span>], <span class="at">sample=</span><span class="st">&quot;model&quot;</span>, <span class="at">reps=</span><span class="dv">100</span>)</span>
 <span id="cb282-3"><a href="activity.html#cb282-3" tabindex="-1"></a><span class="fu">plot</span>(m2)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch9_10-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch9_10-1.png" width="672" /></p>
 <p>We can plot both on the same axis as follows:</p>
 <div class="sourceCode" id="cb283"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb283-1"><a href="activity.html#cb283-1" tabindex="-1"></a><span class="fu">plot</span>(m2, <span class="at">yunit=</span><span class="st">&quot;density&quot;</span>, <span class="at">data=</span><span class="st">&quot;none&quot;</span>, <span class="at">las=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>,</span>
 <span id="cb283-2"><a href="activity.html#cb283-2" tabindex="-1"></a>     <span class="at">tline=</span><span class="fu">list</span>(<span class="at">lwd=</span><span class="dv">2</span>), <span class="co"># Thick line </span></span>
@@ -1319,7 +1319,7 @@ E000001
 <span id="cb283-7"><a href="activity.html#cb283-7" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
 <span id="cb283-8"><a href="activity.html#cb283-8" tabindex="-1"></a></span>
 <span id="cb283-9"><a href="activity.html#cb283-9" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Caribou&quot;</span>, <span class="st">&quot;Deer&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch9_11-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch9_11-1.png" width="672" /></p>
 <p>We can compare different activity patterns using coefficient of overlap (∆) - developed by Ridout and Linkie:</p>
 <p><a href="https://link.springer.com/article/10.1198/jabes.2009.08038">Ridout, Martin S., and Matthew Linkie. “Estimating overlap of daily activity patterns from camera trap data.” Journal of Agricultural, Biological, and Environmental Statistics 14.3 (2009): 322-337.</a></p>
 <p>The coefficient ranges from 0 (no overlap) to 1 (complete overlap). We can implement for a two species comparison as follows:</p>
@@ -1356,7 +1356,7 @@ E000001
 <span id="cb288-7"><a href="activity.html#cb288-7" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
 <span id="cb288-8"><a href="activity.html#cb288-8" tabindex="-1"></a></span>
 <span id="cb288-9"><a href="activity.html#cb288-9" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Offline&quot;</span>, <span class="st">&quot;HumanUse&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch9_15-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch9_15-1.png" width="672" /></p>
 <div class="sourceCode" id="cb289"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb289-1"><a href="activity.html#cb289-1" tabindex="-1"></a><span class="co"># Note reps reduced to speed up running time - people typically use 1000.</span></span>
 <span id="cb289-2"><a href="activity.html#cb289-2" tabindex="-1"></a><span class="fu">compareCkern</span>(m1, m2, <span class="at">reps =</span> <span class="dv">100</span>)</span></code></pre></div>
 <pre><code>##        obs       null     seNull      pNull 
@@ -1383,7 +1383,7 @@ E000001
 <span id="cb292-7"><a href="activity.html#cb292-7" tabindex="-1"></a>     <span class="at">cline=</span><span class="fu">list</span>(<span class="at">lty=</span><span class="dv">0</span>))</span>
 <span id="cb292-8"><a href="activity.html#cb292-8" tabindex="-1"></a></span>
 <span id="cb292-9"><a href="activity.html#cb292-9" tabindex="-1"></a><span class="fu">legend</span>(<span class="st">&quot;topright&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;Winter&quot;</span>, <span class="st">&quot;Summer&quot;</span>), <span class="at">col=</span><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, <span class="at">lty=</span><span class="dv">1</span>, <span class="at">lwd=</span><span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/unnamed-chunk-20-1.png" width="672" /></p>
 </div>
 </div>
 <div id="on-your-own-4" class="section level2 hasAnchor" number="12.5">
@@ -1462,7 +1462,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
+"download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
 "search": {
 "engine": "fuse",
 "options": null

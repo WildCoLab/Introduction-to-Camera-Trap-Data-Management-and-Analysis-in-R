@@ -853,7 +853,7 @@ ALG036
 <span id="cb207-2"><a href="habitat-use.html#cb207-2" tabindex="-1"></a>     <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">19</span>, </span>
 <span id="cb207-3"><a href="habitat-use.html#cb207-3" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Capture rate per 100 days&quot;</span>, </span>
 <span id="cb207-4"><a href="habitat-use.html#cb207-4" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Number of independent records&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_5-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_5-1.png" width="672" /></p>
 <p>As you can see they are not a perfect match as the capture rate accounts for the variation in effort between different sites.</p>
 <div id="examples-from-the-literature" class="section level3 hasAnchor" number="10.1.1">
 <h3><span class="header-section-number">10.1.1</span> Examples from the literature<a href="habitat-use.html#examples-from-the-literature" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1187,7 +1187,7 @@ meters
 <span id="cb212-2"><a href="habitat-use.html#cb212-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
 <span id="cb212-3"><a href="habitat-use.html#cb212-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;feature_type&quot;</span>,</span>
 <span id="cb212-4"><a href="habitat-use.html#cb212-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_9-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_9-1.png" width="672" /></p>
 <p>It looks like white-tailed deer habitat use may be higher in naturally regenerating areas, but there is a lot of overlap between sites.</p>
 <p>Next we will fit a simple linear model using the `lm()’ function in base R.</p>
 <div class="sourceCode" id="cb213"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb213-1"><a href="habitat-use.html#cb213-1" tabindex="-1"></a><span class="co"># model results &lt;- lm( Y data ~ x Data, data= dataframe source)</span></span>
@@ -1220,7 +1220,7 @@ meters
 <span id="cb216-3"><a href="habitat-use.html#cb216-3" tabindex="-1"></a>            <span class="at">interval =</span> <span class="cn">TRUE</span>,         <span class="co"># Whether you want confidence intervals (default = 0.95)</span></span>
 <span id="cb216-4"><a href="habitat-use.html#cb216-4" tabindex="-1"></a>            <span class="at">partial.residuals =</span> T,   <span class="co"># Show the residual variation -after accounting for fixed effects  </span></span>
 <span id="cb216-5"><a href="habitat-use.html#cb216-5" tabindex="-1"></a>            <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>) <span class="co"># Change the y axis label</span></span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_12-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_12-1.png" width="672" /></p>
 </div>
 <div id="continuous-predictor" class="section level3 hasAnchor" number="10.2.3">
 <h3><span class="header-section-number">10.2.3</span> Continuous predictor<a href="habitat-use.html#continuous-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1229,7 +1229,7 @@ meters
 <span id="cb217-2"><a href="habitat-use.html#cb217-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
 <span id="cb217-3"><a href="habitat-use.html#cb217-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;line_of_sight_m&quot;</span>,</span>
 <span id="cb217-4"><a href="habitat-use.html#cb217-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_13-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_13-1.png" width="672" /></p>
 <p>Next we will fit a simple linear model using the `lm()’ function in base R.</p>
 <div class="sourceCode" id="cb218"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb218-1"><a href="habitat-use.html#cb218-1" tabindex="-1"></a><span class="co"># model results &lt;- lm( Y data ~ x Data, data= dataframe source)</span></span>
 <span id="cb218-2"><a href="habitat-use.html#cb218-2" tabindex="-1"></a>lm_con <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> z.line_of_sight_m, <span class="at">data =</span> mod_dat)</span></code></pre></div>
@@ -1260,7 +1260,7 @@ meters
 <span id="cb221-3"><a href="habitat-use.html#cb221-3" tabindex="-1"></a>            <span class="at">interval =</span> <span class="cn">TRUE</span>,         <span class="co"># Whether you want confidence intervals (default = 0.95)</span></span>
 <span id="cb221-4"><a href="habitat-use.html#cb221-4" tabindex="-1"></a>            <span class="at">partial.residuals =</span> T,   <span class="co"># Show the residual variation -after accounting for fixed effects  </span></span>
 <span id="cb221-5"><a href="habitat-use.html#cb221-5" tabindex="-1"></a>            <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>) <span class="co"># Change the y axis label</span></span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_16-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_16-1.png" width="672" /></p>
 </div>
 <div id="model-comparisons" class="section level3 hasAnchor" number="10.2.4">
 <h3><span class="header-section-number">10.2.4</span> Model comparisons<a href="habitat-use.html#model-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -1309,7 +1309,7 @@ meters
 <span id="cb228-2"><a href="habitat-use.html#cb228-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
 <span id="cb228-3"><a href="habitat-use.html#cb228-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;feature_type&quot;</span>,</span>
 <span id="cb228-4"><a href="habitat-use.html#cb228-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_22-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_22-1.png" width="672" /></p>
 <p>The patterns are similar to the <code>total_obs</code> dataset, however there is more noise!</p>
 <p>Now that we have monthly data, we might also want to control for some element of seasonality in our models. We can extract the month from our date column.</p>
 <div class="sourceCode" id="cb229"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb229-1"><a href="habitat-use.html#cb229-1" tabindex="-1"></a>mod_dat<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">ym</span>(mod_dat<span class="sc">$</span>date)</span>
@@ -1375,12 +1375,12 @@ meters
 <pre><code>## Confidence intervals for merMod models is an experimental feature. The
 ## intervals reflect only the variance of the fixed effects, not the random
 ## effects.</code></pre>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_28-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_28-1.png" width="672" /></p>
 <p>As with our simple linear model, the mixed effects model also suggests a difference between the different <code>feature_type</code> strata for white-tailed deer.</p>
 <p>Lets also look at the effect of our new <code>season</code> variable:</p>
 <div class="sourceCode" id="cb238"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb238-1"><a href="habitat-use.html#cb238-1" tabindex="-1"></a><span class="fu">effect_plot</span>(glmm_cat, <span class="at">pred =</span> season, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>,</span>
 <span id="cb238-2"><a href="habitat-use.html#cb238-2" tabindex="-1"></a>            , <span class="at">data=</span>mod_dat)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_29-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_29-1.png" width="672" /></p>
 <p>Which suggests habitat use is slightly lower habitat use in winter then in summer.</p>
 </div>
 <div id="on-your-own-2" class="section level3 hasAnchor" number="10.2.7">
@@ -2112,7 +2112,7 @@ meters
 <div class="sourceCode" id="cb248"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb248-1"><a href="habitat-use.html#cb248-1" tabindex="-1"></a>postBeta <span class="ot">=</span> <span class="fu">getPostEstimate</span>(out, <span class="at">parName =</span> <span class="st">&quot;Beta&quot;</span>)</span>
 <span id="cb248-2"><a href="habitat-use.html#cb248-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
 <span id="cb248-3"><a href="habitat-use.html#cb248-3" tabindex="-1"></a><span class="fu">plotBeta</span>(out, <span class="at">post =</span> postBeta, <span class="at">param =</span> <span class="st">&quot;Support&quot;</span>, <span class="at">supportLevel =</span> <span class="fl">0.95</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_40-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_40-1.png" width="672" /></p>
 <p>We the colors denote the size and magnitude of the effect of proportion of lowland habitat. <em>NOTE</em> treat these results with caution as the number of model runs is very low (to increase speed) and the model assumptions have not been interrogated.</p>
 <div class="sourceCode" id="cb249"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb249-1"><a href="habitat-use.html#cb249-1" tabindex="-1"></a>OmegaCor <span class="ot">=</span> <span class="fu">computeAssociations</span>(out)</span>
 <span id="cb249-2"><a href="habitat-use.html#cb249-2" tabindex="-1"></a></span>
@@ -2129,7 +2129,7 @@ meters
 <span id="cb249-13"><a href="habitat-use.html#cb249-13" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>))(<span class="dv">200</span>),</span>
 <span id="cb249-14"><a href="habitat-use.html#cb249-14" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;random effect level:&quot;</span>, </span>
 <span id="cb249-15"><a href="habitat-use.html#cb249-15" tabindex="-1"></a>                      mod<span class="sc">$</span>rLNames[<span class="dv">1</span>]), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch7_41-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_41-1.png" width="672" /></p>
 <div id="potential-dangers" class="section level3 hasAnchor" number="10.3.1">
 <h3><span class="header-section-number">10.3.1</span> Potential dangers<a href="habitat-use.html#potential-dangers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>The analysis has worked and we have some really stylish output! But - take screenshots of the output and run it again. Compare your screen shots.</p>
@@ -2206,7 +2206,7 @@ gitbook.start({
 "link": null,
 "text": null
 },
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
+"download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
 "search": {
 "engine": "fuse",
 "options": null
