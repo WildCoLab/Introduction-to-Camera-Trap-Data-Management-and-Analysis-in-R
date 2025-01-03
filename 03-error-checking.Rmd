@@ -485,7 +485,8 @@ Let us start with a basic scatter plot using the deployment data.
 library(plotly)
 fig <- plot_ly(data = dep,                    # Specify your data frame
                x = ~longitude, y = ~latitude, # The x and y axis columns
-               type="scatter")                # and the type of plot
+               type="scatter",                # and the type of plot
+               mode="markers")                # And the mode - other options = "lines+markers" or "lines"
 fig
 ```
 
@@ -498,7 +499,8 @@ library(plotly)
 fig <- plot_ly(data = dep,                    
                x = ~longitude, y = ~latitude,
                color=~feature_type,              # We can specify color categories
-               type="scatter",
+               type="scatter",                # and the type of plot
+               mode="markers",                # And the mode - other options = "lines+markers" or "lines"
                marker=list(size=15))             # the default size is 10           
 fig
 

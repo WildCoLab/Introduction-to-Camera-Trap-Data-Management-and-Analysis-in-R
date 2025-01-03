@@ -454,14 +454,3 @@ colnames(locs)[colnames(locs) %in% c("feature_type","line_of_sight_m", "water_de
 ```
 
 
-
-
-
-
-
-
-
-
-
-
-

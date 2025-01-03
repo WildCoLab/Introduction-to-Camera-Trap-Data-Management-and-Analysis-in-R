@@ -318,7 +318,7 @@ new_dat <- predict(m1, type="state", newdata = new_dat, appendData=TRUE)
 
 p1 <- ggplot(new_dat, aes(x = z.line_of_sight_m, y = Predicted)) + # mean line
   geom_ribbon(aes(ymin = lower, ymax = upper), alpha = 0.5, linetype = "dashed") + #Confidence intervals
-  geom_path(size = 1) +
+  geom_path(linewidth = 1) +
   labs(x = "Line of sight", y = "Occupancy probability") + # axis labels
   theme_classic() +
   coord_cartesian(ylim = c(0,1))

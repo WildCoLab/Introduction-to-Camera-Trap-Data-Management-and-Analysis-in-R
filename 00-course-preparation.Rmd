@@ -83,7 +83,6 @@ list.of.packages <- c("activity",
                       "jtools",
                       "vegan",
                       "MuMIn",
-                      "rgdal",
                       "usedist",
                       "taxize")
 
