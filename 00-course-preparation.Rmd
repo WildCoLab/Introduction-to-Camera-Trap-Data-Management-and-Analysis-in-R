@@ -65,7 +65,7 @@ list.of.packages <- c("activity",
                       "lubridate",
                       "magrittr",
                       "MCMCvis",
-                      "MODISTools",
+                      "modisfast",
                       "osmdata",
                       "pals",
                       "plotly",
@@ -106,8 +106,13 @@ remotes::install_github("RS-eco/traitdata")
 remotes::install_github("arcaravaggi/remBoot")
 remotes::install_github("annam21/spaceNtime")
 
-
 ```
+
+### An Earthdata Server account
+
+**IMPORTANT** to access MODIS data (and other great products) rapidly through the `modisfast` package you need to create your own login for the associated Earthdata servers.
+
+**To create your free account go to : <https://urs.earthdata.nasa.gov/>.** and make a note of your credentials for the Analysis Covariates chapter. 
 
 ## Create an R project
 

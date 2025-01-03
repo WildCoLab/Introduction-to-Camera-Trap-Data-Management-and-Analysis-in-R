@@ -252,13 +252,15 @@ Most locations are on the water table (lowland sites), others are above it (uplo
 
 Camera studies often occur over a range of elevations - and we can quickly extract these elevations using the `elevatr` package and an `sf` dataframe.
 
-There are two options, `epqs`:
+There are two options, `epqs`**ONLY AVAILABLE FOR NORTH AMERICA**:
 
 ```{r ch4_23, class.source="Rmain", warning=F, message=F}
 library(elevatr)
 locs_sf <- get_elev_point(locs_sf, 
                           src="epqs") # Can be slow if you have >500 camera points
 ```
+
+Or Amazon Web Service Terrain Tiles... available globally!
 
 ```{r ch4_23b, class.source="Rmain", warning=F, eval=F}
 locs_sf <- get_elev_point(locs_sf, 
