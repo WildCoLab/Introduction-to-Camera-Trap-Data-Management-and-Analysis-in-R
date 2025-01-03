@@ -20,7 +20,7 @@ The convention we use in this course is the [data standards used by Wildlife Ins
 Their standard format is composed of four different elements:
 
 - *Project data* `projects.csv` a dataframe containing key information about the project itself, e.g. how the cameras were deployed and what the target features were.
-- *Image data* `imgages.csv` a dataframe containing all of the information contained within each image. This information is typically added by humans, but increasing we are using artificial intelligence to speed up this process. 
+- *Image data* `images.csv` a dataframe containing all of the information contained within each image. This information is typically added by humans, but increasing we are using artificial intelligence to speed up this process. 
 - *Deployment data* `deployments.csv` a dataframe listing the activity of the camera traps involved in your study, and any issues encountered during deployments which may influence their analysis
 - *Camera data* `cameras.csv` a dataframe all the cameras deployed in the project
 
@@ -30,7 +30,7 @@ First, read in the data files:
 
 ```{r ch2_2, message+f, warning=F, class.source="Rinfo"}
 pro <- read.csv("data/raw_data/example_data/projects.csv", header=T)
-img <- read.csv("data/raw_data/example_data/imgages.csv", header=T)
+img <- read.csv("data/raw_data/example_data/images.csv", header=T)
 dep <- read.csv("data/raw_data/example_data/deployments.csv", header=T)
 cam <- read.csv("data/raw_data/example_data/cameras.csv", header=T)
 ```
