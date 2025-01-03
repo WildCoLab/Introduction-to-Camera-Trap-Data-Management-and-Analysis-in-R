@@ -34,10 +34,10 @@ Second, read in our standardized example datasets:
 
 ```{r ch3_1, class.source="Rmain"}
 # Load your data 
-pro <- read.csv("data/raw_data/example_data/proj.csv", header=T)
-img <- read.csv("data/raw_data/example_data/img.csv", header=T)
-dep <- read.csv("data/raw_data/example_data/dep.csv", header=T)
-cam <- read.csv("data/raw_data/example_data/cam.csv", header=T)
+pro <- read.csv("data/raw_data/example_data/projects.csv", header=T)
+img <- read.csv("data/raw_data/example_data/images.csv", header=T)
+dep <- read.csv("data/raw_data/example_data/deployments.csv", header=T)
+cam <- read.csv("data/raw_data/example_data/cameras.csv", header=T)
 
 ```
 
@@ -65,6 +65,20 @@ if(length(new.packages)) install.packages(new.packages,repos = "http://cran.us.r
 lapply(list.of.packages, require, character.only = TRUE)
 
 ```
+
+## Adding a sampling site location column to the image data
+
+Wildlife Insights is a "deployment" based image management platform, meaning all of the images are associated with a specific deployment (a single camera check period). Whilst this is great for management of images, it is less useful for analyses as we often have multiple deployments per sampling site (e.g. each time we retrieve the SD card should triggers a new deployment). Do not worry too much about this! Crucially What it means is there is not a sampling location identifier in your image data to group images across multiple deployments - so we should add one!
+
+Do not worry, it is easy. In Wildlife Insights the sampling location is refereed to as the "placename".
+
+```{r ch3_2a, eval =T, class.source="Rinfo"}
+
+# The following code matches every deployment ID in images, with deployment_id's and placenames in the deployment data. 
+img <- left_join(img, dep[,c("deployment_id", "placename")])
+```
+
+We will experiment more with left joins later! Let's get into the code. 
 
 ## Formatting dates
 
@@ -591,18 +605,22 @@ To do this we build on the previous plot above, but also add in the image data o
 This plot can get very messy, so we divide it into sections of ten deployments.
 
 As before, black lines show an active camera.
-Red dots show an image detections at that time.
+Red dots show wildlife detection, blue dots blanks or NA's.
 
-We only show the output of the first 10 deployments, but you should do this for every single deployment you have!
+We only show the output of the first 30 deployments, but you should do this for every single deployment you have!
 
 *Note - the code below is complex, you don't have to understand it all unless you want to*
 
 ```{r ch3_31, eval=F, class.source="Rmain"}
-# Make a separate plot for each 20 stations For each 20 stations
+# Make a separate plot for each 30 stations 
 # To do this make a plot dataframe
-tmp <- data.frame("deployment_id"=unique(dep$deployment_id), "plot_group"=ceiling(1:length(unique(dep$deployment_id))/20))
+tmp <- data.frame("deployment_id"=unique(dep$deployment_id), "plot_group"=ceiling(1:length(unique(dep$deployment_id))/30))
 
 dep_tmp <- left_join(dep,tmp, by="deployment_id")
+
+# Make a colour palette for blanks vs. real detections
+cols <- c("red", "blue")
+
 
 for(i in 1:max(dep_tmp$plot_group))
 {  
@@ -613,7 +631,7 @@ for(i in 1:max(dep_tmp$plot_group))
   tmp <- dep_tmp[dep_tmp$plot_group==i,]
   # Order by placename 
   tmp <- tmp[order(tmp$placename),]
-  
+ 
  
  # Loop through each deployment at that placename
   for(j in 1:nrow(tmp))
@@ -636,7 +654,7 @@ for(i in 1:max(dep_tmp$plot_group))
                        # Add the deployment ID as hover text
                        hovertext=paste(tmp_img$genus,tmp_img$species), 
                        # Color it all black
-                       marker = list(color = "red"), 
+                       marker = list(color = cols[tmp_img$is_blank+1]), 
                        # Suppress the legend
                        showlegend = FALSE)
         }
@@ -675,11 +693,16 @@ for(i in 1:max(dep_tmp$plot_group))
 ```
 
 ```{r ch3_32, eval=T, echo=F}
-# Make a separate plot for each 20 stations For each 20 stations
+# Make a separate plot for each 30 stations For each 20 stations
 # To do this make a plot dataframe
-tmp <- data.frame("deployment_id"=unique(dep$deployment_id), "plot_group"=ceiling(1:length(unique(dep$deployment_id))/20))
-
+tmp <- data.frame("deployment_id"=unique(dep$deployment_id), "plot_group"=ceiling(1:length(unique(dep$deployment_id))/30))
 dep_tmp <- left_join(dep,tmp, by="deployment_id")
+
+
+# Make a colour palette for blanks vs. real detections
+cols <- c("red", "blue")
+
+
 
 for(i in 1:1)
 {  
@@ -713,7 +736,7 @@ for(i in 1:1)
                        # Add the deployment ID as hover text
                        hovertext=paste(tmp_img$genus,tmp_img$species), 
                        # Color it all black
-                       marker = list(color = "red"), 
+                       marker = list(color = cols[tmp_img$is_blank+1]), 
                        # Suppress the legend
                        showlegend = FALSE)
         }
