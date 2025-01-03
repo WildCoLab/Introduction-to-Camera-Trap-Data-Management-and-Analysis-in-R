@@ -421,7 +421,7 @@ log <- mf_login(credentials = c("your_username", "your_password")) # set your ow
 
 ```
 
-```{r ch4_46, class.source="Rmain", eval=T, include=F}
+```{r ch4_46b, class.source="Rmain", eval=T, include=F}
 # Specify your own credentials:
 log <- mf_login(credentials = c("cameratrap_course", "CMI_Revelstoke_2025")) # set your own EOSDIS username and password
 ```
