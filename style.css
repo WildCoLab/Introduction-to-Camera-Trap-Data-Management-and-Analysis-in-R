@@ -1,0 +1,22 @@
+p.caption {
+  color: #777;
+  margin-top: 10px;
+}
+p code {
+  white-space: inherit;
+}
+pre {
+  word-break: normal;
+  word-wrap: normal;
+}
+pre code {
+  white-space: inherit;
+}
+
+.Rmain {
+  background-color: #f3fbf0 !important;
+}
+
+.Rinfo {
+  background-color: #fcf6e4 !important;
+}
