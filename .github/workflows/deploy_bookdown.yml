@@ -74,26 +74,26 @@ jobs:
         run: Rscript -e 'bookdown::render_book("index.Rmd")'
       - uses: actions/upload-artifact@v4
         with:
-          name: _book
-          path: _book/
+          name: docs
+          path: docs/
   
   checkout-and-deploy:
    runs-on: ubuntu-latest
    needs: bookdown
    steps:
      - name: Checkout
-       uses: actions/checkout@v2
+       uses: actions/checkout@v4
      - name: Download artifact
        uses: actions/download-artifact@v4
        with:
          # Artifact name
-         name: _book # optional
+         name: docs # optional
          # Destination path
-         path: _book # optional
+         path: docs # optional
      - name: Deploy to GitHub Pages
        uses: Cecilapp/GitHub-Pages-deploy@v3
        env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
        with:
-        build_dir: _book
+        build_dir: docs
         branch: gh-pages
