@@ -1,6 +1,11 @@
-book_filename: "Intro-to-data-analysis"
+book_filename: "WildCo: An Introduction to Camera Trap Data Management and Analysis in R"
 language:
   ui:
     chapter_name: "Chapter "
 delete_merged_file: true
+output:
+  bookdown::gitbook:
+    theme: cosmo
+    highlight: tango
+output_format: html
 output_dir: "docs"
