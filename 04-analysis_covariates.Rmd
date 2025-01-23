@@ -426,7 +426,7 @@ log <- mf_login(credentials = c("your_username", "your_password")) # set your ow
 log <- mf_login(credentials = c("cameratrap_course", "CMI_Revelstoke_2025")) # set your own EOSDIS username and password
 ```
 
-For `modisfat` to work, we need to provide a sf polygon with an "id" column. We can do this easily using the `aoi` object we created earlier"
+For `modisfast` to work, we need to provide a sf polygon with an "id" column. We can do this easily using the `aoi` object we created earlier"
 
 ```{r ch4_47, class.source="Rmain"}
 # Create aoi if sf format
@@ -440,6 +440,8 @@ variables <- c("_250m_16_days_NDVI") # run mf_list_variables("MOD13Q1.061") for 
 time_range <- as.Date(c("2019-03-01", "2019-07-01")) # a time range of interest
 
 ```
+
+We then use these to specify the location of the data and download it to our computers. 
 
 ```{r ch4_47b, class.source="Rmain", message=F, warning=F, echo=T, eval=F}
 ## Get the URLs of the data
@@ -463,10 +465,6 @@ r <- mf_import_data(
 # Plot the resulting NDVI data
 terra::plot(r, col = rev(terrain.colors(20)), 
             range=c(0,1)) # Specify the range of values you want to plot
-
-# Extract the data to camera locations
-tmp <- terra::extract(r, locs_terra, fun=mean, ID=F) # Extract - each layer will become its own column
-locs_sf$mean_ndvi <- rowMeans(tmp) # take the mean of each column
 
 ```
 
@@ -499,14 +497,17 @@ locs_sf$mean_ndvi <- rowMeans(tmp) # take the mean of each column
 
 ```
 
-
-
-
 Easy!
 
-Check the output:
+Add the data to your locations covariates dataframe and check the output:
 
-```{r ch4_54, class.source="Rinfo"}
+```{r ch4_54, class.source="Rmain"}
+
+# Extract the data to camera locations
+tmp <- terra::extract(r, locs_terra, fun=mean, ID=F) # Extract - each layer will become its own column
+locs_sf$mean_ndvi <- rowMeans(tmp) # take the mean of each column
+
+# Plot the results
 boxplot(locs_sf$mean_ndvi,
         ylab="Mean NDVI score",
         las=1)
