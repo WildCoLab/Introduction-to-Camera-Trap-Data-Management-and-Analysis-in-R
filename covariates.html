@@ -2511,12 +2511,10 @@ ALG073
 <span id="cb131-14"><a href="covariates.html#cb131-14" tabindex="-1"></a>  <span class="at">path =</span> <span class="fu">dirname</span>(res_dl<span class="sc">$</span>destfile[<span class="dv">1</span>]),</span>
 <span id="cb131-15"><a href="covariates.html#cb131-15" tabindex="-1"></a>  <span class="at">collection =</span> collection,</span>
 <span id="cb131-16"><a href="covariates.html#cb131-16" tabindex="-1"></a>  <span class="at">proj_epsg =</span> <span class="dv">26912</span></span>
-<span id="cb131-17"><a href="covariates.html#cb131-17" tabindex="-1"></a>)</span>
-<span id="cb131-18"><a href="covariates.html#cb131-18" tabindex="-1"></a></span>
-<span id="cb131-19"><a href="covariates.html#cb131-19" tabindex="-1"></a><span class="co"># Plot the resulting NDVI data</span></span>
-<span id="cb131-20"><a href="covariates.html#cb131-20" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">col =</span> <span class="fu">rev</span>(<span class="fu">terrain.colors</span>(<span class="dv">20</span>)), </span>
-<span id="cb131-21"><a href="covariates.html#cb131-21" tabindex="-1"></a>            <span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># Specify the range of values you want to plot</span></span></code></pre></div>
+<span id="cb131-17"><a href="covariates.html#cb131-17" tabindex="-1"></a>)</span></code></pre></div>
 <p>Easy!</p>
+<p>Lets see what it looks like:</p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_47d-1.png" width="672" /></p>
 <p>Add the data to your locations covariates dataframe and check the output:</p>
 <div class="sourceCode" id="cb132"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb132-1"><a href="covariates.html#cb132-1" tabindex="-1"></a><span class="co"># Extract the data to camera locations</span></span>
 <span id="cb132-2"><a href="covariates.html#cb132-2" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r, locs_terra, <span class="at">fun=</span>mean, <span class="at">ID=</span>F) <span class="co"># Extract - each layer will become its own column</span></span>
