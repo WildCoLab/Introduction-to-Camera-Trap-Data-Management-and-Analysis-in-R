@@ -462,10 +462,6 @@ r <- mf_import_data(
   proj_epsg = 26912
 )
 
-# Plot the resulting NDVI data
-terra::plot(r, col = rev(terrain.colors(20)), 
-            range=c(0,1)) # Specify the range of values you want to plot
-
 ```
 
 ```{r ch4_47c, message=F, warning=F, echo=F, include=F}
@@ -487,17 +483,21 @@ r <- mf_import_data(
   proj_epsg = 26912
 )
 
-# Plot the resulting NDVI data
-terra::plot(r, col = rev(terrain.colors(20)), 
-            range=c(0,1)) # Specify the range of values you want to plot
-
-# Extract the data to camera locations
-tmp <- terra::extract(r, locs_terra, fun=mean, ID=F) # Extract - each layer will become its own column
-locs_sf$mean_ndvi <- rowMeans(tmp) # take the mean of each column
 
 ```
 
 Easy!
+
+Lets see what it looks like:
+
+```{r ch4_47d, class.source="Rinfo", message=F, warning=F, echo=F, include=T}
+
+# Plot the resulting NDVI data
+terra::plot(r, col = rev(terrain.colors(20)), 
+            range=c(0,1)) # Specify the range of values you want to plot
+
+```
+
 
 Add the data to your locations covariates dataframe and check the output:
 
