@@ -72,7 +72,7 @@ Wildlife Insights is a "deployment" based image management platform, meaning all
 
 Do not worry, it is easy. In Wildlife Insights the sampling location is refereed to as the "placename".
 
-```{r ch3_2a, eval =T, class.source="Rinfo"}
+```{r ch3_2a, eval =T, class.source="Rmain"}
 
 # The following code matches every deployment ID in images, with deployment_id's and placenames in the deployment data. 
 img <- left_join(img, dep[,c("deployment_id", "placename")])

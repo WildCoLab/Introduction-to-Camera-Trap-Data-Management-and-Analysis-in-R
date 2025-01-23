@@ -441,7 +441,7 @@ time_range <- as.Date(c("2019-03-01", "2019-07-01")) # a time range of interest
 
 ```
 
-```{r}
+```{r ch4_47b, class.source="Rmain", message=F, warning=F, echo=F}
 ## Get the URLs of the data
 urls <- mf_get_url(
   collection = collection,
