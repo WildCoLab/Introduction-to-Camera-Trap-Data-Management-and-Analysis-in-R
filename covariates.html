@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="generator" content="bookdown 0.41 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2025-01-03" />
+<meta name="date" content="2025-01-23" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -2494,45 +2494,20 @@ ALG073
 <span id="cb130-7"><a href="covariates.html#cb130-7" tabindex="-1"></a></span>
 <span id="cb130-8"><a href="covariates.html#cb130-8" tabindex="-1"></a><span class="co"># Specify the time range - we will use a winter-summer transition</span></span>
 <span id="cb130-9"><a href="covariates.html#cb130-9" tabindex="-1"></a>time_range <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&quot;2019-03-01&quot;</span>, <span class="st">&quot;2019-07-01&quot;</span>)) <span class="co"># a time range of interest</span></span></code></pre></div>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="covariates.html#cb131-1" tabindex="-1"></a><span class="do">## Get the URLs of the data</span></span>
-<span id="cb131-2"><a href="covariates.html#cb131-2" tabindex="-1"></a>urls <span class="ot">&lt;-</span> <span class="fu">mf_get_url</span>(</span>
-<span id="cb131-3"><a href="covariates.html#cb131-3" tabindex="-1"></a>  <span class="at">collection =</span> collection,</span>
-<span id="cb131-4"><a href="covariates.html#cb131-4" tabindex="-1"></a>  <span class="at">variables =</span> variables,</span>
-<span id="cb131-5"><a href="covariates.html#cb131-5" tabindex="-1"></a>  <span class="at">roi =</span> aoi_sf,</span>
-<span id="cb131-6"><a href="covariates.html#cb131-6" tabindex="-1"></a>  <span class="at">time_range =</span> time_range</span>
-<span id="cb131-7"><a href="covariates.html#cb131-7" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Building the URLs...</code></pre>
-<pre><code>## ✔ URL(s) built.</code></pre>
 <pre><code>## Estimated maximum size of data to be downloaded is 4 Mb</code></pre>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="covariates.html#cb135-1" tabindex="-1"></a><span class="do">## Download the data. By default the data is downloaded in a temporary directory, but you can specify a folder</span></span>
-<span id="cb135-2"><a href="covariates.html#cb135-2" tabindex="-1"></a>res_dl <span class="ot">&lt;-</span> <span class="fu">mf_download_data</span>(urls, <span class="at">parallel =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <pre><code>## 1  datasets in total :  0  already downloaded and  1  datasets to download
-## Downloading the data (destination folder: /var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpkDfD0k/modisfast_15cf3800ca7b ) ...
+## Downloading the data (destination folder: /var/folders/2s/h6hvv9ps03xgz_krkkstvq_r0000gn/T//RtmpZ2tL4q/modisfast_1aa89fd4e08 ) ...
 ## Estimated maximum size of data to be downloaded is ~ 4 Mb</code></pre>
-<pre><code>## ✔ Data were all properly downloaded under the folder(s) /var/folders/95/0ydz4d79163427j3k5crp3fh0000gn/T//RtmpkDfD0k/modisfast_15cf3800ca7b/data/algar/MOD13Q1.061</code></pre>
 <pre><code>## 
 ## Actual size of downloaded data is 2 Mb</code></pre>
-<pre><code>## ℹ To import the data in R, use the function modisfast::mf_import_data() rather than terra::rast() or stars::read_stars(). More info at help(mf_import_data)</code></pre>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="covariates.html#cb140-1" tabindex="-1"></a><span class="co"># Import it into R</span></span>
-<span id="cb140-2"><a href="covariates.html#cb140-2" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">mf_import_data</span>(</span>
-<span id="cb140-3"><a href="covariates.html#cb140-3" tabindex="-1"></a>  <span class="at">path =</span> <span class="fu">dirname</span>(res_dl<span class="sc">$</span>destfile[<span class="dv">1</span>]),</span>
-<span id="cb140-4"><a href="covariates.html#cb140-4" tabindex="-1"></a>  <span class="at">collection =</span> collection,</span>
-<span id="cb140-5"><a href="covariates.html#cb140-5" tabindex="-1"></a>  <span class="at">proj_epsg =</span> <span class="dv">26912</span></span>
-<span id="cb140-6"><a href="covariates.html#cb140-6" tabindex="-1"></a>)</span></code></pre></div>
 <pre><code>## Importing the dataset as a SpatRaster object...</code></pre>
-<pre><code>## ✔ Dataset imported</code></pre>
-<div class="sourceCode" id="cb143"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb143-1"><a href="covariates.html#cb143-1" tabindex="-1"></a><span class="co"># Plot the resulting NDVI data</span></span>
-<span id="cb143-2"><a href="covariates.html#cb143-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">col =</span> <span class="fu">rev</span>(<span class="fu">terrain.colors</span>(<span class="dv">20</span>)), </span>
-<span id="cb143-3"><a href="covariates.html#cb143-3" tabindex="-1"></a>            <span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># Specify the range of values you want to plot</span></span></code></pre></div>
-<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="covariates.html#cb144-1" tabindex="-1"></a><span class="co"># Extract the data to camera locations</span></span>
-<span id="cb144-2"><a href="covariates.html#cb144-2" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r, locs_terra, <span class="at">fun=</span>mean, <span class="at">ID=</span>F) <span class="co"># Extract - each layer will become its own column</span></span>
-<span id="cb144-3"><a href="covariates.html#cb144-3" tabindex="-1"></a>locs_sf<span class="sc">$</span>mean_ndvi <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tmp) <span class="co"># take the mean of each column</span></span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_47b-1.png" width="672" /></p>
 <p>Easy!</p>
 <p>Check the output:</p>
-<div class="sourceCode" id="cb145"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb145-1"><a href="covariates.html#cb145-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>mean_ndvi,</span>
-<span id="cb145-2"><a href="covariates.html#cb145-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Mean NDVI score&quot;</span>,</span>
-<span id="cb145-3"><a href="covariates.html#cb145-3" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb136-1"><a href="covariates.html#cb136-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>mean_ndvi,</span>
+<span id="cb136-2"><a href="covariates.html#cb136-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Mean NDVI score&quot;</span>,</span>
+<span id="cb136-3"><a href="covariates.html#cb136-3" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_54-1.png" width="672" /></p>
 <p>Here we have created an average NDVI score across five months, but we could get monthly averages. Some products are even available at daily resolution!</p>
 </div>
@@ -2557,41 +2532,41 @@ ALG073
 </div>
 <div id="convert-and-save-your-covariates" class="section level2 hasAnchor" number="7.3">
 <h2><span class="header-section-number">7.3</span> Convert and save your covariates<a href="covariates.html#convert-and-save-your-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb146-1"><a href="covariates.html#cb146-1" tabindex="-1"></a><span class="co"># Convert columns to numeric</span></span>
-<span id="cb146-2"><a href="covariates.html#cb146-2" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(locs_sf<span class="sc">$</span>road_dist_m)</span>
-<span id="cb146-3"><a href="covariates.html#cb146-3" tabindex="-1"></a></span>
-<span id="cb146-4"><a href="covariates.html#cb146-4" tabindex="-1"></a><span class="co"># Convert it back to a dataframe</span></span>
-<span id="cb146-5"><a href="covariates.html#cb146-5" tabindex="-1"></a>locs_sf<span class="sc">$</span>geometry <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb146-6"><a href="covariates.html#cb146-6" tabindex="-1"></a></span>
-<span id="cb146-7"><a href="covariates.html#cb146-7" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, locs_sf)</span>
-<span id="cb146-8"><a href="covariates.html#cb146-8" tabindex="-1"></a></span>
-<span id="cb146-9"><a href="covariates.html#cb146-9" tabindex="-1"></a></span>
-<span id="cb146-10"><a href="covariates.html#cb146-10" tabindex="-1"></a><span class="co"># Write the dataset</span></span>
-<span id="cb146-11"><a href="covariates.html#cb146-11" tabindex="-1"></a></span>
-<span id="cb146-12"><a href="covariates.html#cb146-12" tabindex="-1"></a><span class="fu">write.csv</span>(locs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_camera_locations_and_covariates.csv&quot;</span>), <span class="at">row.names=</span>F)</span></code></pre></div>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb137-1"><a href="covariates.html#cb137-1" tabindex="-1"></a><span class="co"># Convert columns to numeric</span></span>
+<span id="cb137-2"><a href="covariates.html#cb137-2" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(locs_sf<span class="sc">$</span>road_dist_m)</span>
+<span id="cb137-3"><a href="covariates.html#cb137-3" tabindex="-1"></a></span>
+<span id="cb137-4"><a href="covariates.html#cb137-4" tabindex="-1"></a><span class="co"># Convert it back to a dataframe</span></span>
+<span id="cb137-5"><a href="covariates.html#cb137-5" tabindex="-1"></a>locs_sf<span class="sc">$</span>geometry <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb137-6"><a href="covariates.html#cb137-6" tabindex="-1"></a></span>
+<span id="cb137-7"><a href="covariates.html#cb137-7" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, locs_sf)</span>
+<span id="cb137-8"><a href="covariates.html#cb137-8" tabindex="-1"></a></span>
+<span id="cb137-9"><a href="covariates.html#cb137-9" tabindex="-1"></a></span>
+<span id="cb137-10"><a href="covariates.html#cb137-10" tabindex="-1"></a><span class="co"># Write the dataset</span></span>
+<span id="cb137-11"><a href="covariates.html#cb137-11" tabindex="-1"></a></span>
+<span id="cb137-12"><a href="covariates.html#cb137-12" tabindex="-1"></a><span class="fu">write.csv</span>(locs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_camera_locations_and_covariates.csv&quot;</span>), <span class="at">row.names=</span>F)</span></code></pre></div>
 </div>
 <div id="correlations-between-predictors" class="section level2 hasAnchor" number="7.4">
 <h2><span class="header-section-number">7.4</span> Correlations between predictors<a href="covariates.html#correlations-between-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>So we have used a variety of different techniques to generate covariates for our subsequent analyses. However, it is important to note that we cannot just through these variables into a model.</p>
 <p>One way to check if your different variables are confound/correlated is using the <code>corrplot</code> package.</p>
-<div class="sourceCode" id="cb147"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb147-1"><a href="covariates.html#cb147-1" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb147-2"><a href="covariates.html#cb147-2" tabindex="-1"></a></span>
-<span id="cb147-3"><a href="covariates.html#cb147-3" tabindex="-1"></a><span class="co"># First we need to create a correlation matrix between the different variables of interest</span></span>
-<span id="cb147-4"><a href="covariates.html#cb147-4" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;line_of_sight_m&quot;</span>, <span class="st">&quot;water_depth_m&quot;</span>, <span class="st">&quot;elevation&quot;</span>,</span>
-<span id="cb147-5"><a href="covariates.html#cb147-5" tabindex="-1"></a>                     <span class="st">&quot;road_dist_m&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb138-1"><a href="covariates.html#cb138-1" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb138-2"><a href="covariates.html#cb138-2" tabindex="-1"></a></span>
+<span id="cb138-3"><a href="covariates.html#cb138-3" tabindex="-1"></a><span class="co"># First we need to create a correlation matrix between the different variables of interest</span></span>
+<span id="cb138-4"><a href="covariates.html#cb138-4" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;line_of_sight_m&quot;</span>, <span class="st">&quot;water_depth_m&quot;</span>, <span class="st">&quot;elevation&quot;</span>,</span>
+<span id="cb138-5"><a href="covariates.html#cb138-5" tabindex="-1"></a>                     <span class="st">&quot;road_dist_m&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)])</span></code></pre></div>
 <p>Now lets make the basic <code>corrplot</code>:</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb148-1"><a href="covariates.html#cb148-1" tabindex="-1"></a><span class="fu">corrplot</span>(M)</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb139-1"><a href="covariates.html#cb139-1" tabindex="-1"></a><span class="fu">corrplot</span>(M)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_59-1.png" width="672" /></p>
 <p>The cells denote pairwise correlations between the rows and the columns. The great thing about <code>corrplot</code> is customization option are near endless - see <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html">the corrplot vignette</a>.</p>
 <p>Let’s make a better, more informative, <code>corrplot</code>!</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb149-1"><a href="covariates.html#cb149-1" tabindex="-1"></a><span class="fu">corrplot</span>(M,                              <span class="co">#The correlation matrix we made</span></span>
-<span id="cb149-2"><a href="covariates.html#cb149-2" tabindex="-1"></a>         <span class="at">method=</span><span class="st">&quot;color&quot;</span>,                 <span class="co"># How we want the cells </span></span>
-<span id="cb149-3"><a href="covariates.html#cb149-3" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,                   <span class="co"># Just show the upper part (it is usually mirrored)</span></span>
-<span id="cb149-4"><a href="covariates.html#cb149-4" tabindex="-1"></a>         <span class="at">order=</span><span class="st">&quot;hclust&quot;</span>,                 <span class="co"># Order the variables using the hclust method</span></span>
-<span id="cb149-5"><a href="covariates.html#cb149-5" tabindex="-1"></a>         <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>,          <span class="co"># Add coefficient of correlation  </span></span>
-<span id="cb149-6"><a href="covariates.html#cb149-6" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>,      <span class="co"># Control the text label color and rotation</span></span>
-<span id="cb149-7"><a href="covariates.html#cb149-7" tabindex="-1"></a>         <span class="at">diag=</span>F                          <span class="co"># Suppress the diagonal correlations (which are 1 anyway)</span></span>
-<span id="cb149-8"><a href="covariates.html#cb149-8" tabindex="-1"></a>         )</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb140-1"><a href="covariates.html#cb140-1" tabindex="-1"></a><span class="fu">corrplot</span>(M,                              <span class="co">#The correlation matrix we made</span></span>
+<span id="cb140-2"><a href="covariates.html#cb140-2" tabindex="-1"></a>         <span class="at">method=</span><span class="st">&quot;color&quot;</span>,                 <span class="co"># How we want the cells </span></span>
+<span id="cb140-3"><a href="covariates.html#cb140-3" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,                   <span class="co"># Just show the upper part (it is usually mirrored)</span></span>
+<span id="cb140-4"><a href="covariates.html#cb140-4" tabindex="-1"></a>         <span class="at">order=</span><span class="st">&quot;hclust&quot;</span>,                 <span class="co"># Order the variables using the hclust method</span></span>
+<span id="cb140-5"><a href="covariates.html#cb140-5" tabindex="-1"></a>         <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>,          <span class="co"># Add coefficient of correlation  </span></span>
+<span id="cb140-6"><a href="covariates.html#cb140-6" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>,      <span class="co"># Control the text label color and rotation</span></span>
+<span id="cb140-7"><a href="covariates.html#cb140-7" tabindex="-1"></a>         <span class="at">diag=</span>F                          <span class="co"># Suppress the diagonal correlations (which are 1 anyway)</span></span>
+<span id="cb140-8"><a href="covariates.html#cb140-8" tabindex="-1"></a>         )</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_60-1.png" width="672" /></p>
 <p>In general there is very low correlation between our different predictors! If we were seeing pairwise correlations &gt;0.7 we perhaps wouldn’t include those in the same model.</p>
 
