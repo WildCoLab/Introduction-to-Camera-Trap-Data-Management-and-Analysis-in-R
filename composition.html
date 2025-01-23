@@ -1258,25 +1258,25 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb184-6"><a href="composition.html#cb184-6" tabindex="-1"></a>point_estimate <span class="ot">&lt;-</span> out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based[out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based<span class="sc">$</span>t<span class="sc">==</span><span class="dv">1000</span>,] </span>
 <span id="cb184-7"><a href="composition.html#cb184-7" tabindex="-1"></a>point_estimate</span></code></pre></div>
 <pre><code>##    Assemblage    t        Method Order.q        qD    qD.LCL    qD.UCL
-## 1     Offline 1000   Rarefaction       0  9.908397  9.073920 10.742874
-## 5     Offline 1000   Rarefaction       1  5.199616  4.720803  5.678429
-## 9     Offline 1000   Rarefaction       2  3.770656  3.255373  4.285938
-## 13   HumanUse 1000   Rarefaction       0 13.700080 11.515394 15.884766
-## 17   HumanUse 1000   Rarefaction       1  8.526882  7.814589  9.239175
-## 21   HumanUse 1000   Rarefaction       2  7.468354  6.895975  8.040733
-## 28   NatRegen 1000 Extrapolation       0 11.175535  9.350398 13.000672
-## 32   NatRegen 1000 Extrapolation       1  5.404507  4.832452  5.976563
-## 36   NatRegen 1000 Extrapolation       2  4.139836  3.706555  4.573118
+## 1     Offline 1000   Rarefaction       0  9.908397  9.201875 10.614919
+## 5     Offline 1000   Rarefaction       1  5.199616  4.671410  5.727821
+## 9     Offline 1000   Rarefaction       2  3.770656  3.257044  4.284267
+## 13   HumanUse 1000   Rarefaction       0 13.700080 11.676583 15.723578
+## 17   HumanUse 1000   Rarefaction       1  8.526882  7.923047  9.130717
+## 21   HumanUse 1000   Rarefaction       2  7.468354  6.959720  7.976988
+## 28   NatRegen 1000 Extrapolation       0 11.175535  9.521570 12.829501
+## 32   NatRegen 1000 Extrapolation       1  5.404507  4.966198  5.842816
+## 36   NatRegen 1000 Extrapolation       2  4.139836  3.739794  4.539878
 ##           SC    SC.LCL    SC.UCL
-## 1  0.9942029 0.9918762 0.9965296
-## 5  0.9942029 0.9918762 0.9965296
-## 9  0.9942029 0.9918762 0.9965296
-## 13 0.9925184 0.9867138 0.9983230
-## 17 0.9925184 0.9867138 0.9983230
-## 21 0.9925184 0.9867138 0.9983230
-## 28 0.9982324 0.9942095 1.0000000
-## 32 0.9982324 0.9942095 1.0000000
-## 36 0.9982324 0.9942095 1.0000000</code></pre>
+## 1  0.9942029 0.9916147 0.9967911
+## 5  0.9942029 0.9916147 0.9967911
+## 9  0.9942029 0.9916147 0.9967911
+## 13 0.9925184 0.9877544 0.9972825
+## 17 0.9925184 0.9877544 0.9972825
+## 21 0.9925184 0.9877544 0.9972825
+## 28 0.9982324 0.9939437 1.0000000
+## 32 0.9982324 0.9939437 1.0000000
+## 36 0.9982324 0.9939437 1.0000000</code></pre>
 <div class="sourceCode" id="cb186"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb186-1"><a href="composition.html#cb186-1" tabindex="-1"></a><span class="co"># Make a nice ggplot!</span></span>
 <span id="cb186-2"><a href="composition.html#cb186-2" tabindex="-1"></a><span class="fu">ggplot</span>(point_estimate, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>,<span class="fl">0.8</span>, <span class="fl">1.8</span>,</span>
 <span id="cb186-3"><a href="composition.html#cb186-3" tabindex="-1"></a>                               <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,</span>
