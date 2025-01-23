@@ -490,7 +490,7 @@ Easy!
 
 Lets see what it looks like:
 
-```{r ch4_47d, class.source="Rinfo", message=F, warning=F, echo=F, include=T}
+```{r ch4_47d, class.source="Rinfo", message=F, warning=F, echo=T, include=T}
 
 # Plot the resulting NDVI data
 terra::plot(r, col = rev(terrain.colors(20)), 
