@@ -469,20 +469,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <em>Create a new .R script</em></p>
 <p>Call it <code>05_example_habitat_use.R</code>.</p>
 <p><em>Load the required packages</em></p>
-<div class="sourceCode" id="cb197"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb197-1"><a href="habitat-use.html#cb197-1" tabindex="-1"></a><span class="co"># Check you have them and load them</span></span>
-<span id="cb197-2"><a href="habitat-use.html#cb197-2" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;lme4&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;Hmsc&quot;</span>, <span class="st">&quot;jtools&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;corrplot&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>)</span>
-<span id="cb197-3"><a href="habitat-use.html#cb197-3" tabindex="-1"></a></span>
-<span id="cb197-4"><a href="habitat-use.html#cb197-4" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
-<span id="cb197-5"><a href="habitat-use.html#cb197-5" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
-<span id="cb197-6"><a href="habitat-use.html#cb197-6" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb192-1"><a href="habitat-use.html#cb192-1" tabindex="-1"></a><span class="co"># Check you have them and load them</span></span>
+<span id="cb192-2"><a href="habitat-use.html#cb192-2" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;ggplot2&quot;</span>, <span class="st">&quot;gridExtra&quot;</span>, <span class="st">&quot;lme4&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;Hmsc&quot;</span>, <span class="st">&quot;jtools&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;corrplot&quot;</span>, <span class="st">&quot;MuMIn&quot;</span>)</span>
+<span id="cb192-3"><a href="habitat-use.html#cb192-3" tabindex="-1"></a></span>
+<span id="cb192-4"><a href="habitat-use.html#cb192-4" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb192-5"><a href="habitat-use.html#cb192-5" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb192-6"><a href="habitat-use.html#cb192-6" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 <div id="calculating-capture-rate" class="section level2 hasAnchor" number="10.1">
 <h2><span class="header-section-number">10.1</span> Calculating capture rate<a href="habitat-use.html#calculating-capture-rate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We will start by using the <code>total_obs</code> dataframe we have used in previous chapters:</p>
-<div class="sourceCode" id="cb198"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb198-1"><a href="habitat-use.html#cb198-1" tabindex="-1"></a><span class="co"># Import the total observations dataset</span></span>
-<span id="cb198-2"><a href="habitat-use.html#cb198-2" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb198-3"><a href="habitat-use.html#cb198-3" tabindex="-1"></a></span>
-<span id="cb198-4"><a href="habitat-use.html#cb198-4" tabindex="-1"></a><span class="co"># Import your species list</span></span>
-<span id="cb198-5"><a href="habitat-use.html#cb198-5" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb193"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb193-1"><a href="habitat-use.html#cb193-1" tabindex="-1"></a><span class="co"># Import the total observations dataset</span></span>
+<span id="cb193-2"><a href="habitat-use.html#cb193-2" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_total_observations.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb193-3"><a href="habitat-use.html#cb193-3" tabindex="-1"></a></span>
+<span id="cb193-4"><a href="habitat-use.html#cb193-4" tabindex="-1"></a><span class="co"># Import your species list</span></span>
+<span id="cb193-5"><a href="habitat-use.html#cb193-5" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <p>Which, as a quick reminder, looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -845,15 +845,15 @@ ALG036
 <p>So within each row, we have the location (<code>placename</code>), the survey effort at each given location (camera <code>days</code>), and the number of independent records of each species. This is very close to the format which most linear model analysis packages require. Easy!</p>
 <p>Our next step to create the capture rate - our proxy for habitat use. We will divide each count by the number of days cameras were active in that location, then multiply by the a standardized number of days - often people use 100.</p>
 <p>In R this would look like:</p>
-<div class="sourceCode" id="cb199"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb199-1"><a href="habitat-use.html#cb199-1" tabindex="-1"></a><span class="co"># Create a dataframe to store these detection rates</span></span>
-<span id="cb199-2"><a href="habitat-use.html#cb199-2" tabindex="-1"></a>total_cr <span class="ot">&lt;-</span> total_obs</span>
-<span id="cb199-3"><a href="habitat-use.html#cb199-3" tabindex="-1"></a><span class="co"># Divide the species abundances (which start in column four), by the amount of camera effort</span></span>
-<span id="cb199-4"><a href="habitat-use.html#cb199-4" tabindex="-1"></a>total_cr[ ,sp_summary<span class="sc">$</span>sp ] <span class="ot">&lt;-</span> (total_cr[ , sp_summary<span class="sc">$</span>sp]<span class="sc">/</span>total_cr<span class="sc">$</span>days)<span class="sc">*</span><span class="dv">100</span></span></code></pre></div>
+<div class="sourceCode" id="cb194"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb194-1"><a href="habitat-use.html#cb194-1" tabindex="-1"></a><span class="co"># Create a dataframe to store these detection rates</span></span>
+<span id="cb194-2"><a href="habitat-use.html#cb194-2" tabindex="-1"></a>total_cr <span class="ot">&lt;-</span> total_obs</span>
+<span id="cb194-3"><a href="habitat-use.html#cb194-3" tabindex="-1"></a><span class="co"># Divide the species abundances (which start in column four), by the amount of camera effort</span></span>
+<span id="cb194-4"><a href="habitat-use.html#cb194-4" tabindex="-1"></a>total_cr[ ,sp_summary<span class="sc">$</span>sp ] <span class="ot">&lt;-</span> (total_cr[ , sp_summary<span class="sc">$</span>sp]<span class="sc">/</span>total_cr<span class="sc">$</span>days)<span class="sc">*</span><span class="dv">100</span></span></code></pre></div>
 <p>We can then examine the relationship between raw counts (on the x-axis) with our detection rate (on the y-axis), using <em>Odocoileus virginianus</em> as an example. In the plot below each black dot represents a <code>placename</code> where camera trapping has occurred.</p>
-<div class="sourceCode" id="cb200"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb200-1"><a href="habitat-use.html#cb200-1" tabindex="-1"></a><span class="fu">plot</span>(total_cr<span class="sc">$</span>Odocoileus.virginianus <span class="sc">~</span> total_obs<span class="sc">$</span>Odocoileus.virginianus,</span>
-<span id="cb200-2"><a href="habitat-use.html#cb200-2" tabindex="-1"></a>     <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">19</span>, </span>
-<span id="cb200-3"><a href="habitat-use.html#cb200-3" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Capture rate per 100 days&quot;</span>, </span>
-<span id="cb200-4"><a href="habitat-use.html#cb200-4" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Number of independent records&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb195"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb195-1"><a href="habitat-use.html#cb195-1" tabindex="-1"></a><span class="fu">plot</span>(total_cr<span class="sc">$</span>Odocoileus.virginianus <span class="sc">~</span> total_obs<span class="sc">$</span>Odocoileus.virginianus,</span>
+<span id="cb195-2"><a href="habitat-use.html#cb195-2" tabindex="-1"></a>     <span class="at">las=</span><span class="dv">1</span>, <span class="at">pch=</span><span class="dv">19</span>, </span>
+<span id="cb195-3"><a href="habitat-use.html#cb195-3" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Capture rate per 100 days&quot;</span>, </span>
+<span id="cb195-4"><a href="habitat-use.html#cb195-4" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">&quot;Number of independent records&quot;</span>)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_5-1.png" width="672" /></p>
 <p>As you can see they are not a perfect match as the capture rate accounts for the variation in effort between different sites.</p>
 <div id="examples-from-the-literature" class="section level3 hasAnchor" number="10.1.1">
@@ -879,16 +879,16 @@ ALG036
 <p>In this example we will explore if the habitat use of <em>Odocoileus virginianus</em> varies based on the `feature_type’ the line of sight where it is found.</p>
 <p><strong>Preparing our data</strong></p>
 <p>Recall that the information about each location is recorded in the file:</p>
-<div class="sourceCode" id="cb201"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb201-1"><a href="habitat-use.html#cb201-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>, <span class="at">header=</span>T)</span>
-<span id="cb201-2"><a href="habitat-use.html#cb201-2" tabindex="-1"></a></span>
-<span id="cb201-3"><a href="habitat-use.html#cb201-3" tabindex="-1"></a><span class="co"># Convert to categorical factors</span></span>
-<span id="cb201-4"><a href="habitat-use.html#cb201-4" tabindex="-1"></a>locs <span class="ot">&lt;-</span> locs <span class="sc">%&gt;%</span> </span>
-<span id="cb201-5"><a href="habitat-use.html#cb201-5" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor)</span>
-<span id="cb201-6"><a href="habitat-use.html#cb201-6" tabindex="-1"></a></span>
-<span id="cb201-7"><a href="habitat-use.html#cb201-7" tabindex="-1"></a><span class="co"># You should also standardize your covariates - it helps models coverage an facillitates comparison of effects sizes</span></span>
-<span id="cb201-8"><a href="habitat-use.html#cb201-8" tabindex="-1"></a></span>
-<span id="cb201-9"><a href="habitat-use.html#cb201-9" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
-<span id="cb201-10"><a href="habitat-use.html#cb201-10" tabindex="-1"></a>z_locs <span class="ot">&lt;-</span> <span class="fu">stdize</span>(locs)</span></code></pre></div>
+<div class="sourceCode" id="cb196"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb196-1"><a href="habitat-use.html#cb196-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<span id="cb196-2"><a href="habitat-use.html#cb196-2" tabindex="-1"></a></span>
+<span id="cb196-3"><a href="habitat-use.html#cb196-3" tabindex="-1"></a><span class="co"># Convert to categorical factors</span></span>
+<span id="cb196-4"><a href="habitat-use.html#cb196-4" tabindex="-1"></a>locs <span class="ot">&lt;-</span> locs <span class="sc">%&gt;%</span> </span>
+<span id="cb196-5"><a href="habitat-use.html#cb196-5" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor)</span>
+<span id="cb196-6"><a href="habitat-use.html#cb196-6" tabindex="-1"></a></span>
+<span id="cb196-7"><a href="habitat-use.html#cb196-7" tabindex="-1"></a><span class="co"># You should also standardize your covariates - it helps models coverage an facillitates comparison of effects sizes</span></span>
+<span id="cb196-8"><a href="habitat-use.html#cb196-8" tabindex="-1"></a></span>
+<span id="cb196-9"><a href="habitat-use.html#cb196-9" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
+<span id="cb196-10"><a href="habitat-use.html#cb196-10" tabindex="-1"></a>z_locs <span class="ot">&lt;-</span> <span class="fu">stdize</span>(locs)</span></code></pre></div>
 <p>Take a look at it to see what it has done!</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; overflow-x: scroll; width:750px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -1166,13 +1166,13 @@ meters
 </div>
 <p>Each location (<code>placename</code>) has a single row in the dataframe.</p>
 <p>We will now add our covariates to our capture rate dataframe:</p>
-<div class="sourceCode" id="cb202"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb202-1"><a href="habitat-use.html#cb202-1" tabindex="-1"></a>mod_dat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(total_cr, z_locs) <span class="co"># from the dplyr package</span></span></code></pre></div>
+<div class="sourceCode" id="cb197"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb197-1"><a href="habitat-use.html#cb197-1" tabindex="-1"></a>mod_dat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(total_cr, z_locs) <span class="co"># from the dplyr package</span></span></code></pre></div>
 </div>
 <div id="catagorical-predictor" class="section level3 hasAnchor" number="10.2.2">
 <h3><span class="header-section-number">10.2.2</span> Catagorical predictor<a href="habitat-use.html#catagorical-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>So we start by exploring the influence of ‘feature_type’ on our response term.</p>
 <p>What are the categories we have in our feature type variable?</p>
-<div class="sourceCode" id="cb203"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb203-1"><a href="habitat-use.html#cb203-1" tabindex="-1"></a><span class="fu">table</span>(z_locs<span class="sc">$</span>feature_type)</span></code></pre></div>
+<div class="sourceCode" id="cb198"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb198-1"><a href="habitat-use.html#cb198-1" tabindex="-1"></a><span class="fu">table</span>(z_locs<span class="sc">$</span>feature_type)</span></code></pre></div>
 <pre><code>## 
 ## HumanUse NatRegen  Offline 
 ##       14       11       13</code></pre>
@@ -1184,17 +1184,17 @@ meters
 <li>NatRegen = a seismic line which is naturally regenerating</li>
 </ul>
 <p>Lets do a quick raw data plot to see what results we might expect:</p>
-<div class="sourceCode" id="cb205"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb205-1"><a href="habitat-use.html#cb205-1" tabindex="-1"></a><span class="fu">boxplot</span>(mod_dat<span class="sc">$</span>Odocoileus.virginianus<span class="sc">~</span>mod_dat<span class="sc">$</span>feature_type,</span>
-<span id="cb205-2"><a href="habitat-use.html#cb205-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
-<span id="cb205-3"><a href="habitat-use.html#cb205-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;feature_type&quot;</span>,</span>
-<span id="cb205-4"><a href="habitat-use.html#cb205-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb200"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb200-1"><a href="habitat-use.html#cb200-1" tabindex="-1"></a><span class="fu">boxplot</span>(mod_dat<span class="sc">$</span>Odocoileus.virginianus<span class="sc">~</span>mod_dat<span class="sc">$</span>feature_type,</span>
+<span id="cb200-2"><a href="habitat-use.html#cb200-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
+<span id="cb200-3"><a href="habitat-use.html#cb200-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;feature_type&quot;</span>,</span>
+<span id="cb200-4"><a href="habitat-use.html#cb200-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_9-1.png" width="672" /></p>
 <p>It looks like white-tailed deer habitat use may be higher in naturally regenerating areas, but there is a lot of overlap between sites.</p>
 <p>Next we will fit a simple linear model using the `lm()’ function in base R.</p>
-<div class="sourceCode" id="cb206"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb206-1"><a href="habitat-use.html#cb206-1" tabindex="-1"></a><span class="co"># model results &lt;- lm( Y data ~ x Data, data= dataframe source)</span></span>
-<span id="cb206-2"><a href="habitat-use.html#cb206-2" tabindex="-1"></a>lm_cat <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> feature_type, <span class="at">data =</span> mod_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb201"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb201-1"><a href="habitat-use.html#cb201-1" tabindex="-1"></a><span class="co"># model results &lt;- lm( Y data ~ x Data, data= dataframe source)</span></span>
+<span id="cb201-2"><a href="habitat-use.html#cb201-2" tabindex="-1"></a>lm_cat <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> feature_type, <span class="at">data =</span> mod_dat)</span></code></pre></div>
 <p>Lets looks at the model summary:</p>
-<div class="sourceCode" id="cb207"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb207-1"><a href="habitat-use.html#cb207-1" tabindex="-1"></a><span class="fu">summary</span>(lm_cat)</span></code></pre></div>
+<div class="sourceCode" id="cb202"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb202-1"><a href="habitat-use.html#cb202-1" tabindex="-1"></a><span class="fu">summary</span>(lm_cat)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Odocoileus.virginianus ~ feature_type, data = mod_dat)
@@ -1216,26 +1216,26 @@ meters
 ## F-statistic: 2.405 on 2 and 35 DF,  p-value: 0.105</code></pre>
 <p>Categorical covariates are show as contrasts from the reference level (in this case HumanUse), and the p-value relate to testing whether the other categories are significantly different from the reference level. Other things to note are that our R-squared value (how much variation the model explains) is fairly low - but that is common in camera trap models.</p>
 <p>We can take a quick look at the predictions using the <code>jtools</code> package. More examples of its use are can be found in the `<a href="https://jtools.jacob-long.com/articles/effect_plot.html">Visualizing regression model predictions vignette</a> associated with the package.</p>
-<div class="sourceCode" id="cb209"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb209-1"><a href="habitat-use.html#cb209-1" tabindex="-1"></a><span class="fu">effect_plot</span>(lm_cat,                  <span class="co"># The model object</span></span>
-<span id="cb209-2"><a href="habitat-use.html#cb209-2" tabindex="-1"></a>            <span class="at">pred =</span> feature_type,     <span class="co"># The variable you want to predict</span></span>
-<span id="cb209-3"><a href="habitat-use.html#cb209-3" tabindex="-1"></a>            <span class="at">interval =</span> <span class="cn">TRUE</span>,         <span class="co"># Whether you want confidence intervals (default = 0.95)</span></span>
-<span id="cb209-4"><a href="habitat-use.html#cb209-4" tabindex="-1"></a>            <span class="at">partial.residuals =</span> T,   <span class="co"># Show the residual variation -after accounting for fixed effects  </span></span>
-<span id="cb209-5"><a href="habitat-use.html#cb209-5" tabindex="-1"></a>            <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>) <span class="co"># Change the y axis label</span></span></code></pre></div>
+<div class="sourceCode" id="cb204"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb204-1"><a href="habitat-use.html#cb204-1" tabindex="-1"></a><span class="fu">effect_plot</span>(lm_cat,                  <span class="co"># The model object</span></span>
+<span id="cb204-2"><a href="habitat-use.html#cb204-2" tabindex="-1"></a>            <span class="at">pred =</span> feature_type,     <span class="co"># The variable you want to predict</span></span>
+<span id="cb204-3"><a href="habitat-use.html#cb204-3" tabindex="-1"></a>            <span class="at">interval =</span> <span class="cn">TRUE</span>,         <span class="co"># Whether you want confidence intervals (default = 0.95)</span></span>
+<span id="cb204-4"><a href="habitat-use.html#cb204-4" tabindex="-1"></a>            <span class="at">partial.residuals =</span> T,   <span class="co"># Show the residual variation -after accounting for fixed effects  </span></span>
+<span id="cb204-5"><a href="habitat-use.html#cb204-5" tabindex="-1"></a>            <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>) <span class="co"># Change the y axis label</span></span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_12-1.png" width="672" /></p>
 </div>
 <div id="continuous-predictor" class="section level3 hasAnchor" number="10.2.3">
 <h3><span class="header-section-number">10.2.3</span> Continuous predictor<a href="habitat-use.html#continuous-predictor" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Let’s also explore a continuous predictor `line_of_sight_m’:</p>
-<div class="sourceCode" id="cb210"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb210-1"><a href="habitat-use.html#cb210-1" tabindex="-1"></a><span class="fu">plot</span>(mod_dat<span class="sc">$</span>Odocoileus.virginianus<span class="sc">~</span>mod_dat<span class="sc">$</span>z.line_of_sight_m,</span>
-<span id="cb210-2"><a href="habitat-use.html#cb210-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
-<span id="cb210-3"><a href="habitat-use.html#cb210-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;line_of_sight_m&quot;</span>,</span>
-<span id="cb210-4"><a href="habitat-use.html#cb210-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb205"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb205-1"><a href="habitat-use.html#cb205-1" tabindex="-1"></a><span class="fu">plot</span>(mod_dat<span class="sc">$</span>Odocoileus.virginianus<span class="sc">~</span>mod_dat<span class="sc">$</span>z.line_of_sight_m,</span>
+<span id="cb205-2"><a href="habitat-use.html#cb205-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
+<span id="cb205-3"><a href="habitat-use.html#cb205-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;line_of_sight_m&quot;</span>,</span>
+<span id="cb205-4"><a href="habitat-use.html#cb205-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_13-1.png" width="672" /></p>
 <p>Next we will fit a simple linear model using the `lm()’ function in base R.</p>
-<div class="sourceCode" id="cb211"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb211-1"><a href="habitat-use.html#cb211-1" tabindex="-1"></a><span class="co"># model results &lt;- lm( Y data ~ x Data, data= dataframe source)</span></span>
-<span id="cb211-2"><a href="habitat-use.html#cb211-2" tabindex="-1"></a>lm_con <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> z.line_of_sight_m, <span class="at">data =</span> mod_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb206"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb206-1"><a href="habitat-use.html#cb206-1" tabindex="-1"></a><span class="co"># model results &lt;- lm( Y data ~ x Data, data= dataframe source)</span></span>
+<span id="cb206-2"><a href="habitat-use.html#cb206-2" tabindex="-1"></a>lm_con <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> z.line_of_sight_m, <span class="at">data =</span> mod_dat)</span></code></pre></div>
 <p>Lets looks at the model summary:</p>
-<div class="sourceCode" id="cb212"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb212-1"><a href="habitat-use.html#cb212-1" tabindex="-1"></a><span class="fu">summary</span>(lm_con)</span></code></pre></div>
+<div class="sourceCode" id="cb207"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb207-1"><a href="habitat-use.html#cb207-1" tabindex="-1"></a><span class="fu">summary</span>(lm_con)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = Odocoileus.virginianus ~ z.line_of_sight_m, data = mod_dat)
@@ -1256,23 +1256,23 @@ meters
 ## F-statistic: 7.071 on 1 and 36 DF,  p-value: 0.01162</code></pre>
 <p>Here the effect represents the gradient of the relationship between <code>line_of_sight_m</code> and the habitat use of white-tailed deer. The effect is negative, and the p-value is below the arbitrary 0.05 threshold, which suggests it my be an important predictor of white-tailed deer habitat use.</p>
 <p>It will make more sense if we plot it - again using <code>jtools</code></p>
-<div class="sourceCode" id="cb214"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb214-1"><a href="habitat-use.html#cb214-1" tabindex="-1"></a><span class="fu">effect_plot</span>(lm_con,                  <span class="co"># The model object</span></span>
-<span id="cb214-2"><a href="habitat-use.html#cb214-2" tabindex="-1"></a>            <span class="at">pred =</span> z.line_of_sight_m,  <span class="co"># The variable you want to predict</span></span>
-<span id="cb214-3"><a href="habitat-use.html#cb214-3" tabindex="-1"></a>            <span class="at">interval =</span> <span class="cn">TRUE</span>,         <span class="co"># Whether you want confidence intervals (default = 0.95)</span></span>
-<span id="cb214-4"><a href="habitat-use.html#cb214-4" tabindex="-1"></a>            <span class="at">partial.residuals =</span> T,   <span class="co"># Show the residual variation -after accounting for fixed effects  </span></span>
-<span id="cb214-5"><a href="habitat-use.html#cb214-5" tabindex="-1"></a>            <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>) <span class="co"># Change the y axis label</span></span></code></pre></div>
+<div class="sourceCode" id="cb209"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb209-1"><a href="habitat-use.html#cb209-1" tabindex="-1"></a><span class="fu">effect_plot</span>(lm_con,                  <span class="co"># The model object</span></span>
+<span id="cb209-2"><a href="habitat-use.html#cb209-2" tabindex="-1"></a>            <span class="at">pred =</span> z.line_of_sight_m,  <span class="co"># The variable you want to predict</span></span>
+<span id="cb209-3"><a href="habitat-use.html#cb209-3" tabindex="-1"></a>            <span class="at">interval =</span> <span class="cn">TRUE</span>,         <span class="co"># Whether you want confidence intervals (default = 0.95)</span></span>
+<span id="cb209-4"><a href="habitat-use.html#cb209-4" tabindex="-1"></a>            <span class="at">partial.residuals =</span> T,   <span class="co"># Show the residual variation -after accounting for fixed effects  </span></span>
+<span id="cb209-5"><a href="habitat-use.html#cb209-5" tabindex="-1"></a>            <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>) <span class="co"># Change the y axis label</span></span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_16-1.png" width="672" /></p>
 </div>
 <div id="model-comparisons" class="section level3 hasAnchor" number="10.2.4">
 <h3><span class="header-section-number">10.2.4</span> Model comparisons<a href="habitat-use.html#model-comparisons" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>There are times when we may want to compare which model is “the best”, or which model is the most parsimonious. One way to do this is through the use of Information Theory - we can compare which model explains the most amount of variation after applying a penalty for how complex it is (more complex models will always explain more variation, even if just by chance).</p>
 <p>One useful package for this is the <code>MuMIn</code> package and the function <code>model.sel()</code> for model selection:</p>
-<div class="sourceCode" id="cb215"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb215-1"><a href="habitat-use.html#cb215-1" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
-<span id="cb215-2"><a href="habitat-use.html#cb215-2" tabindex="-1"></a></span>
-<span id="cb215-3"><a href="habitat-use.html#cb215-3" tabindex="-1"></a><span class="co"># Lets also create a &quot;null model&quot; something without any predictors in at all, to compare these models to:</span></span>
-<span id="cb215-4"><a href="habitat-use.html#cb215-4" tabindex="-1"></a>lm_null <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> mod_dat) </span></code></pre></div>
+<div class="sourceCode" id="cb210"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb210-1"><a href="habitat-use.html#cb210-1" tabindex="-1"></a><span class="fu">library</span>(MuMIn)</span>
+<span id="cb210-2"><a href="habitat-use.html#cb210-2" tabindex="-1"></a></span>
+<span id="cb210-3"><a href="habitat-use.html#cb210-3" tabindex="-1"></a><span class="co"># Lets also create a &quot;null model&quot; something without any predictors in at all, to compare these models to:</span></span>
+<span id="cb210-4"><a href="habitat-use.html#cb210-4" tabindex="-1"></a>lm_null <span class="ot">&lt;-</span> <span class="fu">lm</span>(Odocoileus.virginianus <span class="sc">~</span> <span class="dv">1</span>, <span class="at">data =</span> mod_dat) </span></code></pre></div>
 <p>Now compare the three alternative models:</p>
-<div class="sourceCode" id="cb216"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb216-1"><a href="habitat-use.html#cb216-1" tabindex="-1"></a><span class="fu">model.sel</span>(lm_null, lm_cat, lm_con)</span></code></pre></div>
+<div class="sourceCode" id="cb211"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb211-1"><a href="habitat-use.html#cb211-1" tabindex="-1"></a><span class="fu">model.sel</span>(lm_null, lm_cat, lm_con)</span></code></pre></div>
 <pre><code>## Model selection table 
 ##         (Int) ftr_typ z.lin_of_sgh_m df   logLik  AICc delta weight
 ## lm_con  2.683                  -1.39  3  -96.844 200.4  0.00  0.821
@@ -1298,43 +1298,43 @@ meters
 <p>And for a deep-dive into the inner workings of mixed effects models and their assumptions, see the following paper:
 <a href="https://peerj.com/articles/4794/">Harrison, Xavier A., et al. “A brief introduction to mixed effects modelling and multi-model inference in ecology.” PeerJ 6 (2018): e4794.</a></p>
 <p>First we must install the packages we require: ‘lme4’ and `tidyr’:</p>
-<div class="sourceCode" id="cb218"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb218-1"><a href="habitat-use.html#cb218-1" tabindex="-1"></a> <span class="fu">library</span>(lme4); <span class="fu">library</span>(tidyr)</span></code></pre></div>
+<div class="sourceCode" id="cb213"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb213-1"><a href="habitat-use.html#cb213-1" tabindex="-1"></a> <span class="fu">library</span>(lme4); <span class="fu">library</span>(tidyr)</span></code></pre></div>
 <p>The lme4 package requires a dataframe format (as above), with the response term and the predictor variables all included in the same location.</p>
 <p>Second, lets create our monthly analysis dataframe:</p>
-<div class="sourceCode" id="cb219"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb219-1"><a href="habitat-use.html#cb219-1" tabindex="-1"></a><span class="co"># Import the total observations dataset</span></span>
-<span id="cb219-2"><a href="habitat-use.html#cb219-2" tabindex="-1"></a>monthly_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb214"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb214-1"><a href="habitat-use.html#cb214-1" tabindex="-1"></a><span class="co"># Import the total observations dataset</span></span>
+<span id="cb214-2"><a href="habitat-use.html#cb214-2" tabindex="-1"></a>monthly_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <p>Let’s join this dataframe with the location data, as before:</p>
-<div class="sourceCode" id="cb220"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb220-1"><a href="habitat-use.html#cb220-1" tabindex="-1"></a>mod_dat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(monthly_obs, z_locs)</span></code></pre></div>
+<div class="sourceCode" id="cb215"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb215-1"><a href="habitat-use.html#cb215-1" tabindex="-1"></a>mod_dat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(monthly_obs, z_locs)</span></code></pre></div>
 <p>And let’s do another raw data check:</p>
-<div class="sourceCode" id="cb221"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb221-1"><a href="habitat-use.html#cb221-1" tabindex="-1"></a><span class="fu">boxplot</span>(mod_dat<span class="sc">$</span>Odocoileus.virginianus<span class="sc">~</span>mod_dat<span class="sc">$</span>feature_type,</span>
-<span id="cb221-2"><a href="habitat-use.html#cb221-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
-<span id="cb221-3"><a href="habitat-use.html#cb221-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;feature_type&quot;</span>,</span>
-<span id="cb221-4"><a href="habitat-use.html#cb221-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb216"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb216-1"><a href="habitat-use.html#cb216-1" tabindex="-1"></a><span class="fu">boxplot</span>(mod_dat<span class="sc">$</span>Odocoileus.virginianus<span class="sc">~</span>mod_dat<span class="sc">$</span>feature_type,</span>
+<span id="cb216-2"><a href="habitat-use.html#cb216-2" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>,</span>
+<span id="cb216-3"><a href="habitat-use.html#cb216-3" tabindex="-1"></a>        <span class="at">xlab=</span><span class="st">&quot;feature_type&quot;</span>,</span>
+<span id="cb216-4"><a href="habitat-use.html#cb216-4" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Habitat use&quot;</span>)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_22-1.png" width="672" /></p>
 <p>The patterns are similar to the <code>total_obs</code> dataset, however there is more noise!</p>
 <p>Now that we have monthly data, we might also want to control for some element of seasonality in our models. We can extract the month from our date column.</p>
-<div class="sourceCode" id="cb222"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb222-1"><a href="habitat-use.html#cb222-1" tabindex="-1"></a>mod_dat<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">ym</span>(mod_dat<span class="sc">$</span>date)</span>
-<span id="cb222-2"><a href="habitat-use.html#cb222-2" tabindex="-1"></a>mod_dat<span class="sc">$</span>month<span class="ot">&lt;-</span> <span class="fu">month</span>(mod_dat<span class="sc">$</span>date, <span class="at">label=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb217"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb217-1"><a href="habitat-use.html#cb217-1" tabindex="-1"></a>mod_dat<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">ym</span>(mod_dat<span class="sc">$</span>date)</span>
+<span id="cb217-2"><a href="habitat-use.html#cb217-2" tabindex="-1"></a>mod_dat<span class="sc">$</span>month<span class="ot">&lt;-</span> <span class="fu">month</span>(mod_dat<span class="sc">$</span>date, <span class="at">label=</span>T)</span></code></pre></div>
 <p>Next we will fit a mixed effects model to this data set using <code>lme4</code>. You may have noticed that we haven’t calculated a separate capture rate dataframe as we did in the simple example! That is because we can create a relative abundance index within the model itself by providing an <code>offset()</code> term . An offset term serves to scale the response term based on the amount of survey effort, and preserves the original units of the observations (counts).</p>
 <p>The model takes the form:</p>
 <p>Response term ~ fixed effect + offset() + (1|random intercept), data frame, distribution</p>
 <p>We include <code>placename</code> as the random intercept, as camera locations are repeatedly sampled at monthly intervals and thus our data (rows in the dataframe) are not independent. We use the <code>poisson</code> family, as our response term is a count.</p>
-<div class="sourceCode" id="cb223"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb223-1"><a href="habitat-use.html#cb223-1" tabindex="-1"></a>glmm_cat <span class="ot">&lt;-</span> <span class="fu">glmer</span>(Odocoileus.virginianus <span class="sc">~</span> </span>
-<span id="cb223-2"><a href="habitat-use.html#cb223-2" tabindex="-1"></a>                    feature_type <span class="sc">+</span> month <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(days)) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>placename) , <span class="at">data=</span>mod_dat, <span class="at">family=</span><span class="st">&quot;poisson&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb218"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb218-1"><a href="habitat-use.html#cb218-1" tabindex="-1"></a>glmm_cat <span class="ot">&lt;-</span> <span class="fu">glmer</span>(Odocoileus.virginianus <span class="sc">~</span> </span>
+<span id="cb218-2"><a href="habitat-use.html#cb218-2" tabindex="-1"></a>                    feature_type <span class="sc">+</span> month <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(days)) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>placename) , <span class="at">data=</span>mod_dat, <span class="at">family=</span><span class="st">&quot;poisson&quot;</span>)</span></code></pre></div>
 <p>Oh that warning doesn’t look friendly. Convergence errors often arise as when we fit a model which is too complicated! It basically says the the model hasn’t completely “solved” the parameters within it. In it’s current form the model is estimating and effect for every single month of the year, that’s a lot of thing to estimate with such a small dataset.</p>
 <p>Let’s simplify things to <code>summer</code> and <code>winter</code>!</p>
-<div class="sourceCode" id="cb224"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb224-1"><a href="habitat-use.html#cb224-1" tabindex="-1"></a><span class="co"># Lets create a new column and give it the value summer</span></span>
-<span id="cb224-2"><a href="habitat-use.html#cb224-2" tabindex="-1"></a>mod_dat<span class="sc">$</span>season <span class="ot">&lt;-</span> <span class="st">&quot;summer&quot;</span></span>
-<span id="cb224-3"><a href="habitat-use.html#cb224-3" tabindex="-1"></a>mod_dat<span class="sc">$</span>season[<span class="fu">month</span>(mod_dat<span class="sc">$</span>date) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;winter&quot;</span></span>
-<span id="cb224-4"><a href="habitat-use.html#cb224-4" tabindex="-1"></a></span>
-<span id="cb224-5"><a href="habitat-use.html#cb224-5" tabindex="-1"></a><span class="co"># make it a factor factors</span></span>
-<span id="cb224-6"><a href="habitat-use.html#cb224-6" tabindex="-1"></a>mod_dat <span class="ot">&lt;-</span> mod_dat <span class="sc">%&gt;%</span> </span>
-<span id="cb224-7"><a href="habitat-use.html#cb224-7" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor)</span></code></pre></div>
+<div class="sourceCode" id="cb219"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb219-1"><a href="habitat-use.html#cb219-1" tabindex="-1"></a><span class="co"># Lets create a new column and give it the value summer</span></span>
+<span id="cb219-2"><a href="habitat-use.html#cb219-2" tabindex="-1"></a>mod_dat<span class="sc">$</span>season <span class="ot">&lt;-</span> <span class="st">&quot;summer&quot;</span></span>
+<span id="cb219-3"><a href="habitat-use.html#cb219-3" tabindex="-1"></a>mod_dat<span class="sc">$</span>season[<span class="fu">month</span>(mod_dat<span class="sc">$</span>date) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">10</span>,<span class="dv">11</span>,<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;winter&quot;</span></span>
+<span id="cb219-4"><a href="habitat-use.html#cb219-4" tabindex="-1"></a></span>
+<span id="cb219-5"><a href="habitat-use.html#cb219-5" tabindex="-1"></a><span class="co"># make it a factor factors</span></span>
+<span id="cb219-6"><a href="habitat-use.html#cb219-6" tabindex="-1"></a>mod_dat <span class="ot">&lt;-</span> mod_dat <span class="sc">%&gt;%</span> </span>
+<span id="cb219-7"><a href="habitat-use.html#cb219-7" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor)</span></code></pre></div>
 <p>And re-run our model - also this time with a negative binomial distribution to account for excess zeros:</p>
-<div class="sourceCode" id="cb225"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb225-1"><a href="habitat-use.html#cb225-1" tabindex="-1"></a>glmm_cat <span class="ot">&lt;-</span> <span class="fu">glmer.nb</span>(Odocoileus.virginianus <span class="sc">~</span> </span>
-<span id="cb225-2"><a href="habitat-use.html#cb225-2" tabindex="-1"></a>                    feature_type <span class="sc">+</span> season <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(days)) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>placename) , <span class="at">data=</span>mod_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb220"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb220-1"><a href="habitat-use.html#cb220-1" tabindex="-1"></a>glmm_cat <span class="ot">&lt;-</span> <span class="fu">glmer.nb</span>(Odocoileus.virginianus <span class="sc">~</span> </span>
+<span id="cb220-2"><a href="habitat-use.html#cb220-2" tabindex="-1"></a>                    feature_type <span class="sc">+</span> season <span class="sc">+</span> <span class="fu">offset</span>(<span class="fu">log</span>(days)) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>placename) , <span class="at">data=</span>mod_dat)</span></code></pre></div>
 <p>We can view a summary of the model fit using:</p>
-<div class="sourceCode" id="cb226"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb226-1"><a href="habitat-use.html#cb226-1" tabindex="-1"></a><span class="fu">summary</span>(glmm_cat)</span></code></pre></div>
+<div class="sourceCode" id="cb221"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb221-1"><a href="habitat-use.html#cb221-1" tabindex="-1"></a><span class="fu">summary</span>(glmm_cat)</span></code></pre></div>
 <pre><code>## Generalized linear mixed model fit by maximum likelihood (Laplace
 ##   Approximation) [glmerMod]
 ##  Family: Negative Binomial(0.8362)  ( log )
@@ -1370,8 +1370,8 @@ meters
 ## seasonwintr -0.073 -0.011 -0.008</code></pre>
 <p>We can plot the predictions from these models using the <code>jtools</code> package.</p>
 <p>First lets look at the effects of <code>feature_type</code>:</p>
-<div class="sourceCode" id="cb228"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb228-1"><a href="habitat-use.html#cb228-1" tabindex="-1"></a><span class="fu">effect_plot</span>(glmm_cat, <span class="at">pred =</span> feature_type, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>,</span>
-<span id="cb228-2"><a href="habitat-use.html#cb228-2" tabindex="-1"></a>            , <span class="at">data=</span>mod_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb223"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb223-1"><a href="habitat-use.html#cb223-1" tabindex="-1"></a><span class="fu">effect_plot</span>(glmm_cat, <span class="at">pred =</span> feature_type, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>,</span>
+<span id="cb223-2"><a href="habitat-use.html#cb223-2" tabindex="-1"></a>            , <span class="at">data=</span>mod_dat)</span></code></pre></div>
 <pre><code>## Outcome is based on a total of 1 exposures</code></pre>
 <pre><code>## Confidence intervals for merMod models is an experimental feature. The
 ## intervals reflect only the variance of the fixed effects, not the random
@@ -1379,8 +1379,8 @@ meters
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_28-1.png" width="672" /></p>
 <p>As with our simple linear model, the mixed effects model also suggests a difference between the different <code>feature_type</code> strata for white-tailed deer.</p>
 <p>Lets also look at the effect of our new <code>season</code> variable:</p>
-<div class="sourceCode" id="cb231"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb231-1"><a href="habitat-use.html#cb231-1" tabindex="-1"></a><span class="fu">effect_plot</span>(glmm_cat, <span class="at">pred =</span> season, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>,</span>
-<span id="cb231-2"><a href="habitat-use.html#cb231-2" tabindex="-1"></a>            , <span class="at">data=</span>mod_dat)</span></code></pre></div>
+<div class="sourceCode" id="cb226"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb226-1"><a href="habitat-use.html#cb226-1" tabindex="-1"></a><span class="fu">effect_plot</span>(glmm_cat, <span class="at">pred =</span> season, <span class="at">interval =</span> <span class="cn">TRUE</span>, <span class="at">y.label =</span> <span class="st">&quot;Habitat use&quot;</span>,</span>
+<span id="cb226-2"><a href="habitat-use.html#cb226-2" tabindex="-1"></a>            , <span class="at">data=</span>mod_dat)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_29-1.png" width="672" /></p>
 <p>Which suggests habitat use is slightly lower habitat use in winter then in summer.</p>
 </div>
@@ -1422,15 +1422,15 @@ meters
 <li><a href="https://www2.helsinki.fi/en/researchgroups/statistical-ecology/hmsc">HMSc</a></li>
 </ul>
 <p>In this example we will use the <code>Hmsc</code> package.</p>
-<div class="sourceCode" id="cb234"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb234-1"><a href="habitat-use.html#cb234-1" tabindex="-1"></a><span class="fu">library</span>(Hmsc)</span></code></pre></div>
+<div class="sourceCode" id="cb229"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb229-1"><a href="habitat-use.html#cb229-1" tabindex="-1"></a><span class="fu">library</span>(Hmsc)</span></code></pre></div>
 <p><strong>Preparing our data</strong></p>
 <p>The format of data required for joint species distribution models is very similar to the data required for single species models. However, rather than storing the response term and fixed effects within the the same data frame (as with <code>mod_dat</code> above), we need a separate <code>Y</code> matrix of site_time x species, and a separate <code>Xdata</code> dataframe containing the fixed and random effects.</p>
-<div class="sourceCode" id="cb235"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb235-1"><a href="habitat-use.html#cb235-1" tabindex="-1"></a><span class="co"># Pull the count data into its own matrix</span></span>
-<span id="cb235-2"><a href="habitat-use.html#cb235-2" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(monthly_obs[,sp_summary<span class="sc">$</span>sp])</span>
-<span id="cb235-3"><a href="habitat-use.html#cb235-3" tabindex="-1"></a></span>
-<span id="cb235-4"><a href="habitat-use.html#cb235-4" tabindex="-1"></a><span class="co"># Give the row names a useful label, in this case the site_date values </span></span>
-<span id="cb235-5"><a href="habitat-use.html#cb235-5" tabindex="-1"></a><span class="co"># (just in case you want to check things)</span></span>
-<span id="cb235-6"><a href="habitat-use.html#cb235-6" tabindex="-1"></a><span class="fu">row.names</span>(Y) <span class="ot">&lt;-</span> <span class="fu">paste</span>(monthly_obs<span class="sc">$</span>placename, monthly_obs<span class="sc">$</span>date, <span class="at">sep=</span><span class="st">&quot;_&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb230"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb230-1"><a href="habitat-use.html#cb230-1" tabindex="-1"></a><span class="co"># Pull the count data into its own matrix</span></span>
+<span id="cb230-2"><a href="habitat-use.html#cb230-2" tabindex="-1"></a>Y <span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(monthly_obs[,sp_summary<span class="sc">$</span>sp])</span>
+<span id="cb230-3"><a href="habitat-use.html#cb230-3" tabindex="-1"></a></span>
+<span id="cb230-4"><a href="habitat-use.html#cb230-4" tabindex="-1"></a><span class="co"># Give the row names a useful label, in this case the site_date values </span></span>
+<span id="cb230-5"><a href="habitat-use.html#cb230-5" tabindex="-1"></a><span class="co"># (just in case you want to check things)</span></span>
+<span id="cb230-6"><a href="habitat-use.html#cb230-6" tabindex="-1"></a><span class="fu">row.names</span>(Y) <span class="ot">&lt;-</span> <span class="fu">paste</span>(monthly_obs<span class="sc">$</span>placename, monthly_obs<span class="sc">$</span>date, <span class="at">sep=</span><span class="st">&quot;_&quot;</span>)</span></code></pre></div>
 <p>Which looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -1769,8 +1769,8 @@ ALG027_2018-09
 </table>
 </div>
 <p>We then create the XData in a similar way to before, but this time dropping the species information:</p>
-<div class="sourceCode" id="cb236"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb236-1"><a href="habitat-use.html#cb236-1" tabindex="-1"></a>Xdat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(monthly_obs[<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>)], z_locs)</span>
-<span id="cb236-2"><a href="habitat-use.html#cb236-2" tabindex="-1"></a><span class="co"># All XData must be numeric or factors, so lets check what we have</span></span></code></pre></div>
+<div class="sourceCode" id="cb231"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb231-1"><a href="habitat-use.html#cb231-1" tabindex="-1"></a>Xdat <span class="ot">&lt;-</span> <span class="fu">left_join</span>(monthly_obs[<span class="fu">c</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;date&quot;</span>, <span class="st">&quot;days&quot;</span>)], z_locs)</span>
+<span id="cb231-2"><a href="habitat-use.html#cb231-2" tabindex="-1"></a><span class="co"># All XData must be numeric or factors, so lets check what we have</span></span></code></pre></div>
 <p>Whose output looks like this:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
 <table class=" lightable-paper" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; margin-left: auto; margin-right: auto;">
@@ -2089,47 +2089,47 @@ meters
 </table>
 </div>
 <p>With Bayesian approaches we need to set up our sampling conditions</p>
-<div class="sourceCode" id="cb237"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb237-1"><a href="habitat-use.html#cb237-1" tabindex="-1"></a>nChains   <span class="ot">=</span> <span class="dv">2</span>       <span class="co"># How many total repeats to run</span></span>
-<span id="cb237-2"><a href="habitat-use.html#cb237-2" tabindex="-1"></a>thin      <span class="ot">=</span> <span class="dv">5</span>       <span class="co"># How often to thin the samples</span></span>
-<span id="cb237-3"><a href="habitat-use.html#cb237-3" tabindex="-1"></a>samples   <span class="ot">=</span> <span class="dv">100</span>     <span class="co"># How many samples to take  </span></span>
-<span id="cb237-4"><a href="habitat-use.html#cb237-4" tabindex="-1"></a>transient <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># How long should the &quot;warm up&quot; be</span></span>
-<span id="cb237-5"><a href="habitat-use.html#cb237-5" tabindex="-1"></a>verbose   <span class="ot">=</span> T       <span class="co"># Give reports on model progress</span></span></code></pre></div>
+<div class="sourceCode" id="cb232"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb232-1"><a href="habitat-use.html#cb232-1" tabindex="-1"></a>nChains   <span class="ot">=</span> <span class="dv">2</span>       <span class="co"># How many total repeats to run</span></span>
+<span id="cb232-2"><a href="habitat-use.html#cb232-2" tabindex="-1"></a>thin      <span class="ot">=</span> <span class="dv">5</span>       <span class="co"># How often to thin the samples</span></span>
+<span id="cb232-3"><a href="habitat-use.html#cb232-3" tabindex="-1"></a>samples   <span class="ot">=</span> <span class="dv">100</span>     <span class="co"># How many samples to take  </span></span>
+<span id="cb232-4"><a href="habitat-use.html#cb232-4" tabindex="-1"></a>transient <span class="ot">=</span> <span class="dv">1000</span> <span class="co"># How long should the &quot;warm up&quot; be</span></span>
+<span id="cb232-5"><a href="habitat-use.html#cb232-5" tabindex="-1"></a>verbose   <span class="ot">=</span> T       <span class="co"># Give reports on model progress</span></span></code></pre></div>
 <p>Setup our random effect:</p>
-<div class="sourceCode" id="cb238"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb238-1"><a href="habitat-use.html#cb238-1" tabindex="-1"></a><span class="co"># Add a station-level random effect (for the co-variances)</span></span>
-<span id="cb238-2"><a href="habitat-use.html#cb238-2" tabindex="-1"></a>studyDesign <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">station =</span> <span class="fu">as.factor</span>(Xdat<span class="sc">$</span>placename))</span>
-<span id="cb238-3"><a href="habitat-use.html#cb238-3" tabindex="-1"></a>rL <span class="ot">=</span> <span class="fu">HmscRandomLevel</span>(<span class="at">units =</span> studyDesign<span class="sc">$</span>station)</span></code></pre></div>
+<div class="sourceCode" id="cb233"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb233-1"><a href="habitat-use.html#cb233-1" tabindex="-1"></a><span class="co"># Add a station-level random effect (for the co-variances)</span></span>
+<span id="cb233-2"><a href="habitat-use.html#cb233-2" tabindex="-1"></a>studyDesign <span class="ot">=</span> <span class="fu">data.frame</span>(<span class="at">station =</span> <span class="fu">as.factor</span>(Xdat<span class="sc">$</span>placename))</span>
+<span id="cb233-3"><a href="habitat-use.html#cb233-3" tabindex="-1"></a>rL <span class="ot">=</span> <span class="fu">HmscRandomLevel</span>(<span class="at">units =</span> studyDesign<span class="sc">$</span>station)</span></code></pre></div>
 <p>Specify our model””</p>
-<div class="sourceCode" id="cb239"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb239-1"><a href="habitat-use.html#cb239-1" tabindex="-1"></a><span class="co"># Model specification</span></span>
-<span id="cb239-2"><a href="habitat-use.html#cb239-2" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">Hmsc</span>(<span class="at">Y =</span> Y, </span>
-<span id="cb239-3"><a href="habitat-use.html#cb239-3" tabindex="-1"></a>            <span class="at">XData =</span> Xdat[,<span class="fu">c</span>(<span class="st">&quot;z.line_of_sight_m&quot;</span>, <span class="st">&quot;z.water_depth_m&quot;</span>, <span class="st">&quot;days&quot;</span>)], </span>
-<span id="cb239-4"><a href="habitat-use.html#cb239-4" tabindex="-1"></a>            <span class="at">XFormula =</span> <span class="sc">~</span>z.line_of_sight_m <span class="sc">+</span> z.water_depth_m <span class="sc">+</span> <span class="fu">log</span>(days),</span>
-<span id="cb239-5"><a href="habitat-use.html#cb239-5" tabindex="-1"></a>            <span class="at">studyDesign =</span> studyDesign, </span>
-<span id="cb239-6"><a href="habitat-use.html#cb239-6" tabindex="-1"></a>            <span class="at">ranLevels =</span> <span class="fu">list</span>(<span class="at">station =</span> rL), </span>
-<span id="cb239-7"><a href="habitat-use.html#cb239-7" tabindex="-1"></a>            <span class="at">distr=</span><span class="st">&quot;poisson&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb234"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb234-1"><a href="habitat-use.html#cb234-1" tabindex="-1"></a><span class="co"># Model specification</span></span>
+<span id="cb234-2"><a href="habitat-use.html#cb234-2" tabindex="-1"></a>mod <span class="ot">&lt;-</span> <span class="fu">Hmsc</span>(<span class="at">Y =</span> Y, </span>
+<span id="cb234-3"><a href="habitat-use.html#cb234-3" tabindex="-1"></a>            <span class="at">XData =</span> Xdat[,<span class="fu">c</span>(<span class="st">&quot;z.line_of_sight_m&quot;</span>, <span class="st">&quot;z.water_depth_m&quot;</span>, <span class="st">&quot;days&quot;</span>)], </span>
+<span id="cb234-4"><a href="habitat-use.html#cb234-4" tabindex="-1"></a>            <span class="at">XFormula =</span> <span class="sc">~</span>z.line_of_sight_m <span class="sc">+</span> z.water_depth_m <span class="sc">+</span> <span class="fu">log</span>(days),</span>
+<span id="cb234-5"><a href="habitat-use.html#cb234-5" tabindex="-1"></a>            <span class="at">studyDesign =</span> studyDesign, </span>
+<span id="cb234-6"><a href="habitat-use.html#cb234-6" tabindex="-1"></a>            <span class="at">ranLevels =</span> <span class="fu">list</span>(<span class="at">station =</span> rL), </span>
+<span id="cb234-7"><a href="habitat-use.html#cb234-7" tabindex="-1"></a>            <span class="at">distr=</span><span class="st">&quot;poisson&quot;</span>)</span></code></pre></div>
 <p>And fit the model:</p>
-<div class="sourceCode" id="cb240"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb240-1"><a href="habitat-use.html#cb240-1" tabindex="-1"></a>out <span class="ot">&lt;-</span>  <span class="fu">sampleMcmc</span>(mod, <span class="at">thin =</span> thin, <span class="at">samples =</span> samples, <span class="at">transient =</span> transient,</span>
-<span id="cb240-2"><a href="habitat-use.html#cb240-2" tabindex="-1"></a>               <span class="at">nChains =</span> nChains, <span class="at">verbose =</span> verbose)</span></code></pre></div>
+<div class="sourceCode" id="cb235"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb235-1"><a href="habitat-use.html#cb235-1" tabindex="-1"></a>out <span class="ot">&lt;-</span>  <span class="fu">sampleMcmc</span>(mod, <span class="at">thin =</span> thin, <span class="at">samples =</span> samples, <span class="at">transient =</span> transient,</span>
+<span id="cb235-2"><a href="habitat-use.html#cb235-2" tabindex="-1"></a>               <span class="at">nChains =</span> nChains, <span class="at">verbose =</span> verbose)</span></code></pre></div>
 <p>We can plot a basic summary of the modeled effects using the following code.</p>
-<div class="sourceCode" id="cb241"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb241-1"><a href="habitat-use.html#cb241-1" tabindex="-1"></a>postBeta <span class="ot">=</span> <span class="fu">getPostEstimate</span>(out, <span class="at">parName =</span> <span class="st">&quot;Beta&quot;</span>)</span>
-<span id="cb241-2"><a href="habitat-use.html#cb241-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb241-3"><a href="habitat-use.html#cb241-3" tabindex="-1"></a><span class="fu">plotBeta</span>(out, <span class="at">post =</span> postBeta, <span class="at">param =</span> <span class="st">&quot;Support&quot;</span>, <span class="at">supportLevel =</span> <span class="fl">0.95</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb236"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb236-1"><a href="habitat-use.html#cb236-1" tabindex="-1"></a>postBeta <span class="ot">=</span> <span class="fu">getPostEstimate</span>(out, <span class="at">parName =</span> <span class="st">&quot;Beta&quot;</span>)</span>
+<span id="cb236-2"><a href="habitat-use.html#cb236-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">8</span>,<span class="dv">12</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb236-3"><a href="habitat-use.html#cb236-3" tabindex="-1"></a><span class="fu">plotBeta</span>(out, <span class="at">post =</span> postBeta, <span class="at">param =</span> <span class="st">&quot;Support&quot;</span>, <span class="at">supportLevel =</span> <span class="fl">0.95</span>)</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_40-1.png" width="672" /></p>
 <p>We the colors denote the size and magnitude of the effect of proportion of lowland habitat. <em>NOTE</em> treat these results with caution as the number of model runs is very low (to increase speed) and the model assumptions have not been interrogated.</p>
-<div class="sourceCode" id="cb242"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb242-1"><a href="habitat-use.html#cb242-1" tabindex="-1"></a>OmegaCor <span class="ot">=</span> <span class="fu">computeAssociations</span>(out)</span>
-<span id="cb242-2"><a href="habitat-use.html#cb242-2" tabindex="-1"></a></span>
-<span id="cb242-3"><a href="habitat-use.html#cb242-3" tabindex="-1"></a>supportLevel <span class="ot">=</span> <span class="fl">0.0</span></span>
-<span id="cb242-4"><a href="habitat-use.html#cb242-4" tabindex="-1"></a></span>
-<span id="cb242-5"><a href="habitat-use.html#cb242-5" tabindex="-1"></a>toPlot <span class="ot">=</span> ((OmegaCor[[<span class="dv">1</span>]]<span class="sc">$</span>support<span class="sc">&gt;</span>supportLevel)</span>
-<span id="cb242-6"><a href="habitat-use.html#cb242-6" tabindex="-1"></a><span class="sc">+</span> (OmegaCor[[<span class="dv">1</span>]]<span class="sc">$</span>support<span class="sc">&lt;</span>(<span class="dv">1</span><span class="sc">-</span>supportLevel))<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">*</span>OmegaCor[[<span class="dv">1</span>]]<span class="sc">$</span>mean</span>
-<span id="cb242-7"><a href="habitat-use.html#cb242-7" tabindex="-1"></a></span>
-<span id="cb242-8"><a href="habitat-use.html#cb242-8" tabindex="-1"></a></span>
-<span id="cb242-9"><a href="habitat-use.html#cb242-9" tabindex="-1"></a><span class="fu">corrplot</span>(toPlot, </span>
-<span id="cb242-10"><a href="habitat-use.html#cb242-10" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">&quot;color&quot;</span>,</span>
-<span id="cb242-11"><a href="habitat-use.html#cb242-11" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,</span>
-<span id="cb242-12"><a href="habitat-use.html#cb242-12" tabindex="-1"></a>         <span class="at">order =</span> <span class="st">&quot;FPC&quot;</span>,</span>
-<span id="cb242-13"><a href="habitat-use.html#cb242-13" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>))(<span class="dv">200</span>),</span>
-<span id="cb242-14"><a href="habitat-use.html#cb242-14" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;random effect level:&quot;</span>, </span>
-<span id="cb242-15"><a href="habitat-use.html#cb242-15" tabindex="-1"></a>                      mod<span class="sc">$</span>rLNames[<span class="dv">1</span>]), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div>
+<div class="sourceCode" id="cb237"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb237-1"><a href="habitat-use.html#cb237-1" tabindex="-1"></a>OmegaCor <span class="ot">=</span> <span class="fu">computeAssociations</span>(out)</span>
+<span id="cb237-2"><a href="habitat-use.html#cb237-2" tabindex="-1"></a></span>
+<span id="cb237-3"><a href="habitat-use.html#cb237-3" tabindex="-1"></a>supportLevel <span class="ot">=</span> <span class="fl">0.0</span></span>
+<span id="cb237-4"><a href="habitat-use.html#cb237-4" tabindex="-1"></a></span>
+<span id="cb237-5"><a href="habitat-use.html#cb237-5" tabindex="-1"></a>toPlot <span class="ot">=</span> ((OmegaCor[[<span class="dv">1</span>]]<span class="sc">$</span>support<span class="sc">&gt;</span>supportLevel)</span>
+<span id="cb237-6"><a href="habitat-use.html#cb237-6" tabindex="-1"></a><span class="sc">+</span> (OmegaCor[[<span class="dv">1</span>]]<span class="sc">$</span>support<span class="sc">&lt;</span>(<span class="dv">1</span><span class="sc">-</span>supportLevel))<span class="sc">&gt;</span><span class="dv">0</span>)<span class="sc">*</span>OmegaCor[[<span class="dv">1</span>]]<span class="sc">$</span>mean</span>
+<span id="cb237-7"><a href="habitat-use.html#cb237-7" tabindex="-1"></a></span>
+<span id="cb237-8"><a href="habitat-use.html#cb237-8" tabindex="-1"></a></span>
+<span id="cb237-9"><a href="habitat-use.html#cb237-9" tabindex="-1"></a><span class="fu">corrplot</span>(toPlot, </span>
+<span id="cb237-10"><a href="habitat-use.html#cb237-10" tabindex="-1"></a>         <span class="at">method =</span> <span class="st">&quot;color&quot;</span>,</span>
+<span id="cb237-11"><a href="habitat-use.html#cb237-11" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,</span>
+<span id="cb237-12"><a href="habitat-use.html#cb237-12" tabindex="-1"></a>         <span class="at">order =</span> <span class="st">&quot;FPC&quot;</span>,</span>
+<span id="cb237-13"><a href="habitat-use.html#cb237-13" tabindex="-1"></a>        <span class="at">col =</span> <span class="fu">colorRampPalette</span>(<span class="fu">c</span>(<span class="st">&quot;blue&quot;</span>,<span class="st">&quot;white&quot;</span>,<span class="st">&quot;red&quot;</span>))(<span class="dv">200</span>),</span>
+<span id="cb237-14"><a href="habitat-use.html#cb237-14" tabindex="-1"></a>        <span class="at">title =</span> <span class="fu">paste</span>(<span class="st">&quot;random effect level:&quot;</span>, </span>
+<span id="cb237-15"><a href="habitat-use.html#cb237-15" tabindex="-1"></a>                      mod<span class="sc">$</span>rLNames[<span class="dv">1</span>]), <span class="at">mar=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>))</span></code></pre></div>
 <p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch7_41-1.png" width="672" /></p>
 <div id="potential-dangers" class="section level3 hasAnchor" number="10.3.1">
 <h3><span class="header-section-number">10.3.1</span> Potential dangers<a href="habitat-use.html#potential-dangers" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -2138,8 +2138,8 @@ meters
 <p>For a nice overview on assessing Bayesian model convergence see Michael Clark’s <a href="https://m-clark.github.io/bayesian-basics/diagnostics.html">bayseian model diagnostics page</a>.</p>
 <p>Let’s have a look at our traceplots - these are plots which show the Bayesian solvers efforts to converge on the answer for each parameter with each iteration of the model (red and black done the different runs). If they have converged on a solution they should be steady and stable, the coloured lines on the left should overlap and the density plot on the right should be uni-modal.</p>
 <p>First for the fixed effects in the model:</p>
-<div class="sourceCode" id="cb243"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb243-1"><a href="habitat-use.html#cb243-1" tabindex="-1"></a>mpost <span class="ot">=</span> <span class="fu">convertToCodaObject</span>(out)</span>
-<span id="cb243-2"><a href="habitat-use.html#cb243-2" tabindex="-1"></a><span class="fu">plot</span>(mpost<span class="sc">$</span>Beta)</span></code></pre></div>
+<div class="sourceCode" id="cb238"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb238-1"><a href="habitat-use.html#cb238-1" tabindex="-1"></a>mpost <span class="ot">=</span> <span class="fu">convertToCodaObject</span>(out)</span>
+<span id="cb238-2"><a href="habitat-use.html#cb238-2" tabindex="-1"></a><span class="fu">plot</span>(mpost<span class="sc">$</span>Beta)</span></code></pre></div>
 <p>What do you think?</p>
 <p>These sampling chains will have to be much longer for these models to converge!</p>
 </div>
