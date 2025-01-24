@@ -202,7 +202,7 @@ kbl(eff_mat)%>%
   scroll_box( height = "200px")
 ```
 
-We might want to remove all of the data from the weeks where we did not get a complete sample:
+We can then remove all of the data from the weeks where we did not get a complete sample:
 
 ```{r ch8_10, class.source="Rmain"}
 y_mat[eff_mat!=7] <- NA
@@ -212,7 +212,7 @@ Now we are ready to feed this into the `unmarked` package.
 
 ### Unmarked package
 
-One of the hurdles in using the `unmarked` package is it uses a different style of dataframe called an unmarked dataframe. It is essentially a compillation of the different dataframes we need for the analysis (y data and covariate data). We asemmbled the Y data above, so now lets make the covariates:
+One of the hurdles in using the `unmarked` package is it uses a different style of dataframe called an unmarked dataframe. It is essentially a compilation of the different dataframes we need for the analysis (y data and covariate data). We assembled the Y data above, so now lets make the covariates:
 
 ```{r ch8_11, class.source="Rmain"}
 locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
@@ -330,7 +330,7 @@ As with our habitat use model, white-tailed deer (**Odocoileus virginianus**) oc
 
 ### On your own
 
-Let's explore some of the models we fit in the [habitat use chapter](#habitat-use) in the occupancy framework. We have not included any detection covariates in this example dataset, so hold that constand for now!
+Let's explore some of the models we fit in the [habitat use chapter](#habitat-use) in the occupancy framework. We have not included any detection covariates in this example dataset, so hold that constant for now!
 
 
 

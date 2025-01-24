@@ -252,27 +252,16 @@ Most locations are on the water table (lowland sites), others are above it (uplo
 
 Camera studies often occur over a range of elevations - and we can quickly extract these elevations using the `elevatr` package and an `sf` dataframe.
 
-There are two options, `epqs`**ONLY AVAILABLE FOR NORTH AMERICA**:
-
-```{r ch4_23, class.source="Rmain", warning=F, message=F}
-library(elevatr)
-locs_sf <- get_elev_point(locs_sf, 
-                          src="epqs") # Can be slow if you have >500 camera points
-```
-
-Or Amazon Web Service Terrain Tiles... available globally!
+We can extract elevation from Amazon Web Service Terrain Tiles... available globally!
 
 ```{r ch4_23b, class.source="Rmain", warning=F, eval=F}
 locs_sf <- get_elev_point(locs_sf, 
                           src="aws", #Amazon Web Service Terrain Tiles - available globally
                           z = 12)  # z specifies the zoom level -> the lower the value the faster the code runs, but the coarser the elevation values are
 ```
-
-The `src` option specifies the sources of the DEM data. We use `aws` Amazon Web Service Terrain Tiles - which are available globally.
+The `src` option specifies the sources of the DEM data. We use `aws` Amazon Web Service Terrain Tiles.
 
 The `z` option specifies the resolution of the underlying DEM, the high the value, the more detailed it is. However, it will take longer to run so do not go crazy.
-
-Regardless of which method you use, let's plot the output:
 
 ```{r ch4_24, class.source="Rinfo"}
 boxplot(locs_sf$elevation)

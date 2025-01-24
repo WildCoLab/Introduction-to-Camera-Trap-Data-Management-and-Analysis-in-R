@@ -3,34 +3,35 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+
 # Activity
 
-Given that camera traps operate 24 hours a day, 7 days a week, and can record animal motion down to second-level precision, they represent a powerful tool to explore and contrast the activity patterns of the species they detect! Such analyses can give insight into competition, predation and coexistence. Characterizing the "activity level" - the proportion of the day which animals are active - is also increasingly important for new estimators of animal density ([see the density chapter for more info](#density)). Consequently, understanding how to derive and use activity data is very important for people using camera traps. 
+Given that camera traps operate 24 hours a day, 7 days a week, and can record animal motion down to second-level precision, they represent a powerful tool to explore and contrast the activity patterns of the species they detect! Such analyses can give insight into competition, predation and coexistence. Characterizing the "activity level" - the proportion of the day which animals are active - is also increasingly important for new estimators of animal density ([see the density chapter for more info](#density)). Consequently, understanding how to derive and use activity data is very important for people using camera traps.
 
-*Must read* [Frey, Sandra, et al. "Investigating animal activity patterns and temporal niche partitioning using camera‐trap data: Challenges and opportunities." Remote Sensing in Ecology and Conservation 3.3 (2017): 123-132.](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.60) 
+*Must read* [Frey, Sandra, et al. "Investigating animal activity patterns and temporal niche partitioning using camera‐trap data: Challenges and opportunities." Remote Sensing in Ecology and Conservation 3.3 (2017): 123-132.](https://zslpublications.onlinelibrary.wiley.com/doi/full/10.1002/rse2.60)
 
 Two key packages
 
-- `overlap` https://cran.r-project.org/web/packages/overlap/index.html
-- `activity` https://cran.r-project.org/web/packages/activity/index.html
+-   `overlap` <https://cran.r-project.org/web/packages/overlap/index.html>
+-   `activity` <https://cran.r-project.org/web/packages/activity/index.html>
 
 They each use the timestamps in camera trap detetions to derive activity indices which can be compared between different strata of interest (e.g. species, treatments etc.).
 
-Here we will use the `activity` package. 
+Here we will use the `activity` package.
 
 ## Independent detections or raw data?
 
-A recent paper has highlighted that we need to carefully consider our data source for activity analyses: 
+A recent paper has highlighted that we need to carefully consider our data source for activity analyses:
 
 [Christopher Peral, Marietjie Landman, Graham I. H. Kerley The inappropriate use of time-to-independence biases estimates of activity patterns of free-ranging mammals derived from camera traps Ecology and Evolution](https://onlinelibrary.wiley.com/doi/10.1002/ece3.9408?af=R)
 
-Whilst we typically use "independent data" for most of our camera trap analysis, doing so may throw away useful data on activity. Both in terms of the number of data points (power) but also the activity patterns they generate. Peral et.al show that 70% of papers published to date use independent data to derive their indices. They actually state:**"We conclude that the application of time-to-independence data filters in camera trap-based estimates of activity patterns is not valid and should not be used."**   
+Whilst we typically use "independent data" for most of our camera trap analysis, doing so may throw away useful data on activity. Both in terms of the number of data points (power) but also the activity patterns they generate. Peral et.al show that 70% of papers published to date use independent data to derive their indices. They actually state:**"We conclude that the application of time-to-independence data filters in camera trap-based estimates of activity patterns is not valid and should not be used."**
 
-So we will use the raw data to derive our indices! 
+So we will use the raw data to derive our indices!
 
 **Load your packages**
 
-```{r ch9_1, echo=F, results='hide', message =F, warning=F, class.source="Rmain"}
+```{r ch9_1, echo=T, results='hide', message =F, warning=F, class.source="Rmain"}
 # Check you have them and load them
 list.of.packages <- c("kableExtra", "tidyr", "ggplot2", "gridExtra", "activity", "overlap", "dplyr","lubridate" )
 
@@ -40,11 +41,9 @@ lapply(list.of.packages, require, character.only = TRUE)
 
 ```
 
-
-
 ## Data formatting
 
-First, lets import the processed raw data file. 
+First, let's import the processed raw data file.
 
 ```{r ch9_2, class.source="Rmain"}
 # Import the data
@@ -66,7 +65,7 @@ Then load the activity package:
 library(activity) 
 ```
 
-If your cameras correct for daylight savings use the correct code, if they do not, use UTC. 
+If your cameras correct for daylight savings use the appropriate timezone code, if they do not, use UTC.
 
 ```{r ch9_5, results="hide", class.source="Rmain"}
 img$timestamp <- ymd_hms(img$timestamp, tz="UTC")
@@ -74,24 +73,23 @@ img$timestamp <- ymd_hms(img$timestamp, tz="UTC")
 
 Note - find your timezone code for the `tz=` call [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
 
-
 ### Accounting for sunrise and sunset
 
 A recent paper highlighted the challenges in trying to understand animal activity patterns at high latitudes - as sunrise/sunset timings vary substantially through the calender year. See:
 
 [Vazquez, Carmen, et al. "Comparing diel activity patterns of wildlife across latitudes and seasons: Time transformations using day length." Methods in Ecology and Evolution 10.12 (2019): 2057-2066.](https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/2041-210X.13290)
 
-If we want to compare activity patterns between two different locations, or different seasons, the day length at the time the detection occurred can have a huge impact on our estimates of wildlife activity. For example, if we wanted to compare day/night activity between winter and summer periods, in winter animal activity is constrained to a much shorter day length. 
+If we want to compare activity patterns between two different locations, or different seasons, the day length at the time the detection occurred can have a huge impact on our estimates of wildlife activity. For example, if we wanted to compare day/night activity between winter and summer periods, in winter animal activity is constrained to a much shorter day length.
 
 Fortunately, the authors have a solution!
 
 **The average anchoring method**
 
-Instead of using the 'human' 24h clock, we can instead express animal activity relative to an important anchor point in the day (e.g. sunrise). 
+Instead of using the 'human' 24h clock, we can instead express animal activity relative to an important anchor point in the day (e.g. sunrise).
 
 NOTE -the transformation is not necessary at latitudes below 20°, or in studies with a duration of less than a month (below 40° latitude), as day length doesn't chnage substantially.
 
-```{r ch9_6, class.source="Rmain"}
+```{r ch9_6, class.source="Rmain", results='hide', message =F, warning=F}
 # We need to add latitude and longitude to our observations
 # import our station locations (and other covariates)
 locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
@@ -115,7 +113,7 @@ img_locs$clock <- tmp$clock
 Let's check out the relationship between these two indices:
 
 ```{r ch9_7, class.source="Rinfo"}
-plot(img_locs$solar, img_locs$clock)
+plot(img_locs$clock, img_locs$solar)
 ```
 
 We are now ready to fit some models!
@@ -160,7 +158,7 @@ plot(m1, yunit="density", data="none", add=TRUE,
 legend("topright", c("Caribou", "Deer"), col=1:2, lty=1, lwd=2)
 ```
 
-We can compare different activity patterns using coefficient of overlap (∆) - developed by Ridout and Linkie: 
+We can compare different activity patterns using coefficient of overlap (∆) - developed by Ridout and Linkie:
 
 [Ridout, Martin S., and Matthew Linkie. "Estimating overlap of daily activity patterns from camera trap data." Journal of Agricultural, Biological, and Environmental Statistics 14.3 (2009): 322-337.](https://link.springer.com/article/10.1198/jabes.2009.08038)
 
@@ -171,16 +169,16 @@ The coefficient ranges from 0 (no overlap) to 1 (complete overlap). We can imple
 compareCkern(m1, m2, reps = 100)
 ```
 
-The output above represents: 
+The output above represents:
 
 0 = no overlap and 1 = high overlap!
 
-- `obs` = observed overlap index; 
-- `null` = mean null overlap index; 
-- `seNull` = standard error of the null distribution; 
-- `pNull` = probability observed index arose by chance.
+-   `obs` = observed overlap index;
+-   `null` = mean null overlap index;
+-   `seNull` = standard error of the null distribution;
+-   `pNull` = probability observed index arose by chance.
 
-Which suggests there is reasonably high overlap between the two species - and that it did not come about by chance. 
+Which suggests there is reasonably high overlap between the two species - and that it did not come about by chance.
 
 ## Treatment comparisons
 
@@ -201,6 +199,8 @@ m2 <- fitact(img_locs$solar[img_locs$sp=="Odocoileus.virginianus" &
                               img_locs$feature_type=="Offline"], sample="model", reps=100)
 ```
 
+Plot the results:
+
 ```{r ch9_15, class.source="Rmain"}
 
 plot(m2, yunit="density", data="none", las=1, lwd=2,
@@ -214,39 +214,14 @@ plot(m1, yunit="density", data="none", add=TRUE,
 legend("topright", c("Offline", "HumanUse"), col=1:2, lty=1, lwd=2)
 ```
 
+And perform the statistical test:
+
 ```{r ch9_16, class.source="Rmain"}
 # Note reps reduced to speed up running time - people typically use 1000.
 compareCkern(m1, m2, reps = 100)
 ```
 
 There is very high overlap for these comparisons, and it is unlikely to have arisen by chance! So it seems the edidence for changes in temporal activity in response to feature_type is weak - at least for the white-tiled deer!
-
-### Seasonal comparison
-
-```{r}
-img_locs$month <- month(img_locs$timestamp, label=T)
-
-
-#Fit an activity model
-m1 <- fitact(img_locs$solar[img_locs$sp=="Rangifer.tarandus" &
-                              img_locs$month %in% c("Apr", "May", "Jun", "Jul", "Aug", "Sep")], sample="model", reps=100)
-
-
-m2 <- fitact(img_locs$solar[img_locs$sp=="Rangifer.tarandus" &
-                              img_locs$month %in% c("Oct", "Nov", "Dec", "Jan", "Feb", "Mar")], sample="model", reps=100)
-```
-
-```{r}
-plot(m2, yunit="density", data="none", las=1, lwd=2,
-     tline=list(lwd=2), # Thick line 
-     cline=list(lty=0)) # Supress confidence intervals
-
-plot(m1, yunit="density", data="none", add=TRUE, 
-     tline=list(col="red", lwd=2),
-     cline=list(lty=0))
-
-legend("topright", c("Winter", "Summer"), col=1:2, lty=1, lwd=2)
-```
 
 
 ## On your own
@@ -260,6 +235,7 @@ unique(img_locs$sp)
 You can also try other categorical strata comparisons, we have:
 
 `feature_type`
+
 ```{r ch9_18, echo=F}
 table(locs$feature_type)
 ```
@@ -268,11 +244,6 @@ table(locs$feature_type)
 
 [Houngbégnon, Fructueux GA, et al. "Daily Activity Patterns and Co-Occurrence of Duikers Revealed by an Intensive Camera Trap Survey across Central African Rainforests." Animals 10.12 (2020): 2200.](https://pubmed.ncbi.nlm.nih.gov/33255400/)
 
-[Ross J, Hearn AJ, Johnson PJ, Macdonald DW (2013). Activity patterns and temporal avoidance
-by prey in response to Sunda clouded leopard predation risk. Journal of Zoology, 290(2),
-96,106.](https://zslpublications.onlinelibrary.wiley.com/doi/10.1111/jzo.12018)
+[Ross J, Hearn AJ, Johnson PJ, Macdonald DW (2013). Activity patterns and temporal avoidance by prey in response to Sunda clouded leopard predation risk. Journal of Zoology, 290(2), 96,106.](https://zslpublications.onlinelibrary.wiley.com/doi/10.1111/jzo.12018)
 
-[Azevedo FC, Lemos FG, Freitas-Junior MC, Rocha DG, Azevedo FCC (2018). Puma activity
-patterns and temporal overlap with prey in a human-modifed landscape at Southeastern
-Brazil." Journal of Zoology](https://zslpublications.onlinelibrary.wiley.com/doi/abs/10.1111/jzo.12558)
-
+[Azevedo FC, Lemos FG, Freitas-Junior MC, Rocha DG, Azevedo FCC (2018). Puma activity patterns and temporal overlap with prey in a human-modifed landscape at Southeastern Brazil." Journal of Zoology](https://zslpublications.onlinelibrary.wiley.com/doi/abs/10.1111/jzo.12558)
