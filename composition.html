@@ -386,15 +386,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
 <li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
 <li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
-<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>14.4</b> Experimental manipulations</a></li>
-<li class="chapter" data-level="14.5" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.5</b> Interactions</a>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.4</b> Interactions</a>
 <ul>
-<li class="chapter" data-level="14.5.1" data-path="behavior.html"><a href="behavior.html#activity-overlap"><i class="fa fa-check"></i><b>14.5.1</b> Activity overlap</a></li>
-<li class="chapter" data-level="14.5.2" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.5.2</b> One species as a predictor of another</a></li>
-<li class="chapter" data-level="14.5.3" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.5.3</b> Residual co-occurence models</a></li>
-<li class="chapter" data-level="14.5.4" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.5.4</b> Attractance-Avoidance Ratios (AAR)</a></li>
+<li class="chapter" data-level="14.4.1" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.4.1</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.4.2" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.4.2</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.4.3" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.4.3</b> Attractance-Avoidance Ratios (AAR)</a></li>
 </ul></li>
-<li class="chapter" data-level="14.6" data-path="behavior.html"><a href="behavior.html#worked-examples"><i class="fa fa-check"></i><b>14.6</b> Worked examples</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
 <ul>
@@ -1255,25 +1252,25 @@ statistics for a series of rarefied and extrapolated samples
 <span id="cb186-6"><a href="composition.html#cb186-6" tabindex="-1"></a>point_estimate <span class="ot">&lt;-</span> out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based[out<span class="sc">$</span>iNextEst<span class="sc">$</span>size_based<span class="sc">$</span>t<span class="sc">==</span><span class="dv">1000</span>,] </span>
 <span id="cb186-7"><a href="composition.html#cb186-7" tabindex="-1"></a>point_estimate</span></code></pre></div>
 <pre><code>##    Assemblage    t        Method Order.q        qD    qD.LCL    qD.UCL
-## 1     Offline 1000   Rarefaction       0  9.908397  9.245493 10.571301
-## 5     Offline 1000   Rarefaction       1  5.199616  4.723740  5.675491
-## 9     Offline 1000   Rarefaction       2  3.770656  3.241265  4.300046
-## 13   HumanUse 1000   Rarefaction       0 13.700080 11.820966 15.579195
-## 17   HumanUse 1000   Rarefaction       1  8.526882  7.850583  9.203181
-## 21   HumanUse 1000   Rarefaction       2  7.468354  6.905271  8.031437
-## 28   NatRegen 1000 Extrapolation       0 11.175535  9.204531 13.146540
-## 32   NatRegen 1000 Extrapolation       1  5.404507  4.798810  6.010205
-## 36   NatRegen 1000 Extrapolation       2  4.139836  3.641021  4.638652
+## 1     Offline 1000   Rarefaction       0  9.908397  9.044351 10.772443
+## 5     Offline 1000   Rarefaction       1  5.199616  4.733570  5.665661
+## 9     Offline 1000   Rarefaction       2  3.770656  3.322847  4.218464
+## 13   HumanUse 1000   Rarefaction       0 13.700080 11.810582 15.589578
+## 17   HumanUse 1000   Rarefaction       1  8.526882  7.905900  9.147865
+## 21   HumanUse 1000   Rarefaction       2  7.468354  6.925996  8.010713
+## 28   NatRegen 1000 Extrapolation       0 11.175535  9.160643 13.190428
+## 32   NatRegen 1000 Extrapolation       1  5.404507  4.895771  5.913244
+## 36   NatRegen 1000 Extrapolation       2  4.139836  3.693815  4.585858
 ##           SC    SC.LCL    SC.UCL
-## 1  0.9942029 0.9913419 0.9970639
-## 5  0.9942029 0.9913419 0.9970639
-## 9  0.9942029 0.9913419 0.9970639
-## 13 0.9925184 0.9872709 0.9977659
-## 17 0.9925184 0.9872709 0.9977659
-## 21 0.9925184 0.9872709 0.9977659
-## 28 0.9982324 0.9926041 1.0000000
-## 32 0.9982324 0.9926041 1.0000000
-## 36 0.9982324 0.9926041 1.0000000</code></pre>
+## 1  0.9942029 0.9912845 0.9971213
+## 5  0.9942029 0.9912845 0.9971213
+## 9  0.9942029 0.9912845 0.9971213
+## 13 0.9925184 0.9874708 0.9975661
+## 17 0.9925184 0.9874708 0.9975661
+## 21 0.9925184 0.9874708 0.9975661
+## 28 0.9982324 0.9932032 1.0000000
+## 32 0.9982324 0.9932032 1.0000000
+## 36 0.9982324 0.9932032 1.0000000</code></pre>
 <div class="sourceCode" id="cb188"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb188-1"><a href="composition.html#cb188-1" tabindex="-1"></a><span class="co"># Make a nice ggplot!</span></span>
 <span id="cb188-2"><a href="composition.html#cb188-2" tabindex="-1"></a><span class="fu">ggplot</span>(point_estimate, <span class="fu">aes</span>(<span class="at">x=</span><span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.2</span>,<span class="fl">0.8</span>, <span class="fl">1.8</span>,</span>
 <span id="cb188-3"><a href="composition.html#cb188-3" tabindex="-1"></a>                               <span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">2</span>,</span>

@@ -386,15 +386,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
 <li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
 <li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
-<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>14.4</b> Experimental manipulations</a></li>
-<li class="chapter" data-level="14.5" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.5</b> Interactions</a>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.4</b> Interactions</a>
 <ul>
-<li class="chapter" data-level="14.5.1" data-path="behavior.html"><a href="behavior.html#activity-overlap"><i class="fa fa-check"></i><b>14.5.1</b> Activity overlap</a></li>
-<li class="chapter" data-level="14.5.2" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.5.2</b> One species as a predictor of another</a></li>
-<li class="chapter" data-level="14.5.3" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.5.3</b> Residual co-occurence models</a></li>
-<li class="chapter" data-level="14.5.4" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.5.4</b> Attractance-Avoidance Ratios (AAR)</a></li>
+<li class="chapter" data-level="14.4.1" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.4.1</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.4.2" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.4.2</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.4.3" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.4.3</b> Attractance-Avoidance Ratios (AAR)</a></li>
 </ul></li>
-<li class="chapter" data-level="14.6" data-path="behavior.html"><a href="behavior.html#worked-examples"><i class="fa fa-check"></i><b>14.6</b> Worked examples</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
 <ul>
@@ -725,7 +722,6 @@ to estimate density of unmarked populations.” Journal of Applied Ecology
 </div>
 <div id="time-to-event-space-to-event-density-estimates" class="section level3 hasAnchor" number="13.2.4">
 <h3><span class="header-section-number">13.2.4</span> Time to event / Space to event density estimates<a href="density.html#time-to-event-space-to-event-density-estimates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>NIT YET IMPLEMENTED ROBUSTLY - WILL BE UPDATED SOON</strong></p>
 <p>Whist the REM has been around for a while, there are a couple of new
 density formulations on the block! Time to event (TTE) and Space to
 event (STE).</p>
@@ -780,7 +776,7 @@ in:</p>
 estimating abundance of unmarked animals using camera-trap photographs.”
 Mammalian Biology (2021):
 1-10.</a></p>
-<p>Lets attempt to repeat these methods for moose.</p>
+<p>Lets attempt to apply the STE method to moose.</p>
 <p>We base our settings based on those in:</p>
 <p>An application of this method on wolves can be seen here:</p>
 <p><a href="https://esajournals.onlinelibrary.wiley.com/doi/full/10.1002/ecs2.3933">Ausband, David E., et al. “Estimating wolf abundance from cameras.”
@@ -794,7 +790,7 @@ front of the camera derived from standard field protocols and that the
 motion trigger detected all wolves that passed through the viewshed.”</strong></p>
 <div id="moose-1" class="section level4 hasAnchor" number="13.2.4.1">
 <h4><span class="header-section-number">13.2.4.1</span> Moose<a href="density.html#moose-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb293"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb293-1"><a href="density.html#cb293-1" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
+<div class="sourceCode" id="cb293"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb293-1"><a href="density.html#cb293-1" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
 <span id="cb293-2"><a href="density.html#cb293-2" tabindex="-1"></a><span class="co">#remotes::install_github(&quot;annam21/spaceNtime&quot;, build_vignettes=TRUE)</span></span>
 <span id="cb293-3"><a href="density.html#cb293-3" tabindex="-1"></a><span class="fu">library</span>(spaceNtime)</span></code></pre></div>
 <p>The first thing we need is a dataframe of all the detections of our
@@ -804,7 +800,7 @@ focal species with three columns:</p>
 <li>datetime: the ‘timestamp’</li>
 <li>count: the group count</li>
 </ul>
-<div class="sourceCode" id="cb294"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb294-1"><a href="density.html#cb294-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_raw_detections.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<div class="sourceCode" id="cb294"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb294-1"><a href="density.html#cb294-1" tabindex="-1"></a>img <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_raw_detections.csv&quot;</span>, <span class="at">header=</span>T)</span>
 <span id="cb294-2"><a href="density.html#cb294-2" tabindex="-1"></a></span>
 <span id="cb294-3"><a href="density.html#cb294-3" tabindex="-1"></a><span class="co"># Make ind timestamp a date object</span></span>
 <span id="cb294-4"><a href="density.html#cb294-4" tabindex="-1"></a>img<span class="sc">$</span>timestamp <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(img<span class="sc">$</span>timestamp)</span>
@@ -829,7 +825,7 @@ off then comes back online, that is represented as a new row.</p>
 <li>area: area in sq meters (we will use the same definition as in the
 REM example 14m depth and radius of 42.9 -&gt; 68.4m<sup>2</sup>)</li>
 </ul>
-<div class="sourceCode" id="cb295"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb295-1"><a href="density.html#cb295-1" tabindex="-1"></a>dep <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/example_data/deployments.csv&quot;</span>, <span class="at">header=</span>T)</span>
+<div class="sourceCode" id="cb295"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb295-1"><a href="density.html#cb295-1" tabindex="-1"></a>dep <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/example_data/deployments.csv&quot;</span>, <span class="at">header=</span>T)</span>
 <span id="cb295-2"><a href="density.html#cb295-2" tabindex="-1"></a></span>
 <span id="cb295-3"><a href="density.html#cb295-3" tabindex="-1"></a>dep<span class="sc">$</span>start_date <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(<span class="fu">paste</span>(dep<span class="sc">$</span>start_date, <span class="st">&quot;12:00:00&quot;</span>))</span>
 <span id="cb295-4"><a href="density.html#cb295-4" tabindex="-1"></a>dep<span class="sc">$</span>end_date   <span class="ot">&lt;-</span> <span class="fu">ymd_hms</span>(<span class="fu">paste</span>(dep<span class="sc">$</span>end_date, <span class="st">&quot;11:59:00&quot;</span>))</span>
@@ -849,7 +845,7 @@ specify the sampling occasions. This can be done manually or with the
 function build_occ(). The sampling occasions should be in a data.frame
 or tibble with the following structure:</p>
 <p><strong>Caution this can take a while to run</strong></p>
-<div class="sourceCode" id="cb296"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb296-1"><a href="density.html#cb296-1" tabindex="-1"></a>summer_dates <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="fu">c</span>(<span class="st">&quot;2018-04-07 00:00:00&quot;</span>, <span class="st">&quot;2018-09-30 23:59:59&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;GMT&quot;</span>)</span>
+<div class="sourceCode" id="cb296"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb296-1"><a href="density.html#cb296-1" tabindex="-1"></a>summer_dates <span class="ot">&lt;-</span> <span class="fu">as.POSIXct</span>(<span class="fu">c</span>(<span class="st">&quot;2018-04-07 00:00:00&quot;</span>, <span class="st">&quot;2018-09-30 23:59:59&quot;</span>), <span class="at">tz =</span> <span class="st">&quot;GMT&quot;</span>)</span>
 <span id="cb296-2"><a href="density.html#cb296-2" tabindex="-1"></a>summer_occ <span class="ot">&lt;-</span> <span class="fu">build_occ</span>(<span class="at">samp_freq =</span> <span class="dv">30</span>, <span class="co"># seconds between the start of each sampling occasion</span></span>
 <span id="cb296-3"><a href="density.html#cb296-3" tabindex="-1"></a>                 <span class="at">samp_length =</span> <span class="dv">2</span>, <span class="co"># duration of each sampling occasion (seconds)</span></span>
 <span id="cb296-4"><a href="density.html#cb296-4" tabindex="-1"></a>                 <span class="at">study_start =</span> summer_dates[<span class="dv">1</span>],</span>

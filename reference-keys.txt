@@ -166,13 +166,10 @@ behavior
 behavioural-designations
 event-duration
 animal-speed-and-day-range
-experimental-manipulations
 interactions
-activity-overlap
 one-species-as-a-predictor-of-another
 residual-co-occurence-models
 attractance-avoidance-ratios-aar
-worked-examples
 on-your-own-5
 working-with-a-new-dataset
 read-in-the-data-and-packages
