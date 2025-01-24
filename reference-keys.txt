@@ -146,7 +146,6 @@ data-formatting
 accounting-for-sunrise-and-sunset
 species-comparisons
 treatment-comparisons
-seasonal-comparison
 on-your-own-4
 selected-further-reading
 density
