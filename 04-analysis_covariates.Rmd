@@ -254,7 +254,7 @@ Camera studies often occur over a range of elevations - and we can quickly extra
 
 We can extract elevation from Amazon Web Service Terrain Tiles... available globally!
 
-```{r ch4_23b, class.source="Rmain", warning=F, eval=F}
+```{r ch4_23b, class.source="Rmain", warning=F, eval=T}
 locs_sf <- get_elev_point(locs_sf, 
                           src="aws", #Amazon Web Service Terrain Tiles - available globally
                           z = 12)  # z specifies the zoom level -> the lower the value the faster the code runs, but the coarser the elevation values are
