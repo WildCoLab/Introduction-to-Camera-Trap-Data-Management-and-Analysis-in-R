@@ -50,7 +50,7 @@ ind <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_d
 And the location information:
 
 ```{r ch10_2}
-locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations.csv")
+locs <-  read.csv("data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv")
 ```
 
  
@@ -68,26 +68,30 @@ Let's simpify things, and explore the data for a single species at two of the fe
 ```{r ch10_4}
 sub_locs <- locs$placename[locs$feature_type %in% c("HumanUse", "Offline")]
 
-sub_ind <- ind[ind$sp=="Odocoileus virginianus" & ind$placename %in% sub_locs,]
+sub_ind <- ind[ind$sp=="Odocoileus.virginianus" & ind$placename %in% sub_locs,]
+
+sub_ind <- left_join(sub_ind, locs)
+
 ```
 
 Let's check out that boxplot again!
 
 ```{r ch10_5}
-fig <- plot_ly(data=sub_ind,y = ~event_duration, type = "box",split = ~sp)
+fig <- plot_ly(data=sub_ind,y = ~event_duration, type = "box",split = ~feature_type)
 fig
 ```
 
+It looks like deer may linger longer in offline areas. Lets log the response variable to see if we can make that clearer:
+
+```{r ch10_6}
+fig <- plot_ly(data=sub_ind,y = ~log(event_duration), type = "box",split = ~feature_type)
+fig
+```
+
+
 ## Animal speed and day range
 
-*Coming soon*
-
 [Palencia, Pablo, et al. "Innovations in movement and behavioural ecology from camera traps: day range as model parameter." Methods in Ecology and Evolution.](https://besjournals.onlinelibrary.wiley.com/doi/abs/10.1111/2041-210X.13609)
-
-## Experimental manipulations
-
-*Coming soon*
-
 
 ## Interactions
 
@@ -102,13 +106,9 @@ fig
 
 ```
 
-### Activity overlap
-
-
 ### One species as a predictor of another
 
 Tattersall, E. R., Burgar, J. M., Fisher, J. T. & Burton, A. C. Boreal predator co-occurrences reveal shared use of seismic lines in a working landscape. Ecol. Evol. 10, 1678–1691 (2020).
-
 
 ### Residual co-occurence models
 See:
@@ -130,9 +130,3 @@ See:
 
 [Niedballa, Jürgen, et al. "Assessing analytical methods for detecting spatiotemporal interactions between species from camera trapping data." Remote Sensing in Ecology and Conservation 5.3 (2019): 272-285.](https://zslpublications.onlinelibrary.wiley.com/doi/pdf/10.1002/rse2.107)
 
-
-*Manipulative experiments* Measuring species feeding responses to anthropogenic and natural sounds. 
-
-##  Worked examples
-
-Coming soon. Check the [wildCo github page for updates](https://github.com/WildCoLab)

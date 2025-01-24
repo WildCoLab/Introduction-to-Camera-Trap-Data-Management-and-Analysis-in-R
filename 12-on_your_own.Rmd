@@ -286,20 +286,20 @@ for(i in 1:max(dep_tmp$plot_group))
 
 ```
 
-Note - there are three panels to check!
+Note - there are two panels to check!
 
 **QUESTION** Do you need to make any edits? Note - there are three plot windows to check.
 
-The camera failed for LAC061 - try to seem in and find out the last day it worked. Then update the deployment so the camera stops the day after the last correct date.
-
-```{r, echo=T, eval=F, class.source="Rmain"}
-# The camera failed for LAC061 
-dep$end_date[dep$deployment_id=="LAC061_C186_010921"] <- ymd("2021-09-09")
-```
-
+The camera failed for LAC061, but the deployment dates already reflect that.
 LAC064 also looks somewhat strange, that would be worth checking what happened. Lets leave it in for now. 
 
-We could maybe remove OFF067 and OFF072? Personal choice!
+We could maybe remove OFF067? That would be a good idea. 
+
+```{r, echo=T, eval=F, class.source="Rmain"}
+dep <- dep[dep$placename!="OFF067",]
+img <- img[img$placename!="OFF067",] 
+```
+
 
 ### Check species taxonomy
 
@@ -359,7 +359,7 @@ img$hours <- NULL
 
 **QUESTION** Are there any images you would like to check?
 
-Note - Paca's are nocturnal but they have some diurnal detections here. Check which station they come from. It might be that they are the same station as the one we excluded previously!
+Clue - Paca's are nocturnal but they have some diurnal detections here. Check which station they come from. 
 
 ### Filter to target species
 
@@ -715,7 +715,7 @@ sp_summary <- left_join(sp_summary, tmp)
 
 **QUESTION** Are there any missing values you need to fill in?
 
-Dont worry about adding it right now - carry on!
+Don't worry about adding them right now - carry on!
 
 ```{r, echo=T, eval=F, class.source="Rmain"}
 write.csv(sp_summary, paste0("data/processed_data/", locs$project_id[1],"_species_list.csv"), row.names = F)
@@ -761,6 +761,7 @@ water <- opq(aoi) %>%
            add_osm_feature(key = 'natural', value = 'water') %>%
            osmdata_sf()
 
+water
 # THERE IS NO OPEN STREET MAP DATA FOR THIS AREA - ARGH
 ```
 
@@ -780,7 +781,7 @@ aoi_sf <- st_as_sf(data.frame(id = "los_amigos", geom = st_as_sfc(aoi), wkt = "g
 collection <- "MOD13Q1.061" # run mf_list_collections() for an exhaustive list of collections available
 variables <- c("_250m_16_days_NDVI") # run mf_list_variables("MOD13Q1.061") for an exhaustive list of variables available for the collection "MOD13A3.061"
 
-# Specify the time range - we will use a winter-summer transition
+# Specify the time range - we will use a random couple of months
 time_range <- as.Date(c("2022-01-01", "2022-02-28")) # a time range of interest
 
 ## Get the URLs of the data
@@ -1075,3 +1076,4 @@ And the following categories to explore:
  c("feature_type", "elevation", "mean_ndvi")
 ```
 
+Try some boxplots and scatter charts!

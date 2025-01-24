@@ -437,8 +437,6 @@ to estimate density of unmarked populations." Journal of Applied Ecology
 
 ### Time to event / Space to event density estimates
 
-**NIT YET IMPLEMENTED ROBUSTLY - WILL BE UPDATED SOON**
-
 Whist the REM has been around for a while, there are a couple of new
 density formulations on the block! Time to event (TTE) and Space to
 event (STE).
@@ -501,7 +499,7 @@ estimating abundance of unmarked animals using camera-trap photographs."
 Mammalian Biology (2021):
 1-10.](https://link.springer.com/article/10.1007/s42991-021-00181-8)
 
-Lets attempt to repeat these methods for moose.
+Lets attempt to apply the STE method to moose.
 
 We base our settings based on those in:
 
@@ -520,7 +518,7 @@ motion trigger detected all wolves that passed through the viewshed."**
 
 #### Moose
 
-```{r ch12_9, class.source="Rinfo"}
+```{r ch12_9, class.source="Rmain"}
 #library(remotes)
 #remotes::install_github("annam21/spaceNtime", build_vignettes=TRUE)
 library(spaceNtime)
@@ -533,7 +531,7 @@ focal species with three columns:
 -   datetime: the 'timestamp'
 -   count: the group count
 
-```{r ch12_10, eval=F, class.source="Rinfo"}
+```{r ch12_10, eval=F, class.source="Rmain"}
 img <- read.csv("data/processed_data/AlgarRestorationProject_raw_detections.csv", header=T)
 
 # Make ind timestamp a date object
@@ -562,7 +560,7 @@ The deployment data needs the following columns:
 -   area: area in sq meters (we will use the same definition as in the
     REM example 14m depth and radius of 42.9 -\> 68.4m^2^)
 
-```{r, class.source="Rinfo", eval=F}
+```{r, class.source="Rmain", eval=F}
 dep <-  read.csv("data/raw_data/example_data/deployments.csv", header=T)
 
 dep$start_date <- ymd_hms(paste(dep$start_date, "12:00:00"))
@@ -587,7 +585,7 @@ or tibble with the following structure:
 
 **Caution this can take a while to run**
 
-```{r, class.source="Rinfo", eval=F}
+```{r, class.source="Rmain", eval=F}
 summer_dates <- as.POSIXct(c("2018-04-07 00:00:00", "2018-09-30 23:59:59"), tz = "GMT")
 summer_occ <- build_occ(samp_freq = 30, # seconds between the start of each sampling occasion
                  samp_length = 2, # duration of each sampling occasion (seconds)
