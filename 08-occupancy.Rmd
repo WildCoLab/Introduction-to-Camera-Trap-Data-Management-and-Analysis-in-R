@@ -259,7 +259,7 @@ summary(m0)
 
 ```
 
-The estimate you see for both occupancy and detection probability is on the log-link scale. If we want to calculate the occupancy probability, we can use the `backTransform()` function:
+The estimate you see for both occupancy and detection probability is on the logit scale. If we want to calculate the occupancy probability, we can use the `backTransform()` function:
 
 ```{r ch8_16, class.source="Rmain"}
 backTransform(m0, type = "state")

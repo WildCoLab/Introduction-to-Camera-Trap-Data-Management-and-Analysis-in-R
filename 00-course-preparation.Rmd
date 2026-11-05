@@ -19,11 +19,11 @@ If you get stuck [send me an email!](mailto:c.w.beirne@gmail.com)
 
 ## Install R
 
-**Windows** Click on [this link](https://cran.r-project.org/bin/windows/base/) and then `Download R-4.2.1 for Windows`.
+**Windows** Click on [this link](https://cran.r-project.org/bin/windows/base/) and then `Download R-4.2.2 for Windows`.
 
-**Mac** Click on [this link](https://cran.r-project.org/bin/macosx/) and then the `R-4.2.1.pkgs` link.
+**Mac** Click on [this link](https://cran.r-project.org/bin/macosx/) and then the `R-4.2.2.pkgs` link.
 
-**If you already have R**  please update your R client so that it is on at least version 4.2.1. Checkout the [installR package](https://www.r-project.org/nosvn/pandoc/installr.html) to this directly from the terminal.
+**If you already have R**  please update your R client so that it is on at least version 4.2.2. Checkout the [installR package](https://www.r-project.org/nosvn/pandoc/installr.html) to this directly from the terminal.
 
 ## Install RStudio
 
@@ -112,7 +112,7 @@ remotes::install_github("annam21/spaceNtime")
 
 **IMPORTANT** to access MODIS data (and other great products) rapidly through the `modisfast` package you need to create your own login for the associated Earthdata servers.
 
-**To create your free account go to : <https://urs.earthdata.nasa.gov/>.** and make a note of your credentials for the Analysis Covariates chapter. 
+**To create your free account go to : <https://urs.earthdata.nasa.gov/>.** and make a note of your credentials for use during the Analysis Covariates chapter. 
 
 ## Create an R project
 

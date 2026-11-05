@@ -332,7 +332,7 @@ mod_dat <- mod_dat %>%
             mutate_if(is.character,as.factor)
 ```
 
-And re-run our model - also this time with a negative binomial distribution to account for excess zeros:
+And re-run our model - also this time with a negative binomial distribution to account overdispersion (driven by excess zeros):
 
 ```{r ch7_26, class.source="Rmain"}
 glmm_cat <- glmer.nb(Odocoileus.virginianus ~ 
@@ -499,12 +499,12 @@ par(mar=c(8,12,1,1))
 plotBeta(out, post = postBeta, param = "Support", supportLevel = 0.95)
 ```
 
-We the colors denote the size and magnitude of the effect of proportion of lowland habitat. *NOTE* treat these results with caution as the number of model runs is very low (to increase speed) and the model assumptions have not been interrogated. 
+Were the colors denote the size and magnitude of the effect of the predictors. *NOTE* treat these results with caution as the number of model runs is very low (to increase speed) and the model assumptions have not been interrogated. 
 
 ```{r ch7_41, class.source="Rmain"}
 OmegaCor = computeAssociations(out)
 
-supportLevel = 0.0
+supportLevel = 0.0 # plots every asscoiation 
 
 toPlot = ((OmegaCor[[1]]$support>supportLevel)
 + (OmegaCor[[1]]$support<(1-supportLevel))>0)*OmegaCor[[1]]$mean

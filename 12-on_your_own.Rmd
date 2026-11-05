@@ -450,39 +450,17 @@ img_tmp <- img_sub %>%
 
 
 library(stringr)
-# Give a random value to all cells
-img_tmp$event_id <- 9999
 
-# Create a counter
-counter <- 1
+# An image starts a new event if it is the first for that species at that deployment
+# (duration is NA), or if the gap since the previous image is longer than the threshold
+img_tmp$new_event <- is.na(img_tmp$duration) | img_tmp$duration > (independent * 60)
 
-# Make a unique code that has one more zero than rows in your dataframe  
-num_code <- as.numeric(paste0(nrow(img_sub),0))
+# Count up the new events to give every image its event number, then format it as a code
+img_tmp$event_id <- paste0("E", str_pad(cumsum(img_tmp$new_event), nchar(nrow(img_tmp)) + 1, pad = "0"))
 
-# Loop through img_tmp - if gap is greater than the threshold -> give it a new event ID
-for (i in 2:nrow(img_tmp)) {
-  img_tmp$event_id[i-1]  <- paste0("E", str_pad(counter, nchar(num_code), pad = "0"))
-  
-  if(is.na(img_tmp$duration[i]) | abs(img_tmp$duration[i]) > (independent * 60))
-    {
-      counter <- counter + 1
-    }
-}
-
-# Update the information for the last row - the loop above always updates the previous row... leaving the last row unchanged
-   
- # group ID  for the last row
- if(img_tmp$duration[nrow(img_tmp)] < (independent * 60)|
-    is.na(img_tmp$duration[nrow(img_tmp)])){
-   img_tmp$event_id[nrow(img_tmp)] <- img_tmp$event_id[nrow(img_tmp)-1]
- } else{
-   counter <- counter + 1
-   img_tmp$event_id[nrow(img_tmp)] <- paste0("E", str_pad(counter, nchar(num_code), pad = "0"))
- }
-
-# remove the duration column
+# Remove the working columns
 img_tmp$duration <- NULL
- 
+img_tmp$new_event <- NULL
 
 
  # find out the last and the first of the time in the group
@@ -626,7 +604,7 @@ write.csv(mon_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",in
   # Station / Month / days / Covariates / Species      
   tmp <- row_lookup
   # Simplify the date to year-week
-  tmp$date <- strftime(tmp$date, format = "%Y-W%U")
+  tmp$date <- strftime(tmp$date, format = "%Y-W%U", tz = "UTC")
   # The way this is coded is the counter W01 starts at the first Sunday of the year, everything before that is W00. Weeks do not roll across years.
   
   # Calculate the number of days in each week  

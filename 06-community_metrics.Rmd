@@ -351,7 +351,7 @@ out <- iNEXT(inc_time, q=c(0,1,2) ,datatype="incidence_freq" )
 ggiNEXT(out, type=1, facet.var="Order.q", color.var="Assemblage") + theme_classic() 
 ```
 
-The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the differences between sites are being driven by several rarely encountered species). 
+The plot above shows that the differences between our two strata remain across increasing q values (suggesting that the differences between sites are not being driven by several rarely encountered species). 
 
 Point estimates and their confidence intervals can also be extracted from iNEXT model objects - but it does require a little data wrangling. For example, if we wanted to directly compare the diversity estimates of our strata at 1000 survey units:
 
@@ -370,7 +370,7 @@ ggplot(point_estimate, aes(x=c(-0.2,0.8, 1.8,
        theme_classic() +
        #scale_x_discrete(breaks=c("1","2"),labels= c("1","2")) +
        geom_errorbar(aes(ymin=qD.LCL, ymax=qD.UCL), width=.01) +
-       labs(y="Diversity", x = "Diversity at 1000 survey days") +
+       labs(y="Diversity", x = "Diversity at 1000 survey weeks") +
        geom_point() 
 ```
 
