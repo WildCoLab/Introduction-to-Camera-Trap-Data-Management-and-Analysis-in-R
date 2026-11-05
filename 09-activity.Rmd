@@ -176,7 +176,7 @@ The output above represents:
 -   `obs` = observed overlap index;
 -   `null` = mean null overlap index;
 -   `seNull` = standard error of the null distribution;
--   `pNull` = probability observed index arose by chance.
+-   `pNull` = probability observed index arose by chance. Low pNull means the patterns differ.
 
 Which suggests there is reasonably high overlap between the two species - and that it did not come about by chance.
 
