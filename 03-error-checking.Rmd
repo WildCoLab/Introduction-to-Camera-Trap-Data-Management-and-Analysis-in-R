@@ -1169,55 +1169,34 @@ img_sub$animal_count <- img_sub$group_size
 
 We will now break down the algorithm into subsections to make it clear what is occurring:
 
-i)  Order the dataframe by deployment code and species
+i)  Order the dataframe by deployment code, species and time
 
 ```{r ch3_56, echo=T, eval=T, message = F, warning = F, class.source="Rmain"}
 
 img_tmp <- img_sub %>%
-              arrange(deployment_id) %>%        # Order by deployment_id
-              group_by(deployment_id, sp) %>%   # Group species together
-              mutate(duration = int_length(timestamp %--% lag(timestamp))) # Calculate the gap between successive detections
-
+              arrange(deployment_id, sp, timestamp) %>%  # Order by deployment, species, then time
+              group_by(deployment_id, sp) %>%            # Compare images of the same species at the same deployment
+              mutate(duration = int_length(lag(timestamp) %--% timestamp)) %>% # Seconds since the previous image
+              ungroup() 
 ```
 
 ii) Determine independence of images
 
-If subsequent detections occur outside of the independence threshold, assign it a unique ID code.
+If a detection occurs outside of the independence threshold, it starts a new event with a unique ID code. All of the images in an event are the same species at the same deployment.
 
 ```{r ch3_57,  echo=T, eval=T, message = F, warning = F, class.source="Rmain"}
 library(stringr)
-# Give a random value to all cells
-img_tmp$event_id <- 9999
 
-# Create a counter
-counter <- 1
+# An image starts a new event if it is the first for that species at that deployment
+# (duration is NA), or if the gap since the previous image is longer than the threshold
+img_tmp$new_event <- is.na(img_tmp$duration) | img_tmp$duration > (independent * 60)
 
-# Make a unique code that has one more zero than rows in your dataframe  
-num_code <- as.numeric(paste0(nrow(img_sub),0))
+# Count up the new events to give every image its event number, then format it as a code
+img_tmp$event_id <- paste0("E", str_pad(cumsum(img_tmp$new_event), nchar(nrow(img_tmp)) + 1, pad = "0"))
 
-# Loop through img_tmp - if gap is greater than the threshold -> give it a new event ID
-for (i in 2:nrow(img_tmp)) {
-  img_tmp$event_id[i-1]  <- paste0("E", str_pad(counter, nchar(num_code), pad = "0"))
-  
-  if(is.na(img_tmp$duration[i]) | abs(img_tmp$duration[i]) > (independent * 60))
-    {
-      counter <- counter + 1
-    }
-}
-
-# Update the information for the last row - the loop above always updates the previous row... leaving the last row unchanged
-   
- # group ID  for the last row
- if(img_tmp$duration[nrow(img_tmp)] < (independent * 60)|
-    is.na(img_tmp$duration[nrow(img_tmp)])){
-   img_tmp$event_id[nrow(img_tmp)] <- img_tmp$event_id[nrow(img_tmp)-1]
- } else{
-   counter <- counter + 1
-   img_tmp$event_id[nrow(img_tmp)] <- paste0("E", str_pad(counter, nchar(num_code), pad = "0"))
- }
-
-# remove the duration column
+# Remove the working columns
 img_tmp$duration <- NULL
+img_tmp$new_event <- NULL
  
 ```
 
