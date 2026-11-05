@@ -452,7 +452,7 @@ Lets summarize the output:
 summary(camera_dist_list$dist)
 ```
 
-So the largest distance between two cameras is `r paste0(round(max(camera_dist_list$dist),0), "m")`, the minimum is `r paste0(round(min(camera_dist_list$dist)), "m")` and on average it is `r paste0(round(mean(camera_dist_list$dist)), "m")`.
+So the largest nearest-neighbour distance between two cameras is `r paste0(round(max(camera_dist_list$dist),0), "m")`, the minimum is `r paste0(round(min(camera_dist_list$dist)), "m")` and on average it is `r paste0(round(mean(camera_dist_list$dist)), "m")`.
 
 Again, put that straight into the methods section of your report/paper.
 
