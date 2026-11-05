@@ -178,7 +178,7 @@ The output above represents:
 -   `seNull` = standard error of the null distribution;
 -   `pNull` = probability observed index arose by chance. Low pNull means the patterns differ.
 
-Which suggests there is reasonably high overlap between the two species - and that it did not come about by chance.
+The observed overlap (0.78) is lower than we would expect if deer had the same activity pattern on both feature types (0.96), and none of the randomisations produced an overlap this low (pNull=<0.01). This suggests the patterns differ, although they still overlap substantially, so the size of any change looks modest.
 
 ## Treatment comparisons
 
@@ -221,7 +221,7 @@ And perform the statistical test:
 compareCkern(m1, m2, reps = 100)
 ```
 
-There is very high overlap for these comparisons, and it is unlikely to have arisen by chance! So it seems the edidence for changes in temporal activity in response to feature_type is weak - at least for the white-tiled deer!
+Again, the observed overlap (0.83) is lower than we would expect if deer had the same activity pattern on both feature types (0.96), and none of the randomisations produced an overlap this low. This suggests the patterns differ, although they still overlap substantially, so the size of any change looks modest.
 
 
 ## On your own
