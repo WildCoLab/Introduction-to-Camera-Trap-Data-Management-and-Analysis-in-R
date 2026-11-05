@@ -604,7 +604,7 @@ write.csv(mon_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",in
   # Station / Month / days / Covariates / Species      
   tmp <- row_lookup
   # Simplify the date to year-week
-  tmp$date <- strftime(tmp$date, format = "%Y-W%U")
+  tmp$date <- strftime(tmp$date, format = "%Y-W%U", tz = "UTC")
   # The way this is coded is the counter W01 starts at the first Sunday of the year, everything before that is W00. Weeks do not roll across years.
   
   # Calculate the number of days in each week  
