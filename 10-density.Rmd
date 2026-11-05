@@ -82,18 +82,28 @@ Parameters required [*and how you might get them*]:
 **y** = number of independent photo events [*from our independent
 detections file*]
 
-**t** = total survey effort [*from our deployment data*]
+**t** = total survey effort, in camera days [*from our deployment data*]
 
-**v** = average speed of animal movement [*We could use telemetry or we
-could use speed estimates derived from camera traps*]
+**v** = average distance moved per day, in km per day [*We could use
+telemetry or we could use speed estimates derived from camera traps*]
 
 **r** = radius (length) of camera detection zone [*We could use field
 trials as these parameters can vary station to station or the
 manufacturer specifications*]
 
-**theta** = angle of camera detection zone [*We could use field trials as
-these parameters could vary station to station, or the manufacturer
-specifications*]
+**theta** = angle of camera detection zone, in radians [*We could use field
+trials as these parameters could vary station to station, or the
+manufacturer specifications*]
+
+Density is then:
+
+$$D = \frac{y}{t} \cdot \frac{\pi}{v \, r \, (2 + \theta)}$$
+
+**The units must agree.** The time unit in **t** must match the time unit in
+**v**, and the distance unit in **r** must match the distance unit in **v**.
+If **t** is in hours and **v** is in km per day, the estimate will be 24 times
+too low. The equation does not convert units for you, and neither does
+`rem()`, so we use days and kilometres throughout.
 
 In this case we have speed data for moose and wolf in both winter and
 summer (derived from telemetry studies which occurred close to our
@@ -101,9 +111,10 @@ region of interest). So let's compare density estimates between winter
 (Oct-Mar) and summer (Apr-Sep) between these two species.
 
 In our project we didn't empirically measure the detection zone, so we
-will assume that these remain constant through time time and space.
+will assume that these remain constant through time and space.
 
-First, install the remBoot package to help us fit the REM model.
+First, install the remBoot package, which provides the `rem()` function we
+will use to calculate density.
 
 ```{r ch12_2, class.source="Rmain", message=F, warning=F}
 #devtools::install_github("arcaravaggi/remBoot")
@@ -175,16 +186,16 @@ moose_winter$theta <- 42.9*(pi/180)
 
 Finally we need two constants:
 
-1)  the effort in each given strata of interest (hours), and 2) the
-    average day range of the focal animal.
+1)  the effort in each given strata of interest (camera days), and 2) the
+    average day range of the focal animal (km per day).
 
-To get the number of hours per season, we can use the
+To get the number of camera days per season, we can use the
 monthly_observations dataframe:
 
 ```{r ch12_4, class.source="Rmain"}
 mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
 
-#
+# Effort in camera days, to match day range in km per day
 summer_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% summer])
 winter_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% winter])
 
@@ -196,32 +207,59 @@ camera trap study was conducted:
 
 Moose winter = 1.07 km per day Moose summer = 1.15 km per day
 
-Note: the units of effort (days) should match the units of speed/distance (km per day).
+We also need a measure of uncertainty. remBoot's `boot_sd()` resamples
+detections, which ignores the differences between cameras. Those differences
+are usually the largest source of variation in the encounter rate, so we
+resample cameras instead. This includes the cameras which never detected the
+species, and those zeros are part of the estimate.
+
+```{r ch12_5a, class.source="Rmain"}
+# Bootstrap REM density, using the camera as the unit of replication
+boot_rem <- function(dat, months, v, nboots = 1000) {
+
+  # Camera days for each camera in this season
+  cams <- mon_obs %>%
+    filter(substr(date, 6, 7) %in% months) %>%
+    group_by(placename) %>%
+    summarise(days = sum(days))
+
+  # Individuals detected at each camera, with zero where there were none
+  counts <- dat %>%
+    group_by(cam) %>%
+    summarise(y = sum(count))
+
+  cams <- left_join(cams, counts, by = c("placename" = "cam"))
+  cams$y[is.na(cams$y)] <- 0
+
+  # The part of the REM equation which does not change between resamples
+  zone <- pi / (v * dat$dist[1] * (2 + dat$theta[1]))
+
+  replicate(nboots, {
+    i <- sample(nrow(cams), replace = TRUE)
+    (sum(cams$y[i]) / sum(cams$days[i])) * zone
+  })
+}
+
+# Run rem() and the bootstrap for one season, and return one row of results
+fit_rem <- function(dat, effort, months, v, season, species) {
+  boots <- boot_rem(dat, months, v)
+  data.frame(season = season,
+             species = species,
+             density = rem(dat = dat, tm = effort, v = v),
+             se = sd(boots),
+             lower = unname(quantile(boots, 0.025)),
+             upper = unname(quantile(boots, 0.975)))
+}
+```
 
 Now lets fit the REM model.
 
 ```{r ch12_5, class.source="Rmain"}
-nboots <- 1000
+set.seed(123) # To make sure we all get the same result
 
-summer_rem <- rem(dat = moose_summer, tm=summer_effort, v=1.15)
-winter_rem <- rem(dat = moose_winter, tm=winter_effort, v=1.07) 
-
-moose_res <- data.frame(season=c("summer", "winter"), 
-             species="moose", 
-             density=c(summer_rem,winter_rem), 
-             sd=NA)
-
-# Add the sd
-tm <- summer_effort
-v <- 1.15
-moose_res$sd[moose_res$season=="summer"] <- sd(boot_sd(moose_summer))
-
-tm <- winter_effort
-v <- 1.07
-moose_res$sd[moose_res$season=="winter"] <- sd(boot_sd(moose_winter))
-
-
-
+moose_res <- rbind(
+  fit_rem(moose_summer, summer_effort, summer, v = 1.15, "summer", "moose"),
+  fit_rem(moose_winter, winter_effort, winter, v = 1.07, "winter", "moose"))
 ```
 
 Take a look at your results:
@@ -230,17 +268,39 @@ Take a look at your results:
 moose_res
 ```
 
-Remember, we were expecting a density of around 0.2 to 0.5 individuals
-per km^2^... So we are perhaps on the high side.
+Remember, we were expecting a density of around 0.2 to 0.5 individuals per
+km^2^. Our point estimates are above that range. With cameras as the unit of
+replication, the summer interval stays above it, while the winter interval
+overlaps it.
 
-Lets make a plot of the estimated densities and their standard
-deviations:
+Before taking these numbers at face value, consider what they assume:
+
+-   **Camera placement.** The REM assumes cameras are placed at random with
+    respect to animal movement. Many of our cameras are on seismic lines. If
+    moose use those lines more than the surrounding forest, density will be
+    overestimated.
+-   **Detection zone.** We assumed 14 m and 42.9° for every camera, rather
+    than measuring them. If the real radius is shorter, density is higher
+    than our estimate.
+-   **Day range.** Our values come from telemetry, and distances summed
+    between fixes underestimate the real path. Density is inversely
+    proportional to **v**, so a longer real path means a lower density.
+-   **Independent events.** The REM counts entries into the detection zone,
+    so the 30 minute filter can remove real re-entries. Here it matters
+    little: moving the window between 1 and 60 minutes changes the moose
+    estimates by 7 to 14%.
+-   **Uncertainty.** Our intervals only reflect differences between cameras.
+    They treat **v**, **r** and **theta** as known, so the true uncertainty
+    is larger.
+
+Lets make a plot of the estimated densities and their 95% confidence
+intervals:
 
 ```{r ,class.source="Rmain"}
 library(ggplot2)
 p<-ggplot(moose_res, aes(x=season, y=density)) + 
   geom_point()+
-  geom_errorbar(aes(ymin=density-sd, ymax=density+sd), width=.2,
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(0.05)) +
   theme_classic()
   
@@ -255,7 +315,7 @@ individuals per km^2^.
 Lets repeat our analysis for wolves:
 
 ```{r, class.source="Rmain"}
-# Subset to moose (alces alces) and the summer months
+# Subset to wolf (canis lupus) and the summer months
 wolf_summer <- ind[ind$sp=="Canis.lupus" & substr(ind$timestamp,6,7) %in% summer,c("placename", "event_groupsize")]
 # rename the columns
 wolf_summer <- wolf_summer %>% 
@@ -265,7 +325,7 @@ wolf_summer <- wolf_summer %>%
 wolf_summer$dist <- 0.014             # Our detection distance in km
 wolf_summer$theta <- 42.9*(pi/180)    # Our viewshed angle
 
-# Subset to wolf (alces alces) and the winter months
+# Subset to wolf (canis lupus) and the winter months
 wolf_winter <- ind[ind$sp=="Canis.lupus" & substr(ind$timestamp,6,7) %in% winter,c("placename", "event_groupsize")] 
 
 # rename the columns
@@ -284,41 +344,32 @@ We have the following values for wolf movement
 Wolf winter = 11.8 km per day Wolf summer = 11.9 km per day
 
 ```{r, class.source="Rmain"}
-summer_rem <- rem(dat = wolf_summer, tm=summer_effort, v=11.9)
-winter_rem <- rem(dat = wolf_winter, tm=winter_effort, v=11.8) 
+wolf_res <- rbind(
+  fit_rem(wolf_summer, summer_effort, summer, v = 11.9, "summer", "wolf"),
+  fit_rem(wolf_winter, winter_effort, winter, v = 11.8, "winter", "wolf"))
 
-wolf_res <- data.frame(season=c("summer", "winter"), 
-             species="wolf", 
-             density=c(summer_rem,winter_rem), 
-             sd=NA)
-
-# Add the sd
-tm <- summer_effort
-v <- 11.9
-wolf_res$sd[wolf_res$season=="summer"] <- sd(boot_sd(wolf_summer))
-
-tm <- winter_effort
-v <- 11.8
-wolf_res$sd[wolf_res$season=="winter"] <- sd(boot_sd(wolf_winter))
-
-
+wolf_res
 ```
 
-Which again, is on the higher end of our expected densities.
+Our point estimates are above the top of the expected range of 0.001 to 0.025
+individuals per km^2^, although both intervals overlap it. This is despite the
+wolf control which has been conducted in the area. Wolves are known to travel
+along linear features, so the placement of our cameras may be especially
+important for this species.
 
 ```{r ,class.source="Rmain"}
 library(ggplot2)
 p<-ggplot(wolf_res, aes(x=season, y=density)) + 
   geom_point()+
-  geom_errorbar(aes(ymin=density-sd, ymax=density+sd), width=.2,
+  geom_errorbar(aes(ymin=lower, ymax=upper), width=.2,
                 position=position_dodge(0.05)) +
   theme_classic()
   
 p
 ```
 
-These estimates are in the right ball park, and suggest that wolf
-densities are higher in winter in this region.
+The winter point estimate is higher than the summer one, but the intervals
+overlap widely, so these data do not show a seasonal difference in wolf density.
 
 The reference for the movement data use to calculate the movement speeds
 are:
@@ -560,10 +611,14 @@ The deployment data needs the following columns:
 -   start: deployment start date\
 -   end: deployment end date\
 -   area: area in sq meters (we will use the same definition as in the
-    REM example 14m depth and radius of 42.9 -\> 68.4m^2^)
+    REM example: a sector with a 14 m radius and a 42.9° angle, which is
+    (42.9 / 360) x pi x 14^2^ = 73.4 m^2^)
 
 ```{r, class.source="Rmain", eval=F}
 dep <-  read.csv("data/raw_data/example_data/deployments.csv", header=T)
+
+# This is the raw file, so repeat the correction from the error checking chapter
+dep$end_date[dep$deployment_id=="ALG036_2019-04-04"] <- "2019-11-21"
 
 dep$start_date <- ymd_hms(paste(dep$start_date, "12:00:00"))
 dep$end_date   <- ymd_hms(paste(dep$end_date, "11:59:00"))
@@ -574,7 +629,7 @@ snt_dep <- dep %>%
          start = start_date,
          end   = end_date)
 
-snt_dep$area <- 68.4
+snt_dep$area <- (42.9 / 360) * pi * 14^2  # 73.4 sq meters
 
 # Remove the NA
 snt_dep <- snt_dep[is.na(snt_dep$end)==F,]
@@ -585,7 +640,9 @@ specify the sampling occasions. This can be done manually or with the
 function build_occ(). The sampling occasions should be in a data.frame
 or tibble with the following structure:
 
-**Caution this can take a while to run**
+**Caution: this takes a while to run and needs a lot of memory, as it builds
+a table with a row per camera per sampling occasion. The winter period needed
+more than 7 GB at these settings, so we do not run it when building this book.**
 
 ```{r, class.source="Rmain", eval=F}
 summer_dates <- as.POSIXct(c("2018-04-07 00:00:00", "2018-09-30 23:59:59"), tz = "GMT")
@@ -609,15 +666,27 @@ ste_winter <- ste_build_eh(moose_dat, snt_dep, winter_occ)
 
 # Run the models
 moose_summer_res <- ste_estN_fn(ste_summer, study_area = 1e6) # specify 1 sq kilometer
-moose_wnter_res  <- ste_estN_fn(ste_winter, study_area = 1e6) # specify 1 sq kilometer
+moose_winter_res <- ste_estN_fn(ste_winter, study_area = 1e6) # specify 1 sq kilometer
+
+moose_summer_res
+moose_winter_res
 ```
 
 The results are:
 
-Winter - 0.036 individuals per km^2^ 
-Summer - 0.025 individuals per km^2^
+Winter - 0.023 individuals per km^2^
 
-Which are very similar to the remBoot results. 
+Summer - 0.033 individuals per km^2^
+
+These are about 30 times lower than our REM estimates, and also well below
+the 0.2 to 0.5 individuals per km^2^ we expected. The two methods do not agree,
+and working out why is a useful exercise. A likely reason is the third condition
+listed above: the camera has to take a picture while the animal is still in
+view. Our cameras are motion triggered, so an animal standing in the viewshed
+between bursts of images counts as absent on those sampling occasions. As the STE
+measures how often animals are in view at an instant, missing that time would
+bias it low. Time-lapse images, which sample at fixed times whether or not the
+sensor triggers, would reduce this problem.
 
 ### N-mixture model in unmarked
 
