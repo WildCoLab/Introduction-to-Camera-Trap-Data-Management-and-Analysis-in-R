@@ -793,7 +793,7 @@ If the error is in the image metadata (i.e. camera was set to the wrong date), y
 #":"ALG029_2019-04-02"
 
 # We established that the deployment was 30 days out (as there are 30 days in April)
-# So we add 30 days to all of the images in that deployment.
+# So we subtract 30 days to all of the images in that deployment.
 img[img$deployment_id=="ALG029_2019-04-02",]$timestamp <-
                    img[img$deployment_id=="ALG029_2019-04-02",]$timestamp - days(30)
 # Easy!
