@@ -1418,7 +1418,7 @@ write.csv(mon_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",in
   # Station / Month / days / Covariates / Species      
   tmp <- row_lookup
   # Simplify the date to year-week
-  tmp$date <- strftime(tmp$date, format = "%Y-W%U")
+  tmp$date <- strftime(tmp$date, format = "%Y-W%U", tz = "UTC")
   # The way this is coded is the counter W01 starts at the first Sunday of the year, everything before that is W00. Weeks do not roll across years.
   
   # Calculate the number of days in each week  
@@ -1472,7 +1472,7 @@ write.csv(week_count, paste0("data/processed_data/",ind_dat$project_id[1], "_",i
 # For each week, count the number of individuals/observations
   for(i in 1:nrow(day_obs))
     {
-      tmp <- ind_dat[ind_dat$placename==day_obs$placename[i] & strftime(ind_dat$timestamp, format = "%Y-%m-%d")== day_obs$date[i],]
+      tmp <- ind_dat[ind_dat$placename==day_obs$placename[i] & strftime(ind_dat$timestamp, format = "%Y-%m-%d", tz = "UTC")== day_obs$date[i],]
       
       tmp_stats <- tmp %>%  group_by(sp, .drop=F) %>% summarise(obs=n(), count=sum(animal_count))
       
