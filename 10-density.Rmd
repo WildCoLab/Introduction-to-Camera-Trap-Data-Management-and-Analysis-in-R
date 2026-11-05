@@ -184,9 +184,9 @@ monthly_observations dataframe:
 ```{r ch12_4, class.source="Rmain"}
 mon_obs <- read.csv("data/processed_data/AlgarRestorationProject_30min_independent_monthly_observations.csv", header=T)
 
-#times number of days by 24
-summer_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% summer])*24
-winter_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% winter])*24
+#
+summer_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% summer])
+winter_effort <- sum(mon_obs$days[substr(mon_obs$date, 6,7) %in% winter])
 
 ```
 
@@ -195,6 +195,8 @@ from telemetry datasets on Movebank from locations close to where this
 camera trap study was conducted:
 
 Moose winter = 1.07 km per day Moose summer = 1.15 km per day
+
+Note: the units of effort (days) should match the units of speed/distance (km per day).
 
 Now lets fit the REM model.
 
@@ -229,7 +231,7 @@ moose_res
 ```
 
 Remember, we were expecting a density of around 0.2 to 0.5 individuals
-per km^2^... So we are perhaps on the low side.
+per km^2^... So we are perhaps on the high side.
 
 Lets make a plot of the estimated densities and their standard
 deviations:
@@ -302,7 +304,7 @@ wolf_res$sd[wolf_res$season=="winter"] <- sd(boot_sd(wolf_winter))
 
 ```
 
-Which again, is fairly close to the low end of our expected densities, however wolf control has been conducted in the area.
+Which again, is on the higher end of our expected densities.
 
 ```{r ,class.source="Rmain"}
 library(ggplot2)
