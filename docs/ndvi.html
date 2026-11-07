@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 16 NDVI | An Introduction to Camera Trap Data Management and Analysis in R</title>
+  <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 16 NDVI | An Introduction to Camera Trap Data Management and Analysis in R" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="Materials for the three day camera trap data management and analysis course" />
+  <meta name="github-repo" content="WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 16 NDVI | An Introduction to Camera Trap Data Management and Analysis in R" />
+  
+  <meta name="twitter:description" content="Materials for the three day camera trap data management and analysis course" />
+  
+
+<meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
+
+
+<meta name="date" content="2026-11-07" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="on-your-own-5.html"/>
+<link rel="next" href="references.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+<script src="libs/kePrint-0.0.1/kePrint.js"></script>
+<link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+<link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-1.3.1/leaflet.js"></script>
+<link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
+<script src="libs/proj4-2.6.2/proj4.min.js"></script>
+<script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
+<link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.12.1/plotly.js"></script>
+<script src="libs/typedarray-0.1/typedarray.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
+
+
+<style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">WildCo Data Analysis Intro</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#ethos"><i class="fa fa-check"></i><b>1.1</b> Ethos</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#what-this-course-is"><i class="fa fa-check"></i><b>1.2</b> What this course is</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-course-is-not"><i class="fa fa-check"></i><b>1.3</b> What this course is not</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.4</b> How to use this book</a></li>
+<li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.5</b> Get in touch</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#cite-the-course"><i class="fa fa-check"></i><b>1.6</b> Cite the course</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.7</b> Acknowledgements</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="prep.html"><a href="prep.html"><i class="fa fa-check"></i><b>2</b> Preparing for the course</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="prep.html"><a href="prep.html#install-r"><i class="fa fa-check"></i><b>2.1</b> Install R</a></li>
+<li class="chapter" data-level="2.2" data-path="prep.html"><a href="prep.html#install-rstudio"><i class="fa fa-check"></i><b>2.2</b> Install RStudio</a></li>
+<li class="chapter" data-level="2.3" data-path="prep.html"><a href="prep.html#install-the-required-packages"><i class="fa fa-check"></i><b>2.3</b> Install the required packages</a>
+<ul>
+<li class="chapter" data-level="2.3.1" data-path="prep.html"><a href="prep.html#cran-packages"><i class="fa fa-check"></i><b>2.3.1</b> CRAN packages</a></li>
+<li class="chapter" data-level="2.3.2" data-path="prep.html"><a href="prep.html#other-packages"><i class="fa fa-check"></i><b>2.3.2</b> Other packages</a></li>
+</ul></li>
+<li class="chapter" data-level="2.4" data-path="prep.html"><a href="prep.html#create-an-r-project"><i class="fa fa-check"></i><b>2.4</b> Create an R project</a></li>
+<li class="chapter" data-level="2.5" data-path="prep.html"><a href="prep.html#download-the-data-files"><i class="fa fa-check"></i><b>2.5</b> Download the data files</a></li>
+<li class="chapter" data-level="2.6" data-path="prep.html"><a href="prep.html#the-example-datasets"><i class="fa fa-check"></i><b>2.6</b> The example datasets</a>
+<ul>
+<li class="chapter" data-level="2.6.1" data-path="prep.html"><a href="prep.html#example_data"><i class="fa fa-check"></i><b>2.6.1</b> example_data</a></li>
+<li class="chapter" data-level="2.6.2" data-path="prep.html"><a href="prep.html#your_data"><i class="fa fa-check"></i><b>2.6.2</b> your_data</a></li>
+</ul></li>
+<li class="chapter" data-level="2.7" data-path="prep.html"><a href="prep.html#practise-before-the-course"><i class="fa fa-check"></i><b>2.7</b> Practise before the course</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html"><i class="fa fa-check"></i><b>3</b> Preprocessing and labelling</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#data-storage"><i class="fa fa-check"></i><b>3.1</b> Data storage</a></li>
+<li class="chapter" data-level="3.2" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#preprocessing"><i class="fa fa-check"></i><b>3.2</b> Preprocessing</a>
+<ul>
+<li class="chapter" data-level="3.2.1" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#renaming"><i class="fa fa-check"></i><b>3.2.1</b> Renaming</a></li>
+<li class="chapter" data-level="3.2.2" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#automated-labelers"><i class="fa fa-check"></i><b>3.2.2</b> Automated Labelers</a></li>
+<li class="chapter" data-level="3.2.3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#sensitive-images"><i class="fa fa-check"></i><b>3.2.3</b> Sensitive images</a></li>
+<li class="chapter" data-level="3.2.4" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#timelapse-extraction"><i class="fa fa-check"></i><b>3.2.4</b> Timelapse extraction</a></li>
+</ul></li>
+<li class="chapter" data-level="3.3" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#labelling"><i class="fa fa-check"></i><b>3.3</b> Labelling</a></li>
+<li class="chapter" data-level="3.4" data-path="preprocessing-and-labelling.html"><a href="preprocessing-and-labelling.html#end-dates-and-outages"><i class="fa fa-check"></i><b>3.4</b> End dates and outages</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="standard.html"><a href="standard.html"><i class="fa fa-check"></i><b>4</b> Metadata standardisation</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="standard.html"><a href="standard.html#the-wildlife-insights-minimum-metadata-standards"><i class="fa fa-check"></i><b>4.1</b> The Wildlife Insights Minimum Metadata Standards</a>
+<ul>
+<li class="chapter" data-level="4.1.1" data-path="standard.html"><a href="standard.html#project-data"><i class="fa fa-check"></i><b>4.1.1</b> Project data</a></li>
+<li class="chapter" data-level="4.1.2" data-path="standard.html"><a href="standard.html#image-data"><i class="fa fa-check"></i><b>4.1.2</b> Image data</a></li>
+<li class="chapter" data-level="4.1.3" data-path="standard.html"><a href="standard.html#deployment-data"><i class="fa fa-check"></i><b>4.1.3</b> Deployment data</a></li>
+<li class="chapter" data-level="4.1.4" data-path="standard.html"><a href="standard.html#camera-inventory"><i class="fa fa-check"></i><b>4.1.4</b> Camera inventory</a></li>
+<li class="chapter" data-level="4.1.5" data-path="standard.html"><a href="standard.html#important-note"><i class="fa fa-check"></i><b>4.1.5</b> Important note</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="error-checking.html"><a href="error-checking.html"><i class="fa fa-check"></i><b>5</b> Error checking</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="error-checking.html"><a href="error-checking.html#standardised-exploration-script"><i class="fa fa-check"></i><b>5.1</b> Standardised exploration script</a></li>
+<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#adding-a-sampling-site-location-column-to-the-image-data"><i class="fa fa-check"></i><b>5.2</b> Adding a sampling site location column to the image data</a></li>
+<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.3</b> Formatting dates</a>
+<ul>
+<li class="chapter" data-level="5.3.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.3.1</b> Skill check: <code>lubridate</code></a></li>
+<li class="chapter" data-level="5.3.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.3.2</b> Deployment dates</a></li>
+<li class="chapter" data-level="5.3.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.3.3</b> Image dates</a></li>
+</ul></li>
+<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.4</b> Basic trapping summaries</a></li>
+<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.5</b> Error checks</a>
+<ul>
+<li class="chapter" data-level="5.5.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.5.1</b> Camera locations</a></li>
+<li class="chapter" data-level="5.5.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.5.2</b> Camera activity checks</a></li>
+<li class="chapter" data-level="5.5.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.5.3</b> Detection check</a></li>
+<li class="chapter" data-level="5.5.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.5.4</b> Taxonomy check</a></li>
+<li class="chapter" data-level="5.5.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.5.5</b> Skill Check: Taxize package</a></li>
+</ul></li>
+<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.6</b> Diel activity check</a></li>
+<li class="chapter" data-level="5.7" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.7</b> Conclusion</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="data-creation.html"><a href="data-creation.html"><i class="fa fa-check"></i><b>6</b> Analysis data creation</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="data-creation.html"><a href="data-creation.html#common-analysis-data-formats"><i class="fa fa-check"></i><b>6.1</b> Common analysis data formats</a></li>
+<li class="chapter" data-level="6.2" data-path="data-creation.html"><a href="data-creation.html#independent-detections"><i class="fa fa-check"></i><b>6.2</b> Independent detections</a></li>
+<li class="chapter" data-level="6.3" data-path="data-creation.html"><a href="data-creation.html#effort-look-up"><i class="fa fa-check"></i><b>6.3</b> Effort look-up</a></li>
+<li class="chapter" data-level="6.4" data-path="data-creation.html"><a href="data-creation.html#observations-by-time-interval"><i class="fa fa-check"></i><b>6.4</b> Observations by time interval</a></li>
+<li class="chapter" data-level="6.5" data-path="data-creation.html"><a href="data-creation.html#our-data"><i class="fa fa-check"></i><b>6.5</b> Our data</a>
+<ul>
+<li class="chapter" data-level="6.5.1" data-path="data-creation.html"><a href="data-creation.html#filter-to-target-species"><i class="fa fa-check"></i><b>6.5.1</b> Filter to target species</a></li>
+<li class="chapter" data-level="6.5.2" data-path="data-creation.html"><a href="data-creation.html#create-a-daily-camera-activity-lookup"><i class="fa fa-check"></i><b>6.5.2</b> Create a daily camera activity lookup</a></li>
+<li class="chapter" data-level="6.5.3" data-path="data-creation.html"><a href="data-creation.html#determine-independent-camera-detections"><i class="fa fa-check"></i><b>6.5.3</b> Determine ‘independent’ camera detections</a></li>
+<li class="chapter" data-level="6.5.4" data-path="data-creation.html"><a href="data-creation.html#add-additional-data"><i class="fa fa-check"></i><b>6.5.4</b> Add additional data</a></li>
+</ul></li>
+<li class="chapter" data-level="6.6" data-path="data-creation.html"><a href="data-creation.html#creating-analysis-dataframes"><i class="fa fa-check"></i><b>6.6</b> Creating analysis dataframes</a>
+<ul>
+<li class="chapter" data-level="6.6.1" data-path="data-creation.html"><a href="data-creation.html#final-data-check"><i class="fa fa-check"></i><b>6.6.1</b> Final data check</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="covariates.html"><a href="covariates.html"><i class="fa fa-check"></i><b>7</b> Analysis covariates</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="covariates.html"><a href="covariates.html#species-traits"><i class="fa fa-check"></i><b>7.1</b> Species traits</a></li>
+<li class="chapter" data-level="7.2" data-path="covariates.html"><a href="covariates.html#camera-station-covariates"><i class="fa fa-check"></i><b>7.2</b> Camera station covariates</a>
+<ul>
+<li class="chapter" data-level="7.2.1" data-path="covariates.html"><a href="covariates.html#locally-collected-covariates"><i class="fa fa-check"></i><b>7.2.1</b> Locally collected covariates</a></li>
+<li class="chapter" data-level="7.2.2" data-path="covariates.html"><a href="covariates.html#remotely-collected-covariates"><i class="fa fa-check"></i><b>7.2.2</b> Remotely collected covariates</a></li>
+<li class="chapter" data-level="7.2.3" data-path="covariates.html"><a href="covariates.html#extracting-data-from-local-rasters"><i class="fa fa-check"></i><b>7.2.3</b> Extracting data from local rasters</a></li>
+<li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
+<li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
+<li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
+</ul></li>
+<li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
+<li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="exploration.html"><a href="exploration.html"><i class="fa fa-check"></i><b>8</b> Analysis data exploration</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="exploration.html"><a href="exploration.html#final-locations-plot"><i class="fa fa-check"></i><b>8.1</b> Final locations plot</a></li>
+<li class="chapter" data-level="8.2" data-path="exploration.html"><a href="exploration.html#independent-detections-summary"><i class="fa fa-check"></i><b>8.2</b> Independent detections summary</a>
+<ul>
+<li class="chapter" data-level="8.2.1" data-path="exploration.html"><a href="exploration.html#total-number-of-captures"><i class="fa fa-check"></i><b>8.2.1</b> Total number of captures</a></li>
+<li class="chapter" data-level="8.2.2" data-path="exploration.html"><a href="exploration.html#raw-occupancy"><i class="fa fa-check"></i><b>8.2.2</b> Raw occupancy</a></li>
+<li class="chapter" data-level="8.2.3" data-path="exploration.html"><a href="exploration.html#comparison-plot"><i class="fa fa-check"></i><b>8.2.3</b> Comparison plot</a></li>
+</ul></li>
+<li class="chapter" data-level="8.3" data-path="exploration.html"><a href="exploration.html#temporal-patterns-in-capture-rates"><i class="fa fa-check"></i><b>8.3</b> Temporal patterns in capture rates</a></li>
+<li class="chapter" data-level="8.4" data-path="exploration.html"><a href="exploration.html#species-specific-capture-rates"><i class="fa fa-check"></i><b>8.4</b> Species-specific capture rates</a></li>
+<li class="chapter" data-level="8.5" data-path="exploration.html"><a href="exploration.html#spatial-patterns-in-capture-rates"><i class="fa fa-check"></i><b>8.5</b> Spatial patterns in capture rates</a></li>
+<li class="chapter" data-level="8.6" data-path="exploration.html"><a href="exploration.html#species-co-occurences"><i class="fa fa-check"></i><b>8.6</b> Species co-occurences</a></li>
+<li class="chapter" data-level="8.7" data-path="exploration.html"><a href="exploration.html#covariate-plots"><i class="fa fa-check"></i><b>8.7</b> Covariate plots</a>
+<ul>
+<li class="chapter" data-level="8.7.1" data-path="exploration.html"><a href="exploration.html#continuous-predictors"><i class="fa fa-check"></i><b>8.7.1</b> Continuous predictors</a></li>
+<li class="chapter" data-level="8.7.2" data-path="exploration.html"><a href="exploration.html#catagorical-predictors"><i class="fa fa-check"></i><b>8.7.2</b> Catagorical predictors</a></li>
+<li class="chapter" data-level="8.7.3" data-path="exploration.html"><a href="exploration.html#do-your-own-exploration"><i class="fa fa-check"></i><b>8.7.3</b> Do your own exploration</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="composition.html"><a href="composition.html"><i class="fa fa-check"></i><b>9</b> Community composition</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="composition.html"><a href="composition.html#observed-richness"><i class="fa fa-check"></i><b>9.1</b> Observed richness</a></li>
+<li class="chapter" data-level="9.2" data-path="composition.html"><a href="composition.html#estimated-richness"><i class="fa fa-check"></i><b>9.2</b> Estimated richness</a>
+<ul>
+<li class="chapter" data-level="9.2.1" data-path="composition.html"><a href="composition.html#inext-package"><i class="fa fa-check"></i><b>9.2.1</b> iNext package</a></li>
+</ul></li>
+<li class="chapter" data-level="9.3" data-path="composition.html"><a href="composition.html#sampling-unit-based-accumulation-curves"><i class="fa fa-check"></i><b>9.3</b> Sampling-unit-based accumulation curves</a></li>
+<li class="chapter" data-level="9.4" data-path="composition.html"><a href="composition.html#basic-results-plot"><i class="fa fa-check"></i><b>9.4</b> Basic results plot</a>
+<ul>
+<li class="chapter" data-level="9.4.1" data-path="composition.html"><a href="composition.html#sampling-duration-example"><i class="fa fa-check"></i><b>9.4.1</b> Sampling duration example</a></li>
+<li class="chapter" data-level="9.4.2" data-path="composition.html"><a href="composition.html#on-your-own"><i class="fa fa-check"></i><b>9.4.2</b> On your own</a></li>
+</ul></li>
+<li class="chapter" data-level="9.5" data-path="composition.html"><a href="composition.html#other-diversity-metrics"><i class="fa fa-check"></i><b>9.5</b> Other diversity metrics</a>
+<ul>
+<li class="chapter" data-level="9.5.1" data-path="composition.html"><a href="composition.html#simpson-and-shannon"><i class="fa fa-check"></i><b>9.5.1</b> Simpson and Shannon</a></li>
+<li class="chapter" data-level="9.5.2" data-path="composition.html"><a href="composition.html#more-examples-in-the-literature"><i class="fa fa-check"></i><b>9.5.2</b> More examples in the literature</a></li>
+<li class="chapter" data-level="9.5.3" data-path="composition.html"><a href="composition.html#multispecies-occupancy-model"><i class="fa fa-check"></i><b>9.5.3</b> Multispecies occupancy model</a></li>
+</ul></li>
+<li class="chapter" data-level="9.6" data-path="composition.html"><a href="composition.html#community-structure"><i class="fa fa-check"></i><b>9.6</b> Community structure</a>
+<ul>
+<li class="chapter" data-level="9.6.1" data-path="composition.html"><a href="composition.html#extracting-data-for-plotting"><i class="fa fa-check"></i><b>9.6.1</b> Extracting data for plotting</a></li>
+<li class="chapter" data-level="9.6.2" data-path="composition.html"><a href="composition.html#on-your-own-1"><i class="fa fa-check"></i><b>9.6.2</b> On your own</a></li>
+<li class="chapter" data-level="9.6.3" data-path="composition.html"><a href="composition.html#examples-in-the-literature"><i class="fa fa-check"></i><b>9.6.3</b> Examples in the literature</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="habitat-use.html"><a href="habitat-use.html"><i class="fa fa-check"></i><b>10</b> Habitat use</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="habitat-use.html"><a href="habitat-use.html#calculating-capture-rate"><i class="fa fa-check"></i><b>10.1</b> Calculating capture rate</a>
+<ul>
+<li class="chapter" data-level="10.1.1" data-path="habitat-use.html"><a href="habitat-use.html#examples-from-the-literature"><i class="fa fa-check"></i><b>10.1.1</b> Examples from the literature</a></li>
+</ul></li>
+<li class="chapter" data-level="10.2" data-path="habitat-use.html"><a href="habitat-use.html#single-species-models"><i class="fa fa-check"></i><b>10.2</b> Single-species models</a>
+<ul>
+<li class="chapter" data-level="10.2.1" data-path="habitat-use.html"><a href="habitat-use.html#simple-linear-model"><i class="fa fa-check"></i><b>10.2.1</b> Simple linear model</a></li>
+<li class="chapter" data-level="10.2.2" data-path="habitat-use.html"><a href="habitat-use.html#catagorical-predictor"><i class="fa fa-check"></i><b>10.2.2</b> Catagorical predictor</a></li>
+<li class="chapter" data-level="10.2.3" data-path="habitat-use.html"><a href="habitat-use.html#continuous-predictor"><i class="fa fa-check"></i><b>10.2.3</b> Continuous predictor</a></li>
+<li class="chapter" data-level="10.2.4" data-path="habitat-use.html"><a href="habitat-use.html#model-comparisons"><i class="fa fa-check"></i><b>10.2.4</b> Model comparisons</a></li>
+<li class="chapter" data-level="10.2.5" data-path="habitat-use.html"><a href="habitat-use.html#problems-with-these-models"><i class="fa fa-check"></i><b>10.2.5</b> Problems with these models</a></li>
+<li class="chapter" data-level="10.2.6" data-path="habitat-use.html"><a href="habitat-use.html#mixed-effects-models"><i class="fa fa-check"></i><b>10.2.6</b> Mixed-effects models</a></li>
+<li class="chapter" data-level="10.2.7" data-path="habitat-use.html"><a href="habitat-use.html#on-your-own-2"><i class="fa fa-check"></i><b>10.2.7</b> On your own</a></li>
+<li class="chapter" data-level="10.2.8" data-path="habitat-use.html"><a href="habitat-use.html#advanced-mixed-model-predictions"><i class="fa fa-check"></i><b>10.2.8</b> Advanced mixed-model predictions</a></li>
+<li class="chapter" data-level="10.2.9" data-path="habitat-use.html"><a href="habitat-use.html#examples-in-the-literature-1"><i class="fa fa-check"></i><b>10.2.9</b> Examples in the literature</a></li>
+</ul></li>
+<li class="chapter" data-level="10.3" data-path="habitat-use.html"><a href="habitat-use.html#multispecies-models"><i class="fa fa-check"></i><b>10.3</b> Multispecies models</a>
+<ul>
+<li class="chapter" data-level="10.3.1" data-path="habitat-use.html"><a href="habitat-use.html#potential-dangers"><i class="fa fa-check"></i><b>10.3.1</b> Potential dangers</a></li>
+<li class="chapter" data-level="10.3.2" data-path="habitat-use.html"><a href="habitat-use.html#further-reading"><i class="fa fa-check"></i><b>10.3.2</b> Further reading</a></li>
+<li class="chapter" data-level="10.3.3" data-path="habitat-use.html"><a href="habitat-use.html#examples-in-the-literature-2"><i class="fa fa-check"></i><b>10.3.3</b> Examples in the literature</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="11" data-path="occupancy.html"><a href="occupancy.html"><i class="fa fa-check"></i><b>11</b> Occupancy</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="occupancy.html"><a href="occupancy.html#single-species-occupancy-model"><i class="fa fa-check"></i><b>11.1</b> Single species occupancy model</a>
+<ul>
+<li class="chapter" data-level="11.1.1" data-path="occupancy.html"><a href="occupancy.html#unmarked-package"><i class="fa fa-check"></i><b>11.1.1</b> Unmarked package</a></li>
+<li class="chapter" data-level="11.1.2" data-path="occupancy.html"><a href="occupancy.html#plotting-predictions"><i class="fa fa-check"></i><b>11.1.2</b> Plotting predictions</a></li>
+<li class="chapter" data-level="11.1.3" data-path="occupancy.html"><a href="occupancy.html#on-your-own-3"><i class="fa fa-check"></i><b>11.1.3</b> On your own</a></li>
+</ul></li>
+<li class="chapter" data-level="11.2" data-path="occupancy.html"><a href="occupancy.html#spatial-occupancy-model-spoccupancy"><i class="fa fa-check"></i><b>11.2</b> Spatial occupancy model: spOccupancy</a>
+<ul>
+<li class="chapter" data-level="11.2.1" data-path="occupancy.html"><a href="occupancy.html#multi-species-model"><i class="fa fa-check"></i><b>11.2.1</b> Multi species model</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="activity.html"><a href="activity.html"><i class="fa fa-check"></i><b>12</b> Activity</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="activity.html"><a href="activity.html#independent-detections-or-raw-data"><i class="fa fa-check"></i><b>12.1</b> Independent detections or raw data?</a></li>
+<li class="chapter" data-level="12.2" data-path="activity.html"><a href="activity.html#data-formatting"><i class="fa fa-check"></i><b>12.2</b> Data formatting</a>
+<ul>
+<li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
+</ul></li>
+<li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
+<li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
+<li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="density.html"><a href="density.html"><i class="fa fa-check"></i><b>13</b> Density</a>
+<ul>
+<li class="chapter" data-level="13.1" data-path="density.html"><a href="density.html#individually-identifiable-individuals"><i class="fa fa-check"></i><b>13.1</b> Individually identifiable individuals</a></li>
+<li class="chapter" data-level="13.2" data-path="density.html"><a href="density.html#unmarked-animals"><i class="fa fa-check"></i><b>13.2</b> Unmarked animals</a>
+<ul>
+<li class="chapter" data-level="13.2.1" data-path="density.html"><a href="density.html#random-encounter-model"><i class="fa fa-check"></i><b>13.2.1</b> Random encounter model</a></li>
+<li class="chapter" data-level="13.2.2" data-path="density.html"><a href="density.html#moose"><i class="fa fa-check"></i><b>13.2.2</b> Moose</a></li>
+<li class="chapter" data-level="13.2.3" data-path="density.html"><a href="density.html#wolf"><i class="fa fa-check"></i><b>13.2.3</b> Wolf</a></li>
+<li class="chapter" data-level="13.2.4" data-path="density.html"><a href="density.html#time-to-event-space-to-event-density-estimates"><i class="fa fa-check"></i><b>13.2.4</b> Time to event / Space to event density estimates</a></li>
+<li class="chapter" data-level="13.2.5" data-path="density.html"><a href="density.html#n-mixture-model-in-unmarked"><i class="fa fa-check"></i><b>13.2.5</b> N-mixture model in unmarked</a></li>
+<li class="chapter" data-level="13.2.6" data-path="density.html"><a href="density.html#abmi-method"><i class="fa fa-check"></i><b>13.2.6</b> ABMI Method</a></li>
+<li class="chapter" data-level="13.2.7" data-path="density.html"><a href="density.html#unmarked-spatial-capture-recapture-uscr"><i class="fa fa-check"></i><b>13.2.7</b> Unmarked spatial capture recapture (uSCR)</a></li>
+</ul></li>
+<li class="chapter" data-level="13.3" data-path="density.html"><a href="density.html#future-directions"><i class="fa fa-check"></i><b>13.3</b> Future directions</a></li>
+</ul></li>
+<li class="chapter" data-level="14" data-path="behavior.html"><a href="behavior.html"><i class="fa fa-check"></i><b>14</b> Behavior</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
+<li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
+<li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.4</b> Interactions</a>
+<ul>
+<li class="chapter" data-level="14.4.1" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.4.1</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.4.2" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.4.2</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.4.3" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.4.3</b> Attractance-Avoidance Ratios (AAR)</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#working-with-a-new-dataset"><i class="fa fa-check"></i><b>15.1</b> Working with a new dataset</a>
+<ul>
+<li class="chapter" data-level="15.1.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#read-in-the-data-and-packages"><i class="fa fa-check"></i><b>15.1.1</b> Read in the data and packages</a></li>
+<li class="chapter" data-level="15.1.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#format-the-dates"><i class="fa fa-check"></i><b>15.1.2</b> Format the dates</a></li>
+<li class="chapter" data-level="15.1.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#plot-and-correct-spatial-co-ordinates"><i class="fa fa-check"></i><b>15.1.3</b> Plot and correct spatial co-ordinates</a></li>
+<li class="chapter" data-level="15.1.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#check-camera-spacing"><i class="fa fa-check"></i><b>15.1.4</b> Check camera spacing</a></li>
+<li class="chapter" data-level="15.1.5" data-path="on-your-own-5.html"><a href="on-your-own-5.html#check-all-deployments-have-image-data"><i class="fa fa-check"></i><b>15.1.5</b> Check all deployments have image data</a></li>
+<li class="chapter" data-level="15.1.6" data-path="on-your-own-5.html"><a href="on-your-own-5.html#b.-check-all-images-have-deployment-data"><i class="fa fa-check"></i><b>15.1.6</b> 5b. Check all images have deployment data</a></li>
+<li class="chapter" data-level="15.1.7" data-path="on-your-own-5.html"><a href="on-your-own-5.html#c.-check-deployments-occur-where-you-expect"><i class="fa fa-check"></i><b>15.1.7</b> 5c. Check deployments occur where you expect</a></li>
+<li class="chapter" data-level="15.1.8" data-path="on-your-own-5.html"><a href="on-your-own-5.html#check-images-occur-within-deployments"><i class="fa fa-check"></i><b>15.1.8</b> Check images occur within deployments</a></li>
+<li class="chapter" data-level="15.1.9" data-path="on-your-own-5.html"><a href="on-your-own-5.html#check-species-taxonomy"><i class="fa fa-check"></i><b>15.1.9</b> Check species taxonomy</a></li>
+<li class="chapter" data-level="15.1.10" data-path="on-your-own-5.html"><a href="on-your-own-5.html#check-species-activity"><i class="fa fa-check"></i><b>15.1.10</b> Check species activity</a></li>
+<li class="chapter" data-level="15.1.11" data-path="on-your-own-5.html"><a href="on-your-own-5.html#filter-to-target-species-1"><i class="fa fa-check"></i><b>15.1.11</b> Filter to target species</a></li>
+<li class="chapter" data-level="15.1.12" data-path="on-your-own-5.html"><a href="on-your-own-5.html#make-effort-look_up"><i class="fa fa-check"></i><b>15.1.12</b> Make effort look_up</a></li>
+<li class="chapter" data-level="15.1.13" data-path="on-your-own-5.html"><a href="on-your-own-5.html#create-independent-data"><i class="fa fa-check"></i><b>15.1.13</b> Create independent data</a></li>
+<li class="chapter" data-level="15.1.14" data-path="on-your-own-5.html"><a href="on-your-own-5.html#create-analysis-dataframes"><i class="fa fa-check"></i><b>15.1.14</b> Create analysis dataframes</a></li>
+<li class="chapter" data-level="15.1.15" data-path="on-your-own-5.html"><a href="on-your-own-5.html#check-analysis-dataframe-counts"><i class="fa fa-check"></i><b>15.1.15</b> Check analysis dataframe counts</a></li>
+</ul></li>
+<li class="chapter" data-level="15.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#add-your-covariates"><i class="fa fa-check"></i><b>15.2</b> Add your covariates</a>
+<ul>
+<li class="chapter" data-level="15.2.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#species-traits-1"><i class="fa fa-check"></i><b>15.2.1</b> Species Traits</a></li>
+</ul></li>
+<li class="chapter" data-level="15.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#spatial-data"><i class="fa fa-check"></i><b>15.3</b> Spatial data</a>
+<ul>
+<li class="chapter" data-level="15.3.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#convert-to-simple-features"><i class="fa fa-check"></i><b>15.3.1</b> Convert to simple features</a></li>
+<li class="chapter" data-level="15.3.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#get-elevation-data"><i class="fa fa-check"></i><b>15.3.2</b> Get elevation data</a></li>
+<li class="chapter" data-level="15.3.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#open-street-map-data"><i class="fa fa-check"></i><b>15.3.3</b> Open street map data</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ndvi.html"><a href="ndvi.html"><i class="fa fa-check"></i><b>16</b> NDVI</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="ndvi.html"><a href="ndvi.html#data-exploration"><i class="fa fa-check"></i><b>16.1</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="ndvi.html"><a href="ndvi.html#final-map"><i class="fa fa-check"></i><b>16.1.1</b> Final map</a></li>
+<li class="chapter" data-level="16.1.2" data-path="ndvi.html"><a href="ndvi.html#detection-summary"><i class="fa fa-check"></i><b>16.1.2</b> Detection summary</a></li>
+<li class="chapter" data-level="16.1.3" data-path="ndvi.html"><a href="ndvi.html#temporal-patterns"><i class="fa fa-check"></i><b>16.1.3</b> Temporal patterns</a></li>
+<li class="chapter" data-level="16.1.4" data-path="ndvi.html"><a href="ndvi.html#spatial-patterns"><i class="fa fa-check"></i><b>16.1.4</b> Spatial patterns</a></li>
+<li class="chapter" data-level="16.1.5" data-path="ndvi.html"><a href="ndvi.html#species-co-occurance"><i class="fa fa-check"></i><b>16.1.5</b> Species co-occurance</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
+<li class="divider"></li>
+<li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">An Introduction to Camera Trap Data Management and Analysis in R</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="ndvi" class="section level1 hasAnchor" number="16">
+<h1><span class="header-section-number">Chapter 16</span> NDVI<a href="ndvi.html#ndvi" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb338"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb338-1"><a href="ndvi.html#cb338-1" tabindex="-1"></a><span class="fu">library</span>(MODISTools)</span>
+<span id="cb338-2"><a href="ndvi.html#cb338-2" tabindex="-1"></a></span>
+<span id="cb338-3"><a href="ndvi.html#cb338-3" tabindex="-1"></a><span class="co"># MODIS data sit on a sinusoidal grid, which is skewed away from the equator,</span></span>
+<span id="cb338-4"><a href="ndvi.html#cb338-4" tabindex="-1"></a><span class="co"># so we measure the area covered by our cameras (plus 1 km) on that grid</span></span>
+<span id="cb338-5"><a href="ndvi.html#cb338-5" tabindex="-1"></a>modis_crs <span class="ot">&lt;-</span> <span class="st">&quot;+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs&quot;</span></span>
+<span id="cb338-6"><a href="ndvi.html#cb338-6" tabindex="-1"></a>cams_sinu <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(<span class="fu">st_transform</span>(locs_sf, modis_crs), <span class="dv">1000</span>))</span>
+<span id="cb338-7"><a href="ndvi.html#cb338-7" tabindex="-1"></a></span>
+<span id="cb338-8"><a href="ndvi.html#cb338-8" tabindex="-1"></a><span class="co"># The centre of that area, converted back to latitude and longitude</span></span>
+<span id="cb338-9"><a href="ndvi.html#cb338-9" tabindex="-1"></a>aoi_centre <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(<span class="fu">st_point</span>(<span class="fu">c</span>(<span class="fu">mean</span>(cams_sinu[<span class="fu">c</span>(<span class="st">&quot;xmin&quot;</span>, <span class="st">&quot;xmax&quot;</span>)]),</span>
+<span id="cb338-10"><a href="ndvi.html#cb338-10" tabindex="-1"></a>                                <span class="fu">mean</span>(cams_sinu[<span class="fu">c</span>(<span class="st">&quot;ymin&quot;</span>, <span class="st">&quot;ymax&quot;</span>)]))), <span class="at">crs =</span> modis_crs) <span class="sc">%&gt;%</span></span>
+<span id="cb338-11"><a href="ndvi.html#cb338-11" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb338-12"><a href="ndvi.html#cb338-12" tabindex="-1"></a>  <span class="fu">st_coordinates</span>()</span>
+<span id="cb338-13"><a href="ndvi.html#cb338-13" tabindex="-1"></a></span>
+<span id="cb338-14"><a href="ndvi.html#cb338-14" tabindex="-1"></a><span class="co"># The distance from the centre to the edges, in km. The service sizes requests</span></span>
+<span id="cb338-15"><a href="ndvi.html#cb338-15" tabindex="-1"></a><span class="co"># using a nominal 250 m pixel (true size 231.7 m), so we scale up to compensate</span></span>
+<span id="cb338-16"><a href="ndvi.html#cb338-16" tabindex="-1"></a>km_lr <span class="ot">&lt;-</span> <span class="fu">ceiling</span>((cams_sinu[<span class="st">&quot;xmax&quot;</span>] <span class="sc">-</span> cams_sinu[<span class="st">&quot;xmin&quot;</span>]) <span class="sc">/</span> <span class="dv">2000</span> <span class="sc">*</span> <span class="dv">250</span> <span class="sc">/</span> <span class="fl">231.656</span>)</span>
+<span id="cb338-17"><a href="ndvi.html#cb338-17" tabindex="-1"></a>km_ab <span class="ot">&lt;-</span> <span class="fu">ceiling</span>((cams_sinu[<span class="st">&quot;ymax&quot;</span>] <span class="sc">-</span> cams_sinu[<span class="st">&quot;ymin&quot;</span>]) <span class="sc">/</span> <span class="dv">2000</span> <span class="sc">*</span> <span class="dv">250</span> <span class="sc">/</span> <span class="fl">231.656</span>)</span>
+<span id="cb338-18"><a href="ndvi.html#cb338-18" tabindex="-1"></a><span class="cf">if</span> (km_lr <span class="sc">&gt;</span> <span class="dv">100</span> <span class="sc">|</span> km_ab <span class="sc">&gt;</span> <span class="dv">100</span>) <span class="fu">stop</span>(<span class="st">&quot;Cameras cover too large an area for one request&quot;</span>)</span>
+<span id="cb338-19"><a href="ndvi.html#cb338-19" tabindex="-1"></a></span>
+<span id="cb338-20"><a href="ndvi.html#cb338-20" tabindex="-1"></a><span class="co"># MODIS product and band of interest</span></span>
+<span id="cb338-21"><a href="ndvi.html#cb338-21" tabindex="-1"></a>product <span class="ot">&lt;-</span> <span class="st">&quot;MOD13Q1&quot;</span>           <span class="co"># run mt_products() for a list of products available</span></span>
+<span id="cb338-22"><a href="ndvi.html#cb338-22" tabindex="-1"></a>band <span class="ot">&lt;-</span> <span class="st">&quot;250m_16_days_NDVI&quot;</span>    <span class="co"># run mt_bands(&quot;MOD13Q1&quot;) for a list of bands available</span></span>
+<span id="cb338-23"><a href="ndvi.html#cb338-23" tabindex="-1"></a></span>
+<span id="cb338-24"><a href="ndvi.html#cb338-24" tabindex="-1"></a><span class="co"># Specify the time range - we will use a random couple of months</span></span>
+<span id="cb338-25"><a href="ndvi.html#cb338-25" tabindex="-1"></a>time_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2022-01-01&quot;</span>, <span class="st">&quot;2022-02-28&quot;</span>)</span>
+<span id="cb338-26"><a href="ndvi.html#cb338-26" tabindex="-1"></a></span>
+<span id="cb338-27"><a href="ndvi.html#cb338-27" tabindex="-1"></a><span class="co"># Download the data once, and save a copy to reuse</span></span>
+<span id="cb338-28"><a href="ndvi.html#cb338-28" tabindex="-1"></a>ndvi_file <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_MOD13Q1_NDVI.csv&quot;</span>)</span>
+<span id="cb338-29"><a href="ndvi.html#cb338-29" tabindex="-1"></a></span>
+<span id="cb338-30"><a href="ndvi.html#cb338-30" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(ndvi_file)) {</span>
+<span id="cb338-31"><a href="ndvi.html#cb338-31" tabindex="-1"></a>  ndvi_df <span class="ot">&lt;-</span> <span class="fu">mt_subset</span>(<span class="at">product =</span> product,</span>
+<span id="cb338-32"><a href="ndvi.html#cb338-32" tabindex="-1"></a>                       <span class="at">band =</span> band,</span>
+<span id="cb338-33"><a href="ndvi.html#cb338-33" tabindex="-1"></a>                       <span class="at">lat =</span> aoi_centre[<span class="dv">1</span>, <span class="st">&quot;Y&quot;</span>],</span>
+<span id="cb338-34"><a href="ndvi.html#cb338-34" tabindex="-1"></a>                       <span class="at">lon =</span> aoi_centre[<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>],</span>
+<span id="cb338-35"><a href="ndvi.html#cb338-35" tabindex="-1"></a>                       <span class="at">start =</span> time_range[<span class="dv">1</span>],</span>
+<span id="cb338-36"><a href="ndvi.html#cb338-36" tabindex="-1"></a>                       <span class="at">end =</span> time_range[<span class="dv">2</span>],</span>
+<span id="cb338-37"><a href="ndvi.html#cb338-37" tabindex="-1"></a>                       <span class="at">km_lr =</span> km_lr,</span>
+<span id="cb338-38"><a href="ndvi.html#cb338-38" tabindex="-1"></a>                       <span class="at">km_ab =</span> km_ab,</span>
+<span id="cb338-39"><a href="ndvi.html#cb338-39" tabindex="-1"></a>                       <span class="at">site_name =</span> locs<span class="sc">$</span>project_id[<span class="dv">1</span>],</span>
+<span id="cb338-40"><a href="ndvi.html#cb338-40" tabindex="-1"></a>                       <span class="at">internal =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb338-41"><a href="ndvi.html#cb338-41" tabindex="-1"></a>                       <span class="at">progress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb338-42"><a href="ndvi.html#cb338-42" tabindex="-1"></a>  <span class="fu">write.csv</span>(ndvi_df, ndvi_file, <span class="at">row.names =</span> F)</span>
+<span id="cb338-43"><a href="ndvi.html#cb338-43" tabindex="-1"></a>}</span>
+<span id="cb338-44"><a href="ndvi.html#cb338-44" tabindex="-1"></a></span>
+<span id="cb338-45"><a href="ndvi.html#cb338-45" tabindex="-1"></a>ndvi_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(ndvi_file)</span>
+<span id="cb338-46"><a href="ndvi.html#cb338-46" tabindex="-1"></a></span>
+<span id="cb338-47"><a href="ndvi.html#cb338-47" tabindex="-1"></a><span class="co"># Convert to a raster: one layer per 16-day image, NDVI already scaled to -1 to 1</span></span>
+<span id="cb338-48"><a href="ndvi.html#cb338-48" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">mt_to_terra</span>(ndvi_df)</span>
+<span id="cb338-49"><a href="ndvi.html#cb338-49" tabindex="-1"></a></span>
+<span id="cb338-50"><a href="ndvi.html#cb338-50" tabindex="-1"></a><span class="co"># Check every camera falls inside the downloaded area</span></span>
+<span id="cb338-51"><a href="ndvi.html#cb338-51" tabindex="-1"></a>cams_check <span class="ot">&lt;-</span> <span class="fu">vect</span>(<span class="fu">st_transform</span>(locs_sf, <span class="fu">crs</span>(r)))</span>
+<span id="cb338-52"><a href="ndvi.html#cb338-52" tabindex="-1"></a>outside <span class="ot">&lt;-</span> <span class="sc">!</span>terra<span class="sc">::</span><span class="fu">relate</span>(cams_check, <span class="fu">as.polygons</span>(r[[<span class="dv">1</span>]], <span class="at">extent =</span> <span class="cn">TRUE</span>), <span class="st">&quot;intersects&quot;</span>)[, <span class="dv">1</span>]</span>
+<span id="cb338-53"><a href="ndvi.html#cb338-53" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">any</span>(outside)) <span class="fu">stop</span>(<span class="st">&quot;Cameras outside the NDVI area: &quot;</span>, <span class="fu">paste</span>(locs_sf<span class="sc">$</span>placename[outside], <span class="at">collapse =</span> <span class="st">&quot;, &quot;</span>))</span>
+<span id="cb338-54"><a href="ndvi.html#cb338-54" tabindex="-1"></a></span>
+<span id="cb338-55"><a href="ndvi.html#cb338-55" tabindex="-1"></a><span class="co"># Remove fill values (valid NDVI is -0.2 to 1)</span></span>
+<span id="cb338-56"><a href="ndvi.html#cb338-56" tabindex="-1"></a>r[r <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">0.2</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb338-57"><a href="ndvi.html#cb338-57" tabindex="-1"></a></span>
+<span id="cb338-58"><a href="ndvi.html#cb338-58" tabindex="-1"></a><span class="co"># Match the projection of our camera locations, and trim to the cameras plus 1 km</span></span>
+<span id="cb338-59"><a href="ndvi.html#cb338-59" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(r, <span class="st">&quot;EPSG:4326&quot;</span>)</span>
+<span id="cb338-60"><a href="ndvi.html#cb338-60" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(r, <span class="fu">vect</span>(<span class="fu">st_buffer</span>(locs_sf, <span class="dv">1000</span>)))</span>
+<span id="cb338-61"><a href="ndvi.html#cb338-61" tabindex="-1"></a></span>
+<span id="cb338-62"><a href="ndvi.html#cb338-62" tabindex="-1"></a><span class="co"># Plot the resulting NDVI data</span></span>
+<span id="cb338-63"><a href="ndvi.html#cb338-63" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">col =</span> <span class="fu">rev</span>(<span class="fu">terrain.colors</span>(<span class="dv">20</span>)), </span>
+<span id="cb338-64"><a href="ndvi.html#cb338-64" tabindex="-1"></a>            <span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># Specify the range of values you want to plot</span></span>
+<span id="cb338-65"><a href="ndvi.html#cb338-65" tabindex="-1"></a></span>
+<span id="cb338-66"><a href="ndvi.html#cb338-66" tabindex="-1"></a><span class="co"># Extract the data to camera locations</span></span>
+<span id="cb338-67"><a href="ndvi.html#cb338-67" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r, <span class="fu">vect</span>(locs_sf), <span class="at">ID=</span>F) <span class="co"># Extract - each layer will become its own column</span></span>
+<span id="cb338-68"><a href="ndvi.html#cb338-68" tabindex="-1"></a>locs_sf<span class="sc">$</span>mean_ndvi <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tmp, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="co"># take the mean of each column</span></span>
+<span id="cb338-69"><a href="ndvi.html#cb338-69" tabindex="-1"></a></span>
+<span id="cb338-70"><a href="ndvi.html#cb338-70" tabindex="-1"></a><span class="do">#######################################</span></span>
+<span id="cb338-71"><a href="ndvi.html#cb338-71" tabindex="-1"></a><span class="co"># Convert it back to a dataframe</span></span>
+<span id="cb338-72"><a href="ndvi.html#cb338-72" tabindex="-1"></a>locs_sf<span class="sc">$</span>geometry <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb338-73"><a href="ndvi.html#cb338-73" tabindex="-1"></a></span>
+<span id="cb338-74"><a href="ndvi.html#cb338-74" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, locs_sf)</span>
+<span id="cb338-75"><a href="ndvi.html#cb338-75" tabindex="-1"></a></span>
+<span id="cb338-76"><a href="ndvi.html#cb338-76" tabindex="-1"></a><span class="co"># Write the dataset</span></span>
+<span id="cb338-77"><a href="ndvi.html#cb338-77" tabindex="-1"></a></span>
+<span id="cb338-78"><a href="ndvi.html#cb338-78" tabindex="-1"></a><span class="fu">write.csv</span>(locs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_camera_locations_and_covariates.csv&quot;</span>), <span class="at">row.names=</span>F)</span></code></pre></div>
+<div id="data-exploration" class="section level2 hasAnchor" number="16.1">
+<h2><span class="header-section-number">16.1</span> Data exploration<a href="ndvi.html#data-exploration" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="final-map" class="section level3 hasAnchor" number="16.1.1">
+<h3><span class="header-section-number">16.1.1</span> Final map<a href="ndvi.html#final-map" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb339"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb339-1"><a href="ndvi.html#cb339-1" tabindex="-1"></a>list.of.packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;kableExtra&quot;</span>, <span class="st">&quot;tidyr&quot;</span>, <span class="st">&quot;leaflet&quot;</span>, <span class="st">&quot;dplyr&quot;</span>, <span class="st">&quot;viridis&quot;</span>, <span class="st">&quot;corrplot&quot;</span>, <span class="st">&quot;lubridate&quot;</span>, <span class="st">&quot;plotly&quot;</span>)</span>
+<span id="cb339-2"><a href="ndvi.html#cb339-2" tabindex="-1"></a></span>
+<span id="cb339-3"><a href="ndvi.html#cb339-3" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb339-4"><a href="ndvi.html#cb339-4" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb339-5"><a href="ndvi.html#cb339-5" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb339-6"><a href="ndvi.html#cb339-6" tabindex="-1"></a></span>
+<span id="cb339-7"><a href="ndvi.html#cb339-7" tabindex="-1"></a><span class="co"># Final locations plot</span></span>
+<span id="cb339-8"><a href="ndvi.html#cb339-8" tabindex="-1"></a></span>
+<span id="cb339-9"><a href="ndvi.html#cb339-9" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,pro<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_camera_locations_and_covariates.csv&quot;</span>))</span>
+<span id="cb339-10"><a href="ndvi.html#cb339-10" tabindex="-1"></a></span>
+<span id="cb339-11"><a href="ndvi.html#cb339-11" tabindex="-1"></a><span class="co"># If you want to color by a category do it here:</span></span>
+<span id="cb339-12"><a href="ndvi.html#cb339-12" tabindex="-1"></a>category <span class="ot">&lt;-</span> <span class="st">&quot;feature_type&quot;</span></span>
+<span id="cb339-13"><a href="ndvi.html#cb339-13" tabindex="-1"></a><span class="co"># First lets choose a category to color</span></span>
+<span id="cb339-14"><a href="ndvi.html#cb339-14" tabindex="-1"></a>locs[,category] <span class="ot">&lt;-</span> <span class="fu">factor</span>(locs[,category])</span>
+<span id="cb339-15"><a href="ndvi.html#cb339-15" tabindex="-1"></a>col.cat <span class="ot">&lt;-</span> <span class="fu">turbo</span>(<span class="fu">length</span>(<span class="fu">levels</span>(locs[,category])))</span>
+<span id="cb339-16"><a href="ndvi.html#cb339-16" tabindex="-1"></a><span class="co"># Add it to the dataframe</span></span>
+<span id="cb339-17"><a href="ndvi.html#cb339-17" tabindex="-1"></a>locs<span class="sc">$</span>colours <span class="ot">&lt;-</span> col.cat[locs[,category]]</span>
+<span id="cb339-18"><a href="ndvi.html#cb339-18" tabindex="-1"></a></span>
+<span id="cb339-19"><a href="ndvi.html#cb339-19" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb339-20"><a href="ndvi.html#cb339-20" tabindex="-1"></a>  <span class="co"># Add a satellite image layer</span></span>
+<span id="cb339-21"><a href="ndvi.html#cb339-21" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldImagery, <span class="at">group=</span><span class="st">&quot;Satellite&quot;</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb339-22"><a href="ndvi.html#cb339-22" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldTopoMap, <span class="at">group=</span><span class="st">&quot;Base&quot;</span>) <span class="sc">%&gt;%</span>     </span>
+<span id="cb339-23"><a href="ndvi.html#cb339-23" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">lng=</span>locs<span class="sc">$</span>longitude, <span class="at">lat=</span>locs<span class="sc">$</span>latitude,</span>
+<span id="cb339-24"><a href="ndvi.html#cb339-24" tabindex="-1"></a>                   <span class="co"># Color the markers depending on the &#39;feature type&#39;</span></span>
+<span id="cb339-25"><a href="ndvi.html#cb339-25" tabindex="-1"></a>                   <span class="at">color=</span>locs<span class="sc">$</span>colours,</span>
+<span id="cb339-26"><a href="ndvi.html#cb339-26" tabindex="-1"></a>                   <span class="co"># Add a popup of the deployment code </span></span>
+<span id="cb339-27"><a href="ndvi.html#cb339-27" tabindex="-1"></a>                   <span class="at">popup=</span><span class="fu">paste</span>(locs<span class="sc">$</span>placename, locs[,category])) <span class="sc">%&gt;%</span></span>
+<span id="cb339-28"><a href="ndvi.html#cb339-28" tabindex="-1"></a>  <span class="co"># Add a legend explaining what is going on</span></span>
+<span id="cb339-29"><a href="ndvi.html#cb339-29" tabindex="-1"></a>  <span class="fu">addLegend</span>(<span class="st">&quot;bottomleft&quot;</span>, <span class="at">colors =</span> col.cat,  <span class="at">labels =</span> <span class="fu">levels</span>(locs[,category]),</span>
+<span id="cb339-30"><a href="ndvi.html#cb339-30" tabindex="-1"></a>    <span class="at">title =</span> category,</span>
+<span id="cb339-31"><a href="ndvi.html#cb339-31" tabindex="-1"></a>    <span class="at">labFormat =</span> <span class="fu">labelFormat</span>(<span class="at">prefix =</span> <span class="st">&quot;$&quot;</span>),</span>
+<span id="cb339-32"><a href="ndvi.html#cb339-32" tabindex="-1"></a>    <span class="at">opacity =</span> <span class="dv">1</span></span>
+<span id="cb339-33"><a href="ndvi.html#cb339-33" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb339-34"><a href="ndvi.html#cb339-34" tabindex="-1"></a>  <span class="co"># add a layer control box to toggle between the layers</span></span>
+<span id="cb339-35"><a href="ndvi.html#cb339-35" tabindex="-1"></a>  <span class="fu">addLayersControl</span>(</span>
+<span id="cb339-36"><a href="ndvi.html#cb339-36" tabindex="-1"></a>    <span class="at">baseGroups =</span> <span class="fu">c</span>(<span class="st">&quot;Satellite&quot;</span>, <span class="st">&quot;Base&quot;</span>),</span>
+<span id="cb339-37"><a href="ndvi.html#cb339-37" tabindex="-1"></a>    <span class="at">options =</span> <span class="fu">layersControlOptions</span>(<span class="at">collapsed =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb339-38"><a href="ndvi.html#cb339-38" tabindex="-1"></a>  )</span>
+<span id="cb339-39"><a href="ndvi.html#cb339-39" tabindex="-1"></a>m</span></code></pre></div>
+</div>
+<div id="detection-summary" class="section level3 hasAnchor" number="16.1.2">
+<h3><span class="header-section-number">16.1.2</span> Detection summary<a href="ndvi.html#detection-summary" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb340"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb340-1"><a href="ndvi.html#cb340-1" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,pro<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_species_list.csv&quot;</span>), <span class="at">header=</span>T)</span>
+<span id="cb340-2"><a href="ndvi.html#cb340-2" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,pro<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_30min_independent_total_observations.csv&quot;</span>), <span class="at">header=</span>T)</span>
+<span id="cb340-3"><a href="ndvi.html#cb340-3" tabindex="-1"></a></span>
+<span id="cb340-4"><a href="ndvi.html#cb340-4" tabindex="-1"></a><span class="co"># Convert to long</span></span>
+<span id="cb340-5"><a href="ndvi.html#cb340-5" tabindex="-1"></a>long_obs <span class="ot">&lt;-</span> total_obs <span class="sc">%&gt;%</span> </span>
+<span id="cb340-6"><a href="ndvi.html#cb340-6" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>sp_summary<span class="sc">$</span>sp,  <span class="co"># The columns we want to create into rows - species</span></span>
+<span id="cb340-7"><a href="ndvi.html#cb340-7" tabindex="-1"></a>               <span class="at">names_to=</span><span class="st">&quot;sp&quot;</span>,       <span class="co"># What we what the number column to be called</span></span>
+<span id="cb340-8"><a href="ndvi.html#cb340-8" tabindex="-1"></a>               <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>) <span class="co"># Takes the values in the species columns and calls them `count`</span></span>
+<span id="cb340-9"><a href="ndvi.html#cb340-9" tabindex="-1"></a></span>
+<span id="cb340-10"><a href="ndvi.html#cb340-10" tabindex="-1"></a></span>
+<span id="cb340-11"><a href="ndvi.html#cb340-11" tabindex="-1"></a><span class="co"># We can them summaries those using dplyr</span></span>
+<span id="cb340-12"><a href="ndvi.html#cb340-12" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> long_obs <span class="sc">%&gt;%</span>                   <span class="co"># Take the long observation data frame `long_obs` </span></span>
+<span id="cb340-13"><a href="ndvi.html#cb340-13" tabindex="-1"></a>          <span class="fu">group_by</span>(sp) <span class="sc">%&gt;%</span>            <span class="co"># Group by species</span></span>
+<span id="cb340-14"><a href="ndvi.html#cb340-14" tabindex="-1"></a>          <span class="fu">summarise</span>(<span class="at">count=</span><span class="fu">sum</span>(count)) <span class="co"># Sum all the independent observations</span></span>
+<span id="cb340-15"><a href="ndvi.html#cb340-15" tabindex="-1"></a></span>
+<span id="cb340-16"><a href="ndvi.html#cb340-16" tabindex="-1"></a><span class="co"># Add it to the sp_summary dataframe</span></span>
+<span id="cb340-17"><a href="ndvi.html#cb340-17" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp_summary, tmp)</span>
+<span id="cb340-18"><a href="ndvi.html#cb340-18" tabindex="-1"></a></span>
+<span id="cb340-19"><a href="ndvi.html#cb340-19" tabindex="-1"></a><span class="do">## Occupancy</span></span>
+<span id="cb340-20"><a href="ndvi.html#cb340-20" tabindex="-1"></a><span class="co"># We use the mutate function to mutate the column</span></span>
+<span id="cb340-21"><a href="ndvi.html#cb340-21" tabindex="-1"></a>total_binary <span class="ot">&lt;-</span>  total_obs <span class="sc">%&gt;%</span>    <span class="co"># The total obs dataframe              </span></span>
+<span id="cb340-22"><a href="ndvi.html#cb340-22" tabindex="-1"></a>                    <span class="fu">mutate</span>(<span class="fu">across</span>(sp_summary<span class="sc">$</span>sp, <span class="sc">~+</span><span class="fu">as.logical</span>(.x)))  <span class="co"># across all of the species columns, make it binary</span></span>
+<span id="cb340-23"><a href="ndvi.html#cb340-23" tabindex="-1"></a></span>
+<span id="cb340-24"><a href="ndvi.html#cb340-24" tabindex="-1"></a><span class="co"># Flip the dataframe to longer - as before</span></span>
+<span id="cb340-25"><a href="ndvi.html#cb340-25" tabindex="-1"></a>long_bin <span class="ot">&lt;-</span> total_binary <span class="sc">%&gt;%</span> </span>
+<span id="cb340-26"><a href="ndvi.html#cb340-26" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="at">cols=</span>sp_summary<span class="sc">$</span>sp, <span class="at">names_to=</span><span class="st">&quot;sp&quot;</span>, <span class="at">values_to =</span> <span class="st">&quot;count&quot;</span>) <span class="co"># Takes the species names columns, and makes them unique rows with &quot;sp&quot; as the key </span></span>
+<span id="cb340-27"><a href="ndvi.html#cb340-27" tabindex="-1"></a></span>
+<span id="cb340-28"><a href="ndvi.html#cb340-28" tabindex="-1"></a><span class="co"># We can now sum the presence/absences and divide by the number of survey locations</span></span>
+<span id="cb340-29"><a href="ndvi.html#cb340-29" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> long_bin <span class="sc">%&gt;%</span> </span>
+<span id="cb340-30"><a href="ndvi.html#cb340-30" tabindex="-1"></a>  <span class="fu">group_by</span>(sp) <span class="sc">%&gt;%</span> </span>
+<span id="cb340-31"><a href="ndvi.html#cb340-31" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">occupancy=</span><span class="fu">sum</span>(count)<span class="sc">/</span><span class="fu">nrow</span>(locs)) <span class="co"># divided the sum by the number of sites</span></span>
+<span id="cb340-32"><a href="ndvi.html#cb340-32" tabindex="-1"></a></span>
+<span id="cb340-33"><a href="ndvi.html#cb340-33" tabindex="-1"></a><span class="co"># add the results to the sp_summary</span></span>
+<span id="cb340-34"><a href="ndvi.html#cb340-34" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp_summary, tmp)</span>
+<span id="cb340-35"><a href="ndvi.html#cb340-35" tabindex="-1"></a></span>
+<span id="cb340-36"><a href="ndvi.html#cb340-36" tabindex="-1"></a></span>
+<span id="cb340-37"><a href="ndvi.html#cb340-37" tabindex="-1"></a><span class="do">###########################</span></span>
+<span id="cb340-38"><a href="ndvi.html#cb340-38" tabindex="-1"></a><span class="co"># Comparison plot</span></span>
+<span id="cb340-39"><a href="ndvi.html#cb340-39" tabindex="-1"></a><span class="co"># Lets put the dataframes in a sensible order</span></span>
+<span id="cb340-40"><a href="ndvi.html#cb340-40" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> sp_summary[<span class="fu">order</span>(sp_summary<span class="sc">$</span>count),]</span>
+<span id="cb340-41"><a href="ndvi.html#cb340-41" tabindex="-1"></a></span>
+<span id="cb340-42"><a href="ndvi.html#cb340-42" tabindex="-1"></a>yform <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">categoryorder =</span> <span class="st">&quot;array&quot;</span>,</span>
+<span id="cb340-43"><a href="ndvi.html#cb340-43" tabindex="-1"></a>              <span class="at">categoryarray =</span> sp_summary<span class="sc">$</span>sp)</span>
+<span id="cb340-44"><a href="ndvi.html#cb340-44" tabindex="-1"></a></span>
+<span id="cb340-45"><a href="ndvi.html#cb340-45" tabindex="-1"></a>xform <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;Captures&quot;</span>)</span>
+<span id="cb340-46"><a href="ndvi.html#cb340-46" tabindex="-1"></a></span>
+<span id="cb340-47"><a href="ndvi.html#cb340-47" tabindex="-1"></a><span class="co"># Capture rate</span></span>
+<span id="cb340-48"><a href="ndvi.html#cb340-48" tabindex="-1"></a>fig1 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x =</span> sp_summary<span class="sc">$</span>count, <span class="at">y =</span> sp_summary<span class="sc">$</span>common_name, <span class="at">type =</span> <span class="st">&#39;bar&#39;</span>, <span class="at">orientation =</span> <span class="st">&#39;h&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb340-49"><a href="ndvi.html#cb340-49" tabindex="-1"></a> <span class="fu">layout</span>(<span class="at">yaxis =</span> yform, <span class="at">xaxis=</span>xform)</span>
+<span id="cb340-50"><a href="ndvi.html#cb340-50" tabindex="-1"></a></span>
+<span id="cb340-51"><a href="ndvi.html#cb340-51" tabindex="-1"></a>yform <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">categoryorder =</span> <span class="st">&quot;array&quot;</span>,</span>
+<span id="cb340-52"><a href="ndvi.html#cb340-52" tabindex="-1"></a>              <span class="at">categoryarray =</span> sp_summary<span class="sc">$</span>sp,</span>
+<span id="cb340-53"><a href="ndvi.html#cb340-53" tabindex="-1"></a>              <span class="at">showticklabels=</span>F)</span>
+<span id="cb340-54"><a href="ndvi.html#cb340-54" tabindex="-1"></a>xform <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">title=</span><span class="st">&quot;Occupancy&quot;</span>)</span>
+<span id="cb340-55"><a href="ndvi.html#cb340-55" tabindex="-1"></a></span>
+<span id="cb340-56"><a href="ndvi.html#cb340-56" tabindex="-1"></a></span>
+<span id="cb340-57"><a href="ndvi.html#cb340-57" tabindex="-1"></a><span class="co"># Occupancy</span></span>
+<span id="cb340-58"><a href="ndvi.html#cb340-58" tabindex="-1"></a>fig2 <span class="ot">&lt;-</span> <span class="fu">plot_ly</span>(<span class="at">x =</span> sp_summary<span class="sc">$</span>occupancy, <span class="at">y =</span> sp_summary<span class="sc">$</span>common_name, <span class="at">type =</span> <span class="st">&#39;bar&#39;</span>, <span class="at">orientation =</span> <span class="st">&#39;h&#39;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb340-59"><a href="ndvi.html#cb340-59" tabindex="-1"></a> <span class="fu">layout</span>(<span class="at">yaxis =</span> yform, <span class="at">xaxis=</span>xform)</span>
+<span id="cb340-60"><a href="ndvi.html#cb340-60" tabindex="-1"></a></span>
+<span id="cb340-61"><a href="ndvi.html#cb340-61" tabindex="-1"></a><span class="fu">subplot</span>(<span class="at">nrows=</span><span class="dv">1</span>,fig1, fig2, <span class="at">titleX =</span> T) <span class="co"># We could stack them on top of one another using nrows=2</span></span></code></pre></div>
+<p><strong>QUESTION</strong> What does this tell you about the behavior of the target species?</p>
+</div>
+<div id="temporal-patterns" class="section level3 hasAnchor" number="16.1.3">
+<h3><span class="header-section-number">16.1.3</span> Temporal patterns<a href="ndvi.html#temporal-patterns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb341"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb341-1"><a href="ndvi.html#cb341-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mar=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb341-2"><a href="ndvi.html#cb341-2" tabindex="-1"></a><span class="co"># Temporal patterns</span></span>
+<span id="cb341-3"><a href="ndvi.html#cb341-3" tabindex="-1"></a>mon_obs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,pro<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_30min_independent_monthly_observations.csv&quot;</span>), <span class="at">header=</span>T)</span>
+<span id="cb341-4"><a href="ndvi.html#cb341-4" tabindex="-1"></a></span>
+<span id="cb341-5"><a href="ndvi.html#cb341-5" tabindex="-1"></a><span class="co"># Count up the number of stations and the number of camera nights</span></span>
+<span id="cb341-6"><a href="ndvi.html#cb341-6" tabindex="-1"></a>mon_summary <span class="ot">&lt;-</span> mon_obs <span class="sc">%&gt;%</span>                  <span class="co"># Use the monthly observations dataframe</span></span>
+<span id="cb341-7"><a href="ndvi.html#cb341-7" tabindex="-1"></a>            <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span>              <span class="co"># Group by the date</span></span>
+<span id="cb341-8"><a href="ndvi.html#cb341-8" tabindex="-1"></a>            <span class="fu">summarise</span>(<span class="at">locs_active=</span><span class="fu">n</span>(),      <span class="co"># Count the number of active cameras</span></span>
+<span id="cb341-9"><a href="ndvi.html#cb341-9" tabindex="-1"></a>                      <span class="at">cam_days=</span><span class="fu">sum</span>(days))   <span class="co"># And sum the active days </span></span>
+<span id="cb341-10"><a href="ndvi.html#cb341-10" tabindex="-1"></a></span>
+<span id="cb341-11"><a href="ndvi.html#cb341-11" tabindex="-1"></a></span>
+<span id="cb341-12"><a href="ndvi.html#cb341-12" tabindex="-1"></a><span class="co"># Add in the species specific counts - and join it with the mon_summary dataframe</span></span>
+<span id="cb341-13"><a href="ndvi.html#cb341-13" tabindex="-1"></a>mon_summary <span class="ot">&lt;-</span> mon_obs <span class="sc">%&gt;%</span> </span>
+<span id="cb341-14"><a href="ndvi.html#cb341-14" tabindex="-1"></a>                <span class="fu">group_by</span>(date) <span class="sc">%&gt;%</span>  </span>
+<span id="cb341-15"><a href="ndvi.html#cb341-15" tabindex="-1"></a>                <span class="fu">summarise</span>(<span class="fu">across</span>(sp_summary<span class="sc">$</span>sp, sum, <span class="at">na.rm=</span><span class="cn">TRUE</span>)) <span class="sc">%&gt;%</span> <span class="co"># summarise across all of </span></span>
+<span id="cb341-16"><a href="ndvi.html#cb341-16" tabindex="-1"></a>                                                                      <span class="co"># the species columns </span></span>
+<span id="cb341-17"><a href="ndvi.html#cb341-17" tabindex="-1"></a>                <span class="fu">left_join</span>(<span class="at">x=</span>mon_summary)   <span class="co"># Join with the mon_summary dataframe</span></span>
+<span id="cb341-18"><a href="ndvi.html#cb341-18" tabindex="-1"></a></span>
+<span id="cb341-19"><a href="ndvi.html#cb341-19" tabindex="-1"></a><span class="co"># We first need to convert the date column to a date object</span></span>
+<span id="cb341-20"><a href="ndvi.html#cb341-20" tabindex="-1"></a>mon_summary<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">ym</span>(mon_summary<span class="sc">$</span>date)</span>
+<span id="cb341-21"><a href="ndvi.html#cb341-21" tabindex="-1"></a></span>
+<span id="cb341-22"><a href="ndvi.html#cb341-22" tabindex="-1"></a><span class="co"># Set up a two panel plot (side by side)</span></span>
+<span id="cb341-23"><a href="ndvi.html#cb341-23" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb341-24"><a href="ndvi.html#cb341-24" tabindex="-1"></a></span>
+<span id="cb341-25"><a href="ndvi.html#cb341-25" tabindex="-1"></a><span class="fu">plot</span>(mon_summary<span class="sc">$</span>date, mon_summary<span class="sc">$</span>locs_active,</span>
+<span id="cb341-26"><a href="ndvi.html#cb341-26" tabindex="-1"></a>     <span class="at">type=</span><span class="st">&quot;o&quot;</span>, </span>
+<span id="cb341-27"><a href="ndvi.html#cb341-27" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">19</span>,</span>
+<span id="cb341-28"><a href="ndvi.html#cb341-28" tabindex="-1"></a>     <span class="at">ylim=</span><span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">max</span>(mon_summary<span class="sc">$</span>locs_active)),</span>
+<span id="cb341-29"><a href="ndvi.html#cb341-29" tabindex="-1"></a>     <span class="at">las=</span><span class="dv">1</span>, </span>
+<span id="cb341-30"><a href="ndvi.html#cb341-30" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">&quot;Number of cameras active&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Date&quot;</span>)</span>
+<span id="cb341-31"><a href="ndvi.html#cb341-31" tabindex="-1"></a></span>
+<span id="cb341-32"><a href="ndvi.html#cb341-32" tabindex="-1"></a></span>
+<span id="cb341-33"><a href="ndvi.html#cb341-33" tabindex="-1"></a><span class="co"># Sum all the captures rates for the species columns</span></span>
+<span id="cb341-34"><a href="ndvi.html#cb341-34" tabindex="-1"></a>mon_summary<span class="sc">$</span>all.sp <span class="ot">&lt;-</span> <span class="fu">rowSums</span>(mon_summary[, sp_summary<span class="sc">$</span>sp])</span>
+<span id="cb341-35"><a href="ndvi.html#cb341-35" tabindex="-1"></a></span>
+<span id="cb341-36"><a href="ndvi.html#cb341-36" tabindex="-1"></a><span class="co"># Plot them</span></span>
+<span id="cb341-37"><a href="ndvi.html#cb341-37" tabindex="-1"></a><span class="fu">plot</span>(mon_summary<span class="sc">$</span>date, mon_summary<span class="sc">$</span>all.sp<span class="sc">/</span>(mon_summary<span class="sc">$</span>cam_days<span class="sc">/</span><span class="dv">100</span>),</span>
+<span id="cb341-38"><a href="ndvi.html#cb341-38" tabindex="-1"></a>     <span class="at">type=</span><span class="st">&quot;o&quot;</span>,</span>
+<span id="cb341-39"><a href="ndvi.html#cb341-39" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">19</span>,</span>
+<span id="cb341-40"><a href="ndvi.html#cb341-40" tabindex="-1"></a>     <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Detections per 100 cam days&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Date&quot;</span>)</span></code></pre></div>
+<p><strong>Question</strong> What is going on in these plots?</p>
+<div class="sourceCode" id="cb342"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb342-1"><a href="ndvi.html#cb342-1" tabindex="-1"></a><span class="co"># Species specific plots</span></span>
+<span id="cb342-2"><a href="ndvi.html#cb342-2" tabindex="-1"></a></span>
+<span id="cb342-3"><a href="ndvi.html#cb342-3" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb342-4"><a href="ndvi.html#cb342-4" tabindex="-1"></a>i <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb342-5"><a href="ndvi.html#cb342-5" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(sp_summary<span class="sc">$</span>sp))</span>
+<span id="cb342-6"><a href="ndvi.html#cb342-6" tabindex="-1"></a>{</span>
+<span id="cb342-7"><a href="ndvi.html#cb342-7" tabindex="-1"></a>  <span class="fu">plot</span>(mon_summary<span class="sc">$</span>date, <span class="fu">pull</span>(mon_summary, sp_summary<span class="sc">$</span>sp[i])<span class="sc">/</span>(mon_summary<span class="sc">$</span>cam_days<span class="sc">/</span><span class="dv">100</span>),  <span class="co"># The pull command allows you to grab a specific column in a dataframe and turn it into a vector!</span></span>
+<span id="cb342-8"><a href="ndvi.html#cb342-8" tabindex="-1"></a>     <span class="at">type=</span><span class="st">&quot;o&quot;</span>,</span>
+<span id="cb342-9"><a href="ndvi.html#cb342-9" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">19</span>,</span>
+<span id="cb342-10"><a href="ndvi.html#cb342-10" tabindex="-1"></a>     <span class="at">las=</span><span class="dv">1</span>, <span class="at">ylab=</span><span class="st">&quot;Detections per 100 cam days&quot;</span>, <span class="at">xlab=</span><span class="st">&quot;Date&quot;</span>,</span>
+<span id="cb342-11"><a href="ndvi.html#cb342-11" tabindex="-1"></a>     <span class="at">main=</span>sp_summary<span class="sc">$</span>sp[i])</span>
+<span id="cb342-12"><a href="ndvi.html#cb342-12" tabindex="-1"></a>}</span></code></pre></div>
+<p><strong>Question</strong> Any interesting patterns?</p>
+</div>
+<div id="spatial-patterns" class="section level3 hasAnchor" number="16.1.4">
+<h3><span class="header-section-number">16.1.4</span> Spatial patterns<a href="ndvi.html#spatial-patterns" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb343"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb343-1"><a href="ndvi.html#cb343-1" tabindex="-1"></a><span class="co"># Spatial plots</span></span>
+<span id="cb343-2"><a href="ndvi.html#cb343-2" tabindex="-1"></a></span>
+<span id="cb343-3"><a href="ndvi.html#cb343-3" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(total_obs, locs)</span>
+<span id="cb343-4"><a href="ndvi.html#cb343-4" tabindex="-1"></a></span>
+<span id="cb343-5"><a href="ndvi.html#cb343-5" tabindex="-1"></a><span class="co"># Jaguar</span></span>
+<span id="cb343-6"><a href="ndvi.html#cb343-6" tabindex="-1"></a>focal_species <span class="ot">&lt;-</span> <span class="st">&quot;Panthera.onca&quot;</span></span>
+<span id="cb343-7"><a href="ndvi.html#cb343-7" tabindex="-1"></a></span>
+<span id="cb343-8"><a href="ndvi.html#cb343-8" tabindex="-1"></a>focal_cr <span class="ot">&lt;-</span> <span class="fu">pull</span>(total_obs, focal_species)<span class="sc">/</span>(total_obs<span class="sc">$</span>days<span class="sc">/</span><span class="dv">100</span>)</span>
+<span id="cb343-9"><a href="ndvi.html#cb343-9" tabindex="-1"></a></span>
+<span id="cb343-10"><a href="ndvi.html#cb343-10" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">leaflet</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb343-11"><a href="ndvi.html#cb343-11" tabindex="-1"></a>  <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>Esri.WorldTopoMap, <span class="at">group=</span><span class="st">&quot;Base&quot;</span>) <span class="sc">%&gt;%</span>     </span>
+<span id="cb343-12"><a href="ndvi.html#cb343-12" tabindex="-1"></a>  <span class="fu">addCircleMarkers</span>(<span class="at">lng=</span>locs<span class="sc">$</span>longitude, <span class="at">lat=</span>locs<span class="sc">$</span>latitude,</span>
+<span id="cb343-13"><a href="ndvi.html#cb343-13" tabindex="-1"></a>                   <span class="co"># Add a popup of the deployment code </span></span>
+<span id="cb343-14"><a href="ndvi.html#cb343-14" tabindex="-1"></a>                   <span class="at">popup=</span><span class="fu">paste</span>(locs<span class="sc">$</span>placename),</span>
+<span id="cb343-15"><a href="ndvi.html#cb343-15" tabindex="-1"></a>                   <span class="at">radius=</span>(focal_cr<span class="sc">/</span><span class="fu">max</span>(focal_cr)<span class="sc">*</span><span class="dv">10</span>)<span class="sc">+</span><span class="dv">1</span>, <span class="at">stroke=</span>F,</span>
+<span id="cb343-16"><a href="ndvi.html#cb343-16" tabindex="-1"></a>                   <span class="at">fillOpacity=</span><span class="fl">0.6</span>) </span>
+<span id="cb343-17"><a href="ndvi.html#cb343-17" tabindex="-1"></a>m</span></code></pre></div>
+<p>Try other species!</p>
+<p><strong>Question</strong> Any interesting patterns?</p>
+</div>
+<div id="species-co-occurance" class="section level3 hasAnchor" number="16.1.5">
+<h3><span class="header-section-number">16.1.5</span> Species co-occurance<a href="ndvi.html#species-co-occurance" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb344"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb344-1"><a href="ndvi.html#cb344-1" tabindex="-1"></a><span class="co"># Co-occurances</span></span>
+<span id="cb344-2"><a href="ndvi.html#cb344-2" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb344-3"><a href="ndvi.html#cb344-3" tabindex="-1"></a></span>
+<span id="cb344-4"><a href="ndvi.html#cb344-4" tabindex="-1"></a><span class="co"># Pull the data for each of the species from </span></span>
+<span id="cb344-5"><a href="ndvi.html#cb344-5" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> total_obs[, sp_summary<span class="sc">$</span>sp]</span>
+<span id="cb344-6"><a href="ndvi.html#cb344-6" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(tmp)</span>
+<span id="cb344-7"><a href="ndvi.html#cb344-7" tabindex="-1"></a></span>
+<span id="cb344-8"><a href="ndvi.html#cb344-8" tabindex="-1"></a><span class="fu">corrplot</span>(M, <span class="at">method=</span><span class="st">&quot;color&quot;</span>, </span>
+<span id="cb344-9"><a href="ndvi.html#cb344-9" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>, </span>
+<span id="cb344-10"><a href="ndvi.html#cb344-10" tabindex="-1"></a>         <span class="at">order=</span><span class="st">&quot;hclust&quot;</span>,</span>
+<span id="cb344-11"><a href="ndvi.html#cb344-11" tabindex="-1"></a>         <span class="co"># addCoef.col = &quot;black&quot;, # We suppress the coefs to make a cleaner plot</span></span>
+<span id="cb344-12"><a href="ndvi.html#cb344-12" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>, <span class="co">#Text label color and rotation</span></span>
+<span id="cb344-13"><a href="ndvi.html#cb344-13" tabindex="-1"></a>         <span class="at">diag=</span><span class="cn">FALSE</span></span>
+<span id="cb344-14"><a href="ndvi.html#cb344-14" tabindex="-1"></a>         )</span></code></pre></div>
+<p><strong>Question</strong> Any interesting patterns?</p>
+<p>You can now do some data exploration plots.</p>
+<div class="sourceCode" id="cb345"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb345-1"><a href="ndvi.html#cb345-1" tabindex="-1"></a><span class="co"># Prepare the data</span></span>
+<span id="cb345-2"><a href="ndvi.html#cb345-2" tabindex="-1"></a>locs <span class="ot">&lt;-</span> locs <span class="sc">%&gt;%</span> </span>
+<span id="cb345-3"><a href="ndvi.html#cb345-3" tabindex="-1"></a>            <span class="fu">mutate_if</span>(is.character,as.factor) <span class="co"># If a column is a character string, make it a factor</span></span>
+<span id="cb345-4"><a href="ndvi.html#cb345-4" tabindex="-1"></a></span>
+<span id="cb345-5"><a href="ndvi.html#cb345-5" tabindex="-1"></a>total_obs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(total_obs, locs)</span></code></pre></div>
+<p>We have the following species:</p>
+<div class="sourceCode" id="cb346"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb346-1"><a href="ndvi.html#cb346-1" tabindex="-1"></a>sp_summary<span class="sc">$</span>sp</span></code></pre></div>
+<p>And the following categories to explore:</p>
+<div class="sourceCode" id="cb347"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb347-1"><a href="ndvi.html#cb347-1" tabindex="-1"></a> <span class="fu">c</span>(<span class="st">&quot;feature_type&quot;</span>, <span class="st">&quot;elevation&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)</span></code></pre></div>
+<p>Try some boxplots and scatter charts!</p>
+
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="on-your-own-5.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="references.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/12-on_your_own.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

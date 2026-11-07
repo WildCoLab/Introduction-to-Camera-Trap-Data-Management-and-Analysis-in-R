@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2023-09-22" />
+<meta name="date" content="2026-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,25 +54,27 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.13.0/leaflet-providers_1.13.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.12.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -165,7 +167,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-course-is-not"><i class="fa fa-check"></i><b>1.3</b> What this course is not</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.4</b> How to use this book</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.5</b> Get in touch</a></li>
-<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.6</b> Acknowledgements</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#cite-the-course"><i class="fa fa-check"></i><b>1.6</b> Cite the course</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.7</b> Acknowledgements</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="prep.html"><a href="prep.html"><i class="fa fa-check"></i><b>2</b> Preparing for the course</a>
 <ul>
@@ -212,23 +215,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="error-checking.html"><a href="error-checking.html"><i class="fa fa-check"></i><b>5</b> Error checking</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="error-checking.html"><a href="error-checking.html#standardised-exploration-script"><i class="fa fa-check"></i><b>5.1</b> Standardised exploration script</a></li>
-<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.2</b> Formatting dates</a>
+<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#adding-a-sampling-site-location-column-to-the-image-data"><i class="fa fa-check"></i><b>5.2</b> Adding a sampling site location column to the image data</a></li>
+<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.3</b> Formatting dates</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.2.1</b> Skill check: <code>lubridate</code></a></li>
-<li class="chapter" data-level="5.2.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.2.2</b> Deployment dates</a></li>
-<li class="chapter" data-level="5.2.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.2.3</b> Image dates</a></li>
+<li class="chapter" data-level="5.3.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.3.1</b> Skill check: <code>lubridate</code></a></li>
+<li class="chapter" data-level="5.3.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.3.2</b> Deployment dates</a></li>
+<li class="chapter" data-level="5.3.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.3.3</b> Image dates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.3</b> Basic trapping summaries</a></li>
-<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.4</b> Error checks</a>
+<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.4</b> Basic trapping summaries</a></li>
+<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.5</b> Error checks</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.4.1</b> Camera locations</a></li>
-<li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
-<li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
-<li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
-<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxize package</a></li>
+<li class="chapter" data-level="5.5.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.5.1</b> Camera locations</a></li>
+<li class="chapter" data-level="5.5.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.5.2</b> Camera activity checks</a></li>
+<li class="chapter" data-level="5.5.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.5.3</b> Detection check</a></li>
+<li class="chapter" data-level="5.5.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.5.4</b> Taxonomy check</a></li>
+<li class="chapter" data-level="5.5.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.5.5</b> Skill Check: Taxize package</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
-<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.6</b> Diel activity check</a></li>
+<li class="chapter" data-level="5.7" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.7</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="data-creation.html"><a href="data-creation.html"><i class="fa fa-check"></i><b>6</b> Analysis data creation</a>
 <ul>
@@ -259,7 +263,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
 <li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -356,10 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
 </ul></li>
 <li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
-<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a>
-<ul>
-<li class="chapter" data-level="12.4.1" data-path="activity.html"><a href="activity.html#seasonal-comparison"><i class="fa fa-check"></i><b>12.4.1</b> Seasonal comparison</a></li>
-</ul></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
 <li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
 <li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
 </ul></li>
@@ -383,15 +383,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
 <li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
 <li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
-<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>14.4</b> Experimental manipulations</a></li>
-<li class="chapter" data-level="14.5" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.5</b> Interactions</a>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.4</b> Interactions</a>
 <ul>
-<li class="chapter" data-level="14.5.1" data-path="behavior.html"><a href="behavior.html#activity-overlap"><i class="fa fa-check"></i><b>14.5.1</b> Activity overlap</a></li>
-<li class="chapter" data-level="14.5.2" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.5.2</b> One species as a predictor of another</a></li>
-<li class="chapter" data-level="14.5.3" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.5.3</b> Residual co-occurence models</a></li>
-<li class="chapter" data-level="14.5.4" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.5.4</b> Attractance-Avoidance Ratios (AAR)</a></li>
+<li class="chapter" data-level="14.4.1" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.4.1</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.4.2" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.4.2</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.4.3" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.4.3</b> Attractance-Avoidance Ratios (AAR)</a></li>
 </ul></li>
-<li class="chapter" data-level="14.6" data-path="behavior.html"><a href="behavior.html#worked-examples"><i class="fa fa-check"></i><b>14.6</b> Worked examples</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
 <ul>
@@ -422,15 +419,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.3.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#convert-to-simple-features"><i class="fa fa-check"></i><b>15.3.1</b> Convert to simple features</a></li>
 <li class="chapter" data-level="15.3.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#get-elevation-data"><i class="fa fa-check"></i><b>15.3.2</b> Get elevation data</a></li>
 <li class="chapter" data-level="15.3.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#open-street-map-data"><i class="fa fa-check"></i><b>15.3.3</b> Open street map data</a></li>
-<li class="chapter" data-level="15.3.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#ndvi"><i class="fa fa-check"></i><b>15.3.4</b> NDVI</a></li>
 </ul></li>
-<li class="chapter" data-level="15.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-exploration"><i class="fa fa-check"></i><b>15.4</b> Data exploration</a>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ndvi.html"><a href="ndvi.html"><i class="fa fa-check"></i><b>16</b> NDVI</a>
 <ul>
-<li class="chapter" data-level="15.4.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#final-map"><i class="fa fa-check"></i><b>15.4.1</b> Final map</a></li>
-<li class="chapter" data-level="15.4.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#detection-summary"><i class="fa fa-check"></i><b>15.4.2</b> Detection summary</a></li>
-<li class="chapter" data-level="15.4.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#temporal-patterns"><i class="fa fa-check"></i><b>15.4.3</b> Temporal patterns</a></li>
-<li class="chapter" data-level="15.4.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#spatial-patterns"><i class="fa fa-check"></i><b>15.4.4</b> Spatial patterns</a></li>
-<li class="chapter" data-level="15.4.5" data-path="on-your-own-5.html"><a href="on-your-own-5.html#species-co-occurance"><i class="fa fa-check"></i><b>15.4.5</b> Species co-occurance</a></li>
+<li class="chapter" data-level="16.1" data-path="ndvi.html"><a href="ndvi.html#data-exploration"><i class="fa fa-check"></i><b>16.1</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="ndvi.html"><a href="ndvi.html#final-map"><i class="fa fa-check"></i><b>16.1.1</b> Final map</a></li>
+<li class="chapter" data-level="16.1.2" data-path="ndvi.html"><a href="ndvi.html#detection-summary"><i class="fa fa-check"></i><b>16.1.2</b> Detection summary</a></li>
+<li class="chapter" data-level="16.1.3" data-path="ndvi.html"><a href="ndvi.html#temporal-patterns"><i class="fa fa-check"></i><b>16.1.3</b> Temporal patterns</a></li>
+<li class="chapter" data-level="16.1.4" data-path="ndvi.html"><a href="ndvi.html#spatial-patterns"><i class="fa fa-check"></i><b>16.1.4</b> Spatial patterns</a></li>
+<li class="chapter" data-level="16.1.5" data-path="ndvi.html"><a href="ndvi.html#species-co-occurance"><i class="fa fa-check"></i><b>16.1.5</b> Species co-occurance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -457,11 +456,11 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <div id="header">
 <h1 class="title">An Introduction to Camera Trap Data Management and Analysis in R</h1>
 <p class="author"><em>Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network</em></p>
-<p class="date"><em>2023-09-22</em></p>
+<p class="date"><em>2026-11-07</em></p>
 </div>
 <div id="introduction" class="section level1 hasAnchor" number="1">
 <h1><span class="header-section-number">Chapter 1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p><img src="images/Ninja.PNG" width="1024" /></p>
+<p><img src="images/Ninja.png" alt="" width="1024" /></p>
 <p>The number of projects employing camera traps to understand ecological phenomena is growing rapidly – as are the number of statistical tools to analyze the resultant data. Consequently, the management and analysis of camera trap data can seem complex and overwhelming. This course aims to guide participants in effective ways to store, manipulate and analyze camera trap data within the R statistical environment.</p>
 <p>The idea for this course was born out of the realization that many of the analytical frameworks we apply to camera trap data do not have specific examples involving cameras, which can make learning new methods intimidating. To address this we wanted to develop a resource which takes a single data set from raw data to analysis, showing all of the steps in between! Hopefully this course will give you the tools to manage, analyze and share camera trap data in an approachable and practical way!</p>
 <div id="ethos" class="section level2 hasAnchor" number="1.1">
@@ -506,8 +505,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">1.5</span> Get in touch<a href="index.html#get-in-touch" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>If you have any questions about this document and the information it contains, please <a href="wildco.lab@gmail.com">email us</a> or, better still, submit an issue on our <a href="https://github.com/WildCoLab/Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R">the course GitHub page</a>.</p>
 </div>
-<div id="acknowledgements" class="section level2 hasAnchor" number="1.6">
-<h2><span class="header-section-number">1.6</span> Acknowledgements<a href="index.html#acknowledgements" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="cite-the-course" class="section level2 hasAnchor" number="1.6">
+<h2><span class="header-section-number">1.6</span> Cite the course<a href="index.html#cite-the-course" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you would like to cite this course, please use the following:</p>
+<p>Beirne, C. &amp; Burton, C. (2022). An Introduction to Camera Trap Data Management and Analysis in R <a href="https://zenodo.org/doi/10.5281/zenodo.10524184" class="uri">https://zenodo.org/doi/10.5281/zenodo.10524184</a></p>
+</div>
+<div id="acknowledgements" class="section level2 hasAnchor" number="1.7">
+<h2><span class="header-section-number">1.7</span> Acknowledgements<a href="index.html#acknowledgements" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>This course was produced by <a href="https://www.researchgate.net/profile/Christopher-Beirne">Christopher Beirne</a>, Cole Burton’s <a href="https://wildlife.forestry.ubc.ca/">Wildlife Coexistence Lab at UBC</a>, and <a href="https://wildcams.ca/">the WildCAM Network</a>.</p>
 
 </div>
@@ -532,46 +536,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/index.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

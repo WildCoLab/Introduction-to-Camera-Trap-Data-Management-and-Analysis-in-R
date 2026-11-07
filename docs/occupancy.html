@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 11 Occupancy | An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 11 Occupancy | An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2023-09-22" />
+<meta name="date" content="2026-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,25 +54,27 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.13.0/leaflet-providers_1.13.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.12.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -165,7 +167,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-course-is-not"><i class="fa fa-check"></i><b>1.3</b> What this course is not</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.4</b> How to use this book</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.5</b> Get in touch</a></li>
-<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.6</b> Acknowledgements</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#cite-the-course"><i class="fa fa-check"></i><b>1.6</b> Cite the course</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.7</b> Acknowledgements</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="prep.html"><a href="prep.html"><i class="fa fa-check"></i><b>2</b> Preparing for the course</a>
 <ul>
@@ -212,23 +215,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="error-checking.html"><a href="error-checking.html"><i class="fa fa-check"></i><b>5</b> Error checking</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="error-checking.html"><a href="error-checking.html#standardised-exploration-script"><i class="fa fa-check"></i><b>5.1</b> Standardised exploration script</a></li>
-<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.2</b> Formatting dates</a>
+<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#adding-a-sampling-site-location-column-to-the-image-data"><i class="fa fa-check"></i><b>5.2</b> Adding a sampling site location column to the image data</a></li>
+<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.3</b> Formatting dates</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.2.1</b> Skill check: <code>lubridate</code></a></li>
-<li class="chapter" data-level="5.2.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.2.2</b> Deployment dates</a></li>
-<li class="chapter" data-level="5.2.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.2.3</b> Image dates</a></li>
+<li class="chapter" data-level="5.3.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.3.1</b> Skill check: <code>lubridate</code></a></li>
+<li class="chapter" data-level="5.3.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.3.2</b> Deployment dates</a></li>
+<li class="chapter" data-level="5.3.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.3.3</b> Image dates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.3</b> Basic trapping summaries</a></li>
-<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.4</b> Error checks</a>
+<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.4</b> Basic trapping summaries</a></li>
+<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.5</b> Error checks</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.4.1</b> Camera locations</a></li>
-<li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
-<li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
-<li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
-<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxize package</a></li>
+<li class="chapter" data-level="5.5.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.5.1</b> Camera locations</a></li>
+<li class="chapter" data-level="5.5.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.5.2</b> Camera activity checks</a></li>
+<li class="chapter" data-level="5.5.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.5.3</b> Detection check</a></li>
+<li class="chapter" data-level="5.5.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.5.4</b> Taxonomy check</a></li>
+<li class="chapter" data-level="5.5.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.5.5</b> Skill Check: Taxize package</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
-<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.6</b> Diel activity check</a></li>
+<li class="chapter" data-level="5.7" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.7</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="data-creation.html"><a href="data-creation.html"><i class="fa fa-check"></i><b>6</b> Analysis data creation</a>
 <ul>
@@ -259,7 +263,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
 <li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -356,10 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
 </ul></li>
 <li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
-<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a>
-<ul>
-<li class="chapter" data-level="12.4.1" data-path="activity.html"><a href="activity.html#seasonal-comparison"><i class="fa fa-check"></i><b>12.4.1</b> Seasonal comparison</a></li>
-</ul></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
 <li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
 <li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
 </ul></li>
@@ -383,15 +383,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
 <li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
 <li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
-<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>14.4</b> Experimental manipulations</a></li>
-<li class="chapter" data-level="14.5" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.5</b> Interactions</a>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.4</b> Interactions</a>
 <ul>
-<li class="chapter" data-level="14.5.1" data-path="behavior.html"><a href="behavior.html#activity-overlap"><i class="fa fa-check"></i><b>14.5.1</b> Activity overlap</a></li>
-<li class="chapter" data-level="14.5.2" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.5.2</b> One species as a predictor of another</a></li>
-<li class="chapter" data-level="14.5.3" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.5.3</b> Residual co-occurence models</a></li>
-<li class="chapter" data-level="14.5.4" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.5.4</b> Attractance-Avoidance Ratios (AAR)</a></li>
+<li class="chapter" data-level="14.4.1" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.4.1</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.4.2" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.4.2</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.4.3" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.4.3</b> Attractance-Avoidance Ratios (AAR)</a></li>
 </ul></li>
-<li class="chapter" data-level="14.6" data-path="behavior.html"><a href="behavior.html#worked-examples"><i class="fa fa-check"></i><b>14.6</b> Worked examples</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
 <ul>
@@ -422,15 +419,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.3.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#convert-to-simple-features"><i class="fa fa-check"></i><b>15.3.1</b> Convert to simple features</a></li>
 <li class="chapter" data-level="15.3.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#get-elevation-data"><i class="fa fa-check"></i><b>15.3.2</b> Get elevation data</a></li>
 <li class="chapter" data-level="15.3.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#open-street-map-data"><i class="fa fa-check"></i><b>15.3.3</b> Open street map data</a></li>
-<li class="chapter" data-level="15.3.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#ndvi"><i class="fa fa-check"></i><b>15.3.4</b> NDVI</a></li>
 </ul></li>
-<li class="chapter" data-level="15.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-exploration"><i class="fa fa-check"></i><b>15.4</b> Data exploration</a>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ndvi.html"><a href="ndvi.html"><i class="fa fa-check"></i><b>16</b> NDVI</a>
 <ul>
-<li class="chapter" data-level="15.4.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#final-map"><i class="fa fa-check"></i><b>15.4.1</b> Final map</a></li>
-<li class="chapter" data-level="15.4.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#detection-summary"><i class="fa fa-check"></i><b>15.4.2</b> Detection summary</a></li>
-<li class="chapter" data-level="15.4.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#temporal-patterns"><i class="fa fa-check"></i><b>15.4.3</b> Temporal patterns</a></li>
-<li class="chapter" data-level="15.4.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#spatial-patterns"><i class="fa fa-check"></i><b>15.4.4</b> Spatial patterns</a></li>
-<li class="chapter" data-level="15.4.5" data-path="on-your-own-5.html"><a href="on-your-own-5.html#species-co-occurance"><i class="fa fa-check"></i><b>15.4.5</b> Species co-occurance</a></li>
+<li class="chapter" data-level="16.1" data-path="ndvi.html"><a href="ndvi.html#data-exploration"><i class="fa fa-check"></i><b>16.1</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="ndvi.html"><a href="ndvi.html#final-map"><i class="fa fa-check"></i><b>16.1.1</b> Final map</a></li>
+<li class="chapter" data-level="16.1.2" data-path="ndvi.html"><a href="ndvi.html#detection-summary"><i class="fa fa-check"></i><b>16.1.2</b> Detection summary</a></li>
+<li class="chapter" data-level="16.1.3" data-path="ndvi.html"><a href="ndvi.html#temporal-patterns"><i class="fa fa-check"></i><b>16.1.3</b> Temporal patterns</a></li>
+<li class="chapter" data-level="16.1.4" data-path="ndvi.html"><a href="ndvi.html#spatial-patterns"><i class="fa fa-check"></i><b>16.1.4</b> Spatial patterns</a></li>
+<li class="chapter" data-level="16.1.5" data-path="ndvi.html"><a href="ndvi.html#species-co-occurance"><i class="fa fa-check"></i><b>16.1.5</b> Species co-occurance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -1156,7 +1155,7 @@ ALG027
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -1209,7 +1208,7 @@ ALG027
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -2619,7 +2618,7 @@ ALG027
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -2672,7 +2671,7 @@ ALG027
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 1
@@ -3994,7 +3993,7 @@ ALG029
 7
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -4047,7 +4046,7 @@ ALG029
 7
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -4495,7 +4494,7 @@ ALG029
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -4548,7 +4547,7 @@ ALG029
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -6644,7 +6643,7 @@ ALG029
 7
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -6697,7 +6696,7 @@ ALG029
 7
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -8552,7 +8551,7 @@ ALG031
 7
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -8605,7 +8604,7 @@ ALG031
 7
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -11656,7 +11655,7 @@ ALG031
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -11709,7 +11708,7 @@ ALG031
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -13163,7 +13162,7 @@ ALG032
 7
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -13216,7 +13215,7 @@ ALG032
 7
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -17150,7 +17149,7 @@ ALG035
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -17203,7 +17202,7 @@ ALG035
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -17297,7 +17296,7 @@ ALG035
 7
 </td>
 <td style="text-align:right;">
-2
+0
 </td>
 <td style="text-align:right;">
 0
@@ -17350,7 +17349,7 @@ ALG035
 7
 </td>
 <td style="text-align:right;">
-0
+2
 </td>
 <td style="text-align:right;">
 0
@@ -17562,7 +17561,7 @@ ALG035
 7
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -17615,7 +17614,7 @@ ALG035
 7
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -20672,7 +20671,7 @@ ALG035
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -20725,7 +20724,7 @@ ALG035
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -21143,7 +21142,7 @@ ALG035
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -21196,7 +21195,7 @@ ALG035
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -23086,7 +23085,7 @@ ALG036
 0
 </td>
 <td style="text-align:right;">
-11
+10
 </td>
 <td style="text-align:right;">
 0
@@ -23139,7 +23138,7 @@ ALG036
 0
 </td>
 <td style="text-align:right;">
-4
+5
 </td>
 <td style="text-align:right;">
 0
@@ -37997,7 +37996,7 @@ ALG039
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -38050,7 +38049,7 @@ ALG039
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -40405,7 +40404,7 @@ ALG043
 7
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -40458,7 +40457,7 @@ ALG043
 7
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -41583,7 +41582,7 @@ ALG043
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -41636,7 +41635,7 @@ ALG043
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -41783,7 +41782,7 @@ ALG044
 1
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -41836,7 +41835,7 @@ ALG044
 7
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -44775,59 +44774,6 @@ ALG044
 0
 </td>
 <td style="text-align:right;">
-2
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-ALG044
-</td>
-<td style="text-align:left;">
-2019-W45
-</td>
-<td style="text-align:right;">
-7
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
-0
-</td>
-<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
@@ -44851,6 +44797,59 @@ ALG044
 ALG044
 </td>
 <td style="text-align:left;">
+2019-W45
+</td>
+<td style="text-align:right;">
+7
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+1
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
+0
+</td>
+</tr>
+<tr>
+<td style="text-align:left;">
+ALG044
+</td>
+<td style="text-align:left;">
 2019-W46
 </td>
 <td style="text-align:right;">
@@ -44881,7 +44880,7 @@ ALG044
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -48261,7 +48260,7 @@ ALG046
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -48314,7 +48313,7 @@ ALG046
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -53679,7 +53678,7 @@ ALG047
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -53732,7 +53731,7 @@ ALG047
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -55852,7 +55851,7 @@ ALG047
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -55905,7 +55904,7 @@ ALG047
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -56547,7 +56546,7 @@ ALG047
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -56600,7 +56599,7 @@ ALG047
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -60725,7 +60724,7 @@ ALG048
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -60778,7 +60777,7 @@ ALG048
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -62424,7 +62423,7 @@ ALG049
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -62477,7 +62476,7 @@ ALG049
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -66652,7 +66651,7 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -66705,7 +66704,7 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
 <td style="text-align:right;">
 0
@@ -68348,7 +68347,7 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -68401,7 +68400,7 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -68454,9 +68453,6 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
 0
 </td>
 <td style="text-align:right;">
@@ -68466,7 +68462,10 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-1
+0
+</td>
+<td style="text-align:right;">
+0
 </td>
 <td style="text-align:right;">
 0
@@ -68507,7 +68506,7 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -68519,7 +68518,7 @@ ALG052
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -73595,7 +73594,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -73648,7 +73647,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -73819,7 +73818,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -73872,7 +73871,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -76351,7 +76350,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -76404,7 +76403,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -77211,7 +77210,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -77264,7 +77263,7 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -77941,7 +77940,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-4
+2
 </td>
 <td style="text-align:right;">
 0
@@ -77994,7 +77993,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
 <td style="text-align:right;">
 0
@@ -78047,7 +78046,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 <td style="text-align:right;">
 0
@@ -78854,7 +78853,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -78907,7 +78906,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -79313,7 +79312,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -79366,7 +79365,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -79584,7 +79583,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -79637,7 +79636,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -80650,7 +80649,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -80703,7 +80702,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -81863,7 +81862,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -81916,7 +81915,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -81969,7 +81968,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -82022,7 +82021,7 @@ ALG055
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -83159,7 +83158,7 @@ ALG056
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -83212,7 +83211,7 @@ ALG056
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -90090,7 +90089,7 @@ ALG057
 0
 </td>
 <td style="text-align:right;">
-6
+5
 </td>
 <td style="text-align:right;">
 0
@@ -90143,7 +90142,7 @@ ALG057
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -90502,7 +90501,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -90555,7 +90554,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -91191,7 +91190,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-4
+3
 </td>
 <td style="text-align:right;">
 0
@@ -91244,7 +91243,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -91403,7 +91402,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -91456,7 +91455,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-4
+5
 </td>
 <td style="text-align:right;">
 0
@@ -94053,7 +94052,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -94106,7 +94105,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 <td style="text-align:right;">
 0
@@ -94318,7 +94317,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -94371,7 +94370,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -94530,7 +94529,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -94583,7 +94582,7 @@ ALG058
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -95396,7 +95395,7 @@ ALG059
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -95449,7 +95448,7 @@ ALG059
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -103552,7 +103551,7 @@ ALG061
 0
 </td>
 <td style="text-align:right;">
-6
+5
 </td>
 <td style="text-align:right;">
 0
@@ -103605,7 +103604,7 @@ ALG061
 0
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
 <td style="text-align:right;">
 0
@@ -108428,7 +108427,7 @@ ALG062
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -108481,7 +108480,7 @@ ALG062
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -109541,7 +109540,7 @@ ALG062
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -109594,7 +109593,7 @@ ALG062
 0
 </td>
 <td style="text-align:right;">
-2
+3
 </td>
 <td style="text-align:right;">
 0
@@ -109859,7 +109858,7 @@ ALG062
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -109912,7 +109911,7 @@ ALG062
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -113316,7 +113315,7 @@ ALG063
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -113369,7 +113368,7 @@ ALG063
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -114099,7 +114098,7 @@ ALG063
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -114152,7 +114151,7 @@ ALG063
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -120359,7 +120358,7 @@ ALG064
 0
 </td>
 <td style="text-align:right;">
-4
+2
 </td>
 <td style="text-align:right;">
 0
@@ -120412,7 +120411,7 @@ ALG064
 0
 </td>
 <td style="text-align:right;">
-0
+2
 </td>
 <td style="text-align:right;">
 0
@@ -122979,7 +122978,7 @@ ALG065
 7
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -123032,7 +123031,7 @@ ALG065
 7
 </td>
 <td style="text-align:right;">
-4
+5
 </td>
 <td style="text-align:right;">
 0
@@ -137366,7 +137365,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -137419,7 +137418,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -138744,7 +138743,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -138797,7 +138796,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -140081,7 +140080,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -140134,7 +140133,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -140293,7 +140292,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-4
+3
 </td>
 <td style="text-align:right;">
 0
@@ -140346,7 +140345,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -141129,7 +141128,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -141182,7 +141181,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 <td style="text-align:right;">
 0
@@ -141229,7 +141228,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -141282,7 +141281,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -141394,7 +141393,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 0
@@ -141447,7 +141446,7 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -146429,7 +146428,7 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
-3
+2
 </td>
 <td style="text-align:right;">
 0
@@ -146482,7 +146481,7 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -148867,7 +148866,7 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -148920,7 +148919,7 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -149026,7 +149025,7 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
-2
+0
 </td>
 <td style="text-align:right;">
 0
@@ -149079,7 +149078,7 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
-0
+2
 </td>
 <td style="text-align:right;">
 0
@@ -153254,7 +153253,7 @@ ALG072
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
 0
@@ -153307,7 +153306,7 @@ ALG072
 0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -160300,13 +160299,13 @@ ALG044
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 <tr>
@@ -160660,10 +160659,10 @@ ALG047
 2
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 0
@@ -160928,10 +160927,10 @@ ALG049
 1
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 1
@@ -161179,10 +161178,10 @@ ALG052
 1
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 <tr>
@@ -161444,10 +161443,10 @@ ALG054
 0
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 <td style="text-align:right;">
 1
@@ -161909,10 +161908,10 @@ ALG057
 1
 </td>
 <td style="text-align:right;">
-6
+5
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 </tr>
 <tr>
@@ -162516,10 +162515,10 @@ ALG062
 1
 </td>
 <td style="text-align:right;">
-1
+0
 </td>
 <td style="text-align:right;">
-0
+1
 </td>
 <td style="text-align:right;">
 0
@@ -163646,10 +163645,10 @@ ALG069
 1
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
-3
+4
 </td>
 <td style="text-align:right;">
 5
@@ -163661,10 +163660,10 @@ ALG069
 0
 </td>
 <td style="text-align:right;">
-2
+1
 </td>
 <td style="text-align:right;">
-1
+2
 </td>
 </tr>
 <tr>
@@ -163929,6 +163928,9 @@ ALG071
 0
 </td>
 <td style="text-align:right;">
+0
+</td>
+<td style="text-align:right;">
 1
 </td>
 <td style="text-align:right;">
@@ -163939,9 +163941,6 @@ ALG071
 </td>
 <td style="text-align:right;">
 2
-</td>
-<td style="text-align:right;">
-0
 </td>
 <td style="text-align:right;">
 2
@@ -169973,12 +169972,12 @@ ALG073
 </tbody>
 </table>
 </div>
-<p>We might want to remove all of the data from the weeks where we did not get a complete sample:</p>
+<p>We can then remove all of the data from the weeks where we did not get a complete sample:</p>
 <div class="sourceCode" id="cb252"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb252-1"><a href="occupancy.html#cb252-1" tabindex="-1"></a>y_mat[eff_mat<span class="sc">!=</span><span class="dv">7</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span></code></pre></div>
 <p>Now we are ready to feed this into the <code>unmarked</code> package.</p>
 <div id="unmarked-package" class="section level3 hasAnchor" number="11.1.1">
 <h3><span class="header-section-number">11.1.1</span> Unmarked package<a href="occupancy.html#unmarked-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>One of the hurdles in using the <code>unmarked</code> package is it uses a different style of dataframe called an unmarked dataframe. It is essentially a compillation of the different dataframes we need for the analysis (y data and covariate data). We asemmbled the Y data above, so now lets make the covariates:</p>
+<p>One of the hurdles in using the <code>unmarked</code> package is it uses a different style of dataframe called an unmarked dataframe. It is essentially a compilation of the different dataframes we need for the analysis (y data and covariate data). We assembled the Y data above, so now lets make the covariates:</p>
 <div class="sourceCode" id="cb253"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb253-1"><a href="occupancy.html#cb253-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span>  <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations_and_covariates.csv&quot;</span>)</span>
 <span id="cb253-2"><a href="occupancy.html#cb253-2" tabindex="-1"></a></span>
 <span id="cb253-3"><a href="occupancy.html#cb253-3" tabindex="-1"></a><span class="co"># Unmarked wants your detection history, effort data and site covariates as matrices. But the order is important!</span></span>
@@ -170010,31 +170009,28 @@ ALG073
 ## 
 ## Occupancy (logit-scale):
 ##  Estimate    SE    z P(&gt;|z|)
-##     0.668 0.345 1.94  0.0527
+##      0.67 0.345 1.94  0.0522
 ## 
 ## Detection (logit-scale):
 ##  Estimate     SE     z  P(&gt;|z|)
-##     -1.37 0.0749 -18.3 1.34e-74
+##     -1.39 0.0752 -18.4 1.15e-75
 ## 
-## AIC: 1170.366 
-## Number of sites: 38
-## optim convergence code: 0
-## optim iterations: 26 
-## Bootstrap iterations: 0</code></pre>
-<p>The estimate you see for both occupancy and detection probability is on the log-link scale. If we want to calculate the occupancy probability, we can use the <code>backTransform()</code> function:</p>
+## AIC: 1162.108 
+## Number of sites: 38</code></pre>
+<p>The estimate you see for both occupancy and detection probability is on the logit scale. If we want to calculate the occupancy probability, we can use the <code>backTransform()</code> function:</p>
 <div class="sourceCode" id="cb261"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb261-1"><a href="occupancy.html#cb261-1" tabindex="-1"></a><span class="fu">backTransform</span>(m0, <span class="at">type =</span> <span class="st">&quot;state&quot;</span>)</span></code></pre></div>
 <pre><code>## Backtransformed linear combination(s) of Occupancy estimate(s)
 ## 
 ##  Estimate     SE LinComb (Intercept)
-##     0.661 0.0773   0.668           1
+##     0.662 0.0773    0.67           1
 ## 
 ## Transformation: logistic</code></pre>
 <p>So the probability that a white-tailed deer occupies one of the survey locations is ~0.66. For the detection probability we specify “det”:</p>
 <div class="sourceCode" id="cb263"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb263-1"><a href="occupancy.html#cb263-1" tabindex="-1"></a><span class="fu">backTransform</span>(m0, <span class="at">type =</span> <span class="st">&quot;det&quot;</span>)</span></code></pre></div>
 <pre><code>## Backtransformed linear combination(s) of Detection estimate(s)
 ## 
-##  Estimate     SE LinComb (Intercept)
-##     0.203 0.0121   -1.37           1
+##  Estimate    SE LinComb (Intercept)
+##       0.2 0.012   -1.39           1
 ## 
 ## Transformation: logistic</code></pre>
 <p>The probability that we detect a white-tailed deer in a given unit of time (7-days), given that it is there to be detected, is ~0.2.</p>
@@ -170052,14 +170048,10 @@ ALG073
 <p>We can perform model selection on these different scenarios in the same way as in the <a href="habitat-use.html#habitat-use">habitat use chapter</a> - using the <code>MuMIn</code> package:</p>
 <div class="sourceCode" id="cb266"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb266-1"><a href="occupancy.html#cb266-1" tabindex="-1"></a><span class="fu">model.sel</span>(m0,m1,m2)</span></code></pre></div>
 <pre><code>## Model selection table 
-##    p(Int) psi(Int) psi(z.lin_of_sgh_m) psi(ftr_typ) df   logLik   AICc
-## m1 -1.368  0.70530             -0.5664               3 -581.839 1170.4
-## m0 -1.368  0.66830                                   2 -583.183 1170.7
-## m2 -1.367  0.01785                                +  4 -581.769 1172.8
-##    delta weight
-## m1  0.00  0.464
-## m0  0.33  0.394
-## m2  2.37  0.142
+##    psi(Int) p(Int) psi(z.lin_of_sgh_m) psi(ftr_typ) df   logLik   AICc delta weight
+## m1  0.70590 -1.384             -0.5664               3 -577.711 1162.1  0.00  0.464
+## m0  0.67020 -1.385                                   2 -579.054 1162.5  0.32  0.394
+## m2  0.01868 -1.384                                +  4 -577.642 1164.5  2.37  0.142
 ## Models ranked by AICc(x)</code></pre>
 <p>The best supported model contains <code>z.line_of_sight_m</code>, although the improvement on the null model is minimal.</p>
 </div>
@@ -170079,18 +170071,18 @@ ALG073
 <span id="cb268-11"><a href="occupancy.html#cb268-11" tabindex="-1"></a></span>
 <span id="cb268-12"><a href="occupancy.html#cb268-12" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(new_dat, <span class="fu">aes</span>(<span class="at">x =</span> z.line_of_sight_m, <span class="at">y =</span> Predicted)) <span class="sc">+</span> <span class="co"># mean line</span></span>
 <span id="cb268-13"><a href="occupancy.html#cb268-13" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">ymin =</span> lower, <span class="at">ymax =</span> upper), <span class="at">alpha =</span> <span class="fl">0.5</span>, <span class="at">linetype =</span> <span class="st">&quot;dashed&quot;</span>) <span class="sc">+</span> <span class="co">#Confidence intervals</span></span>
-<span id="cb268-14"><a href="occupancy.html#cb268-14" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb268-14"><a href="occupancy.html#cb268-14" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">linewidth =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb268-15"><a href="occupancy.html#cb268-15" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">&quot;Line of sight&quot;</span>, <span class="at">y =</span> <span class="st">&quot;Occupancy probability&quot;</span>) <span class="sc">+</span> <span class="co"># axis labels</span></span>
 <span id="cb268-16"><a href="occupancy.html#cb268-16" tabindex="-1"></a>  <span class="fu">theme_classic</span>() <span class="sc">+</span></span>
 <span id="cb268-17"><a href="occupancy.html#cb268-17" tabindex="-1"></a>  <span class="fu">coord_cartesian</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>))</span>
 <span id="cb268-18"><a href="occupancy.html#cb268-18" tabindex="-1"></a></span>
 <span id="cb268-19"><a href="occupancy.html#cb268-19" tabindex="-1"></a>p1</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch8_20-1.png" width="672" /></p>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch8_20-1.png" alt="" width="672" /></p>
 <p>As with our habitat use model, white-tailed deer (<strong>Odocoileus virginianus</strong>) occupancy appears to decrease with increasing line of sight.</p>
 </div>
 <div id="on-your-own-3" class="section level3 hasAnchor" number="11.1.3">
 <h3><span class="header-section-number">11.1.3</span> On your own<a href="occupancy.html#on-your-own-3" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p>Let’s explore some of the models we fit in the <a href="habitat-use.html#habitat-use">habitat use chapter</a> in the occupancy framework. We have not included any detection covariates in this example dataset, so hold that constand for now!</p>
+<p>Let’s explore some of the models we fit in the <a href="habitat-use.html#habitat-use">habitat use chapter</a> in the occupancy framework. We have not included any detection covariates in this example dataset, so hold that constant for now!</p>
 <p><strong>NOT IN R</strong>
 <a href="https://besjournals.onlinelibrary.wiley.com/doi/full/10.1111/1365-2664.12399">Tobler, M. et al. Spatiotemporal hierarchical modelling of species richness and occupancy using camera trap data. J. Appl. Ecol. (2015).</a></p>
 </div>
@@ -170127,46 +170119,60 @@ ALG073
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/08-occupancy.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/08-occupancy.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

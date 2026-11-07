@@ -4,6 +4,7 @@ what-this-course-is
 what-this-course-is-not
 how-to-use-this-book
 get-in-touch
+cite-the-course
 acknowledgements
 prep
 install-r
@@ -35,6 +36,7 @@ camera-inventory
 important-note
 error-checking
 standardised-exploration-script
+adding-a-sampling-site-location-column-to-the-image-data
 formatting-dates
 skill-check-lubridate
 deployment-dates
@@ -80,7 +82,6 @@ highways
 water-bodies
 vegetation-productivity
 modistools
-digging-deeper
 convert-and-save-your-covariates
 correlations-between-predictors
 exploration
@@ -143,7 +144,6 @@ data-formatting
 accounting-for-sunrise-and-sunset
 species-comparisons
 treatment-comparisons
-seasonal-comparison
 on-your-own-4
 selected-further-reading
 density
@@ -164,13 +164,10 @@ behavior
 behavioural-designations
 event-duration
 animal-speed-and-day-range
-experimental-manipulations
 interactions
-activity-overlap
 one-species-as-a-predictor-of-another
 residual-co-occurence-models
 attractance-avoidance-ratios-aar
-worked-examples
 on-your-own-5
 working-with-a-new-dataset
 read-in-the-data-and-packages

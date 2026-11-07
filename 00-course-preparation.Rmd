@@ -2,6 +2,8 @@
 output:
   pdf_document: default
   html_document: default
+editor_options: 
+  chunk_output_type: console
 ---
 # Preparing for the course {#prep}
 
@@ -53,8 +55,7 @@ list.of.packages <- c("activity",
                       "corrplot",
                       "cowplot",
                       "dplyr", 
-                      "elevatr",
-                      "gfcanalysis",  
+                      "elevatr",  
                       "ggplot2",
                       "gridExtra",
                       "iNEXT",
@@ -65,7 +66,7 @@ list.of.packages <- c("activity",
                       "lubridate",
                       "magrittr",
                       "MCMCvis",
-                      "modisfast",
+                      "MODISTools",
                       "osmdata",
                       "pals",
                       "plotly",
@@ -105,14 +106,10 @@ library(remotes)
 remotes::install_github("RS-eco/traitdata")
 remotes::install_github("arcaravaggi/remBoot")
 remotes::install_github("annam21/spaceNtime")
+remotes::install_github("azvoleff/gfcanalysis")
 
 ```
 
-### An Earthdata Server account
-
-**IMPORTANT** to access MODIS data (and other great products) rapidly through the `modisfast` package you need to create your own login for the associated Earthdata servers.
-
-**To create your free account go to : <https://urs.earthdata.nasa.gov/>.** and make a note of your credentials for use during the Analysis Covariates chapter. 
 
 ## Create an R project
 

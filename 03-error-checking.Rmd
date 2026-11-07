@@ -1280,7 +1280,7 @@ write.csv(img_tmp, paste0("data/processed_data/",ind_dat$project_id[1], "_raw_de
 
 **2. The "daily_lookup"** which is a dataframe of all days a given camera station was active.
 Some people use an lookup matrix for this step, but we find the long format is much easier to use in downstream analysis.
-- "`r paste0("data/processed_data/",ind_dat$project_.ID_id[1], "_daily_deport_lookup.csv")`"
+- "`r paste0("data/processed_data/",ind_dat$project_id[1], "_daily_deport_lookup.csv")`"
 
 ```{r ch3_63, class.source="Rmain"}
 write.csv(row_lookup, paste0("data/processed_data/",ind_dat$project_id[1], "_daily_lookup.csv"), row.names = F)

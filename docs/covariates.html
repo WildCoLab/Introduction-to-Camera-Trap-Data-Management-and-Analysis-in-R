@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 7 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="generator" content="bookdown 0.35 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 7 Analysis covariates | An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2023-09-22" />
+<meta name="date" content="2026-11-07" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -54,25 +54,27 @@
 <script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
 <script src="libs/kePrint-0.0.1/kePrint.js"></script>
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
-<script src="libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
+<script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
 <link href="libs/leafletfix-1.0.0/leafletfix.css" rel="stylesheet" />
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.0/leaflet.js"></script>
-<script src="libs/leaflet-providers-1.13.0/leaflet-providers_1.13.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.0/leaflet-providers-plugin.js"></script>
-<script src="libs/plotly-binding-4.10.2/plotly.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.12.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
 pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
@@ -165,7 +167,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#what-this-course-is-not"><i class="fa fa-check"></i><b>1.3</b> What this course is not</a></li>
 <li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#how-to-use-this-book"><i class="fa fa-check"></i><b>1.4</b> How to use this book</a></li>
 <li class="chapter" data-level="1.5" data-path="index.html"><a href="index.html#get-in-touch"><i class="fa fa-check"></i><b>1.5</b> Get in touch</a></li>
-<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.6</b> Acknowledgements</a></li>
+<li class="chapter" data-level="1.6" data-path="index.html"><a href="index.html#cite-the-course"><i class="fa fa-check"></i><b>1.6</b> Cite the course</a></li>
+<li class="chapter" data-level="1.7" data-path="index.html"><a href="index.html#acknowledgements"><i class="fa fa-check"></i><b>1.7</b> Acknowledgements</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="prep.html"><a href="prep.html"><i class="fa fa-check"></i><b>2</b> Preparing for the course</a>
 <ul>
@@ -212,23 +215,24 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5" data-path="error-checking.html"><a href="error-checking.html"><i class="fa fa-check"></i><b>5</b> Error checking</a>
 <ul>
 <li class="chapter" data-level="5.1" data-path="error-checking.html"><a href="error-checking.html#standardised-exploration-script"><i class="fa fa-check"></i><b>5.1</b> Standardised exploration script</a></li>
-<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.2</b> Formatting dates</a>
+<li class="chapter" data-level="5.2" data-path="error-checking.html"><a href="error-checking.html#adding-a-sampling-site-location-column-to-the-image-data"><i class="fa fa-check"></i><b>5.2</b> Adding a sampling site location column to the image data</a></li>
+<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#formatting-dates"><i class="fa fa-check"></i><b>5.3</b> Formatting dates</a>
 <ul>
-<li class="chapter" data-level="5.2.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.2.1</b> Skill check: <code>lubridate</code></a></li>
-<li class="chapter" data-level="5.2.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.2.2</b> Deployment dates</a></li>
-<li class="chapter" data-level="5.2.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.2.3</b> Image dates</a></li>
+<li class="chapter" data-level="5.3.1" data-path="error-checking.html"><a href="error-checking.html#skill-check-lubridate"><i class="fa fa-check"></i><b>5.3.1</b> Skill check: <code>lubridate</code></a></li>
+<li class="chapter" data-level="5.3.2" data-path="error-checking.html"><a href="error-checking.html#deployment-dates"><i class="fa fa-check"></i><b>5.3.2</b> Deployment dates</a></li>
+<li class="chapter" data-level="5.3.3" data-path="error-checking.html"><a href="error-checking.html#image-dates"><i class="fa fa-check"></i><b>5.3.3</b> Image dates</a></li>
 </ul></li>
-<li class="chapter" data-level="5.3" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.3</b> Basic trapping summaries</a></li>
-<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.4</b> Error checks</a>
+<li class="chapter" data-level="5.4" data-path="error-checking.html"><a href="error-checking.html#basic-trapping-summaries"><i class="fa fa-check"></i><b>5.4</b> Basic trapping summaries</a></li>
+<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#error-checks"><i class="fa fa-check"></i><b>5.5</b> Error checks</a>
 <ul>
-<li class="chapter" data-level="5.4.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.4.1</b> Camera locations</a></li>
-<li class="chapter" data-level="5.4.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.4.2</b> Camera activity checks</a></li>
-<li class="chapter" data-level="5.4.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.4.3</b> Detection check</a></li>
-<li class="chapter" data-level="5.4.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.4.4</b> Taxonomy check</a></li>
-<li class="chapter" data-level="5.4.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.4.5</b> Skill Check: Taxize package</a></li>
+<li class="chapter" data-level="5.5.1" data-path="error-checking.html"><a href="error-checking.html#camera-locations"><i class="fa fa-check"></i><b>5.5.1</b> Camera locations</a></li>
+<li class="chapter" data-level="5.5.2" data-path="error-checking.html"><a href="error-checking.html#camera-activity-checks"><i class="fa fa-check"></i><b>5.5.2</b> Camera activity checks</a></li>
+<li class="chapter" data-level="5.5.3" data-path="error-checking.html"><a href="error-checking.html#detection-check"><i class="fa fa-check"></i><b>5.5.3</b> Detection check</a></li>
+<li class="chapter" data-level="5.5.4" data-path="error-checking.html"><a href="error-checking.html#taxonomy-check"><i class="fa fa-check"></i><b>5.5.4</b> Taxonomy check</a></li>
+<li class="chapter" data-level="5.5.5" data-path="error-checking.html"><a href="error-checking.html#skill-check-taxize-package"><i class="fa fa-check"></i><b>5.5.5</b> Skill Check: Taxize package</a></li>
 </ul></li>
-<li class="chapter" data-level="5.5" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.5</b> Diel activity check</a></li>
-<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.6</b> Conclusion</a></li>
+<li class="chapter" data-level="5.6" data-path="error-checking.html"><a href="error-checking.html#diel-activity-check"><i class="fa fa-check"></i><b>5.6</b> Diel activity check</a></li>
+<li class="chapter" data-level="5.7" data-path="error-checking.html"><a href="error-checking.html#conclusion"><i class="fa fa-check"></i><b>5.7</b> Conclusion</a></li>
 </ul></li>
 <li class="chapter" data-level="6" data-path="data-creation.html"><a href="data-creation.html"><i class="fa fa-check"></i><b>6</b> Analysis data creation</a>
 <ul>
@@ -259,7 +263,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
 <li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -356,10 +359,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="12.2.1" data-path="activity.html"><a href="activity.html#accounting-for-sunrise-and-sunset"><i class="fa fa-check"></i><b>12.2.1</b> Accounting for sunrise and sunset</a></li>
 </ul></li>
 <li class="chapter" data-level="12.3" data-path="activity.html"><a href="activity.html#species-comparisons"><i class="fa fa-check"></i><b>12.3</b> Species comparisons</a></li>
-<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a>
-<ul>
-<li class="chapter" data-level="12.4.1" data-path="activity.html"><a href="activity.html#seasonal-comparison"><i class="fa fa-check"></i><b>12.4.1</b> Seasonal comparison</a></li>
-</ul></li>
+<li class="chapter" data-level="12.4" data-path="activity.html"><a href="activity.html#treatment-comparisons"><i class="fa fa-check"></i><b>12.4</b> Treatment comparisons</a></li>
 <li class="chapter" data-level="12.5" data-path="activity.html"><a href="activity.html#on-your-own-4"><i class="fa fa-check"></i><b>12.5</b> On your own</a></li>
 <li class="chapter" data-level="12.6" data-path="activity.html"><a href="activity.html#selected-further-reading"><i class="fa fa-check"></i><b>12.6</b> Selected further reading</a></li>
 </ul></li>
@@ -383,15 +383,12 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="14.1" data-path="behavior.html"><a href="behavior.html#behavioural-designations"><i class="fa fa-check"></i><b>14.1</b> Behavioural designations</a></li>
 <li class="chapter" data-level="14.2" data-path="behavior.html"><a href="behavior.html#event-duration"><i class="fa fa-check"></i><b>14.2</b> Event duration</a></li>
 <li class="chapter" data-level="14.3" data-path="behavior.html"><a href="behavior.html#animal-speed-and-day-range"><i class="fa fa-check"></i><b>14.3</b> Animal speed and day range</a></li>
-<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#experimental-manipulations"><i class="fa fa-check"></i><b>14.4</b> Experimental manipulations</a></li>
-<li class="chapter" data-level="14.5" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.5</b> Interactions</a>
+<li class="chapter" data-level="14.4" data-path="behavior.html"><a href="behavior.html#interactions"><i class="fa fa-check"></i><b>14.4</b> Interactions</a>
 <ul>
-<li class="chapter" data-level="14.5.1" data-path="behavior.html"><a href="behavior.html#activity-overlap"><i class="fa fa-check"></i><b>14.5.1</b> Activity overlap</a></li>
-<li class="chapter" data-level="14.5.2" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.5.2</b> One species as a predictor of another</a></li>
-<li class="chapter" data-level="14.5.3" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.5.3</b> Residual co-occurence models</a></li>
-<li class="chapter" data-level="14.5.4" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.5.4</b> Attractance-Avoidance Ratios (AAR)</a></li>
+<li class="chapter" data-level="14.4.1" data-path="behavior.html"><a href="behavior.html#one-species-as-a-predictor-of-another"><i class="fa fa-check"></i><b>14.4.1</b> One species as a predictor of another</a></li>
+<li class="chapter" data-level="14.4.2" data-path="behavior.html"><a href="behavior.html#residual-co-occurence-models"><i class="fa fa-check"></i><b>14.4.2</b> Residual co-occurence models</a></li>
+<li class="chapter" data-level="14.4.3" data-path="behavior.html"><a href="behavior.html#attractance-avoidance-ratios-aar"><i class="fa fa-check"></i><b>14.4.3</b> Attractance-Avoidance Ratios (AAR)</a></li>
 </ul></li>
-<li class="chapter" data-level="14.6" data-path="behavior.html"><a href="behavior.html#worked-examples"><i class="fa fa-check"></i><b>14.6</b> Worked examples</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="on-your-own-5.html"><a href="on-your-own-5.html"><i class="fa fa-check"></i><b>15</b> On your own</a>
 <ul>
@@ -422,15 +419,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.3.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#convert-to-simple-features"><i class="fa fa-check"></i><b>15.3.1</b> Convert to simple features</a></li>
 <li class="chapter" data-level="15.3.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#get-elevation-data"><i class="fa fa-check"></i><b>15.3.2</b> Get elevation data</a></li>
 <li class="chapter" data-level="15.3.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#open-street-map-data"><i class="fa fa-check"></i><b>15.3.3</b> Open street map data</a></li>
-<li class="chapter" data-level="15.3.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#ndvi"><i class="fa fa-check"></i><b>15.3.4</b> NDVI</a></li>
 </ul></li>
-<li class="chapter" data-level="15.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-exploration"><i class="fa fa-check"></i><b>15.4</b> Data exploration</a>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ndvi.html"><a href="ndvi.html"><i class="fa fa-check"></i><b>16</b> NDVI</a>
 <ul>
-<li class="chapter" data-level="15.4.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#final-map"><i class="fa fa-check"></i><b>15.4.1</b> Final map</a></li>
-<li class="chapter" data-level="15.4.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#detection-summary"><i class="fa fa-check"></i><b>15.4.2</b> Detection summary</a></li>
-<li class="chapter" data-level="15.4.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#temporal-patterns"><i class="fa fa-check"></i><b>15.4.3</b> Temporal patterns</a></li>
-<li class="chapter" data-level="15.4.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#spatial-patterns"><i class="fa fa-check"></i><b>15.4.4</b> Spatial patterns</a></li>
-<li class="chapter" data-level="15.4.5" data-path="on-your-own-5.html"><a href="on-your-own-5.html#species-co-occurance"><i class="fa fa-check"></i><b>15.4.5</b> Species co-occurance</a></li>
+<li class="chapter" data-level="16.1" data-path="ndvi.html"><a href="ndvi.html#data-exploration"><i class="fa fa-check"></i><b>16.1</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="ndvi.html"><a href="ndvi.html#final-map"><i class="fa fa-check"></i><b>16.1.1</b> Final map</a></li>
+<li class="chapter" data-level="16.1.2" data-path="ndvi.html"><a href="ndvi.html#detection-summary"><i class="fa fa-check"></i><b>16.1.2</b> Detection summary</a></li>
+<li class="chapter" data-level="16.1.3" data-path="ndvi.html"><a href="ndvi.html#temporal-patterns"><i class="fa fa-check"></i><b>16.1.3</b> Temporal patterns</a></li>
+<li class="chapter" data-level="16.1.4" data-path="ndvi.html"><a href="ndvi.html#spatial-patterns"><i class="fa fa-check"></i><b>16.1.4</b> Spatial patterns</a></li>
+<li class="chapter" data-level="16.1.5" data-path="ndvi.html"><a href="ndvi.html#species-co-occurance"><i class="fa fa-check"></i><b>16.1.5</b> Species co-occurance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -460,32 +459,32 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Create a new .R script</strong></p>
 <p>Call it <code>02_example_covariates.R</code>.</p>
 <p><strong>Load the required packages</strong></p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb91-1"><a href="covariates.html#cb91-1" tabindex="-1"></a><span class="fu">library</span>(kableExtra);<span class="fu">library</span>(dplyr); <span class="fu">library</span>(sf); <span class="fu">library</span>(MODISTools); <span class="fu">library</span>(lubridate); <span class="fu">library</span>(corrplot); <span class="fu">library</span>(traitdata); <span class="fu">library</span>(terra); <span class="fu">library</span>(osmdata); <span class="fu">library</span>(elevatr)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb93-1"><a href="covariates.html#cb93-1" tabindex="-1"></a><span class="fu">library</span>(kableExtra);<span class="fu">library</span>(dplyr); <span class="fu">library</span>(sf); <span class="fu">library</span>(MODISTools); <span class="fu">library</span>(lubridate); <span class="fu">library</span>(corrplot); <span class="fu">library</span>(traitdata); <span class="fu">library</span>(terra); <span class="fu">library</span>(osmdata); <span class="fu">library</span>(elevatr)</span></code></pre></div>
 <p>We can simplify the covariate options we have available into two distinct categories:</p>
 <p><strong>- Species traits</strong></p>
 <p>The traits are species-level covariates which we think are important in structuring their responses to other covariates, such as human modification.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb92-1"><a href="covariates.html#cb92-1" tabindex="-1"></a><span class="co"># Start by reading in your species list</span></span>
-<span id="cb92-2"><a href="covariates.html#cb92-2" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb94"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb94-1"><a href="covariates.html#cb94-1" tabindex="-1"></a><span class="co"># Start by reading in your species list</span></span>
+<span id="cb94-2"><a href="covariates.html#cb94-2" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_species_list.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <p><strong>- Location-level covariates</strong></p>
 <p>Location-level covariates are characteristics of the camera locations which are either fundamental to your question (such as the habitat type, degree of human modification, or distance to the nearest road), or they are things you are not directly interested in but must account for in your analyses. The way we derive and treat these variables are identical however.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb93-1"><a href="covariates.html#cb93-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb95-1"><a href="covariates.html#cb95-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/processed_data/AlgarRestorationProject_camera_locations.csv&quot;</span>, <span class="at">header=</span>T)</span></code></pre></div>
 <div id="species-traits" class="section level2 hasAnchor" number="7.1">
 <h2><span class="header-section-number">7.1</span> Species traits<a href="covariates.html#species-traits" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>It is easier than ever before to add trait data to your species lists, particularly with the advent of R packages which pool multiple data sources such as the <a href="https://github.com/RS-eco/traitdata"><code>traitdata</code> database</a>, which to date, compiles data from 32 different sources.</p>
 <p>Below we use this package to add trait data to the project species list:</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb94-1"><a href="covariates.html#cb94-1" tabindex="-1"></a><span class="co"># This package isn&#39;t available on Cran, so we must use the remotes package</span></span>
-<span id="cb94-2"><a href="covariates.html#cb94-2" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
-<span id="cb94-3"><a href="covariates.html#cb94-3" tabindex="-1"></a><span class="co">#remotes::install_github(&quot;RS-eco/traitdata&quot;, build_vignettes = T, force=T)</span></span>
-<span id="cb94-4"><a href="covariates.html#cb94-4" tabindex="-1"></a><span class="co"># Load the library</span></span>
-<span id="cb94-5"><a href="covariates.html#cb94-5" tabindex="-1"></a><span class="fu">library</span>(traitdata)</span></code></pre></div>
+<div class="sourceCode" id="cb96"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb96-1"><a href="covariates.html#cb96-1" tabindex="-1"></a><span class="co"># This package isn&#39;t available on Cran, so we must use the remotes package</span></span>
+<span id="cb96-2"><a href="covariates.html#cb96-2" tabindex="-1"></a><span class="co">#library(remotes)</span></span>
+<span id="cb96-3"><a href="covariates.html#cb96-3" tabindex="-1"></a><span class="co">#remotes::install_github(&quot;RS-eco/traitdata&quot;, build_vignettes = T, force=T)</span></span>
+<span id="cb96-4"><a href="covariates.html#cb96-4" tabindex="-1"></a><span class="co"># Load the library</span></span>
+<span id="cb96-5"><a href="covariates.html#cb96-5" tabindex="-1"></a><span class="fu">library</span>(traitdata)</span></code></pre></div>
 <p>To pull the data for a specific database we use the following code:</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb95-1"><a href="covariates.html#cb95-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;elton_mammals&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb97"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb97-1"><a href="covariates.html#cb97-1" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;elton_mammals&quot;</span>)</span></code></pre></div>
 <p>To explore the full list of available datasets click <a href="https://opentraits.org/datasets.html">this link</a>.</p>
 <p>Let’s take a look at what categories we have available to us:</p>
-<div class="sourceCode" id="cb96"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb96-1"><a href="covariates.html#cb96-1" tabindex="-1"></a> <span class="fu">head</span>(elton_mammals) <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;200px&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb96-2"><a href="covariates.html#cb96-2" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
-<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
-<table>
+<div class="sourceCode" id="cb98"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb98-1"><a href="covariates.html#cb98-1" tabindex="-1"></a> <span class="fu">head</span>(elton_mammals) <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;200px&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb98-2"><a href="covariates.html#cb98-2" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
+<table class=" lightable-paper lightable-striped" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
@@ -1110,23 +1109,23 @@ Caluromys philander
 </table>
 </div>
 <p>Lets make a new column <code>sp</code> which matches the species column in our ‘sp_summary’ dataset. We will use this as the “key” variable to extract the trait data.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb97-1"><a href="covariates.html#cb97-1" tabindex="-1"></a>elton_mammals<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste0</span>(elton_mammals<span class="sc">$</span>Genus,<span class="st">&quot;.&quot;</span> ,elton_mammals<span class="sc">$</span>Species)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb99-1"><a href="covariates.html#cb99-1" tabindex="-1"></a>elton_mammals<span class="sc">$</span>sp <span class="ot">&lt;-</span> <span class="fu">paste0</span>(elton_mammals<span class="sc">$</span>Genus,<span class="st">&quot;.&quot;</span> ,elton_mammals<span class="sc">$</span>Species)</span></code></pre></div>
 <p>We do not want to take all of the trait data, so lets subset to <code>BodyMass.Value</code> and the activity data <code>Activity.Nocturnal  Activity.Crepuscular    Activity.Diurnal</code>.</p>
-<div class="sourceCode" id="cb98"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb98-1"><a href="covariates.html#cb98-1" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> elton_mammals[, <span class="fu">c</span>(<span class="st">&quot;sp&quot;</span>,<span class="st">&quot;BodyMass.Value&quot;</span>, <span class="st">&quot;Activity.Nocturnal&quot;</span>, <span class="st">&quot;Activity.Crepuscular&quot;</span>,   <span class="st">&quot;Activity.Diurnal&quot;</span>)]</span>
-<span id="cb98-2"><a href="covariates.html#cb98-2" tabindex="-1"></a></span>
-<span id="cb98-3"><a href="covariates.html#cb98-3" tabindex="-1"></a><span class="co"># Lets rename the columns to make them more usable</span></span>
-<span id="cb98-4"><a href="covariates.html#cb98-4" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> <span class="fu">rename</span>(</span>
-<span id="cb98-5"><a href="covariates.html#cb98-5" tabindex="-1"></a>              <span class="at">mass_g =</span> BodyMass.Value,</span>
-<span id="cb98-6"><a href="covariates.html#cb98-6" tabindex="-1"></a>              <span class="at">act_noct =</span> Activity.Nocturnal,</span>
-<span id="cb98-7"><a href="covariates.html#cb98-7" tabindex="-1"></a>              <span class="at">act_crep =</span> Activity.Crepuscular,</span>
-<span id="cb98-8"><a href="covariates.html#cb98-8" tabindex="-1"></a>              <span class="at">act_diur =</span> Activity.Diurnal)</span>
-<span id="cb98-9"><a href="covariates.html#cb98-9" tabindex="-1"></a></span>
-<span id="cb98-10"><a href="covariates.html#cb98-10" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp_summary, tmp)</span></code></pre></div>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb100-1"><a href="covariates.html#cb100-1" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> elton_mammals[, <span class="fu">c</span>(<span class="st">&quot;sp&quot;</span>,<span class="st">&quot;BodyMass.Value&quot;</span>, <span class="st">&quot;Activity.Nocturnal&quot;</span>, <span class="st">&quot;Activity.Crepuscular&quot;</span>,   <span class="st">&quot;Activity.Diurnal&quot;</span>)]</span>
+<span id="cb100-2"><a href="covariates.html#cb100-2" tabindex="-1"></a></span>
+<span id="cb100-3"><a href="covariates.html#cb100-3" tabindex="-1"></a><span class="co"># Lets rename the columns to make them more usable</span></span>
+<span id="cb100-4"><a href="covariates.html#cb100-4" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span> <span class="fu">rename</span>(</span>
+<span id="cb100-5"><a href="covariates.html#cb100-5" tabindex="-1"></a>              <span class="at">mass_g =</span> BodyMass.Value,</span>
+<span id="cb100-6"><a href="covariates.html#cb100-6" tabindex="-1"></a>              <span class="at">act_noct =</span> Activity.Nocturnal,</span>
+<span id="cb100-7"><a href="covariates.html#cb100-7" tabindex="-1"></a>              <span class="at">act_crep =</span> Activity.Crepuscular,</span>
+<span id="cb100-8"><a href="covariates.html#cb100-8" tabindex="-1"></a>              <span class="at">act_diur =</span> Activity.Diurnal)</span>
+<span id="cb100-9"><a href="covariates.html#cb100-9" tabindex="-1"></a></span>
+<span id="cb100-10"><a href="covariates.html#cb100-10" tabindex="-1"></a>sp_summary <span class="ot">&lt;-</span> <span class="fu">left_join</span>(sp_summary, tmp)</span></code></pre></div>
 <p>And then check our output:</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb99-1"><a href="covariates.html#cb99-1" tabindex="-1"></a>sp_summary <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;200px&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb99-2"><a href="covariates.html#cb99-2" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
-<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
-<table>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb101-1"><a href="covariates.html#cb101-1" tabindex="-1"></a>sp_summary <span class="sc">%&gt;%</span> <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;200px&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb101-2"><a href="covariates.html#cb101-2" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
+<div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:200px; ">
+<table class=" lightable-paper lightable-striped" style="font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
 <thead>
 <tr>
 <th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
@@ -1669,11 +1668,11 @@ red squirrel
 <ol start="2" style="list-style-type: lower-roman">
 <li>There is a mismatch in taxonomic resolution - you are working with a subspecies that isn’t recognized. This is the case here with elk! Lets replace it with the data for (<strong>Cervus elaphus</strong>)</li>
 </ol>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb100-1"><a href="covariates.html#cb100-1" tabindex="-1"></a>sp_summary[sp_summary<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Cervus.canadensis&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;mass_g&quot;</span>, <span class="st">&quot;act_noct&quot;</span>,<span class="st">&quot;act_crep&quot;</span>,<span class="st">&quot;act_diur&quot;</span>)] <span class="ot">&lt;-</span> </span>
-<span id="cb100-2"><a href="covariates.html#cb100-2" tabindex="-1"></a>    elton_mammals[elton_mammals<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Cervus.elaphus&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;BodyMass.Value&quot;</span>, <span class="st">&quot;Activity.Nocturnal&quot;</span>, <span class="st">&quot;Activity.Crepuscular&quot;</span>, <span class="st">&quot;Activity.Diurnal&quot;</span>)]</span></code></pre></div>
+<div class="sourceCode" id="cb102"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb102-1"><a href="covariates.html#cb102-1" tabindex="-1"></a>sp_summary[sp_summary<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Cervus.canadensis&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;mass_g&quot;</span>, <span class="st">&quot;act_noct&quot;</span>,<span class="st">&quot;act_crep&quot;</span>,<span class="st">&quot;act_diur&quot;</span>)] <span class="ot">&lt;-</span> </span>
+<span id="cb102-2"><a href="covariates.html#cb102-2" tabindex="-1"></a>    elton_mammals[elton_mammals<span class="sc">$</span>sp<span class="sc">==</span><span class="st">&quot;Cervus.elaphus&quot;</span>, <span class="fu">c</span>(<span class="st">&quot;BodyMass.Value&quot;</span>, <span class="st">&quot;Activity.Nocturnal&quot;</span>, <span class="st">&quot;Activity.Crepuscular&quot;</span>, <span class="st">&quot;Activity.Diurnal&quot;</span>)]</span></code></pre></div>
 <p>Whatever you do, remember to report it in your methods section!</p>
 <p>Let’s save our species list for a rainy day!</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb101-1"><a href="covariates.html#cb101-1" tabindex="-1"></a><span class="fu">write.csv</span>(sp_summary, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_species_list.csv&quot;</span>), <span class="at">row.names =</span> F)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb103-1"><a href="covariates.html#cb103-1" tabindex="-1"></a><span class="fu">write.csv</span>(sp_summary, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_species_list.csv&quot;</span>), <span class="at">row.names =</span> F)</span></code></pre></div>
 </div>
 <div id="camera-station-covariates" class="section level2 hasAnchor" number="7.2">
 <h2><span class="header-section-number">7.2</span> Camera station covariates<a href="covariates.html#camera-station-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -1683,7 +1682,7 @@ red squirrel
 <h3><span class="header-section-number">7.2.1</span> Locally collected covariates<a href="covariates.html#locally-collected-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>You may have collected some data in the field when deploying or checking your camera traps, and kept that data separate from your camera trap data (e.g. vegetation assessments). Provided that the naming convention you gave to these dataframes is the same as in your camera data (e.g. the location is in a column called <code>placename</code>) - you can do a ’left_join()` to merge the two datasets.</p>
 <p>Import a sample set of local covariates:</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb102-1"><a href="covariates.html#cb102-1" tabindex="-1"></a>local_covs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/example_covariates/example_dataframe.csv&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb104-1"><a href="covariates.html#cb104-1" tabindex="-1"></a>local_covs <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">&quot;data/raw_data/example_covariates/example_dataframe.csv&quot;</span>)</span></code></pre></div>
 <p>Lets take a look at the data structure:</p>
 <div style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:250px; ">
 <table>
@@ -2287,64 +2286,52 @@ ALG073
 </div>
 <p>It is a dataframe where the survey locations are rows and the local covariates, in this case <code>line_of_sight_m</code>, are columns.</p>
 <p>To add this data to our station data, we use a <code>left_join()</code> operation from the <code>dplyr()</code> package. It uses a key variable which is common in both data frames to add data from the “right-hand side” to the rows in the “left-hand side” which are not already present. Any rows present in the right-hand side which are not in the left-hand side will be skipped.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb103-1"><a href="covariates.html#cb103-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, local_covs)   <span class="co"># From the dplyr package</span></span></code></pre></div>
-<p>For more examples of joins using <code>dplyr()</code> see: <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html">https://dplyr.tidyverse.org/reference/mutate-joins.html</a></p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb105-1"><a href="covariates.html#cb105-1" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, local_covs)   <span class="co"># From the dplyr package</span></span></code></pre></div>
+<p>For more examples of joins using <code>dplyr()</code> see: <a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="uri">https://dplyr.tidyverse.org/reference/mutate-joins.html</a></p>
 </div>
 <div id="remotely-collected-covariates" class="section level3 hasAnchor" number="7.2.2">
 <h3><span class="header-section-number">7.2.2</span> Remotely collected covariates<a href="covariates.html#remotely-collected-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>To exploit remotely collected data sources we need to use a package to help us with spatial data.</p>
 <div id="key-skills-sf-package" class="section level4 hasAnchor" number="7.2.2.1">
 <h4><span class="header-section-number">7.2.2.1</span> Key skills: <code>sf</code> package<a href="covariates.html#key-skills-sf-package" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p>The most intuitive package to learn spatial operations in R is the <code>simple features</code> package (a.k.a. <code>sf</code>).
-<code>sf</code> allows you to use spatial dataframes in the style of a typical R dataframe. We use this package frequently as it allows you to rapidly change coordinate projection systems (e.g. lat/long to UTM) and rapidly perform spatial operations.</p>
+<p>The most intuitive package to learn spatial operations in R is the <code>simple features</code> package (a.k.a. <code>sf</code>). <code>sf</code> allows you to use spatial dataframes in the style of a typical R dataframe. We use this package frequently as it allows you to rapidly change coordinate projection systems (e.g. lat/long to UTM) and rapidly perform spatial operations.</p>
 <p>Lets convert our “normal” dataframe to an <code>sf</code> dataframe:</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb104-1"><a href="covariates.html#cb104-1" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(locs,                              <span class="co"># We specify the dataframe </span></span>
-<span id="cb104-2"><a href="covariates.html#cb104-2" tabindex="-1"></a>                    <span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="co"># The XY coordinates</span></span>
-<span id="cb104-3"><a href="covariates.html#cb104-3" tabindex="-1"></a>                    <span class="at">crs=</span><span class="dv">4326</span>)                          <span class="co"># And the projection code</span></span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb106-1"><a href="covariates.html#cb106-1" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">st_as_sf</span>(locs,                              <span class="co"># We specify the dataframe </span></span>
+<span id="cb106-2"><a href="covariates.html#cb106-2" tabindex="-1"></a>                    <span class="at">coords=</span><span class="fu">c</span>(<span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>), <span class="co"># The XY coordinates</span></span>
+<span id="cb106-3"><a href="covariates.html#cb106-3" tabindex="-1"></a>                    <span class="at">crs=</span><span class="dv">4326</span>)                          <span class="co"># And the projection code</span></span></code></pre></div>
 <p>What does an <code>sf</code> object look like? Like a normal dataframe but with a weird header:</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb105-1"><a href="covariates.html#cb105-1" tabindex="-1"></a>locs_sf</span></code></pre></div>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb107-1"><a href="covariates.html#cb107-1" tabindex="-1"></a>locs_sf</span></code></pre></div>
 <pre><code>## Simple feature collection with 38 features and 4 fields
 ## Geometry type: POINT
 ## Dimension:     XY
 ## Bounding box:  xmin: -112.6467 ymin: 56.15983 xmax: -112.3848 ymax: 56.49352
 ## Geodetic CRS:  WGS 84
 ## First 10 features:
-##                 project_id placename feature_type line_of_sight_m
-## 1  AlgarRestorationProject    ALG027     HumanUse       252.95833
-## 2  AlgarRestorationProject    ALG029     HumanUse       206.52778
-## 3  AlgarRestorationProject    ALG031     HumanUse       334.27778
-## 4  AlgarRestorationProject    ALG032     HumanUse        83.00000
-## 5  AlgarRestorationProject    ALG035     HumanUse       439.61111
-## 6  AlgarRestorationProject    ALG036     NatRegen        62.69444
-## 7  AlgarRestorationProject    ALG037     HumanUse       392.61111
-## 8  AlgarRestorationProject    ALG038     HumanUse       352.75000
-## 9  AlgarRestorationProject    ALG039     HumanUse       339.76389
-## 10 AlgarRestorationProject    ALG043     NatRegen        62.41667
-##                      geometry
-## 1   POINT (-112.4735 56.3328)
-## 2  POINT (-112.5483 56.39474)
-## 3   POINT (-112.482 56.30899)
-## 4  POINT (-112.3968 56.40197)
-## 5  POINT (-112.4761 56.38428)
-## 6  POINT (-112.4058 56.23178)
-## 7  POINT (-112.4449 56.27898)
-## 8  POINT (-112.4792 56.27039)
-## 9  POINT (-112.4094 56.30127)
-## 10 POINT (-112.5842 56.38715)</code></pre>
+##                 project_id placename feature_type line_of_sight_m                   geometry
+## 1  AlgarRestorationProject    ALG027     HumanUse       252.95833  POINT (-112.4735 56.3328)
+## 2  AlgarRestorationProject    ALG029     HumanUse       206.52778 POINT (-112.5483 56.39474)
+## 3  AlgarRestorationProject    ALG031     HumanUse       334.27778  POINT (-112.482 56.30899)
+## 4  AlgarRestorationProject    ALG032     HumanUse        83.00000 POINT (-112.3968 56.40197)
+## 5  AlgarRestorationProject    ALG035     HumanUse       439.61111 POINT (-112.4761 56.38428)
+## 6  AlgarRestorationProject    ALG036     NatRegen        62.69444 POINT (-112.4058 56.23178)
+## 7  AlgarRestorationProject    ALG037     HumanUse       392.61111 POINT (-112.4449 56.27898)
+## 8  AlgarRestorationProject    ALG038     HumanUse       352.75000 POINT (-112.4792 56.27039)
+## 9  AlgarRestorationProject    ALG039     HumanUse       339.76389 POINT (-112.4094 56.30127)
+## 10 AlgarRestorationProject    ALG043     NatRegen        62.41667 POINT (-112.5842 56.38715)</code></pre>
 <p>That header is important - it tells you the type of data you have (lines, points, polygons etc), and the projection information (<code>CRS</code>).</p>
 <p>We like using <code>sf</code> as it is very easy to transform coordinates into different projections using <code>st_transform()</code>. Use the website <a href="https://epsg.io/">epsg.io</a> to find the CRS codes for the projection you want - e.g. UTM 12N = 26712, then plug it into the following:</p>
-<div class="sourceCode" id="cb107"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb107-1"><a href="covariates.html#cb107-1" tabindex="-1"></a>locs_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(locs_sf, <span class="at">crs=</span><span class="dv">26712</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb109-1"><a href="covariates.html#cb109-1" tabindex="-1"></a>locs_utm <span class="ot">&lt;-</span> <span class="fu">st_transform</span>(locs_sf, <span class="at">crs=</span><span class="dv">26712</span>)</span></code></pre></div>
 <p>Check the header of <code>locs_utm</code> and you should see that the CRS has changed!</p>
 <p>Plotting <code>sf</code> objects is a little bit odd at first. If you try to plot them normally you get lots of replicated plots (one for each column) - try it:</p>
-<div class="sourceCode" id="cb108"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb108-1"><a href="covariates.html#cb108-1" tabindex="-1"></a><span class="fu">plot</span>(locs_utm)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_17-1.png" width="672" /></p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb110-1"><a href="covariates.html#cb110-1" tabindex="-1"></a><span class="fu">plot</span>(locs_utm)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_17-1.png" alt="" width="672" /></p>
 <p>It can be useful as it varied the colors based on the properties of the column. Typically, however, we just want to plot the points themselves. We do that by wrapping the object in <code>st_geometry()</code> this just extracts the geometry of the object.</p>
-<div class="sourceCode" id="cb109"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb109-1"><a href="covariates.html#cb109-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_utm))</span>
-<span id="cb109-2"><a href="covariates.html#cb109-2" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
-<span id="cb109-3"><a href="covariates.html#cb109-3" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_18-1.png" width="672" /></p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb111-1"><a href="covariates.html#cb111-1" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_utm))</span>
+<span id="cb111-2"><a href="covariates.html#cb111-2" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">1</span>)</span>
+<span id="cb111-3"><a href="covariates.html#cb111-3" tabindex="-1"></a><span class="fu">axis</span>(<span class="dv">2</span>)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_18-1.png" alt="" width="672" /></p>
 <p>We will use <code>st_geometry()</code> frequently below.</p>
-<p>For more in depth information of <code>sf</code> functionality see: <a href="https://r-spatial.github.io/sf/articles/sf1.html">https://r-spatial.github.io/sf/articles/sf1.html</a></p>
+<p>For more in depth information of <code>sf</code> functionality see: <a href="https://r-spatial.github.io/sf/articles/sf1.html" class="uri">https://r-spatial.github.io/sf/articles/sf1.html</a></p>
 </div>
 </div>
 <div id="extracting-data-from-local-rasters" class="section level3 hasAnchor" number="7.2.3">
@@ -2353,45 +2340,47 @@ ALG073
 <p><a href="https://www.tandfonline.com/doi/full/10.4296/cwrj2011-909">White, Barry, et al. “Using the cartographic depth-to-water index to locate small streams and associated wet areas across landscapes.” Canadian Water Resources Journal 37.4 (2012): 333-347.</a></p>
 <p><em>NOTE</em> the raster has been down scaled to reduce its size for this course - it is no longer at 1m resolution.</p>
 <p>The only time we deviate from the <code>sf</code> package is to deal with rasters. Raster objects in R are processed really slowly, especially if the raster is large. So instead we use the <code>terra</code> package.</p>
-<div class="sourceCode" id="cb110"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb110-1"><a href="covariates.html#cb110-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
-<span id="cb110-2"><a href="covariates.html#cb110-2" tabindex="-1"></a><span class="co"># Import the example raster using the stars package</span></span>
-<span id="cb110-3"><a href="covariates.html#cb110-3" tabindex="-1"></a>ras <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/raw_data/example_covariates/example_raster.tif&quot;</span>)</span>
-<span id="cb110-4"><a href="covariates.html#cb110-4" tabindex="-1"></a><span class="co"># Covert your sf locations to the same projection as your raster then put it in terra `vect` format,</span></span>
-<span id="cb110-5"><a href="covariates.html#cb110-5" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> locs_sf <span class="sc">%&gt;%</span> </span>
-<span id="cb110-6"><a href="covariates.html#cb110-6" tabindex="-1"></a>                <span class="fu">st_transform</span>(<span class="at">crs=</span><span class="fu">st_crs</span>(ras)) <span class="sc">%&gt;%</span> <span class="co"># change the projection to match the raster</span></span>
-<span id="cb110-7"><a href="covariates.html#cb110-7" tabindex="-1"></a>                <span class="fu">vect</span>() <span class="co"># Turn it into a terra object</span></span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb112-1"><a href="covariates.html#cb112-1" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb112-2"><a href="covariates.html#cb112-2" tabindex="-1"></a><span class="co"># Import the example raster using the stars package</span></span>
+<span id="cb112-3"><a href="covariates.html#cb112-3" tabindex="-1"></a>ras <span class="ot">&lt;-</span> <span class="fu">rast</span>(<span class="st">&quot;data/raw_data/example_covariates/example_raster.tif&quot;</span>)</span>
+<span id="cb112-4"><a href="covariates.html#cb112-4" tabindex="-1"></a><span class="co"># Covert your sf locations to the same projection as your raster then put it in terra `vect` format,</span></span>
+<span id="cb112-5"><a href="covariates.html#cb112-5" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> locs_sf <span class="sc">%&gt;%</span> </span>
+<span id="cb112-6"><a href="covariates.html#cb112-6" tabindex="-1"></a>                <span class="fu">st_transform</span>(<span class="at">crs=</span><span class="fu">st_crs</span>(ras)) <span class="sc">%&gt;%</span> <span class="co"># change the projection to match the raster</span></span>
+<span id="cb112-7"><a href="covariates.html#cb112-7" tabindex="-1"></a>                <span class="fu">vect</span>() <span class="co"># Turn it into a terra object</span></span></code></pre></div>
 <p>Lets check our layers match up!</p>
-<div class="sourceCode" id="cb111"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb111-1"><a href="covariates.html#cb111-1" tabindex="-1"></a><span class="fu">plot</span>(ras) <span class="co"># The terra package makes nice raster plots with legends</span></span>
-<span id="cb111-2"><a href="covariates.html#cb111-2" tabindex="-1"></a><span class="fu">plot</span>(locs_terra, <span class="at">add=</span>T) <span class="co"># Add the survey locations as black dots</span></span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_20-1.png" width="672" /></p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb113-1"><a href="covariates.html#cb113-1" tabindex="-1"></a><span class="fu">plot</span>(ras) <span class="co"># The terra package makes nice raster plots with legends</span></span>
+<span id="cb113-2"><a href="covariates.html#cb113-2" tabindex="-1"></a><span class="fu">plot</span>(locs_terra, <span class="at">add=</span>T) <span class="co"># Add the survey locations as black dots</span></span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_20-1.png" alt="" width="672" /></p>
 <p>Great! Now lets buffer our camera locations by 250 meters, and take the average depth to water for each location:</p>
-<div class="sourceCode" id="cb112"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb112-1"><a href="covariates.html#cb112-1" tabindex="-1"></a><span class="co"># Buffer by 250m</span></span>
-<span id="cb112-2"><a href="covariates.html#cb112-2" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> <span class="fu">buffer</span>(locs_terra,<span class="dv">250</span>)</span>
-<span id="cb112-3"><a href="covariates.html#cb112-3" tabindex="-1"></a></span>
-<span id="cb112-4"><a href="covariates.html#cb112-4" tabindex="-1"></a><span class="co"># Extract the values to a temporary object - tmp </span></span>
-<span id="cb112-5"><a href="covariates.html#cb112-5" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> raster<span class="sc">::</span><span class="fu">extract</span>(ras, locs_terra, <span class="at">fun=</span>mean)</span>
-<span id="cb112-6"><a href="covariates.html#cb112-6" tabindex="-1"></a></span>
-<span id="cb112-7"><a href="covariates.html#cb112-7" tabindex="-1"></a><span class="co"># Make a new column in locs_sf called water_depth_m</span></span>
-<span id="cb112-8"><a href="covariates.html#cb112-8" tabindex="-1"></a><span class="co"># They are ordered the same way so no need for a fancy join</span></span>
-<span id="cb112-9"><a href="covariates.html#cb112-9" tabindex="-1"></a>locs_sf<span class="sc">$</span>water_depth_m <span class="ot">&lt;-</span> tmp<span class="sc">$</span>Depth2WatAlgar</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb114-1"><a href="covariates.html#cb114-1" tabindex="-1"></a><span class="co"># Buffer by 250m</span></span>
+<span id="cb114-2"><a href="covariates.html#cb114-2" tabindex="-1"></a>locs_terra <span class="ot">&lt;-</span> <span class="fu">buffer</span>(locs_terra,<span class="dv">250</span>)</span>
+<span id="cb114-3"><a href="covariates.html#cb114-3" tabindex="-1"></a></span>
+<span id="cb114-4"><a href="covariates.html#cb114-4" tabindex="-1"></a><span class="co"># Extract the values to a temporary object - tmp </span></span>
+<span id="cb114-5"><a href="covariates.html#cb114-5" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(ras, locs_terra, <span class="at">fun=</span>mean)</span>
+<span id="cb114-6"><a href="covariates.html#cb114-6" tabindex="-1"></a></span>
+<span id="cb114-7"><a href="covariates.html#cb114-7" tabindex="-1"></a><span class="co"># Make a new column in locs_sf called water_depth_m</span></span>
+<span id="cb114-8"><a href="covariates.html#cb114-8" tabindex="-1"></a><span class="co"># They are ordered the same way so no need for a fancy join</span></span>
+<span id="cb114-9"><a href="covariates.html#cb114-9" tabindex="-1"></a>locs_sf<span class="sc">$</span>water_depth_m <span class="ot">&lt;-</span> tmp<span class="sc">$</span>Depth2WatAlgar</span></code></pre></div>
 <p>Finally, lets check the distribution of our data!</p>
-<div class="sourceCode" id="cb113"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb113-1"><a href="covariates.html#cb113-1" tabindex="-1"></a><span class="co"># Basic boxplot in base R</span></span>
-<span id="cb113-2"><a href="covariates.html#cb113-2" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>water_depth_m)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_22-1.png" width="672" /></p>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb115-1"><a href="covariates.html#cb115-1" tabindex="-1"></a><span class="co"># Basic boxplot in base R</span></span>
+<span id="cb115-2"><a href="covariates.html#cb115-2" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>water_depth_m)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_22-1.png" alt="" width="672" /></p>
 <p>Most locations are on the water table (lowland sites), others are above it (upload sites), and they have different vegetation characteristics in the field.</p>
 </div>
 <div id="elevatr-package" class="section level3 hasAnchor" number="7.2.4">
 <h3><span class="header-section-number">7.2.4</span> elevatr package<a href="covariates.html#elevatr-package" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <p>Camera studies often occur over a range of elevations - and we can quickly extract these elevations using the <code>elevatr</code> package and an <code>sf</code> dataframe.</p>
-<div class="sourceCode" id="cb114"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb114-1"><a href="covariates.html#cb114-1" tabindex="-1"></a><span class="fu">library</span>(elevatr)</span>
-<span id="cb114-2"><a href="covariates.html#cb114-2" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">get_elev_point</span>(locs_sf, </span>
-<span id="cb114-3"><a href="covariates.html#cb114-3" tabindex="-1"></a>                          <span class="at">src=</span><span class="st">&quot;aws&quot;</span>, <span class="co">#Amazon Web Service Terrain Tiles - available globally</span></span>
-<span id="cb114-4"><a href="covariates.html#cb114-4" tabindex="-1"></a>                          <span class="at">z =</span> <span class="dv">12</span>)  <span class="co"># z specifies the zoom level, the lower the value the faster the code runs, but the coarser the elevation values are</span></span></code></pre></div>
-<p>The <code>src</code> option specifies the sources of the DEM data. We use <code>aws</code> Amazon Web Service Terrain Tiles - which are available globally.</p>
+<p>We can extract elevation from Amazon Web Service Terrain Tiles… available globally!</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb116-1"><a href="covariates.html#cb116-1" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">get_elev_point</span>(locs_sf, </span>
+<span id="cb116-2"><a href="covariates.html#cb116-2" tabindex="-1"></a>                          <span class="at">src=</span><span class="st">&quot;aws&quot;</span>, <span class="co">#Amazon Web Service Terrain Tiles - available globally</span></span>
+<span id="cb116-3"><a href="covariates.html#cb116-3" tabindex="-1"></a>                          <span class="at">z =</span> <span class="dv">12</span>)  <span class="co"># z specifies the zoom level -&gt; the lower the value the faster the code runs, but the coarser the elevation values are</span></span></code></pre></div>
+<pre><code>##  Accessing raster elevation [-------------------------]   0%                                                             Accessing raster elevation [-------------------------]   0% Accessing raster elevation [&gt;------------------------]   3%                                                             Accessing raster elevation [&gt;------------------------]   3% Accessing raster elevation [=&gt;-----------------------]   6%                                                             Accessing raster elevation [=&gt;-----------------------]   6% Accessing raster elevation [=&gt;-----------------------]   9%                                                             Accessing raster elevation [=&gt;-----------------------]   9% Accessing raster elevation [==&gt;----------------------]  12%                                                             Accessing raster elevation [==&gt;----------------------]  12% Accessing raster elevation [===&gt;---------------------]  16%                                                             Accessing raster elevation [===&gt;---------------------]  16% Accessing raster elevation [====&gt;--------------------]  19%                                                             Accessing raster elevation [====&gt;--------------------]  19% Accessing raster elevation [====&gt;--------------------]  22%                                                             Accessing raster elevation [====&gt;--------------------]  22% Accessing raster elevation [=====&gt;-------------------]  25%                                                             Accessing raster elevation [=====&gt;-------------------]  25% Accessing raster elevation [======&gt;------------------]  28%                                                             Accessing raster elevation [======&gt;------------------]  28% Accessing raster elevation [=======&gt;-----------------]  31%                                                             Accessing raster elevation [=======&gt;-----------------]  31% Accessing raster elevation [========&gt;----------------]  34%                                                             Accessing raster elevation [========&gt;----------------]  34% Accessing raster elevation [========&gt;----------------]  38%                                                             Accessing raster elevation [========&gt;----------------]  38% Accessing raster elevation [=========&gt;---------------]  41%                                                             Accessing raster elevation [=========&gt;---------------]  41% Accessing raster elevation [==========&gt;--------------]  44%                                                             Accessing raster elevation [==========&gt;--------------]  44% Accessing raster elevation [===========&gt;-------------]  47%                                                             Accessing raster elevation [===========&gt;-------------]  47% Accessing raster elevation [===========&gt;-------------]  50%                                                             Accessing raster elevation [===========&gt;-------------]  50% Accessing raster elevation [============&gt;------------]  53%                                                             Accessing raster elevation [============&gt;------------]  53% Accessing raster elevation [=============&gt;-----------]  56%                                                             Accessing raster elevation [=============&gt;-----------]  56% Accessing raster elevation [==============&gt;----------]  59%                                                             Accessing raster elevation [==============&gt;----------]  59% Accessing raster elevation [===============&gt;---------]  62%                                                             Accessing raster elevation [===============&gt;---------]  62% Accessing raster elevation [===============&gt;---------]  66%                                                             Accessing raster elevation [===============&gt;---------]  66% Accessing raster elevation [================&gt;--------]  69%                                                             Accessing raster elevation [================&gt;--------]  69% Accessing raster elevation [=================&gt;-------]  72%                                                             Accessing raster elevation [=================&gt;-------]  72% Accessing raster elevation [==================&gt;------]  75%                                                             Accessing raster elevation [==================&gt;------]  75% Accessing raster elevation [===================&gt;-----]  78%                                                             Accessing raster elevation [===================&gt;-----]  78% Accessing raster elevation [===================&gt;-----]  81%                                                             Accessing raster elevation [===================&gt;-----]  81% Accessing raster elevation [====================&gt;----]  84%                                                             Accessing raster elevation [====================&gt;----]  84% Accessing raster elevation [=====================&gt;---]  88%                                                             Accessing raster elevation [=====================&gt;---]  88% Accessing raster elevation [======================&gt;--]  91%                                                             Accessing raster elevation [======================&gt;--]  91% Accessing raster elevation [======================&gt;--]  94%                                                             Accessing raster elevation [======================&gt;--]  94% Accessing raster elevation [=======================&gt;-]  97%                                                             Accessing raster elevation [=======================&gt;-]  97% Accessing raster elevation [=========================] 100%
+## Mosaicing &amp; Projecting
+## Note: Elevation units are in meters</code></pre>
+<p>The <code>src</code> option specifies the sources of the DEM data. We use <code>aws</code> Amazon Web Service Terrain Tiles.</p>
 <p>The <code>z</code> option specifies the resolution of the underlying DEM, the high the value, the more detailed it is. However, it will take longer to run so do not go crazy.</p>
-<p>Let’s plot the output:</p>
-<div class="sourceCode" id="cb115"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb115-1"><a href="covariates.html#cb115-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>elevation)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_24-1.png" width="672" /></p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb118-1"><a href="covariates.html#cb118-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>elevation)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_24-1.png" alt="" width="672" /></p>
 <p>An elevation of ~ 500m was expected. Great!</p>
 <p>If you want to download a full elevation raster for your area of interests, see the <a href="https://cran.r-project.org/web/packages/elevatr/vignettes/introduction_to_elevatr.html"><code>introduction to elevatr</code></a></p>
 </div>
@@ -2400,74 +2389,66 @@ ALG073
 <p>Open Street Map (OSM) is an incredible resource for generating covariates for camera trap studies. For example, we might be interested in the distance to the nearest rivers, roads, or trails. All of these anthropogenic features are available in OSM!</p>
 <p><strong>CAREFUL</strong> OSM data is user contributed and often incomplete and patchy. Always plot your data and never assume it is complete without checking it first. For an example fo this see <code>water bodies</code> below.</p>
 <p>First lets load the <code>osmdata</code> package.</p>
-<div class="sourceCode" id="cb116"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb116-1"><a href="covariates.html#cb116-1" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span></code></pre></div>
-<p>The types of features we can extract using the <code>osmdata</code> package are listed here: <a href="https://wiki.openstreetmap.org/wiki/Map_features">https://wiki.openstreetmap.org/wiki/Map_features</a>.</p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb119-1"><a href="covariates.html#cb119-1" tabindex="-1"></a><span class="fu">library</span>(osmdata)</span></code></pre></div>
+<p>The types of features we can extract using the <code>osmdata</code> package are listed here: <a href="https://wiki.openstreetmap.org/wiki/Map_features" class="uri">https://wiki.openstreetmap.org/wiki/Map_features</a>.</p>
 <div id="highways" class="section level4 hasAnchor" number="7.2.5.1">
 <h4><span class="header-section-number">7.2.5.1</span> Highways<a href="covariates.html#highways" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>Camera trap projects are often interested in human disturbance, of which, highways are an important part.</p>
 <p>Let’s start by defining our area of interest. All <code>osmdata</code> queries begin with a bounding box defining the area of the query:</p>
-<div class="sourceCode" id="cb117"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb117-1"><a href="covariates.html#cb117-1" tabindex="-1"></a><span class="co"># First buffer our points by 10km to create an area of interest (aoi)</span></span>
-<span id="cb117-2"><a href="covariates.html#cb117-2" tabindex="-1"></a>aoi <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(locs_sf, <span class="dv">10000</span>)) <span class="co"># Units are in meters </span></span></code></pre></div>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb120-1"><a href="covariates.html#cb120-1" tabindex="-1"></a><span class="co"># First buffer our points by 10km to create an area of interest (aoi)</span></span>
+<span id="cb120-2"><a href="covariates.html#cb120-2" tabindex="-1"></a>aoi <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(locs_sf, <span class="dv">10000</span>)) <span class="co"># Units are in meters </span></span></code></pre></div>
 <p>We then use this bounding box to return all of the features which cross into it:</p>
-<div class="sourceCode" id="cb118"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb118-1"><a href="covariates.html#cb118-1" tabindex="-1"></a>highway <span class="ot">&lt;-</span> <span class="fu">opq</span>(aoi) <span class="sc">%&gt;%</span> <span class="co">#using the bounding box</span></span>
-<span id="cb118-2"><a href="covariates.html#cb118-2" tabindex="-1"></a>           <span class="fu">add_osm_feature</span>(<span class="at">key=</span><span class="st">&quot;highway&quot;</span>) <span class="sc">%&gt;%</span> <span class="co">#extract all highway features</span></span>
-<span id="cb118-3"><a href="covariates.html#cb118-3" tabindex="-1"></a>           <span class="fu">osmdata_sf</span>()  <span class="co"># convert them into simple features format</span></span></code></pre></div>
-<pre><code>## 
-Waiting 2s to retry ■■■■■■■■■■■■■ 
-
-Waiting 2s to retry
-## ■■■■■■■■■■■■■■■■■■■■■■■■ 
-
-Waiting 2s to retry ■■■■■■■■■■■■■■■■■■■■■■■■■■
-## 
-
-Waiting 2s to retry ■■■■■■■■■■■■■■■■■■■■■■■■■■■■■</code></pre>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb121-1"><a href="covariates.html#cb121-1" tabindex="-1"></a>highway <span class="ot">&lt;-</span> <span class="fu">opq</span>(aoi) <span class="sc">%&gt;%</span> <span class="co">#using the bounding box</span></span>
+<span id="cb121-2"><a href="covariates.html#cb121-2" tabindex="-1"></a>           <span class="fu">add_osm_feature</span>(<span class="at">key=</span><span class="st">&quot;highway&quot;</span>) <span class="sc">%&gt;%</span> <span class="co">#extract all highway features</span></span>
+<span id="cb121-3"><a href="covariates.html#cb121-3" tabindex="-1"></a>           <span class="fu">osmdata_sf</span>()  <span class="co"># convert them into simple features format</span></span></code></pre></div>
+<pre><code>## Waiting 14.9993159770966 seconds</code></pre>
 <p>The data you extract is its own “class” of data made up from multiple data types:</p>
-<div class="sourceCode" id="cb120"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb120-1"><a href="covariates.html#cb120-1" tabindex="-1"></a><span class="fu">str</span>(highway)</span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb123-1"><a href="covariates.html#cb123-1" tabindex="-1"></a><span class="fu">str</span>(highway)</span></code></pre></div>
 <p>Which looks very intimidating! However, the key thing is that it is made up of multiple data slices, each of which represents an <code>sf</code> dataset. Let’s take a look at three of these</p>
 <ul>
 <li>$osm_points</li>
 <li>$osm_lines</li>
 <li>$osm_polygons</li>
 </ul>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb121-1"><a href="covariates.html#cb121-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb121-2"><a href="covariates.html#cb121-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
-<span id="cb121-3"><a href="covariates.html#cb121-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">main=</span><span class="st">&quot;osm_lines&quot;</span>)</span>
-<span id="cb121-4"><a href="covariates.html#cb121-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_29-1.png" width="672" /></p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb124-1"><a href="covariates.html#cb124-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
+<span id="cb124-2"><a href="covariates.html#cb124-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
+<span id="cb124-3"><a href="covariates.html#cb124-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">main=</span><span class="st">&quot;osm_lines&quot;</span>)</span>
+<span id="cb124-4"><a href="covariates.html#cb124-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_29-1.png" alt="" width="672" /></p>
 <p>The points or the lines datasets look must useful to us, there is nothing in the polygon layer.</p>
 <p>Let’s use the lines element and add out camera stations:</p>
-<div class="sourceCode" id="cb122"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb122-1"><a href="covariates.html#cb122-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
-<span id="cb122-2"><a href="covariates.html#cb122-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_as_sfc</span>(aoi))     <span class="co"># st_as_sfc created a polygon from a `bbox` object</span></span>
-<span id="cb122-3"><a href="covariates.html#cb122-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">add=</span>T)</span>
-<span id="cb122-4"><a href="covariates.html#cb122-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_sf), <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_30-1.png" width="672" /></p>
+<div class="sourceCode" id="cb125"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb125-1"><a href="covariates.html#cb125-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb125-2"><a href="covariates.html#cb125-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_as_sfc</span>(aoi))     <span class="co"># st_as_sfc created a polygon from a `bbox` object</span></span>
+<span id="cb125-3"><a href="covariates.html#cb125-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(highway<span class="sc">$</span>osm_lines), <span class="at">add=</span>T)</span>
+<span id="cb125-4"><a href="covariates.html#cb125-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(locs_sf), <span class="at">col=</span><span class="st">&quot;red&quot;</span>, <span class="at">add=</span>T)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_30-1.png" alt="" width="672" /></p>
 <p>We can now calculate the distances from our cameras to these objects using the following codes:</p>
 <p><code>st_nearest_feature</code> gives us the index number of the feature which is closest to each station.</p>
 <p>We can the use this to request the distance from that nearest feature to each camera station using <code>st_distance</code>. Which, put together, looks like:</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb123-1"><a href="covariates.html#cb123-1" tabindex="-1"></a><span class="co"># Create an index of the nearest object in `highway$osm_lines` to locs_sf</span></span>
-<span id="cb123-2"><a href="covariates.html#cb123-2" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, highway<span class="sc">$</span>osm_lines)</span>
-<span id="cb123-3"><a href="covariates.html#cb123-3" tabindex="-1"></a></span>
-<span id="cb123-4"><a href="covariates.html#cb123-4" tabindex="-1"></a><span class="co"># Use that index to ask for the distance to that object</span></span>
-<span id="cb123-5"><a href="covariates.html#cb123-5" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(locs_sf, highway<span class="sc">$</span>osm_lines[index,], </span>
-<span id="cb123-6"><a href="covariates.html#cb123-6" tabindex="-1"></a>                                   <span class="at">by_element=</span>T) <span class="co"># Note `by_element=T` tells st_distance to evaluate things line by line. </span></span></code></pre></div>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb126-1"><a href="covariates.html#cb126-1" tabindex="-1"></a><span class="co"># Create an index of the nearest object in `highway$osm_lines` to locs_sf</span></span>
+<span id="cb126-2"><a href="covariates.html#cb126-2" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, highway<span class="sc">$</span>osm_lines)</span>
+<span id="cb126-3"><a href="covariates.html#cb126-3" tabindex="-1"></a></span>
+<span id="cb126-4"><a href="covariates.html#cb126-4" tabindex="-1"></a><span class="co"># Use that index to ask for the distance to that object</span></span>
+<span id="cb126-5"><a href="covariates.html#cb126-5" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(locs_sf, highway<span class="sc">$</span>osm_lines[index,], </span>
+<span id="cb126-6"><a href="covariates.html#cb126-6" tabindex="-1"></a>                                   <span class="at">by_element=</span>T) <span class="co"># Note `by_element=T` tells st_distance to evaluate things line by line. </span></span></code></pre></div>
 </div>
 <div id="water-bodies" class="section level4 hasAnchor" number="7.2.5.2">
 <h4><span class="header-section-number">7.2.5.2</span> water bodies<a href="covariates.html#water-bodies" class="anchor-section" aria-label="Anchor link to header"></a></h4>
 <p>We also might want to calculate the distances to the nearest water body, and important resource for wildlife. We can do that using the following:</p>
-<div class="sourceCode" id="cb124"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb124-1"><a href="covariates.html#cb124-1" tabindex="-1"></a>water <span class="ot">&lt;-</span> <span class="fu">opq</span>(aoi) <span class="sc">%&gt;%</span></span>
-<span id="cb124-2"><a href="covariates.html#cb124-2" tabindex="-1"></a>           <span class="fu">add_osm_feature</span>(<span class="at">key=</span><span class="st">&quot;water&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb124-3"><a href="covariates.html#cb124-3" tabindex="-1"></a>           <span class="fu">osmdata_sf</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb127-1"><a href="covariates.html#cb127-1" tabindex="-1"></a>water <span class="ot">&lt;-</span> <span class="fu">opq</span>(aoi) <span class="sc">%&gt;%</span></span>
+<span id="cb127-2"><a href="covariates.html#cb127-2" tabindex="-1"></a>           <span class="fu">add_osm_feature</span>(<span class="at">key =</span> <span class="st">&#39;natural&#39;</span>, <span class="at">value =</span> <span class="st">&#39;water&#39;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb127-3"><a href="covariates.html#cb127-3" tabindex="-1"></a>           <span class="fu">osmdata_sf</span>()</span></code></pre></div>
+<pre><code>## Waiting 14.9979181289673 seconds</code></pre>
 <p>Lets check our data:</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb125-1"><a href="covariates.html#cb125-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">3</span>))</span>
-<span id="cb125-2"><a href="covariates.html#cb125-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
-<span id="cb125-3"><a href="covariates.html#cb125-3" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_lines), <span class="at">main=</span><span class="st">&quot;osm_lines&quot;</span>)</span>
-<span id="cb125-4"><a href="covariates.html#cb125-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_33-1.png" width="672" /></p>
-<p>In this instance, the lines and the polygons are incomplete, out best bet is the points file!</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb126-1"><a href="covariates.html#cb126-1" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, water<span class="sc">$</span>osm_points)</span>
-<span id="cb126-2"><a href="covariates.html#cb126-2" tabindex="-1"></a></span>
-<span id="cb126-3"><a href="covariates.html#cb126-3" tabindex="-1"></a>locs_sf<span class="sc">$</span>water_dist_m <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(locs_sf, water<span class="sc">$</span>osm_points[index,], <span class="at">by_element=</span>T) <span class="co"># Note `by_element=T` tells st_distance to evaluate things line by line. </span></span></code></pre></div>
+<div class="sourceCode" id="cb129"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb129-1"><a href="covariates.html#cb129-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb129-2"><a href="covariates.html#cb129-2" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_points), <span class="at">main=</span><span class="st">&quot;osm_points&quot;</span>)</span>
+<span id="cb129-3"><a href="covariates.html#cb129-3" tabindex="-1"></a><span class="co">#plot(st_geometry(water$osm_lines), main=&quot;osm_lines&quot;) # lines is empty and wont plot</span></span>
+<span id="cb129-4"><a href="covariates.html#cb129-4" tabindex="-1"></a><span class="fu">plot</span>(<span class="fu">st_geometry</span>(water<span class="sc">$</span>osm_polygons), <span class="at">main=</span><span class="st">&quot;osm_polygons&quot;</span>)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_33-1.png" alt="" width="672" /></p>
+<p>In this instance, the lines is empty, out best bet are the points or the polygons options!</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb130-1"><a href="covariates.html#cb130-1" tabindex="-1"></a>index <span class="ot">&lt;-</span> <span class="fu">st_nearest_feature</span>(locs_sf, water<span class="sc">$</span>osm_polygons)</span>
+<span id="cb130-2"><a href="covariates.html#cb130-2" tabindex="-1"></a></span>
+<span id="cb130-3"><a href="covariates.html#cb130-3" tabindex="-1"></a>locs_sf<span class="sc">$</span>water_dist_m <span class="ot">&lt;-</span> <span class="fu">st_distance</span>(locs_sf, water<span class="sc">$</span>osm_polygons[index,], <span class="at">by_element=</span>T) <span class="co"># Note `by_element=T` tells st_distance to evaluate things line by line. </span></span></code></pre></div>
 <p>For more examples of using the <code>osmdata</code> package see: <a href="https://github.com/ropensci/osmdata">the projects github page</a></p>
 </div>
 </div>
@@ -2475,1037 +2456,115 @@ Waiting 2s to retry ■■■■■■■■■■■■■■■■■■■■
 <h3><span class="header-section-number">7.2.6</span> Vegetation productivity<a href="covariates.html#vegetation-productivity" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="modistools" class="section level4 hasAnchor" number="7.2.6.1">
 <h4><span class="header-section-number">7.2.6.1</span> MODISTools<a href="covariates.html#modistools" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<p><code>MODIStools</code> is an R interface to the <a href="https://modis.ornl.gov/data/modis_webservice.html">MODIS Land Products Subsets</a> web services. It allows for easy access to ‘MODIS’ time series directly to your computer! These are the data layers commonly used to extract normalized difference vegetation index (NDVI) and Enhanced Vegetation Index (EVI) information. When using <code>MODIStools</code> you should reference:</p>
-<p><a href="https://github.com/ropensci/MODISTools">Hufkens (2022). The MODISTools package: an interface to the MODIS Land Products Subsets Web Services</a></p>
-<p>Also click that link for more details on how to use it.</p>
-<p>Let’s load the package:</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb127-1"><a href="covariates.html#cb127-1" tabindex="-1"></a><span class="fu">library</span>(MODISTools)</span></code></pre></div>
-<p>For <code>MODIStools</code> to work, we need to provide a dataframe with specific column names:</p>
-<ul>
-<li><code>site_name</code> - the placename</li>
-<li>`lat’</li>
-<li>‘long’</li>
-</ul>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb128-1"><a href="covariates.html#cb128-1" tabindex="-1"></a>modis_locs <span class="ot">&lt;-</span> locs <span class="sc">%&gt;%</span> </span>
-<span id="cb128-2"><a href="covariates.html#cb128-2" tabindex="-1"></a>  <span class="fu">select</span>(<span class="st">&quot;placename&quot;</span>, <span class="st">&quot;longitude&quot;</span>, <span class="st">&quot;latitude&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb128-3"><a href="covariates.html#cb128-3" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">site_name=</span>placename, <span class="at">lat=</span>latitude, <span class="at">lon=</span>longitude)</span></code></pre></div>
-<p>We can then look at the available bands for different products.</p>
-<p>Two commonly used ones are <a href="https://lpdaac.usgs.gov/products/mod13q1v006/">MOD13Q1</a> for the derivation of NDVI/EVI, and <a href="https://lpdaac.usgs.gov/products/mod15a2hv006/">MOD15A2H</a> for the derivation of leaf area index (LAI).</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb129-1"><a href="covariates.html#cb129-1" tabindex="-1"></a><span class="co"># list available bands for a product</span></span>
-<span id="cb129-2"><a href="covariates.html#cb129-2" tabindex="-1"></a>bands <span class="ot">&lt;-</span> <span class="fu">mt_bands</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>) <span class="co">#MOD15A2H</span></span>
-<span id="cb129-3"><a href="covariates.html#cb129-3" tabindex="-1"></a><span class="fu">head</span>(bands)</span></code></pre></div>
-<pre><code>##                                     band                description
-## 1          250m_16_days_blue_reflectance Surface Reflectance Band 3
-## 2 250m_16_days_composite_day_of_the_year       Day of year VI pixel
-## 3                       250m_16_days_EVI         16 day EVI average
-## 4           250m_16_days_MIR_reflectance Surface Reflectance Band 7
-## 5                      250m_16_days_NDVI        16 day NDVI average
-## 6           250m_16_days_NIR_reflectance Surface Reflectance Band 2
-##                    units    valid_range fill_value scale_factor add_offset
-## 1            reflectance     0 to 10000      -1000       0.0001          0
-## 2 Julian day of the year       1 to 366         -1         &lt;NA&gt;       &lt;NA&gt;
-## 3   EVI ratio - No units -2000 to 10000      -3000       0.0001          0
-## 4            reflectance     0 to 10000      -1000       0.0001          0
-## 5  NDVI ratio - No units -2000 to 10000      -3000       0.0001          0
-## 6            reflectance     0 to 10000      -1000       0.0001          0</code></pre>
-<p>When we run <code>MODIStools</code> the underlying algorithm chooses the best available pixel value from all the acquisitions from the 16 day period. The criteria used is lowest cloud cover, lowest satellite view angle, and the highest NDVI/EVI value.</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb131-1"><a href="covariates.html#cb131-1" tabindex="-1"></a><span class="co"># list available dates for a product at a location</span></span>
-<span id="cb131-2"><a href="covariates.html#cb131-2" tabindex="-1"></a>dates <span class="ot">&lt;-</span> <span class="fu">mt_dates</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>, <span class="at">lat =</span> modis_locs<span class="sc">$</span>lat[<span class="dv">1</span>], <span class="at">lon =</span> modis_locs<span class="sc">$</span>lon[<span class="dv">1</span>]) <span class="co">#MOD15A2H</span></span>
-<span id="cb131-3"><a href="covariates.html#cb131-3" tabindex="-1"></a></span>
-<span id="cb131-4"><a href="covariates.html#cb131-4" tabindex="-1"></a><span class="co"># Get the first and last date!</span></span>
-<span id="cb131-5"><a href="covariates.html#cb131-5" tabindex="-1"></a><span class="fu">first</span>(dates<span class="sc">$</span>calendar_date); <span class="fu">last</span>(dates<span class="sc">$</span>calendar_date)</span></code></pre></div>
-<pre><code>## [1] &quot;2000-02-18&quot;</code></pre>
-<pre><code>## [1] &quot;2023-08-29&quot;</code></pre>
-<p>In the interest of processing time, lets not pull the NDVI scores for the full date range. Instead, we will focus on mid summer in 2019.</p>
-<p>Be patient, this might take a while!</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb134-1"><a href="covariates.html#cb134-1" tabindex="-1"></a>site_ndvi <span class="ot">&lt;-</span> <span class="fu">mt_batch_subset</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>,</span>
-<span id="cb134-2"><a href="covariates.html#cb134-2" tabindex="-1"></a>                              <span class="at">df=</span>modis_locs,</span>
-<span id="cb134-3"><a href="covariates.html#cb134-3" tabindex="-1"></a>                              <span class="at">band =</span> <span class="st">&quot;250m_16_days_NDVI&quot;</span>,</span>
-<span id="cb134-4"><a href="covariates.html#cb134-4" tabindex="-1"></a>                              <span class="at">start =</span> <span class="st">&quot;2019-07-01&quot;</span>,</span>
-<span id="cb134-5"><a href="covariates.html#cb134-5" tabindex="-1"></a>                              <span class="at">end =</span> <span class="st">&quot;2019-08-31&quot;</span>,</span>
-<span id="cb134-6"><a href="covariates.html#cb134-6" tabindex="-1"></a>                              <span class="at">km_lr =</span> <span class="dv">0</span>,         <span class="co"># Use these options if you want to buffer the value (km left)</span></span>
-<span id="cb134-7"><a href="covariates.html#cb134-7" tabindex="-1"></a>                              <span class="at">km_ab =</span> <span class="dv">0</span>,         <span class="co"># Use these options if you want to buffer the value (km above)</span></span>
-<span id="cb134-8"><a href="covariates.html#cb134-8" tabindex="-1"></a>                              <span class="at">internal =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
-<p>The raw output is somewhat intimidating:</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb135-1"><a href="covariates.html#cb135-1" tabindex="-1"></a>site_ndvi[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ] <span class="sc">%&gt;%</span> </span>
-<span id="cb135-2"><a href="covariates.html#cb135-2" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb135-3"><a href="covariates.html#cb135-3" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;300px&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb135-4"><a href="covariates.html#cb135-4" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
-<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
-<table>
-<thead>
-<tr>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-xllcorner
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-yllcorner
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-cellsize
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-nrows
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-ncols
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-band
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-units
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-scale
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-latitude
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-longitude
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-site
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-product
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-start
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-end
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-complete
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-modis_date
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-calendar_date
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-tile
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-proc_date
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-pixel
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-value
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-1.1
-</td>
-<td style="text-align:left;">
--6933243.15
-</td>
-<td style="text-align:left;">
-6263756.27
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.33280
-</td>
-<td style="text-align:right;">
--112.4735
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019193
-</td>
-<td style="text-align:left;">
-2019-07-12
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020304011404
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7840
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.1
-</td>
-<td style="text-align:left;">
--6933243.15
-</td>
-<td style="text-align:left;">
-6263756.27
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.33280
-</td>
-<td style="text-align:right;">
--112.4735
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019209
-</td>
-<td style="text-align:left;">
-2019-07-28
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020304165417
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7829
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3.1
-</td>
-<td style="text-align:left;">
--6933243.15
-</td>
-<td style="text-align:left;">
-6263756.27
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.33280
-</td>
-<td style="text-align:right;">
--112.4735
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019225
-</td>
-<td style="text-align:left;">
-2019-08-13
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020306133015
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7719
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-4.1
-</td>
-<td style="text-align:left;">
--6933243.15
-</td>
-<td style="text-align:left;">
-6263756.27
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.33280
-</td>
-<td style="text-align:right;">
--112.4735
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019241
-</td>
-<td style="text-align:left;">
-2019-08-29
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020308163138
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7373
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-1.11
-</td>
-<td style="text-align:left;">
--6926756.76
-</td>
-<td style="text-align:left;">
-6270705.96
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.39474
-</td>
-<td style="text-align:right;">
--112.5483
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019193
-</td>
-<td style="text-align:left;">
-2019-07-12
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020304011404
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7911
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.11
-</td>
-<td style="text-align:left;">
--6926756.76
-</td>
-<td style="text-align:left;">
-6270705.96
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.39474
-</td>
-<td style="text-align:right;">
--112.5483
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019209
-</td>
-<td style="text-align:left;">
-2019-07-28
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020304165417
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-8138
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3.11
-</td>
-<td style="text-align:left;">
--6926756.76
-</td>
-<td style="text-align:left;">
-6270705.96
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.39474
-</td>
-<td style="text-align:right;">
--112.5483
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019225
-</td>
-<td style="text-align:left;">
-2019-08-13
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020306133015
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7962
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-4.11
-</td>
-<td style="text-align:left;">
--6926756.76
-</td>
-<td style="text-align:left;">
-6270705.96
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.39474
-</td>
-<td style="text-align:right;">
--112.5483
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019241
-</td>
-<td style="text-align:left;">
-2019-08-29
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020308163138
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-6635
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-1.12
-</td>
-<td style="text-align:left;">
--6938107.98
-</td>
-<td style="text-align:left;">
-6261208.01
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.30899
-</td>
-<td style="text-align:right;">
--112.4820
-</td>
-<td style="text-align:left;">
-ALG031
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019193
-</td>
-<td style="text-align:left;">
-2019-07-12
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020304011404
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7467
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.12
-</td>
-<td style="text-align:left;">
--6938107.98
-</td>
-<td style="text-align:left;">
-6261208.01
-</td>
-<td style="text-align:left;">
-231.656358264
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-NDVI ratio - No units
-</td>
-<td style="text-align:left;">
-0.0001
-</td>
-<td style="text-align:right;">
-56.30899
-</td>
-<td style="text-align:right;">
--112.4820
-</td>
-<td style="text-align:left;">
-ALG031
-</td>
-<td style="text-align:left;">
-MOD13Q1
-</td>
-<td style="text-align:left;">
-2019-07-01
-</td>
-<td style="text-align:left;">
-2019-08-31
-</td>
-<td style="text-align:left;">
-TRUE
-</td>
-<td style="text-align:left;">
-A2019209
-</td>
-<td style="text-align:left;">
-2019-07-28
-</td>
-<td style="text-align:left;">
-h11v03
-</td>
-<td style="text-align:left;">
-2020304165417
-</td>
-<td style="text-align:right;">
-1
-</td>
-<td style="text-align:right;">
-7975
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>So lets simplify it to the key elements of information and rename them to match our camera data where appropriate:</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb136-1"><a href="covariates.html#cb136-1" tabindex="-1"></a>ndvi_simple <span class="ot">&lt;-</span> site_ndvi <span class="sc">%&gt;%</span> </span>
-<span id="cb136-2"><a href="covariates.html#cb136-2" tabindex="-1"></a>  <span class="fu">select</span>(   site, band, calendar_date, value) <span class="sc">%&gt;%</span> </span>
-<span id="cb136-3"><a href="covariates.html#cb136-3" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">placename=</span>site)</span>
-<span id="cb136-4"><a href="covariates.html#cb136-4" tabindex="-1"></a></span>
-<span id="cb136-5"><a href="covariates.html#cb136-5" tabindex="-1"></a>ndvi_simple[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>, ] <span class="sc">%&gt;%</span> </span>
-<span id="cb136-6"><a href="covariates.html#cb136-6" tabindex="-1"></a>  <span class="fu">kbl</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb136-7"><a href="covariates.html#cb136-7" tabindex="-1"></a>  <span class="fu">scroll_box</span>(<span class="at">height =</span> <span class="st">&quot;300px&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb136-8"><a href="covariates.html#cb136-8" tabindex="-1"></a>  <span class="fu">kable_paper</span>(<span class="st">&quot;striped&quot;</span>, <span class="at">full_width =</span> F)</span></code></pre></div>
-<div class="lightable-paper lightable-striped" style="border: 1px solid #ddd; padding: 0px; overflow-y: scroll; height:300px;  font-family: &quot;Arial Narrow&quot;, arial, helvetica, sans-serif; width: auto !important; margin-left: auto; margin-right: auto;">
-<table>
-<thead>
-<tr>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-placename
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-band
-</th>
-<th style="text-align:left;position: sticky; top:0; background-color: #FFFFFF;">
-calendar_date
-</th>
-<th style="text-align:right;position: sticky; top:0; background-color: #FFFFFF;">
-value
-</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td style="text-align:left;">
-1.1
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-07-12
-</td>
-<td style="text-align:right;">
-7840
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.1
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-07-28
-</td>
-<td style="text-align:right;">
-7829
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3.1
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-08-13
-</td>
-<td style="text-align:right;">
-7719
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-4.1
-</td>
-<td style="text-align:left;">
-ALG027
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-08-29
-</td>
-<td style="text-align:right;">
-7373
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-1.11
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-07-12
-</td>
-<td style="text-align:right;">
-7911
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.11
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-07-28
-</td>
-<td style="text-align:right;">
-8138
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-3.11
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-08-13
-</td>
-<td style="text-align:right;">
-7962
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-4.11
-</td>
-<td style="text-align:left;">
-ALG029
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-08-29
-</td>
-<td style="text-align:right;">
-6635
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-1.12
-</td>
-<td style="text-align:left;">
-ALG031
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-07-12
-</td>
-<td style="text-align:right;">
-7467
-</td>
-</tr>
-<tr>
-<td style="text-align:left;">
-2.12
-</td>
-<td style="text-align:left;">
-ALG031
-</td>
-<td style="text-align:left;">
-250m_16_days_NDVI
-</td>
-<td style="text-align:left;">
-2019-07-28
-</td>
-<td style="text-align:right;">
-7975
-</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>So we have multiple observations per site. Lets take an average and add it to our <code>locs_sf</code> dataframe.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb137-1"><a href="covariates.html#cb137-1" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> ndvi_simple <span class="sc">%&gt;%</span>             <span class="co">#Take the NDVI layer</span></span>
-<span id="cb137-2"><a href="covariates.html#cb137-2" tabindex="-1"></a>  <span class="fu">group_by</span>(placename) <span class="sc">%&gt;%</span>          <span class="co"># Group observations by the placename</span></span>
-<span id="cb137-3"><a href="covariates.html#cb137-3" tabindex="-1"></a>  <span class="fu">summarize</span>(<span class="at">mean_ndvi=</span><span class="fu">mean</span>(value)) <span class="co"># Take the mean of the values and call the new column `mean_ndvi`</span></span>
+<p><code>MODISTools</code> is an R package that downloads small areas of <a href="https://lpdaac.usgs.gov/data/get-started-data/collection-overview/missions/modis-overview/">MODIS</a> and <a href="https://lpdaac.usgs.gov/data/get-started-data/collection-overview/missions/s-npp-nasa-viirs-overview/">VIIRS</a> Land products from the <a href="https://daac.ornl.gov/modiswebservice/">ORNL DAAC MODIS/VIIRS Land Products Subsets web service</a>. These are the data layers commonly used to extract normalized difference vegetation index (NDVI) and enhanced vegetation index (EVI) information. You don’t need an account or password: you give it a location, a distance around that location and a date range, and it returns the pixel values. When using <code>MODISTools</code> you should reference:</p>
+<p><a href="https://doi.org/10.5281/zenodo.7551165">Hufkens, K. (2023). The MODISTools package: an interface to the MODIS Land Products Subsets Web Services. Zenodo.</a></p>
+<p>For a quick intro to the package see: <a href="https://cran.r-project.org/web/packages/MODISTools/vignettes/modistools-vignette.html" class="uri">https://cran.r-project.org/web/packages/MODISTools/vignettes/modistools-vignette.html</a></p>
+<p><strong>NOTE</strong> The Terra and Aqua satellites that carry MODIS are expected to begin shutting down in late 2026 or early 2027. MODIS data up to that point remain available. For newer surveys, use the VIIRS equivalent, <code>VNP13A1</code> (500 m), with the same code.</p>
+<p>Let’s load the package and see which bands the 250 m vegetation index product, <code>MOD13Q1</code>, contains:</p>
+<div class="sourceCode" id="cb131"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb131-1"><a href="covariates.html#cb131-1" tabindex="-1"></a><span class="fu">library</span>(MODISTools)</span>
+<span id="cb131-2"><a href="covariates.html#cb131-2" tabindex="-1"></a></span>
+<span id="cb131-3"><a href="covariates.html#cb131-3" tabindex="-1"></a><span class="co"># List the bands available in the MOD13Q1 product</span></span>
+<span id="cb131-4"><a href="covariates.html#cb131-4" tabindex="-1"></a><span class="fu">mt_bands</span>(<span class="at">product =</span> <span class="st">&quot;MOD13Q1&quot;</span>)</span></code></pre></div>
+<pre><code>##                                      band                        description                  units
+## 1           250m_16_days_blue_reflectance         Surface Reflectance Band 3            reflectance
+## 2  250m_16_days_composite_day_of_the_year               Day of year VI pixel Julian day of the year
+## 3                        250m_16_days_EVI                 16 day EVI average   EVI ratio - No units
+## 4            250m_16_days_MIR_reflectance         Surface Reflectance Band 7            reflectance
+## 5                       250m_16_days_NDVI                16 day NDVI average  NDVI ratio - No units
+## 6            250m_16_days_NIR_reflectance         Surface Reflectance Band 2            reflectance
+## 7          250m_16_days_pixel_reliability    Quality reliability of VI pixel                   rank
+## 8            250m_16_days_red_reflectance         Surface Reflectance Band 1            reflectance
+## 9     250m_16_days_relative_azimuth_angle Relative azimuth angle of VI pixel                degrees
+## 10          250m_16_days_sun_zenith_angle       Sun zenith angle of VI pixel                degrees
+## 11         250m_16_days_view_zenith_angle      View zenith angle of VI Pixel                degrees
+## 12                250m_16_days_VI_Quality              VI quality indicators              bit field
+##       valid_range fill_value scale_factor add_offset
+## 1      0 to 10000      -1000       0.0001          0
+## 2        1 to 366         -1         &lt;NA&gt;       &lt;NA&gt;
+## 3  -2000 to 10000      -3000       0.0001          0
+## 4      0 to 10000      -1000       0.0001          0
+## 5  -2000 to 10000      -3000       0.0001          0
+## 6      0 to 10000      -1000       0.0001          0
+## 7          0 to 3         -1         &lt;NA&gt;       &lt;NA&gt;
+## 8      0 to 10000      -1000       0.0001          0
+## 9   -3600 to 3600      -4000          0.1          0
+## 10  -9000 to 9000     -10000         0.01          0
+## 11  -9000 to 9000     -10000         0.01          0
+## 12     0 to 65534         -1         &lt;NA&gt;       &lt;NA&gt;</code></pre>
+<p><code>MODISTools</code> asks for the centre of the area you want, and how many kilometres to take on either side of it. We can work both out from the <code>aoi</code> object we created earlier:</p>
+<div class="sourceCode" id="cb133"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb133-1"><a href="covariates.html#cb133-1" tabindex="-1"></a><span class="co"># MODIS data sit on a sinusoidal grid, which is strongly skewed at high latitudes,</span></span>
+<span id="cb133-2"><a href="covariates.html#cb133-2" tabindex="-1"></a><span class="co"># so we measure the area covered by our cameras (plus 1 km) on that grid</span></span>
+<span id="cb133-3"><a href="covariates.html#cb133-3" tabindex="-1"></a>modis_crs <span class="ot">&lt;-</span> <span class="st">&quot;+proj=sinu +lon_0=0 +x_0=0 +y_0=0 +R=6371007.181 +units=m +no_defs&quot;</span></span>
+<span id="cb133-4"><a href="covariates.html#cb133-4" tabindex="-1"></a>cams_sinu <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(<span class="fu">st_buffer</span>(<span class="fu">st_transform</span>(locs_sf, modis_crs), <span class="dv">1000</span>))</span>
+<span id="cb133-5"><a href="covariates.html#cb133-5" tabindex="-1"></a></span>
+<span id="cb133-6"><a href="covariates.html#cb133-6" tabindex="-1"></a><span class="co"># The centre of that area, converted back to latitude and longitude</span></span>
+<span id="cb133-7"><a href="covariates.html#cb133-7" tabindex="-1"></a>aoi_centre <span class="ot">&lt;-</span> <span class="fu">st_sfc</span>(<span class="fu">st_point</span>(<span class="fu">c</span>(<span class="fu">mean</span>(cams_sinu[<span class="fu">c</span>(<span class="st">&quot;xmin&quot;</span>, <span class="st">&quot;xmax&quot;</span>)]),</span>
+<span id="cb133-8"><a href="covariates.html#cb133-8" tabindex="-1"></a>                                <span class="fu">mean</span>(cams_sinu[<span class="fu">c</span>(<span class="st">&quot;ymin&quot;</span>, <span class="st">&quot;ymax&quot;</span>)]))), <span class="at">crs =</span> modis_crs) <span class="sc">%&gt;%</span></span>
+<span id="cb133-9"><a href="covariates.html#cb133-9" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="dv">4326</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb133-10"><a href="covariates.html#cb133-10" tabindex="-1"></a>  <span class="fu">st_coordinates</span>()</span>
+<span id="cb133-11"><a href="covariates.html#cb133-11" tabindex="-1"></a></span>
+<span id="cb133-12"><a href="covariates.html#cb133-12" tabindex="-1"></a><span class="co"># The distance from the centre to the edges, in km. The service sizes requests</span></span>
+<span id="cb133-13"><a href="covariates.html#cb133-13" tabindex="-1"></a><span class="co"># using a nominal 250 m pixel (true size 231.7 m), so we scale up to compensate</span></span>
+<span id="cb133-14"><a href="covariates.html#cb133-14" tabindex="-1"></a>km_lr <span class="ot">&lt;-</span> <span class="fu">ceiling</span>((cams_sinu[<span class="st">&quot;xmax&quot;</span>] <span class="sc">-</span> cams_sinu[<span class="st">&quot;xmin&quot;</span>]) <span class="sc">/</span> <span class="dv">2000</span> <span class="sc">*</span> <span class="dv">250</span> <span class="sc">/</span> <span class="fl">231.656</span>)</span>
+<span id="cb133-15"><a href="covariates.html#cb133-15" tabindex="-1"></a>km_ab <span class="ot">&lt;-</span> <span class="fu">ceiling</span>((cams_sinu[<span class="st">&quot;ymax&quot;</span>] <span class="sc">-</span> cams_sinu[<span class="st">&quot;ymin&quot;</span>]) <span class="sc">/</span> <span class="dv">2000</span> <span class="sc">*</span> <span class="dv">250</span> <span class="sc">/</span> <span class="fl">231.656</span>)</span>
+<span id="cb133-16"><a href="covariates.html#cb133-16" tabindex="-1"></a><span class="cf">if</span> (km_lr <span class="sc">&gt;</span> <span class="dv">100</span> <span class="sc">|</span> km_ab <span class="sc">&gt;</span> <span class="dv">100</span>) <span class="fu">stop</span>(<span class="st">&quot;Cameras cover too large an area for one request&quot;</span>)</span>
+<span id="cb133-17"><a href="covariates.html#cb133-17" tabindex="-1"></a></span>
+<span id="cb133-18"><a href="covariates.html#cb133-18" tabindex="-1"></a><span class="co"># MODIS product and band of interest</span></span>
+<span id="cb133-19"><a href="covariates.html#cb133-19" tabindex="-1"></a>product <span class="ot">&lt;-</span> <span class="st">&quot;MOD13Q1&quot;</span>           <span class="co"># run mt_products() for a list of products available</span></span>
+<span id="cb133-20"><a href="covariates.html#cb133-20" tabindex="-1"></a>band <span class="ot">&lt;-</span> <span class="st">&quot;250m_16_days_NDVI&quot;</span>    <span class="co"># run mt_bands(&quot;MOD13Q1&quot;) for a list of bands available</span></span>
+<span id="cb133-21"><a href="covariates.html#cb133-21" tabindex="-1"></a></span>
+<span id="cb133-22"><a href="covariates.html#cb133-22" tabindex="-1"></a><span class="co"># Specify the time range - we will use a winter-summer transition</span></span>
+<span id="cb133-23"><a href="covariates.html#cb133-23" tabindex="-1"></a>time_range <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;2019-03-01&quot;</span>, <span class="st">&quot;2019-07-01&quot;</span>)</span></code></pre></div>
+<p>We then download the data. The download can take a few minutes, so we save a copy and only download it again if that copy is missing.</p>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb134-1"><a href="covariates.html#cb134-1" tabindex="-1"></a>ndvi_file <span class="ot">&lt;-</span> <span class="st">&quot;data/processed_data/AlgarRestorationProject_MOD13Q1_NDVI_2019.csv&quot;</span></span>
+<span id="cb134-2"><a href="covariates.html#cb134-2" tabindex="-1"></a></span>
+<span id="cb134-3"><a href="covariates.html#cb134-3" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">file.exists</span>(ndvi_file)) {</span>
+<span id="cb134-4"><a href="covariates.html#cb134-4" tabindex="-1"></a>  ndvi_df <span class="ot">&lt;-</span> <span class="fu">mt_subset</span>(<span class="at">product =</span> product,</span>
+<span id="cb134-5"><a href="covariates.html#cb134-5" tabindex="-1"></a>                       <span class="at">band =</span> band,</span>
+<span id="cb134-6"><a href="covariates.html#cb134-6" tabindex="-1"></a>                       <span class="at">lat =</span> aoi_centre[<span class="dv">1</span>, <span class="st">&quot;Y&quot;</span>],</span>
+<span id="cb134-7"><a href="covariates.html#cb134-7" tabindex="-1"></a>                       <span class="at">lon =</span> aoi_centre[<span class="dv">1</span>, <span class="st">&quot;X&quot;</span>],</span>
+<span id="cb134-8"><a href="covariates.html#cb134-8" tabindex="-1"></a>                       <span class="at">start =</span> time_range[<span class="dv">1</span>],</span>
+<span id="cb134-9"><a href="covariates.html#cb134-9" tabindex="-1"></a>                       <span class="at">end =</span> time_range[<span class="dv">2</span>],</span>
+<span id="cb134-10"><a href="covariates.html#cb134-10" tabindex="-1"></a>                       <span class="at">km_lr =</span> km_lr,</span>
+<span id="cb134-11"><a href="covariates.html#cb134-11" tabindex="-1"></a>                       <span class="at">km_ab =</span> km_ab,</span>
+<span id="cb134-12"><a href="covariates.html#cb134-12" tabindex="-1"></a>                       <span class="at">site_name =</span> <span class="st">&quot;algar&quot;</span>,</span>
+<span id="cb134-13"><a href="covariates.html#cb134-13" tabindex="-1"></a>                       <span class="at">internal =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb134-14"><a href="covariates.html#cb134-14" tabindex="-1"></a>                       <span class="at">progress =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb134-15"><a href="covariates.html#cb134-15" tabindex="-1"></a>  <span class="fu">write.csv</span>(ndvi_df, ndvi_file, <span class="at">row.names =</span> F)</span>
+<span id="cb134-16"><a href="covariates.html#cb134-16" tabindex="-1"></a>}</span>
+<span id="cb134-17"><a href="covariates.html#cb134-17" tabindex="-1"></a></span>
+<span id="cb134-18"><a href="covariates.html#cb134-18" tabindex="-1"></a>ndvi_df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(ndvi_file)</span>
+<span id="cb134-19"><a href="covariates.html#cb134-19" tabindex="-1"></a></span>
+<span id="cb134-20"><a href="covariates.html#cb134-20" tabindex="-1"></a><span class="co"># Convert to a raster: one layer per 16-day image, with NDVI already scaled to -1 to 1</span></span>
+<span id="cb134-21"><a href="covariates.html#cb134-21" tabindex="-1"></a>r <span class="ot">&lt;-</span> <span class="fu">mt_to_terra</span>(ndvi_df)</span>
+<span id="cb134-22"><a href="covariates.html#cb134-22" tabindex="-1"></a></span>
+<span id="cb134-23"><a href="covariates.html#cb134-23" tabindex="-1"></a><span class="co"># Remove fill values (valid NDVI is -0.2 to 1)</span></span>
+<span id="cb134-24"><a href="covariates.html#cb134-24" tabindex="-1"></a>r[r <span class="sc">&lt;</span> <span class="sc">-</span><span class="fl">0.2</span>] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb134-25"><a href="covariates.html#cb134-25" tabindex="-1"></a></span>
+<span id="cb134-26"><a href="covariates.html#cb134-26" tabindex="-1"></a><span class="co"># Match the projection of our other layers, and trim to our area of interest</span></span>
+<span id="cb134-27"><a href="covariates.html#cb134-27" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">project</span>(r, <span class="st">&quot;EPSG:26912&quot;</span>)</span>
+<span id="cb134-28"><a href="covariates.html#cb134-28" tabindex="-1"></a>r <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">crop</span>(r, <span class="fu">buffer</span>(locs_terra, <span class="dv">1000</span>))</span></code></pre></div>
+<p>Easy!</p>
+<p>Let’s see what it looks like:</p>
+<div class="sourceCode" id="cb135"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb135-1"><a href="covariates.html#cb135-1" tabindex="-1"></a><span class="co"># Plot the resulting NDVI data</span></span>
+<span id="cb135-2"><a href="covariates.html#cb135-2" tabindex="-1"></a>terra<span class="sc">::</span><span class="fu">plot</span>(r, <span class="at">col =</span> <span class="fu">rev</span>(<span class="fu">terrain.colors</span>(<span class="dv">20</span>)),</span>
+<span id="cb135-3"><a href="covariates.html#cb135-3" tabindex="-1"></a>            <span class="at">range=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">1</span>)) <span class="co"># Specify the range of values you want to plot</span></span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_47d-1.png" alt="" width="672" /></p>
+<div class="sourceCode" id="cb136"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb136-1"><a href="covariates.html#cb136-1" tabindex="-1"></a><span class="co"># If you want to plot a single slice</span></span>
+<span id="cb136-2"><a href="covariates.html#cb136-2" tabindex="-1"></a><span class="co"># plot(r[[1]])</span></span>
+<span id="cb136-3"><a href="covariates.html#cb136-3" tabindex="-1"></a><span class="co"># plot(locs_terra, add=T)</span></span></code></pre></div>
+<p>Add the data to your locations covariates dataframe and check the output:</p>
+<div class="sourceCode" id="cb137"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb137-1"><a href="covariates.html#cb137-1" tabindex="-1"></a><span class="co"># Extract the data to camera locations</span></span>
+<span id="cb137-2"><a href="covariates.html#cb137-2" tabindex="-1"></a>tmp <span class="ot">&lt;-</span> terra<span class="sc">::</span><span class="fu">extract</span>(r, locs_terra, <span class="at">fun=</span>mean, <span class="at">na.rm=</span><span class="cn">TRUE</span>, <span class="at">ID=</span>F) <span class="co"># Extract - each layer will become its own column</span></span>
+<span id="cb137-3"><a href="covariates.html#cb137-3" tabindex="-1"></a>locs_sf<span class="sc">$</span>mean_ndvi <span class="ot">&lt;-</span> <span class="fu">rowMeans</span>(tmp, <span class="at">na.rm=</span><span class="cn">TRUE</span>) <span class="co"># take the mean of each column</span></span>
 <span id="cb137-4"><a href="covariates.html#cb137-4" tabindex="-1"></a></span>
-<span id="cb137-5"><a href="covariates.html#cb137-5" tabindex="-1"></a><span class="co"># Add the new data to our locations dataframe</span></span>
-<span id="cb137-6"><a href="covariates.html#cb137-6" tabindex="-1"></a>locs_sf <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs_sf, tmp)</span></code></pre></div>
-<p>And check the output:</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb138-1"><a href="covariates.html#cb138-1" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>mean_ndvi,</span>
-<span id="cb138-2"><a href="covariates.html#cb138-2" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Mean NDVI score&quot;</span>,</span>
-<span id="cb138-3"><a href="covariates.html#cb138-3" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_54-1.png" width="672" /></p>
-<p>It is possible to generate an NDVI score for each month that each camera is active, however that would take too long to produce for this course!</p>
-</div>
-</div>
-<div id="digging-deeper" class="section level3 hasAnchor" number="7.2.7">
-<h3><span class="header-section-number">7.2.7</span> Digging deeper<a href="covariates.html#digging-deeper" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<span id="cb137-5"><a href="covariates.html#cb137-5" tabindex="-1"></a><span class="co"># Plot the results</span></span>
+<span id="cb137-6"><a href="covariates.html#cb137-6" tabindex="-1"></a><span class="fu">boxplot</span>(locs_sf<span class="sc">$</span>mean_ndvi,</span>
+<span id="cb137-7"><a href="covariates.html#cb137-7" tabindex="-1"></a>        <span class="at">ylab=</span><span class="st">&quot;Mean NDVI score&quot;</span>,</span>
+<span id="cb137-8"><a href="covariates.html#cb137-8" tabindex="-1"></a>        <span class="at">las=</span><span class="dv">1</span>)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_54-1.png" alt="" width="672" /></p>
+<p>Here we have created an average NDVI score across four months, but you could summarise by month instead. For finer detail, the <code>250m_16_days_pixel_reliability</code> band shows which pixels were affected by cloud or snow, so you can remove them before averaging.
+### Digging deeper</p>
 <p>If you want to dig into estimating NDVI metrics from camera trap viewshed, rather than from satellite data, check out the <code>phenopix</code> R package. It allows the user to extract visual information from time lapse images. It provides a quantitative daily measure of vegetation phenology at each site (e.g. green-up, senescence, snow cover).</p>
 <p><a href="https://www.sciencedirect.com/science/article/pii/S2530064417300019">Alberton, B. et al. 2017. Introducing digital cameras to monitor plant phenology in the tropics: applications for conservation. Perspect. Ecol. Conserv</a></p>
 <p><a href="https://rdrr.io/rforge/phenopix/">Filippa, G. et al. 2017. phenopix: Process Digital Images of a Vegetation Cover. R package version 2.3.1.</a></p>
@@ -3522,44 +2581,44 @@ ALG031
 <p>And the code associated with this publication on the <a href="https://github.com/WildCoLab/WildCo_Phenology">WildCo GitHub Page</a></p>
 </div>
 </div>
+</div>
 <div id="convert-and-save-your-covariates" class="section level2 hasAnchor" number="7.3">
 <h2><span class="header-section-number">7.3</span> Convert and save your covariates<a href="covariates.html#convert-and-save-your-covariates" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb139"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb139-1"><a href="covariates.html#cb139-1" tabindex="-1"></a><span class="co"># Convert columns to numeric</span></span>
-<span id="cb139-2"><a href="covariates.html#cb139-2" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(locs_sf<span class="sc">$</span>road_dist_m)</span>
-<span id="cb139-3"><a href="covariates.html#cb139-3" tabindex="-1"></a></span>
-<span id="cb139-4"><a href="covariates.html#cb139-4" tabindex="-1"></a><span class="co"># Convert it back to a dataframe</span></span>
-<span id="cb139-5"><a href="covariates.html#cb139-5" tabindex="-1"></a>locs_sf<span class="sc">$</span>geometry <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
-<span id="cb139-6"><a href="covariates.html#cb139-6" tabindex="-1"></a></span>
-<span id="cb139-7"><a href="covariates.html#cb139-7" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, locs_sf)</span>
-<span id="cb139-8"><a href="covariates.html#cb139-8" tabindex="-1"></a></span>
-<span id="cb139-9"><a href="covariates.html#cb139-9" tabindex="-1"></a></span>
-<span id="cb139-10"><a href="covariates.html#cb139-10" tabindex="-1"></a><span class="co"># Write the dataset</span></span>
-<span id="cb139-11"><a href="covariates.html#cb139-11" tabindex="-1"></a></span>
-<span id="cb139-12"><a href="covariates.html#cb139-12" tabindex="-1"></a><span class="fu">write.csv</span>(locs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_camera_locations_and_covariates.csv&quot;</span>), <span class="at">row.names=</span>F)</span></code></pre></div>
+<div class="sourceCode" id="cb138"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb138-1"><a href="covariates.html#cb138-1" tabindex="-1"></a><span class="co"># Convert columns to numeric</span></span>
+<span id="cb138-2"><a href="covariates.html#cb138-2" tabindex="-1"></a>locs_sf<span class="sc">$</span>road_dist_m <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(locs_sf<span class="sc">$</span>road_dist_m)</span>
+<span id="cb138-3"><a href="covariates.html#cb138-3" tabindex="-1"></a></span>
+<span id="cb138-4"><a href="covariates.html#cb138-4" tabindex="-1"></a><span class="co"># Convert it back to a dataframe</span></span>
+<span id="cb138-5"><a href="covariates.html#cb138-5" tabindex="-1"></a>locs_sf<span class="sc">$</span>geometry <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb138-6"><a href="covariates.html#cb138-6" tabindex="-1"></a></span>
+<span id="cb138-7"><a href="covariates.html#cb138-7" tabindex="-1"></a>locs <span class="ot">&lt;-</span> <span class="fu">left_join</span>(locs, locs_sf)</span>
+<span id="cb138-8"><a href="covariates.html#cb138-8" tabindex="-1"></a></span>
+<span id="cb138-9"><a href="covariates.html#cb138-9" tabindex="-1"></a><span class="co"># Write the dataset</span></span>
+<span id="cb138-10"><a href="covariates.html#cb138-10" tabindex="-1"></a></span>
+<span id="cb138-11"><a href="covariates.html#cb138-11" tabindex="-1"></a><span class="fu">write.csv</span>(locs, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>, locs<span class="sc">$</span>project_id[<span class="dv">1</span>],<span class="st">&quot;_camera_locations_and_covariates.csv&quot;</span>), <span class="at">row.names=</span>F)</span></code></pre></div>
 </div>
 <div id="correlations-between-predictors" class="section level2 hasAnchor" number="7.4">
 <h2><span class="header-section-number">7.4</span> Correlations between predictors<a href="covariates.html#correlations-between-predictors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>So we have used a variety of different techniques to generate covariates for our subsequent analyses. However, it is important to note that we cannot just through these variables into a model.</p>
 <p>One way to check if your different variables are confound/correlated is using the <code>corrplot</code> package.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb140-1"><a href="covariates.html#cb140-1" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
-<span id="cb140-2"><a href="covariates.html#cb140-2" tabindex="-1"></a></span>
-<span id="cb140-3"><a href="covariates.html#cb140-3" tabindex="-1"></a><span class="co"># First we need to create a correlation matrix between the different variables of interest</span></span>
-<span id="cb140-4"><a href="covariates.html#cb140-4" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;line_of_sight_m&quot;</span>, <span class="st">&quot;water_depth_m&quot;</span>, <span class="st">&quot;elevation&quot;</span>,</span>
-<span id="cb140-5"><a href="covariates.html#cb140-5" tabindex="-1"></a>                     <span class="st">&quot;road_dist_m&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)])</span></code></pre></div>
+<div class="sourceCode" id="cb139"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb139-1"><a href="covariates.html#cb139-1" tabindex="-1"></a><span class="fu">library</span>(corrplot)</span>
+<span id="cb139-2"><a href="covariates.html#cb139-2" tabindex="-1"></a></span>
+<span id="cb139-3"><a href="covariates.html#cb139-3" tabindex="-1"></a><span class="co"># First we need to create a correlation matrix between the different variables of interest</span></span>
+<span id="cb139-4"><a href="covariates.html#cb139-4" tabindex="-1"></a>M <span class="ot">&lt;-</span> <span class="fu">cor</span>(locs[, <span class="fu">c</span>(<span class="st">&quot;line_of_sight_m&quot;</span>, <span class="st">&quot;water_depth_m&quot;</span>, <span class="st">&quot;elevation&quot;</span>,</span>
+<span id="cb139-5"><a href="covariates.html#cb139-5" tabindex="-1"></a>                     <span class="st">&quot;road_dist_m&quot;</span>, <span class="st">&quot;mean_ndvi&quot;</span>)])</span></code></pre></div>
 <p>Now lets make the basic <code>corrplot</code>:</p>
-<div class="sourceCode" id="cb141"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb141-1"><a href="covariates.html#cb141-1" tabindex="-1"></a><span class="fu">corrplot</span>(M)</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_59-1.png" width="672" /></p>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r Rinfo"><code class="sourceCode r"><span id="cb140-1"><a href="covariates.html#cb140-1" tabindex="-1"></a><span class="fu">corrplot</span>(M)</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_59-1.png" alt="" width="672" /></p>
 <p>The cells denote pairwise correlations between the rows and the columns. The great thing about <code>corrplot</code> is customization option are near endless - see <a href="https://cran.r-project.org/web/packages/corrplot/vignettes/corrplot-intro.html">the corrplot vignette</a>.</p>
 <p>Let’s make a better, more informative, <code>corrplot</code>!</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb142-1"><a href="covariates.html#cb142-1" tabindex="-1"></a><span class="fu">corrplot</span>(M,                              <span class="co">#The correlation matrix we made</span></span>
-<span id="cb142-2"><a href="covariates.html#cb142-2" tabindex="-1"></a>         <span class="at">method=</span><span class="st">&quot;color&quot;</span>,                 <span class="co"># How we want the cells </span></span>
-<span id="cb142-3"><a href="covariates.html#cb142-3" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,                   <span class="co"># Just show the upper part (it is usually mirrored)</span></span>
-<span id="cb142-4"><a href="covariates.html#cb142-4" tabindex="-1"></a>         <span class="at">order=</span><span class="st">&quot;hclust&quot;</span>,                 <span class="co"># Order the variables using the hclust method</span></span>
-<span id="cb142-5"><a href="covariates.html#cb142-5" tabindex="-1"></a>         <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>,          <span class="co"># Add coefficient of correlation  </span></span>
-<span id="cb142-6"><a href="covariates.html#cb142-6" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>,      <span class="co"># Control the text label color and rotation</span></span>
-<span id="cb142-7"><a href="covariates.html#cb142-7" tabindex="-1"></a>         <span class="at">diag=</span>F                          <span class="co"># Suppress the diagonal correlations (which are 1 anyway)</span></span>
-<span id="cb142-8"><a href="covariates.html#cb142-8" tabindex="-1"></a>         )</span></code></pre></div>
-<p><img src="Intro-to-data-analysis_files/figure-html/ch4_60-1.png" width="672" /></p>
+<div class="sourceCode" id="cb141"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb141-1"><a href="covariates.html#cb141-1" tabindex="-1"></a><span class="fu">corrplot</span>(M,                              <span class="co">#The correlation matrix we made</span></span>
+<span id="cb141-2"><a href="covariates.html#cb141-2" tabindex="-1"></a>         <span class="at">method=</span><span class="st">&quot;color&quot;</span>,                 <span class="co"># How we want the cells </span></span>
+<span id="cb141-3"><a href="covariates.html#cb141-3" tabindex="-1"></a>         <span class="at">type=</span><span class="st">&quot;upper&quot;</span>,                   <span class="co"># Just show the upper part (it is usually mirrored)</span></span>
+<span id="cb141-4"><a href="covariates.html#cb141-4" tabindex="-1"></a>         <span class="at">order=</span><span class="st">&quot;hclust&quot;</span>,                 <span class="co"># Order the variables using the hclust method</span></span>
+<span id="cb141-5"><a href="covariates.html#cb141-5" tabindex="-1"></a>         <span class="at">addCoef.col =</span> <span class="st">&quot;black&quot;</span>,          <span class="co"># Add coefficient of correlation  </span></span>
+<span id="cb141-6"><a href="covariates.html#cb141-6" tabindex="-1"></a>         <span class="at">tl.col=</span><span class="st">&quot;black&quot;</span>, <span class="at">tl.srt=</span><span class="dv">45</span>,      <span class="co"># Control the text label color and rotation</span></span>
+<span id="cb141-7"><a href="covariates.html#cb141-7" tabindex="-1"></a>         <span class="at">diag=</span>F                          <span class="co"># Suppress the diagonal correlations (which are 1 anyway)</span></span>
+<span id="cb141-8"><a href="covariates.html#cb141-8" tabindex="-1"></a>         )</span></code></pre></div>
+<p><img src="WildCo--An-Introduction-to-Camera-Trap-Data-Management-and-Analysis-in-R_files/figure-html/ch4_60-1.png" alt="" width="672" /></p>
 <p>In general there is very low correlation between our different predictors! If we were seeing pairwise correlations &gt;0.7 we perhaps wouldn’t include those in the same model.</p>
 
 </div>
@@ -3584,46 +2643,60 @@ ALG031
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/04-analysis_covariates.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["Intro-to-data-analysis.pdf", "Intro-to-data-analysis.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/04-analysis_covariates.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
