@@ -37,7 +37,7 @@ jobs:
                                             "lubridate",
                                             "magrittr",
                                             "MCMCvis",
-                                            "MODIStools",
+                                            "MODISTools",
                                             "osmdata",
                                             "pals",
                                             "plotly",
@@ -66,6 +66,10 @@ jobs:
         run: Rscript -e 'remotes::install_github("arcaravaggi/remBoot")'
         env: 
           GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      - name: Install gfcanalysis
+        run: Rscript -e 'remotes::install_github("azvoleff/gfcanalysis")'
+        env: 
+          GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}    
       - name: Install spaceNtime
         run: Rscript -e 'remotes::install_github("annam21/spaceNtime")'
         env: 
