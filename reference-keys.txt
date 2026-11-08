@@ -12,7 +12,6 @@ install-rstudio
 install-the-required-packages
 cran-packages
 other-packages
-an-earthdata-server-account
 create-an-r-project
 download-the-data-files
 the-example-datasets
@@ -82,8 +81,7 @@ open-street-maps
 highways
 water-bodies
 vegetation-productivity
-modisfast
-digging-deeper
+modistools
 convert-and-save-your-covariates
 correlations-between-predictors
 exploration

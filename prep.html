@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 2 Preparing for the course | An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 2 Preparing for the course | An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2025-01-24" />
+<meta name="date" content="2026-11-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,7 +56,7 @@
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
 <script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
-<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -64,20 +64,21 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
-<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
-<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.12.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -179,7 +180,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="prep.html"><a href="prep.html#cran-packages"><i class="fa fa-check"></i><b>2.3.1</b> CRAN packages</a></li>
 <li class="chapter" data-level="2.3.2" data-path="prep.html"><a href="prep.html#other-packages"><i class="fa fa-check"></i><b>2.3.2</b> Other packages</a></li>
-<li class="chapter" data-level="2.3.3" data-path="prep.html"><a href="prep.html#an-earthdata-server-account"><i class="fa fa-check"></i><b>2.3.3</b> An Earthdata Server account</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="prep.html"><a href="prep.html#create-an-r-project"><i class="fa fa-check"></i><b>2.4</b> Create an R project</a></li>
 <li class="chapter" data-level="2.5" data-path="prep.html"><a href="prep.html#download-the-data-files"><i class="fa fa-check"></i><b>2.5</b> Download the data files</a></li>
@@ -265,7 +265,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
 <li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -422,15 +421,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.3.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#convert-to-simple-features"><i class="fa fa-check"></i><b>15.3.1</b> Convert to simple features</a></li>
 <li class="chapter" data-level="15.3.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#get-elevation-data"><i class="fa fa-check"></i><b>15.3.2</b> Get elevation data</a></li>
 <li class="chapter" data-level="15.3.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#open-street-map-data"><i class="fa fa-check"></i><b>15.3.3</b> Open street map data</a></li>
-<li class="chapter" data-level="15.3.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#ndvi"><i class="fa fa-check"></i><b>15.3.4</b> NDVI</a></li>
 </ul></li>
-<li class="chapter" data-level="15.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-exploration"><i class="fa fa-check"></i><b>15.4</b> Data exploration</a>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ndvi.html"><a href="ndvi.html"><i class="fa fa-check"></i><b>16</b> NDVI</a>
 <ul>
-<li class="chapter" data-level="15.4.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#final-map"><i class="fa fa-check"></i><b>15.4.1</b> Final map</a></li>
-<li class="chapter" data-level="15.4.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#detection-summary"><i class="fa fa-check"></i><b>15.4.2</b> Detection summary</a></li>
-<li class="chapter" data-level="15.4.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#temporal-patterns"><i class="fa fa-check"></i><b>15.4.3</b> Temporal patterns</a></li>
-<li class="chapter" data-level="15.4.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#spatial-patterns"><i class="fa fa-check"></i><b>15.4.4</b> Spatial patterns</a></li>
-<li class="chapter" data-level="15.4.5" data-path="on-your-own-5.html"><a href="on-your-own-5.html#species-co-occurance"><i class="fa fa-check"></i><b>15.4.5</b> Species co-occurance</a></li>
+<li class="chapter" data-level="16.1" data-path="ndvi.html"><a href="ndvi.html#data-exploration"><i class="fa fa-check"></i><b>16.1</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="ndvi.html"><a href="ndvi.html#final-map"><i class="fa fa-check"></i><b>16.1.1</b> Final map</a></li>
+<li class="chapter" data-level="16.1.2" data-path="ndvi.html"><a href="ndvi.html#detection-summary"><i class="fa fa-check"></i><b>16.1.2</b> Detection summary</a></li>
+<li class="chapter" data-level="16.1.3" data-path="ndvi.html"><a href="ndvi.html#temporal-patterns"><i class="fa fa-check"></i><b>16.1.3</b> Temporal patterns</a></li>
+<li class="chapter" data-level="16.1.4" data-path="ndvi.html"><a href="ndvi.html#spatial-patterns"><i class="fa fa-check"></i><b>16.1.4</b> Spatial patterns</a></li>
+<li class="chapter" data-level="16.1.5" data-path="ndvi.html"><a href="ndvi.html#species-co-occurance"><i class="fa fa-check"></i><b>16.1.5</b> Species co-occurance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -468,16 +469,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If you get stuck <a href="mailto:c.w.beirne@gmail.com">send me an email!</a></p>
 <div id="install-r" class="section level2 hasAnchor" number="2.1">
 <h2><span class="header-section-number">2.1</span> Install R<a href="prep.html#install-r" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><strong>Windows</strong> Click on <a href="https://cran.r-project.org/bin/windows/base/">this link</a> and then <code>Download R-4.2.1 for Windows</code>.</p>
-<p><strong>Mac</strong> Click on <a href="https://cran.r-project.org/bin/macosx/">this link</a> and then the <code>R-4.2.1.pkgs</code> link.</p>
-<p><strong>If you already have R</strong> please update your R client so that it is on at least version 4.2.1. Checkout the <a href="https://www.r-project.org/nosvn/pandoc/installr.html">installR package</a> to this directly from the terminal.</p>
+<p><strong>Windows</strong> Click on <a href="https://cran.r-project.org/bin/windows/base/">this link</a> and then <code>Download R-4.2.2 for Windows</code>.</p>
+<p><strong>Mac</strong> Click on <a href="https://cran.r-project.org/bin/macosx/">this link</a> and then the <code>R-4.2.2.pkgs</code> link.</p>
+<p><strong>If you already have R</strong> please update your R client so that it is on at least version 4.2.2. Checkout the <a href="https://www.r-project.org/nosvn/pandoc/installr.html">installR package</a> to this directly from the terminal.</p>
 </div>
 <div id="install-rstudio" class="section level2 hasAnchor" number="2.2">
 <h2><span class="header-section-number">2.2</span> Install RStudio<a href="prep.html#install-rstudio" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Through the course we will use RStudio to interact with R. Please download <code>RStudio Desktop</code> (Free) from the <a href="https://www.rstudio.com/products/rstudio/download/">RStudio website</a>. Alternatives to RStudio exist and we are happy if you want to use one of those instead!</p>
 <p><strong>Installation check</strong></p>
 <p>Open RStudio. If all has gone well you should see something like this:</p>
-<p><img src="images/course-preparation/R_studio_start.PNG" width="100%" /></p>
+<p><img src="images/course-preparation/R_studio_start.PNG" alt="" width="100%" /></p>
 </div>
 <div id="install-the-required-packages" class="section level2 hasAnchor" number="2.3">
 <h2><span class="header-section-number">2.3</span> Install the required packages<a href="prep.html#install-the-required-packages" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -491,45 +492,44 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb4-3"><a href="prep.html#cb4-3" tabindex="-1"></a>                      <span class="st">&quot;corrplot&quot;</span>,</span>
 <span id="cb4-4"><a href="prep.html#cb4-4" tabindex="-1"></a>                      <span class="st">&quot;cowplot&quot;</span>,</span>
 <span id="cb4-5"><a href="prep.html#cb4-5" tabindex="-1"></a>                      <span class="st">&quot;dplyr&quot;</span>, </span>
-<span id="cb4-6"><a href="prep.html#cb4-6" tabindex="-1"></a>                      <span class="st">&quot;elevatr&quot;</span>,</span>
-<span id="cb4-7"><a href="prep.html#cb4-7" tabindex="-1"></a>                      <span class="st">&quot;gfcanalysis&quot;</span>,  </span>
-<span id="cb4-8"><a href="prep.html#cb4-8" tabindex="-1"></a>                      <span class="st">&quot;ggplot2&quot;</span>,</span>
-<span id="cb4-9"><a href="prep.html#cb4-9" tabindex="-1"></a>                      <span class="st">&quot;gridExtra&quot;</span>,</span>
-<span id="cb4-10"><a href="prep.html#cb4-10" tabindex="-1"></a>                      <span class="st">&quot;iNEXT&quot;</span>,</span>
-<span id="cb4-11"><a href="prep.html#cb4-11" tabindex="-1"></a>                      <span class="st">&quot;kableExtra&quot;</span>,</span>
-<span id="cb4-12"><a href="prep.html#cb4-12" tabindex="-1"></a>                      <span class="st">&quot;Hmsc&quot;</span>,</span>
-<span id="cb4-13"><a href="prep.html#cb4-13" tabindex="-1"></a>                      <span class="st">&quot;leaflet&quot;</span>,</span>
-<span id="cb4-14"><a href="prep.html#cb4-14" tabindex="-1"></a>                      <span class="st">&quot;lme4&quot;</span>,</span>
-<span id="cb4-15"><a href="prep.html#cb4-15" tabindex="-1"></a>                      <span class="st">&quot;lubridate&quot;</span>,</span>
-<span id="cb4-16"><a href="prep.html#cb4-16" tabindex="-1"></a>                      <span class="st">&quot;magrittr&quot;</span>,</span>
-<span id="cb4-17"><a href="prep.html#cb4-17" tabindex="-1"></a>                      <span class="st">&quot;MCMCvis&quot;</span>,</span>
-<span id="cb4-18"><a href="prep.html#cb4-18" tabindex="-1"></a>                      <span class="st">&quot;modisfast&quot;</span>,</span>
-<span id="cb4-19"><a href="prep.html#cb4-19" tabindex="-1"></a>                      <span class="st">&quot;osmdata&quot;</span>,</span>
-<span id="cb4-20"><a href="prep.html#cb4-20" tabindex="-1"></a>                      <span class="st">&quot;pals&quot;</span>,</span>
-<span id="cb4-21"><a href="prep.html#cb4-21" tabindex="-1"></a>                      <span class="st">&quot;plotly&quot;</span>,</span>
-<span id="cb4-22"><a href="prep.html#cb4-22" tabindex="-1"></a>                      <span class="st">&quot;remotes&quot;</span>,</span>
-<span id="cb4-23"><a href="prep.html#cb4-23" tabindex="-1"></a>                      <span class="st">&quot;rmarkdown&quot;</span>,</span>
-<span id="cb4-24"><a href="prep.html#cb4-24" tabindex="-1"></a>                      <span class="st">&quot;sf&quot;</span>,</span>
-<span id="cb4-25"><a href="prep.html#cb4-25" tabindex="-1"></a>                      <span class="st">&quot;spOccupancy&quot;</span>,</span>
-<span id="cb4-26"><a href="prep.html#cb4-26" tabindex="-1"></a>                      <span class="st">&quot;stars&quot;</span>,</span>
-<span id="cb4-27"><a href="prep.html#cb4-27" tabindex="-1"></a>                      <span class="st">&quot;stringr&quot;</span>,</span>
-<span id="cb4-28"><a href="prep.html#cb4-28" tabindex="-1"></a>                      <span class="st">&quot;terra&quot;</span>,</span>
-<span id="cb4-29"><a href="prep.html#cb4-29" tabindex="-1"></a>                      <span class="st">&quot;tibble&quot;</span>,</span>
-<span id="cb4-30"><a href="prep.html#cb4-30" tabindex="-1"></a>                      <span class="st">&quot;tidyr&quot;</span>, </span>
-<span id="cb4-31"><a href="prep.html#cb4-31" tabindex="-1"></a>                      <span class="st">&quot;unmarked&quot;</span>,</span>
-<span id="cb4-32"><a href="prep.html#cb4-32" tabindex="-1"></a>                      <span class="st">&quot;viridis&quot;</span>,</span>
-<span id="cb4-33"><a href="prep.html#cb4-33" tabindex="-1"></a>                      <span class="st">&quot;jtools&quot;</span>,</span>
-<span id="cb4-34"><a href="prep.html#cb4-34" tabindex="-1"></a>                      <span class="st">&quot;vegan&quot;</span>,</span>
-<span id="cb4-35"><a href="prep.html#cb4-35" tabindex="-1"></a>                      <span class="st">&quot;MuMIn&quot;</span>,</span>
-<span id="cb4-36"><a href="prep.html#cb4-36" tabindex="-1"></a>                      <span class="st">&quot;usedist&quot;</span>,</span>
-<span id="cb4-37"><a href="prep.html#cb4-37" tabindex="-1"></a>                      <span class="st">&quot;taxize&quot;</span>)</span>
-<span id="cb4-38"><a href="prep.html#cb4-38" tabindex="-1"></a></span>
-<span id="cb4-39"><a href="prep.html#cb4-39" tabindex="-1"></a><span class="co"># A check to see which ones you have and which are missing</span></span>
-<span id="cb4-40"><a href="prep.html#cb4-40" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
-<span id="cb4-41"><a href="prep.html#cb4-41" tabindex="-1"></a></span>
-<span id="cb4-42"><a href="prep.html#cb4-42" tabindex="-1"></a><span class="co"># Code which tells R to install the missing packages</span></span>
-<span id="cb4-43"><a href="prep.html#cb4-43" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
-<span id="cb4-44"><a href="prep.html#cb4-44" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<span id="cb4-6"><a href="prep.html#cb4-6" tabindex="-1"></a>                      <span class="st">&quot;elevatr&quot;</span>,  </span>
+<span id="cb4-7"><a href="prep.html#cb4-7" tabindex="-1"></a>                      <span class="st">&quot;ggplot2&quot;</span>,</span>
+<span id="cb4-8"><a href="prep.html#cb4-8" tabindex="-1"></a>                      <span class="st">&quot;gridExtra&quot;</span>,</span>
+<span id="cb4-9"><a href="prep.html#cb4-9" tabindex="-1"></a>                      <span class="st">&quot;iNEXT&quot;</span>,</span>
+<span id="cb4-10"><a href="prep.html#cb4-10" tabindex="-1"></a>                      <span class="st">&quot;kableExtra&quot;</span>,</span>
+<span id="cb4-11"><a href="prep.html#cb4-11" tabindex="-1"></a>                      <span class="st">&quot;Hmsc&quot;</span>,</span>
+<span id="cb4-12"><a href="prep.html#cb4-12" tabindex="-1"></a>                      <span class="st">&quot;leaflet&quot;</span>,</span>
+<span id="cb4-13"><a href="prep.html#cb4-13" tabindex="-1"></a>                      <span class="st">&quot;lme4&quot;</span>,</span>
+<span id="cb4-14"><a href="prep.html#cb4-14" tabindex="-1"></a>                      <span class="st">&quot;lubridate&quot;</span>,</span>
+<span id="cb4-15"><a href="prep.html#cb4-15" tabindex="-1"></a>                      <span class="st">&quot;magrittr&quot;</span>,</span>
+<span id="cb4-16"><a href="prep.html#cb4-16" tabindex="-1"></a>                      <span class="st">&quot;MCMCvis&quot;</span>,</span>
+<span id="cb4-17"><a href="prep.html#cb4-17" tabindex="-1"></a>                      <span class="st">&quot;MODISTools&quot;</span>,</span>
+<span id="cb4-18"><a href="prep.html#cb4-18" tabindex="-1"></a>                      <span class="st">&quot;osmdata&quot;</span>,</span>
+<span id="cb4-19"><a href="prep.html#cb4-19" tabindex="-1"></a>                      <span class="st">&quot;pals&quot;</span>,</span>
+<span id="cb4-20"><a href="prep.html#cb4-20" tabindex="-1"></a>                      <span class="st">&quot;plotly&quot;</span>,</span>
+<span id="cb4-21"><a href="prep.html#cb4-21" tabindex="-1"></a>                      <span class="st">&quot;remotes&quot;</span>,</span>
+<span id="cb4-22"><a href="prep.html#cb4-22" tabindex="-1"></a>                      <span class="st">&quot;rmarkdown&quot;</span>,</span>
+<span id="cb4-23"><a href="prep.html#cb4-23" tabindex="-1"></a>                      <span class="st">&quot;sf&quot;</span>,</span>
+<span id="cb4-24"><a href="prep.html#cb4-24" tabindex="-1"></a>                      <span class="st">&quot;spOccupancy&quot;</span>,</span>
+<span id="cb4-25"><a href="prep.html#cb4-25" tabindex="-1"></a>                      <span class="st">&quot;stars&quot;</span>,</span>
+<span id="cb4-26"><a href="prep.html#cb4-26" tabindex="-1"></a>                      <span class="st">&quot;stringr&quot;</span>,</span>
+<span id="cb4-27"><a href="prep.html#cb4-27" tabindex="-1"></a>                      <span class="st">&quot;terra&quot;</span>,</span>
+<span id="cb4-28"><a href="prep.html#cb4-28" tabindex="-1"></a>                      <span class="st">&quot;tibble&quot;</span>,</span>
+<span id="cb4-29"><a href="prep.html#cb4-29" tabindex="-1"></a>                      <span class="st">&quot;tidyr&quot;</span>, </span>
+<span id="cb4-30"><a href="prep.html#cb4-30" tabindex="-1"></a>                      <span class="st">&quot;unmarked&quot;</span>,</span>
+<span id="cb4-31"><a href="prep.html#cb4-31" tabindex="-1"></a>                      <span class="st">&quot;viridis&quot;</span>,</span>
+<span id="cb4-32"><a href="prep.html#cb4-32" tabindex="-1"></a>                      <span class="st">&quot;jtools&quot;</span>,</span>
+<span id="cb4-33"><a href="prep.html#cb4-33" tabindex="-1"></a>                      <span class="st">&quot;vegan&quot;</span>,</span>
+<span id="cb4-34"><a href="prep.html#cb4-34" tabindex="-1"></a>                      <span class="st">&quot;MuMIn&quot;</span>,</span>
+<span id="cb4-35"><a href="prep.html#cb4-35" tabindex="-1"></a>                      <span class="st">&quot;usedist&quot;</span>,</span>
+<span id="cb4-36"><a href="prep.html#cb4-36" tabindex="-1"></a>                      <span class="st">&quot;taxize&quot;</span>)</span>
+<span id="cb4-37"><a href="prep.html#cb4-37" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="prep.html#cb4-38" tabindex="-1"></a><span class="co"># A check to see which ones you have and which are missing</span></span>
+<span id="cb4-39"><a href="prep.html#cb4-39" tabindex="-1"></a>new.packages <span class="ot">&lt;-</span> list.of.packages[<span class="sc">!</span>(list.of.packages <span class="sc">%in%</span> <span class="fu">installed.packages</span>()[,<span class="st">&quot;Package&quot;</span>])]</span>
+<span id="cb4-40"><a href="prep.html#cb4-40" tabindex="-1"></a></span>
+<span id="cb4-41"><a href="prep.html#cb4-41" tabindex="-1"></a><span class="co"># Code which tells R to install the missing packages</span></span>
+<span id="cb4-42"><a href="prep.html#cb4-42" tabindex="-1"></a><span class="cf">if</span>(<span class="fu">length</span>(new.packages)) <span class="fu">install.packages</span>(new.packages)</span>
+<span id="cb4-43"><a href="prep.html#cb4-43" tabindex="-1"></a><span class="fu">lapply</span>(list.of.packages, require, <span class="at">character.only =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="other-packages" class="section level3 hasAnchor" number="2.3.2">
 <h3><span class="header-section-number">2.3.2</span> Other packages<a href="prep.html#other-packages" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -540,12 +540,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb5-4"><a href="prep.html#cb5-4" tabindex="-1"></a></span>
 <span id="cb5-5"><a href="prep.html#cb5-5" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;RS-eco/traitdata&quot;</span>)</span>
 <span id="cb5-6"><a href="prep.html#cb5-6" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;arcaravaggi/remBoot&quot;</span>)</span>
-<span id="cb5-7"><a href="prep.html#cb5-7" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;annam21/spaceNtime&quot;</span>)</span></code></pre></div>
-</div>
-<div id="an-earthdata-server-account" class="section level3 hasAnchor" number="2.3.3">
-<h3><span class="header-section-number">2.3.3</span> An Earthdata Server account<a href="prep.html#an-earthdata-server-account" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<p><strong>IMPORTANT</strong> to access MODIS data (and other great products) rapidly through the <code>modisfast</code> package you need to create your own login for the associated Earthdata servers.</p>
-<p><strong>To create your free account go to : <a href="https://urs.earthdata.nasa.gov/" class="uri">https://urs.earthdata.nasa.gov/</a>.</strong> and make a note of your credentials for the Analysis Covariates chapter.</p>
+<span id="cb5-7"><a href="prep.html#cb5-7" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;annam21/spaceNtime&quot;</span>)</span>
+<span id="cb5-8"><a href="prep.html#cb5-8" tabindex="-1"></a>remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&quot;azvoleff/gfcanalysis&quot;</span>)</span></code></pre></div>
 </div>
 </div>
 <div id="create-an-r-project" class="section level2 hasAnchor" number="2.4">
@@ -553,16 +549,16 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>If you do not already work within R projects - you should! It allows you to work on multiple projects at the same time, and makes specifying file paths much simpler. Finally, if you want to incorporate GiHub into your workflows in the future, the use of R Projects is essential!</p>
 <p>To create an R project for this course:</p>
 <p><strong>Step 1</strong> Click on <code>File</code> -&gt; <code>New project</code></p>
-<p><img src="images/course-preparation/new_project.png" width="50%" /></p>
+<p><img src="images/course-preparation/new_project.png" alt="" width="50%" /></p>
 <p><strong>Step 2</strong> Click <code>New Directory</code></p>
-<p><img src="images/course-preparation/New_directory.png" width="75%" /></p>
+<p><img src="images/course-preparation/New_directory.png" alt="" width="75%" /></p>
 <p><strong>Step 3</strong> Then click <code>New Project</code></p>
-<p><img src="images/course-preparation/new_project_2.png" width="75%" /></p>
+<p><img src="images/course-preparation/new_project_2.png" alt="" width="75%" /></p>
 <p><strong>Step 4</strong> Give your project a name and choose a folder to save it in (you do not have to copy the options here):</p>
-<p><img src="images/course-preparation/project_name.png" width="75%" /></p>
+<p><img src="images/course-preparation/project_name.png" alt="" width="75%" /></p>
 <p><strong>Step 5</strong> Then click <code>Create Project</code></p>
 <p>The best thing about R Projects is that all the files contained within it can be specified relative to the project folder - no more long file paths to deal with! Currently the ‘Files’ tab in the bottom right should be empty (aside from the <code>.rproj</code> file):</p>
-<p><img src="images/course-preparation/file_window.PNG" width="75%" /></p>
+<p><img src="images/course-preparation/file_window.PNG" alt="" width="75%" /></p>
 <p>Take note of the file path in the image above. For me it is <code>C:/Users/Dropbox/wildco_R_course</code> as this is where you will copy the data files to in later steps. You can also go straight to the root directory the project by clicking the three dots to the right of the file path in the <code>Files</code> tab!</p>
 <p>Next, lets download the data files we need for this course!</p>
 </div>
@@ -571,13 +567,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p><strong>Step 1</strong> Click on the following dropbox link:</p>
 <p><a href="https://www.dropbox.com/sh/y014wzonjbz19p4/AAD9LsHi_SOrKsxmPQi2bLooa?dl=0">Data Management and Analysis Files</a></p>
 <p><strong>Step 2</strong> Click download:</p>
-<p><img src="images/course-preparation/click_download.png" width="594" /></p>
+<p><img src="images/course-preparation/click_download.png" alt="" width="594" /></p>
 <p><strong>Step 3</strong> Extract the files (it doesn’t matter where to), then open the <code>data_for_intro_to_camera_traps</code> folder and copy the <code>data</code> folder it contains.</p>
-<p><img src="images/course-preparation/copy.png" width="75%" /></p>
+<p><img src="images/course-preparation/copy.png" alt="" width="75%" /></p>
 <p><strong>Step 4</strong> Then paste the data folder into your newly created R project folder.</p>
-<p><img src="images/course-preparation/paste_files.PNG" width="462" /></p>
+<p><img src="images/course-preparation/paste_files.PNG" alt="" width="462" /></p>
 <p><strong>Step 5</strong> If everything has worked, your `Files’ window in R Studio should now look like this:</p>
-<p><img src="images/course-preparation/final_files.PNG" width="80%" /></p>
+<p><img src="images/course-preparation/final_files.PNG" alt="" width="80%" /></p>
 <p>And you are ready for the course!</p>
 </div>
 <div id="the-example-datasets" class="section level2 hasAnchor" number="2.6">
@@ -629,46 +625,60 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/00-course-preparation.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/00-course-preparation.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

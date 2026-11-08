@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 6 Analysis data creation | An Introduction to Camera Trap Data Management and Analysis in R</title>
   <meta name="description" content="Materials for the three day camera trap data management and analysis course" />
-  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+  <meta name="generator" content="bookdown 0.48 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 6 Analysis data creation | An Introduction to Camera Trap Data Management and Analysis in R" />
   <meta property="og:type" content="book" />
@@ -23,7 +23,7 @@
 <meta name="author" content="Christopher Beirne, the Wildlife Coexistence Lab, UBC, and the WildCam Network" />
 
 
-<meta name="date" content="2025-01-24" />
+<meta name="date" content="2026-11-08" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -56,7 +56,7 @@
 <link href="libs/lightable-0.0.1/lightable.css" rel="stylesheet" />
 <link href="libs/bsTable-3.3.7/bootstrapTable.min.css" rel="stylesheet" />
 <script src="libs/bsTable-3.3.7/bootstrapTable.js"></script>
-<link href="libs/htmltools-fill-0.5.8.1/fill.css" rel="stylesheet" />
+<link href="libs/htmltools-fill-0.5.9/fill.css" rel="stylesheet" />
 <script src="libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
 <link href="libs/leaflet-1.3.1/leaflet.css" rel="stylesheet" />
 <script src="libs/leaflet-1.3.1/leaflet.js"></script>
@@ -64,20 +64,21 @@
 <script src="libs/proj4-2.6.2/proj4.min.js"></script>
 <script src="libs/Proj4Leaflet-1.0.1/proj4leaflet.js"></script>
 <link href="libs/rstudio_leaflet-1.3.1/rstudio_leaflet.css" rel="stylesheet" />
-<script src="libs/leaflet-binding-2.2.2/leaflet.js"></script>
-<script src="libs/leaflet-providers-2.0.0/leaflet-providers_2.0.0.js"></script>
-<script src="libs/leaflet-providers-plugin-2.2.2/leaflet-providers-plugin.js"></script>
-<script src="libs/plotly-binding-4.10.4/plotly.js"></script>
+<script src="libs/leaflet-binding-2.2.3/leaflet.js"></script>
+<script src="libs/leaflet-providers-3.0.0/leaflet-providers.js"></script>
+<script src="libs/leaflet-providers-plugin-2.2.3/leaflet-providers-plugin.js"></script>
+<script src="libs/plotly-binding-4.12.1/plotly.js"></script>
 <script src="libs/typedarray-0.1/typedarray.min.js"></script>
-<link href="libs/crosstalk-1.2.1/css/crosstalk.min.css" rel="stylesheet" />
-<script src="libs/crosstalk-1.2.1/js/crosstalk.min.js"></script>
-<link href="libs/plotly-htmlwidgets-css-2.11.1/plotly-htmlwidgets.css" rel="stylesheet" />
-<script src="libs/plotly-main-2.11.1/plotly-latest.min.js"></script>
+<link href="libs/crosstalk-1.2.2/css/crosstalk.min.css" rel="stylesheet" />
+<script src="libs/crosstalk-1.2.2/js/crosstalk.min.js"></script>
+<link href="libs/plotly-htmlwidgets-css-2.25.2/plotly-htmlwidgets.css" rel="stylesheet" />
+<script src="libs/plotly-main-2.25.2/plotly-latest.min.js"></script>
 
 
 <style type="text/css">
+html { -webkit-text-size-adjust: 100%; }
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -179,7 +180,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <ul>
 <li class="chapter" data-level="2.3.1" data-path="prep.html"><a href="prep.html#cran-packages"><i class="fa fa-check"></i><b>2.3.1</b> CRAN packages</a></li>
 <li class="chapter" data-level="2.3.2" data-path="prep.html"><a href="prep.html#other-packages"><i class="fa fa-check"></i><b>2.3.2</b> Other packages</a></li>
-<li class="chapter" data-level="2.3.3" data-path="prep.html"><a href="prep.html#an-earthdata-server-account"><i class="fa fa-check"></i><b>2.3.3</b> An Earthdata Server account</a></li>
 </ul></li>
 <li class="chapter" data-level="2.4" data-path="prep.html"><a href="prep.html#create-an-r-project"><i class="fa fa-check"></i><b>2.4</b> Create an R project</a></li>
 <li class="chapter" data-level="2.5" data-path="prep.html"><a href="prep.html#download-the-data-files"><i class="fa fa-check"></i><b>2.5</b> Download the data files</a></li>
@@ -265,7 +265,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="7.2.4" data-path="covariates.html"><a href="covariates.html#elevatr-package"><i class="fa fa-check"></i><b>7.2.4</b> elevatr package</a></li>
 <li class="chapter" data-level="7.2.5" data-path="covariates.html"><a href="covariates.html#open-street-maps"><i class="fa fa-check"></i><b>7.2.5</b> Open Street Maps</a></li>
 <li class="chapter" data-level="7.2.6" data-path="covariates.html"><a href="covariates.html#vegetation-productivity"><i class="fa fa-check"></i><b>7.2.6</b> Vegetation productivity</a></li>
-<li class="chapter" data-level="7.2.7" data-path="covariates.html"><a href="covariates.html#digging-deeper"><i class="fa fa-check"></i><b>7.2.7</b> Digging deeper</a></li>
 </ul></li>
 <li class="chapter" data-level="7.3" data-path="covariates.html"><a href="covariates.html#convert-and-save-your-covariates"><i class="fa fa-check"></i><b>7.3</b> Convert and save your covariates</a></li>
 <li class="chapter" data-level="7.4" data-path="covariates.html"><a href="covariates.html#correlations-between-predictors"><i class="fa fa-check"></i><b>7.4</b> Correlations between predictors</a></li>
@@ -422,15 +421,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="15.3.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#convert-to-simple-features"><i class="fa fa-check"></i><b>15.3.1</b> Convert to simple features</a></li>
 <li class="chapter" data-level="15.3.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#get-elevation-data"><i class="fa fa-check"></i><b>15.3.2</b> Get elevation data</a></li>
 <li class="chapter" data-level="15.3.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#open-street-map-data"><i class="fa fa-check"></i><b>15.3.3</b> Open street map data</a></li>
-<li class="chapter" data-level="15.3.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#ndvi"><i class="fa fa-check"></i><b>15.3.4</b> NDVI</a></li>
 </ul></li>
-<li class="chapter" data-level="15.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#data-exploration"><i class="fa fa-check"></i><b>15.4</b> Data exploration</a>
+</ul></li>
+<li class="chapter" data-level="16" data-path="ndvi.html"><a href="ndvi.html"><i class="fa fa-check"></i><b>16</b> NDVI</a>
 <ul>
-<li class="chapter" data-level="15.4.1" data-path="on-your-own-5.html"><a href="on-your-own-5.html#final-map"><i class="fa fa-check"></i><b>15.4.1</b> Final map</a></li>
-<li class="chapter" data-level="15.4.2" data-path="on-your-own-5.html"><a href="on-your-own-5.html#detection-summary"><i class="fa fa-check"></i><b>15.4.2</b> Detection summary</a></li>
-<li class="chapter" data-level="15.4.3" data-path="on-your-own-5.html"><a href="on-your-own-5.html#temporal-patterns"><i class="fa fa-check"></i><b>15.4.3</b> Temporal patterns</a></li>
-<li class="chapter" data-level="15.4.4" data-path="on-your-own-5.html"><a href="on-your-own-5.html#spatial-patterns"><i class="fa fa-check"></i><b>15.4.4</b> Spatial patterns</a></li>
-<li class="chapter" data-level="15.4.5" data-path="on-your-own-5.html"><a href="on-your-own-5.html#species-co-occurance"><i class="fa fa-check"></i><b>15.4.5</b> Species co-occurance</a></li>
+<li class="chapter" data-level="16.1" data-path="ndvi.html"><a href="ndvi.html#data-exploration"><i class="fa fa-check"></i><b>16.1</b> Data exploration</a>
+<ul>
+<li class="chapter" data-level="16.1.1" data-path="ndvi.html"><a href="ndvi.html#final-map"><i class="fa fa-check"></i><b>16.1.1</b> Final map</a></li>
+<li class="chapter" data-level="16.1.2" data-path="ndvi.html"><a href="ndvi.html#detection-summary"><i class="fa fa-check"></i><b>16.1.2</b> Detection summary</a></li>
+<li class="chapter" data-level="16.1.3" data-path="ndvi.html"><a href="ndvi.html#temporal-patterns"><i class="fa fa-check"></i><b>16.1.3</b> Temporal patterns</a></li>
+<li class="chapter" data-level="16.1.4" data-path="ndvi.html"><a href="ndvi.html#spatial-patterns"><i class="fa fa-check"></i><b>16.1.4</b> Spatial patterns</a></li>
+<li class="chapter" data-level="16.1.5" data-path="ndvi.html"><a href="ndvi.html#species-co-occurance"><i class="fa fa-check"></i><b>16.1.5</b> Species co-occurance</a></li>
 </ul></li>
 </ul></li>
 <li class="chapter" data-level="" data-path="references.html"><a href="references.html"><i class="fa fa-check"></i>References</a></li>
@@ -468,7 +469,7 @@ The threshold we use for determining what is an “independent detection” is t
 If you want to dig a little deeper it to the why, there is a nice summary in <a href="https://onlinelibrary.wiley.com/doi/abs/10.1111/aje.12557">Rahel Sollmans “A gentle introduction to camera‐trap data analysis”</a>:</p>
 <p><em>Researchers have used different thresholds, typically 30 min (e.g., O’Brien, Kinnaird, &amp; Wibisono, 2003) to an hour (Bahaa‐el‐din et al., 2016); some researchers have argued that multiple pictures within the same day may not represent independent detections (Royle, Nichols, Karanth, &amp; Gopalaswamy, 2009). In most cases, this threshold is determined subjectively, based on the best available knowledge of the species under study. But it can also be determined based on the temporal autocorrelation (Kays &amp; Parsons, 2014) or analysis of time intervals (Yasuda, 2004) of subsequent pictures.</em></p>
 <p>Independent data has a single row for each independent event:</p>
-<p><img src="images/data_creation/ind_dat.PNG" width="100%" /></p>
+<p><img src="images/data_creation/ind_dat.PNG" alt="" width="100%" /></p>
 </div>
 <div id="effort-look-up" class="section level2 hasAnchor" number="6.3">
 <h2><span class="header-section-number">6.3</span> Effort look-up<a href="data-creation.html#effort-look-up" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -477,7 +478,7 @@ There are lots of instances where you need to know which stations were operating
 Some people like to store this information in a <code>site x date</code> matrix, but they are actually not that easy to data wrangle with.
 A long data frame with a site and date column is the most flexible (and keeps the dates in their native POSIX formats).</p>
 <p>Effort lookups have a single row for ever day a given location has an active camera:</p>
-<p><img src="images/data_creation/effort_lookup.PNG" width="50%" /></p>
+<p><img src="images/data_creation/effort_lookup.PNG" alt="" width="50%" /></p>
 </div>
 <div id="observations-by-time-interval" class="section level2 hasAnchor" number="6.4">
 <h2><span class="header-section-number">6.4</span> Observations by time interval<a href="data-creation.html#observations-by-time-interval" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -491,7 +492,7 @@ You can use it to create detection rates, occupancy data frames and much more (s
 <li>Counts = sum of the independent minimum group sizes per time interval</li>
 </ul>
 <p>Example of an observation by time matrix:</p>
-<p><img src="images/data_creation/cap_matrix.PNG" width="100%" /></p>
+<p><img src="images/data_creation/cap_matrix.PNG" alt="" width="100%" /></p>
 <p>Let’s build these data frames from our <code>example_data</code>!</p>
 </div>
 <div id="our-data" class="section level2 hasAnchor" number="6.5">
@@ -581,49 +582,29 @@ For example, if your organism of interest is very abundant, for examples human h
 <span id="cb76-2"><a href="data-creation.html#cb76-2" tabindex="-1"></a>img_sub<span class="sc">$</span>animal_count <span class="ot">&lt;-</span> img_sub<span class="sc">$</span>group_size    </span></code></pre></div>
 <p>We will now break down the algorithm into subsections to make it clear what is occurring:</p>
 <ol style="list-style-type: lower-roman">
-<li>Order the dataframe by deployment code and species</li>
+<li>Order the dataframe by deployment code, species and time</li>
 </ol>
 <div class="sourceCode" id="cb77"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb77-1"><a href="data-creation.html#cb77-1" tabindex="-1"></a>img_tmp <span class="ot">&lt;-</span> img_sub <span class="sc">%&gt;%</span></span>
-<span id="cb77-2"><a href="data-creation.html#cb77-2" tabindex="-1"></a>              <span class="fu">arrange</span>(deployment_id) <span class="sc">%&gt;%</span>        <span class="co"># Order by deployment_id</span></span>
-<span id="cb77-3"><a href="data-creation.html#cb77-3" tabindex="-1"></a>              <span class="fu">group_by</span>(deployment_id, sp) <span class="sc">%&gt;%</span>   <span class="co"># Group species together</span></span>
-<span id="cb77-4"><a href="data-creation.html#cb77-4" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">duration =</span> <span class="fu">int_length</span>(timestamp <span class="sc">%--%</span> <span class="fu">lag</span>(timestamp))) <span class="co"># Calculate the gap between successive detections</span></span></code></pre></div>
+<span id="cb77-2"><a href="data-creation.html#cb77-2" tabindex="-1"></a>              <span class="fu">arrange</span>(deployment_id, sp, timestamp) <span class="sc">%&gt;%</span>  <span class="co"># Order by deployment, species, then time</span></span>
+<span id="cb77-3"><a href="data-creation.html#cb77-3" tabindex="-1"></a>              <span class="fu">group_by</span>(deployment_id, sp) <span class="sc">%&gt;%</span>            <span class="co"># Compare images of the same species at the same deployment</span></span>
+<span id="cb77-4"><a href="data-creation.html#cb77-4" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">duration =</span> <span class="fu">int_length</span>(<span class="fu">lag</span>(timestamp) <span class="sc">%--%</span> timestamp)) <span class="sc">%&gt;%</span> <span class="co"># Seconds since the previous image</span></span>
+<span id="cb77-5"><a href="data-creation.html#cb77-5" tabindex="-1"></a>              <span class="fu">ungroup</span>() </span></code></pre></div>
 <ol start="2" style="list-style-type: lower-roman">
 <li>Determine independence of images</li>
 </ol>
-<p>If subsequent detections occur outside of the independence threshold, assign it a unique ID code.</p>
+<p>If a detection occurs outside of the independence threshold, it starts a new event with a unique ID code. All of the images in an event are the same species at the same deployment.</p>
 <div class="sourceCode" id="cb78"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb78-1"><a href="data-creation.html#cb78-1" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb78-2"><a href="data-creation.html#cb78-2" tabindex="-1"></a><span class="co"># Give a random value to all cells</span></span>
-<span id="cb78-3"><a href="data-creation.html#cb78-3" tabindex="-1"></a>img_tmp<span class="sc">$</span>event_id <span class="ot">&lt;-</span> <span class="dv">9999</span></span>
-<span id="cb78-4"><a href="data-creation.html#cb78-4" tabindex="-1"></a></span>
-<span id="cb78-5"><a href="data-creation.html#cb78-5" tabindex="-1"></a><span class="co"># Create a counter</span></span>
-<span id="cb78-6"><a href="data-creation.html#cb78-6" tabindex="-1"></a>counter <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb78-7"><a href="data-creation.html#cb78-7" tabindex="-1"></a></span>
-<span id="cb78-8"><a href="data-creation.html#cb78-8" tabindex="-1"></a><span class="co"># Make a unique code that has one more zero than rows in your dataframe  </span></span>
-<span id="cb78-9"><a href="data-creation.html#cb78-9" tabindex="-1"></a>num_code <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">paste0</span>(<span class="fu">nrow</span>(img_sub),<span class="dv">0</span>))</span>
-<span id="cb78-10"><a href="data-creation.html#cb78-10" tabindex="-1"></a></span>
-<span id="cb78-11"><a href="data-creation.html#cb78-11" tabindex="-1"></a><span class="co"># Loop through img_tmp - if gap is greater than the threshold -&gt; give it a new event ID</span></span>
-<span id="cb78-12"><a href="data-creation.html#cb78-12" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">2</span><span class="sc">:</span><span class="fu">nrow</span>(img_tmp)) {</span>
-<span id="cb78-13"><a href="data-creation.html#cb78-13" tabindex="-1"></a>  img_tmp<span class="sc">$</span>event_id[i<span class="dv">-1</span>]  <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(counter, <span class="fu">nchar</span>(num_code), <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
-<span id="cb78-14"><a href="data-creation.html#cb78-14" tabindex="-1"></a>  </span>
-<span id="cb78-15"><a href="data-creation.html#cb78-15" tabindex="-1"></a>  <span class="cf">if</span>(<span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration[i]) <span class="sc">|</span> <span class="fu">abs</span>(img_tmp<span class="sc">$</span>duration[i]) <span class="sc">&gt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>))</span>
-<span id="cb78-16"><a href="data-creation.html#cb78-16" tabindex="-1"></a>    {</span>
-<span id="cb78-17"><a href="data-creation.html#cb78-17" tabindex="-1"></a>      counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb78-18"><a href="data-creation.html#cb78-18" tabindex="-1"></a>    }</span>
-<span id="cb78-19"><a href="data-creation.html#cb78-19" tabindex="-1"></a>}</span>
-<span id="cb78-20"><a href="data-creation.html#cb78-20" tabindex="-1"></a></span>
-<span id="cb78-21"><a href="data-creation.html#cb78-21" tabindex="-1"></a><span class="co"># Update the information for the last row - the loop above always updates the previous row... leaving the last row unchanged</span></span>
-<span id="cb78-22"><a href="data-creation.html#cb78-22" tabindex="-1"></a>   </span>
-<span id="cb78-23"><a href="data-creation.html#cb78-23" tabindex="-1"></a> <span class="co"># group ID  for the last row</span></span>
-<span id="cb78-24"><a href="data-creation.html#cb78-24" tabindex="-1"></a> <span class="cf">if</span>(img_tmp<span class="sc">$</span>duration[<span class="fu">nrow</span>(img_tmp)] <span class="sc">&lt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>)<span class="sc">|</span></span>
-<span id="cb78-25"><a href="data-creation.html#cb78-25" tabindex="-1"></a>    <span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration[<span class="fu">nrow</span>(img_tmp)])){</span>
-<span id="cb78-26"><a href="data-creation.html#cb78-26" tabindex="-1"></a>   img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)] <span class="ot">&lt;-</span> img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb78-27"><a href="data-creation.html#cb78-27" tabindex="-1"></a> } <span class="cf">else</span>{</span>
-<span id="cb78-28"><a href="data-creation.html#cb78-28" tabindex="-1"></a>   counter <span class="ot">&lt;-</span> counter <span class="sc">+</span> <span class="dv">1</span></span>
-<span id="cb78-29"><a href="data-creation.html#cb78-29" tabindex="-1"></a>   img_tmp<span class="sc">$</span>event_id[<span class="fu">nrow</span>(img_tmp)] <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(counter, <span class="fu">nchar</span>(num_code), <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
-<span id="cb78-30"><a href="data-creation.html#cb78-30" tabindex="-1"></a> }</span>
-<span id="cb78-31"><a href="data-creation.html#cb78-31" tabindex="-1"></a></span>
-<span id="cb78-32"><a href="data-creation.html#cb78-32" tabindex="-1"></a><span class="co"># remove the duration column</span></span>
-<span id="cb78-33"><a href="data-creation.html#cb78-33" tabindex="-1"></a>img_tmp<span class="sc">$</span>duration <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
+<span id="cb78-2"><a href="data-creation.html#cb78-2" tabindex="-1"></a></span>
+<span id="cb78-3"><a href="data-creation.html#cb78-3" tabindex="-1"></a><span class="co"># An image starts a new event if it is the first for that species at that deployment</span></span>
+<span id="cb78-4"><a href="data-creation.html#cb78-4" tabindex="-1"></a><span class="co"># (duration is NA), or if the gap since the previous image is longer than the threshold</span></span>
+<span id="cb78-5"><a href="data-creation.html#cb78-5" tabindex="-1"></a>img_tmp<span class="sc">$</span>new_event <span class="ot">&lt;-</span> <span class="fu">is.na</span>(img_tmp<span class="sc">$</span>duration) <span class="sc">|</span> img_tmp<span class="sc">$</span>duration <span class="sc">&gt;</span> (independent <span class="sc">*</span> <span class="dv">60</span>)</span>
+<span id="cb78-6"><a href="data-creation.html#cb78-6" tabindex="-1"></a></span>
+<span id="cb78-7"><a href="data-creation.html#cb78-7" tabindex="-1"></a><span class="co"># Count up the new events to give every image its event number, then format it as a code</span></span>
+<span id="cb78-8"><a href="data-creation.html#cb78-8" tabindex="-1"></a>img_tmp<span class="sc">$</span>event_id <span class="ot">&lt;-</span> <span class="fu">paste0</span>(<span class="st">&quot;E&quot;</span>, <span class="fu">str_pad</span>(<span class="fu">cumsum</span>(img_tmp<span class="sc">$</span>new_event), <span class="fu">nchar</span>(<span class="fu">nrow</span>(img_tmp)) <span class="sc">+</span> <span class="dv">1</span>, <span class="at">pad =</span> <span class="st">&quot;0&quot;</span>))</span>
+<span id="cb78-9"><a href="data-creation.html#cb78-9" tabindex="-1"></a></span>
+<span id="cb78-10"><a href="data-creation.html#cb78-10" tabindex="-1"></a><span class="co"># Remove the working columns</span></span>
+<span id="cb78-11"><a href="data-creation.html#cb78-11" tabindex="-1"></a>img_tmp<span class="sc">$</span>duration <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb78-12"><a href="data-creation.html#cb78-12" tabindex="-1"></a>img_tmp<span class="sc">$</span>new_event <span class="ot">&lt;-</span> <span class="cn">NULL</span></span></code></pre></div>
 </div>
 <div id="add-additional-data" class="section level3 hasAnchor" number="6.5.4">
 <h3><span class="header-section-number">6.5.4</span> Add additional data<a href="data-creation.html#add-additional-data" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -682,7 +663,7 @@ For example, if your organism of interest is very abundant, for examples human h
 <span id="cb83-4"><a href="data-creation.html#cb83-4" tabindex="-1"></a><span class="fu">write.csv</span>(img_tmp, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_raw_detections.csv&quot;</span>), <span class="at">row.names =</span> F)</span></code></pre></div>
 <p><strong>2. The “daily_lookup”</strong> which is a dataframe of all days a given camera station was active.
 Some people use an lookup matrix for this step, but we find the long format is much easier to use in downstream analysis.
-- “data/processed_data/_daily_deport_lookup.csv”</p>
+- “data/processed_data/AlgarRestorationProject_daily_deport_lookup.csv”</p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode r Rmain"><code class="sourceCode r"><span id="cb84-1"><a href="data-creation.html#cb84-1" tabindex="-1"></a><span class="fu">write.csv</span>(row_lookup, <span class="fu">paste0</span>(<span class="st">&quot;data/processed_data/&quot;</span>,ind_dat<span class="sc">$</span>project_id[<span class="dv">1</span>], <span class="st">&quot;_daily_lookup.csv&quot;</span>), <span class="at">row.names =</span> F)</span></code></pre></div>
 <p><strong>3. Unique camera locations</strong> list:</p>
 <p>When we start to build the covariates for data analysis, it is very useful to have a list of your final project’s camera locations.
@@ -793,7 +774,7 @@ We subset the data to just those included in the independent data, and then save
 <span id="cb89-2"><a href="data-creation.html#cb89-2" tabindex="-1"></a>  <span class="co"># Station / Month / days / Covariates / Species      </span></span>
 <span id="cb89-3"><a href="data-creation.html#cb89-3" tabindex="-1"></a>  tmp <span class="ot">&lt;-</span> row_lookup</span>
 <span id="cb89-4"><a href="data-creation.html#cb89-4" tabindex="-1"></a>  <span class="co"># Simplify the date to year-week</span></span>
-<span id="cb89-5"><a href="data-creation.html#cb89-5" tabindex="-1"></a>  tmp<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">strftime</span>(tmp<span class="sc">$</span>date, <span class="at">format =</span> <span class="st">&quot;%Y-W%U&quot;</span>)</span>
+<span id="cb89-5"><a href="data-creation.html#cb89-5" tabindex="-1"></a>  tmp<span class="sc">$</span>date <span class="ot">&lt;-</span> <span class="fu">strftime</span>(tmp<span class="sc">$</span>date, <span class="at">format =</span> <span class="st">&quot;%Y-W%U&quot;</span>, <span class="at">tz =</span> <span class="st">&quot;UTC&quot;</span>)</span>
 <span id="cb89-6"><a href="data-creation.html#cb89-6" tabindex="-1"></a>  <span class="co"># The way this is coded is the counter W01 starts at the first Sunday of the year, everything before that is W00. Weeks do not roll across years.</span></span>
 <span id="cb89-7"><a href="data-creation.html#cb89-7" tabindex="-1"></a>  </span>
 <span id="cb89-8"><a href="data-creation.html#cb89-8" tabindex="-1"></a>  <span class="co"># Calculate the number of days in each week  </span></span>
@@ -842,7 +823,7 @@ We subset the data to just those included in the independent data, and then save
 <span id="cb90-10"><a href="data-creation.html#cb90-10" tabindex="-1"></a><span class="co"># For each week, count the number of individuals/observations</span></span>
 <span id="cb90-11"><a href="data-creation.html#cb90-11" tabindex="-1"></a>  <span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(day_obs))</span>
 <span id="cb90-12"><a href="data-creation.html#cb90-12" tabindex="-1"></a>    {</span>
-<span id="cb90-13"><a href="data-creation.html#cb90-13" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> ind_dat[ind_dat<span class="sc">$</span>placename<span class="sc">==</span>day_obs<span class="sc">$</span>placename[i] <span class="sc">&amp;</span> <span class="fu">strftime</span>(ind_dat<span class="sc">$</span>timestamp, <span class="at">format =</span> <span class="st">&quot;%Y-%m-%d&quot;</span>)<span class="sc">==</span> day_obs<span class="sc">$</span>date[i],]</span>
+<span id="cb90-13"><a href="data-creation.html#cb90-13" tabindex="-1"></a>      tmp <span class="ot">&lt;-</span> ind_dat[ind_dat<span class="sc">$</span>placename<span class="sc">==</span>day_obs<span class="sc">$</span>placename[i] <span class="sc">&amp;</span> <span class="fu">strftime</span>(ind_dat<span class="sc">$</span>timestamp, <span class="at">format =</span> <span class="st">&quot;%Y-%m-%d&quot;</span>, <span class="at">tz =</span> <span class="st">&quot;UTC&quot;</span>)<span class="sc">==</span> day_obs<span class="sc">$</span>date[i],]</span>
 <span id="cb90-14"><a href="data-creation.html#cb90-14" tabindex="-1"></a>      </span>
 <span id="cb90-15"><a href="data-creation.html#cb90-15" tabindex="-1"></a>      tmp_stats <span class="ot">&lt;-</span> tmp <span class="sc">%&gt;%</span>  <span class="fu">group_by</span>(sp, <span class="at">.drop=</span>F) <span class="sc">%&gt;%</span> <span class="fu">summarise</span>(<span class="at">obs=</span><span class="fu">n</span>(), <span class="at">count=</span><span class="fu">sum</span>(animal_count))</span>
 <span id="cb90-16"><a href="data-creation.html#cb90-16" tabindex="-1"></a>      </span>
@@ -1422,46 +1403,60 @@ Daily
 <script>
 gitbook.require(["gitbook"], function(gitbook) {
 gitbook.start({
-"sharing": {
-"github": false,
-"facebook": true,
-"twitter": true,
-"linkedin": false,
-"weibo": false,
-"instapaper": false,
-"vk": false,
-"whatsapp": false,
-"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
-},
-"fontsettings": {
-"theme": "white",
-"family": "sans",
-"size": 2
-},
-"edit": {
-"link": "https://github.com/rstudio/bookdown-demo/edit/master/03-error-checking.Rmd",
-"text": "Edit"
-},
-"history": {
-"link": null,
-"text": null
-},
-"view": {
-"link": null,
-"text": null
-},
-"download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
-"search": {
-"engine": "fuse",
-"options": null
-},
-"toc": {
-"collapse": "subsection"
-}
+  "sharing": {
+    "github": false,
+    "facebook": true,
+    "twitter": true,
+    "linkedin": false,
+    "weibo": false,
+    "instapaper": false,
+    "vk": false,
+    "whatsapp": false,
+    "all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+  },
+  "fontsettings": {
+    "theme": "white",
+    "family": "sans",
+    "size": 2
+  },
+  "edit": {
+    "link": "https://github.com/rstudio/bookdown-demo/edit/master/03-error-checking.Rmd",
+    "text": "Edit"
+  },
+  "history": {
+    "link": null,
+    "text": null
+  },
+  "view": {
+    "link": null,
+    "text": null
+  },
+  "download": ["WildCo: An Introduction to Camera Trap Data Management and Analysis in R.pdf", "WildCo: An Introduction to Camera Trap Data Management and Analysis in R.epub"],
+  "search": {
+    "engine": "fuse",
+    "options": null
+  },
+  "toc": {
+    "collapse": "subsection"
+  }
 });
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
