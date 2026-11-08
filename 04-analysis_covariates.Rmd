@@ -305,7 +305,7 @@ aoi <- st_bbox(st_buffer(locs_sf, 10000)) # Units are in meters
 We then use this bounding box to return all of the features which cross into it:
 
 ```{r ch4_27, class.source="Rmain"}
-highway <- opq(aoi) %>% #using the bounding box
+highway <- opq(aoi, timeout = 300) %>% #using the bounding box
            add_osm_feature(key="highway") %>% #extract all highway features
            osmdata_sf()  # convert them into simple features format
 
