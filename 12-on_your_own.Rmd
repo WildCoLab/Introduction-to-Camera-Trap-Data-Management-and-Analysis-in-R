@@ -443,10 +443,10 @@ img_sub$animal_count <- img_sub$number_of_objects
 # Create your independent data
 
 img_tmp <- img_sub %>%
-              arrange(deployment_id) %>%        # Order by deployment_id
-              group_by(deployment_id, sp) %>%   # Group species together
-              mutate(duration = int_length(timestamp %--% lag(timestamp))) # Calculate the gap bet
-
+              arrange(deployment_id, sp, timestamp) %>%  # Order by deployment, species, then time
+              group_by(deployment_id, sp) %>%            # Compare images of the same species at the same deployment
+              mutate(duration = int_length(lag(timestamp) %--% timestamp)) %>% # Seconds since the previous image
+              ungroup() 
 
 
 library(stringr)
